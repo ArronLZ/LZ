@@ -1,0 +1,37 @@
+Package: LZ
+Type: Package
+Title: RNAseq analysis pipeline & other skill
+Version: 1.4.2
+Date: 2023-10-16
+Author: Farmer
+Maintainer: Turkey <yydslz@sina.com>
+Description: The package is mainly designed for analyzing RNAseq data.
+    Including some other interesting functions.
+License: MIT
+Encoding: UTF-8
+LazyData: false
+RoxygenNote: 7.2.3
+VignetteBuilder: knitr
+Suggests: BiocStyle, knitr, rmarkdown, prettydoc
+Imports:
+    data.table,
+    tibble
+Depends:
+    dplyr,
+    stringr,
+    DESeq2,
+    BiocParallel,
+    factoextra,
+    edgeR,
+    limma,
+    readr,
+    writexl,
+    ggrepel,
+    ggsci,
+    RColorBrewer,
+    pheatmap,
+    DOSE,
+    clusterProfiler,
+    xlsx,
+    VennDiagram,
+    scales
