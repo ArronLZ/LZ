@@ -154,6 +154,8 @@ DEGplot_Volcano(result = pic_data, logFC = flogfc, # log2(2)
 # 此脚本为GO、KEGG分析（需要一个输入文件即可，为差异分析流程后的resdf文件）
 # 即为第一步(或1脚本)的结果的一个结果文件（DIFF_an_***.xlsx）
 # 即为resdf文件，此文件是差异分析后的总表
+# 注意如果采用了其他的分析方法得到差异分析后表，运行这个脚本时可能需要更改列名
+# 即我们的resdf对象的列名为Gene, log2FC,PValue,FDR，需要与这些个列名保持一致。
 # 此脚本中的需要修改的位于 /// *** /// 行中，另外还有一个LZ::setproxy()行，
 #   如果没有代理工具，或者代理工具不支持http代理，或者端口不通，请不要运行。
 rm(list = ls());gc()
