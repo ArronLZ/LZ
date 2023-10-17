@@ -32,17 +32,18 @@ library(parallel)
 library(data.table)
 library(DESeq2)
 cat(" 您电脑线程为:", detectCores())
-# 数字建议设置为线程数的一半，高配电脑可以加大设置，但不能大于电脑线程总数
-n = round(detectCores()/2)  # 此处如不懂不要修改。
+# 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，但不能大于线程总数。此处如果电脑一般，建议直接使用n=4或者2。
+n = 6  
 # register(MulticoreParam(n)) 苹果和linux电脑使用这句替代下句
 register(SnowParam(n))
 ```
 
 #### 1.2 设置输出文件夹
-结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请务必修改第一句，例如可改为`outdir <- "result2"`，其余后面不需要修改。
+结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请务必修改outdir，例如可改为`outdir <- "result2"`，其余后面不需要修改。
 ```{r eval=FALSE}
-outdir <- "result"  # 按需设定（可保持默认，如果修改只修改此处即可，下面无需修改）
-outdirsub <- paste0(outdir, "/1.diff")
+mark <- "OR-NC"  # 此次差异分析的标记(记录谁比谁或和筛选阈值)
+outdir <- "result/rnaseq"  # 按需设定（可保持默认，如果修改只修改此处即可，下面无需修改）
+outdirsub <- paste0(outdir, mark)
 outdirsub.gsea <- paste0(outdirsub, "/gsea")
 outdirsub.rich <- paste0(outdirsub, "/rich")
 ```
@@ -70,7 +71,7 @@ outdirsub.rich <- paste0(outdirsub, "/rich")
 glist <- DEG_prepareData(eset_file = "gene_count.csv",
                          group_file = "group.csv",
                          annot_trans = T,
-                         f_mark = "SHUANG-con")
+                         f_mark = mark)
 # 差异分析 deseq2三部曲
 dds <- DEG_DESeq2.dds(exprset.group=glist, batch = F)
 DEG_DESeq2.pca(dds, outdir = outdirsub) # 此处有warning信息，不用管。
@@ -78,12 +79,20 @@ dds_list <- DEG_DESeq2.ana(dds)
 
 # 差异后分析
 if ( dir.exists(outdirsub.gsea) ) {
+  # 如果outdirsub.gsea文件夹存在，清空该文件夹下所有文件
   file.remove(list.files(outdirsub.gsea, full.names = T))
 }
+# 构建GSEA官网软件分析所需格式文件
 DEGres_ToGSEA(diffan.obj = dds_list, outdir = outdirsub.gsea) # 此处有warning信息，不用管。
+# all_father中记录了
+#             差异分析的总表，默认阈值的差异基因表，
+#             上调基因列表，下调基因列表
+#             以及R-GSEA分析所需要的所有mRNA的表达排序列表。
+#   是我们后续各种分析的万恶之源（因此命名all_father）
+#   上述数据同时被保存在本地硬盘的到一个多sheet的xlsx表中【outdirsub.rich目录中】
 all_father <- DEGres_ToRICH(diffan.obj = dds_list, p=0.05, q=0.1, f=1,
-                            mark="SHUANG-CONTROL", outdir = outdirsub.rich)
-save.image(file = "./result/1.diff.img.RDATA")
+                            mark=mark, outdir = outdirsub.rich)
+save.image(file = paste0(outdirsub, "/1.diff.img.RDATA"))
 ```
 
 
@@ -101,7 +110,10 @@ label_gene: 展示基因列表<br/>
 #library(ggpubr);library(ggrepel);library(ggsci);library(scales)
 library(tidyverse);library(dplyr);library(pheatmap);library(RColorBrewer)
 library(xlsx)
-# # 导入火山图需要的差异分析后的基因全部表格
+# 导入火山图需要的差异分析后的基因全部表格(我们也称这个对象为resdf,
+#  resdf文件涵盖差异分析的所有结果信息，可以做后续所有基于差异分析或者基因列表
+#  的所有分析，如果后续分析时用到了不同的数据，请按这个resdf的格式改数据，主要
+#  就是把数据的列名改成和resdf的列名相同即可用此包的函数分析)
 df_valcano <- xlsx::read.xlsx("./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.xlsx", sheetIndex = 1)
 # saveRDS(df_valcano, file = "./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.rds")
 # df_valcano <- readRDS("./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.rds")
@@ -133,4 +145,51 @@ DEGplot_Volcano(result = pic_data, logFC = flogfc, # log2(2)
   ggplotGrob() %>% cowplot::plot_grid()
 # 保存图片
 # ggsave("./result/1.diff/valcano.mark.gene.pdf", width = 7, height = 7)
+```
+
+
+### 3. 富集分析--GO&KEGG
+这是一个一键脚本，请新建一个单独的文件写这段脚本，然后按这个脚本的顶部注释修改`resdf outd fc.list处即可`，运行即可批量出不同FC的富集分析结果。
+```{r eval=FALSE}
+# 此脚本为GO、KEGG分析（需要一个输入文件即可，为差异分析流程后的resdf文件）
+# 即为第一步(或1脚本)的结果的一个结果文件（DIFF_an_***.xlsx）
+# 即为resdf文件，此文件是差异分析后的总表
+# 此脚本中的需要修改的位于 /// *** /// 行中，另外还有一个LZ::setproxy()行，
+#   如果没有代理工具，或者代理工具不支持http代理，或者端口不通，请不要运行。
+rm(list = ls());gc()
+suppressMessages({ suppressWarnings({
+  library(LZ)
+  library(tidyverse);library(data.table)
+  library(clusterProfiler);library(enrichplot)
+  library(topGO);library(Rgraphviz)
+  library(RColorBrewer);library(ggsci);library(pheatmap)
+  library(xlsx);library(readxl)
+}) })
+# 若无代理工具，切勿运行 Sys.getenv('http_proxy')  #Sys.setenv('http_proxy'='') Sys.setenv('https_proxy'='')
+# LZ::setproxy() # 高危！！！新手不要运行此行，会使当前窗口断网！！！
+
+
+# /// 1,2,3均需按实际改写
+# 读取数据  resdf存放目录
+resdf <- readxl::read_xlsx("result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx",
+                  sheet = 1) %>% as.data.frame()
+### 输出目录
+outd = "result/rnaseqOR-NC/rich" 
+# logFC阈值, 多个阈值的话，写成 list('2' = log2(2), '1.5' = log2(1.5))
+fc.list <- list('2'=log2(2))
+# 设置物种为人类（如是人类则不需要更改）
+GO_database <- 'org.Hs.eg.db' # keytypes(org.Hs.eg.db)
+KEGG_database <- 'hsa' 
+# ///
+
+
+# 预处理数据符合GOKEGG分析的要求
+# # 不同fc条件下的GOgenelist list(ALL, UP, DOWN)
+gogenelist <- lapply(fc.list, function(x) DEG_prepareGOglist(resdf, logfc = x))
+# gogenelist %>% length()
+#
+# 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果
+go <- DEG_runGO(outdir = outd, genelist = gogenelist)
+# 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的KEGG结果
+kegg <- DEG_runKEGG(outdir = outd, genelist = gogenelist)
 ```

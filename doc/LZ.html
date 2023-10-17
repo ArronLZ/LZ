@@ -180,6 +180,8 @@ Mill<br><h4 class="date project-date">2023-10-17</h4>
 <li><a href="#差异分析-1" id="toc-差异分析-1">1.3 差异分析</a></li>
 </ul></li>
 <li><a href="#火山图" id="toc-火山图">2. 火山图</a></li>
+<li><a href="#富集分析gokegg" id="toc-富集分析gokegg">3.
+富集分析–GO&amp;KEGG</a></li>
 </ul>
 </div>
 </div>
@@ -196,18 +198,19 @@ Mill<br><h4 class="date project-date">2023-10-17</h4>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot; 您电脑线程为:&quot;</span>, <span class="fu">detectCores</span>())</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># 数字建议设置为线程数的一半，高配电脑可以加大设置，但不能大于电脑线程总数</span></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">detectCores</span>()<span class="sc">/</span><span class="dv">2</span>)  <span class="co"># 此处如不懂不要修改。</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，但不能大于线程总数。此处如果电脑一般，建议直接使用n=4或者2。</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">6</span>  </span>
 <span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co"># register(MulticoreParam(n)) 苹果和linux电脑使用这句替代下句</span></span>
 <span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="fu">register</span>(<span class="fu">SnowParam</span>(n))</span></code></pre></div>
 </div>
 <div id="设置输出文件夹" class="section level4">
 <h4>1.2 设置输出文件夹</h4>
-<p>结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请务必修改第一句，例如可改为<code>outdir &lt;- &quot;result2&quot;</code>，其余后面不需要修改。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>outdir <span class="ot">&lt;-</span> <span class="st">&quot;result&quot;</span>  <span class="co"># 按需设定（可保持默认，如果修改只修改此处即可，下面无需修改）</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>outdirsub <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdir, <span class="st">&quot;/1.diff&quot;</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>outdirsub.gsea <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdirsub, <span class="st">&quot;/gsea&quot;</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>outdirsub.rich <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdirsub, <span class="st">&quot;/rich&quot;</span>)</span></code></pre></div>
+<p>结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请务必修改outdir，例如可改为<code>outdir &lt;- &quot;result2&quot;</code>，其余后面不需要修改。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>mark <span class="ot">&lt;-</span> <span class="st">&quot;OR-NC&quot;</span>  <span class="co"># 此次差异分析的标记(记录谁比谁或和筛选阈值)</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>outdir <span class="ot">&lt;-</span> <span class="st">&quot;result/rnaseq&quot;</span>  <span class="co"># 按需设定（可保持默认，如果修改只修改此处即可，下面无需修改）</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>outdirsub <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdir, mark)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>outdirsub.gsea <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdirsub, <span class="st">&quot;/gsea&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>outdirsub.rich <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdirsub, <span class="st">&quot;/rich&quot;</span>)</span></code></pre></div>
 </div>
 <div id="差异分析-1" class="section level4">
 <h4>1.3 差异分析</h4>
@@ -287,7 +290,7 @@ rownames(group) %in% colname(eset)</li>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>glist <span class="ot">&lt;-</span> <span class="fu">DEG_prepareData</span>(<span class="at">eset_file =</span> <span class="st">&quot;gene_count.csv&quot;</span>,</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>                         <span class="at">group_file =</span> <span class="st">&quot;group.csv&quot;</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>                         <span class="at">annot_trans =</span> T,</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                         <span class="at">f_mark =</span> <span class="st">&quot;SHUANG-con&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>                         <span class="at">f_mark =</span> mark)</span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co"># 差异分析 deseq2三部曲</span></span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DEG_DESeq2.dds</span>(<span class="at">exprset.group=</span>glist, <span class="at">batch =</span> F)</span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">DEG_DESeq2.pca</span>(dds, <span class="at">outdir =</span> outdirsub) <span class="co"># 此处有warning信息，不用管。</span></span>
@@ -295,12 +298,20 @@ rownames(group) %in% colname(eset)</li>
 <span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a></span>
 <span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co"># 差异后分析</span></span>
 <span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="cf">if</span> ( <span class="fu">dir.exists</span>(outdirsub.gsea) ) {</span>
-<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>  <span class="fu">file.remove</span>(<span class="fu">list.files</span>(outdirsub.gsea, <span class="at">full.names =</span> T))</span>
-<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>}</span>
-<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="fu">DEGres_ToGSEA</span>(<span class="at">diffan.obj =</span> dds_list, <span class="at">outdir =</span> outdirsub.gsea) <span class="co"># 此处有warning信息，不用管。</span></span>
-<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>all_father <span class="ot">&lt;-</span> <span class="fu">DEGres_ToRICH</span>(<span class="at">diffan.obj =</span> dds_list, <span class="at">p=</span><span class="fl">0.05</span>, <span class="at">q=</span><span class="fl">0.1</span>, <span class="at">f=</span><span class="dv">1</span>,</span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>                            <span class="at">mark=</span><span class="st">&quot;SHUANG-CONTROL&quot;</span>, <span class="at">outdir =</span> outdirsub.rich)</span>
-<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="fu">save.image</span>(<span class="at">file =</span> <span class="st">&quot;./result/1.diff.img.RDATA&quot;</span>)</span></code></pre></div>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>  <span class="co"># 如果outdirsub.gsea文件夹存在，清空该文件夹下所有文件</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>  <span class="fu">file.remove</span>(<span class="fu">list.files</span>(outdirsub.gsea, <span class="at">full.names =</span> T))</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>}</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co"># 构建GSEA官网软件分析所需格式文件</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="fu">DEGres_ToGSEA</span>(<span class="at">diffan.obj =</span> dds_list, <span class="at">outdir =</span> outdirsub.gsea) <span class="co"># 此处有warning信息，不用管。</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co"># all_father中记录了</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#             差异分析的总表，默认阈值的差异基因表，</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#             上调基因列表，下调基因列表</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#             以及R-GSEA分析所需要的所有mRNA的表达排序列表。</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#   是我们后续各种分析的万恶之源（因此命名all_father）</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#   上述数据同时被保存在本地硬盘的到一个多sheet的xlsx表中【outdirsub.rich目录中】</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>all_father <span class="ot">&lt;-</span> <span class="fu">DEGres_ToRICH</span>(<span class="at">diffan.obj =</span> dds_list, <span class="at">p=</span><span class="fl">0.05</span>, <span class="at">q=</span><span class="fl">0.1</span>, <span class="at">f=</span><span class="dv">1</span>,</span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>                            <span class="at">mark=</span>mark, <span class="at">outdir =</span> outdirsub.rich)</span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="fu">save.image</span>(<span class="at">file =</span> <span class="fu">paste0</span>(outdirsub, <span class="st">&quot;/1.diff.img.RDATA&quot;</span>))</span></code></pre></div>
 </div>
 </div>
 <div id="火山图" class="section level3">
@@ -315,38 +326,86 @@ p-fdr均考虑模式。仅修改<code>label_gene: 展示基因列表</code>即�
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#library(ggpubr);library(ggrepel);library(ggsci);library(scales)</span></span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="fu">library</span>(tidyverse);<span class="fu">library</span>(dplyr);<span class="fu">library</span>(pheatmap);<span class="fu">library</span>(RColorBrewer)</span>
 <span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="fu">library</span>(xlsx)</span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co"># # 导入火山图需要的差异分析后的基因全部表格</span></span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>df_valcano <span class="ot">&lt;-</span> xlsx<span class="sc">::</span><span class="fu">read.xlsx</span>(<span class="st">&quot;./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.xlsx&quot;</span>, <span class="at">sheetIndex =</span> <span class="dv">1</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co"># saveRDS(df_valcano, file = &quot;./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.rds&quot;)</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co"># df_valcano &lt;- readRDS(&quot;./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.rds&quot;)</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="fu">names</span>(df_valcano) <span class="co"># 对应的列名必须为Gene, log2FC, PValue, FDR</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co"># 阈值设定</span></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>ffdr <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>fpval <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>flogfc <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="co"># 模式设定</span></span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>filterc <span class="ot">&lt;-</span> <span class="st">&quot;fppadj&quot;</span> <span class="co"># pvalue, padj均考虑模式 (&quot;fpadj&quot;:仅考虑fdr值模式, &quot;other&quot;: 仅考虑p值模式)</span></span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a><span class="co"># 火山图数据预处理</span></span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>pic_data <span class="ot">&lt;-</span> <span class="fu">DEG_prepareVolcano</span>(<span class="at">df_valcano =</span> df_valcano, <span class="at">filterc =</span> filterc)</span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co"># 设定需要标记的marker gene</span></span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>label_gene <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;TFRC&#39;</span>, <span class="st">&#39;ACSL1&#39;</span>, <span class="st">&#39;LPCAT3&#39;</span>, <span class="st">&#39;PCBP1&#39;</span>, <span class="st">&#39;FTH1&#39;</span>, <span class="st">&#39;SLC11A2&#39;</span>,</span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>                <span class="st">&#39;SLC39A8&#39;</span>, <span class="st">&#39;SAT1&#39;</span>, <span class="st">&#39;FTL&#39;</span>, <span class="st">&#39;GSS&#39;</span>)</span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co"># 查看想展示的基因在不在差异分析总表中</span></span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a><span class="co"># label_gene %in% df_valcano$Gene %&gt;% all</span></span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co"># pic_data %&gt;% filter(Row.names %in% label_gene)</span></span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co"># 火山图 无标记</span></span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="fu">DEGplot_Volcano</span>(<span class="at">result =</span> pic_data, <span class="at">logFC =</span> flogfc,</span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>               <span class="at">adj_P =</span> ffdr, <span class="at">label_geneset =</span> <span class="cn">NULL</span>)</span>
-<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co"># 保存图片</span></span>
-<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="co"># ggsave(&quot;./valcano.pdf&quot;, width = 7, height = 7)</span></span>
-<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a><span class="co"># 火山图 有标记</span></span>
-<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="fu">DEGplot_Volcano</span>(<span class="at">result =</span> pic_data, <span class="at">logFC =</span> flogfc, <span class="co"># log2(2)</span></span>
-<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>               <span class="at">adj_P =</span> ffdr, <span class="at">label_geneset =</span> label_gene) <span class="sc">%&gt;%</span></span>
-<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a>  <span class="fu">ggplotGrob</span>() <span class="sc">%&gt;%</span> cowplot<span class="sc">::</span><span class="fu">plot_grid</span>()</span>
-<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="co"># 保存图片</span></span>
-<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a><span class="co"># ggsave(&quot;./result/1.diff/valcano.mark.gene.pdf&quot;, width = 7, height = 7)</span></span></code></pre></div>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co"># 导入火山图需要的差异分析后的基因全部表格(我们也称这个对象为resdf,</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#  resdf文件涵盖差异分析的所有结果信息，可以做后续所有基于差异分析或者基因列表</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#  的所有分析，如果后续分析时用到了不同的数据，请按这个resdf的格式改数据，主要</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#  就是把数据的列名改成和resdf的列名相同即可用此包的函数分析)</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>df_valcano <span class="ot">&lt;-</span> xlsx<span class="sc">::</span><span class="fu">read.xlsx</span>(<span class="st">&quot;./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.xlsx&quot;</span>, <span class="at">sheetIndex =</span> <span class="dv">1</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co"># saveRDS(df_valcano, file = &quot;./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.rds&quot;)</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co"># df_valcano &lt;- readRDS(&quot;./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.rds&quot;)</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="fu">names</span>(df_valcano) <span class="co"># 对应的列名必须为Gene, log2FC, PValue, FDR</span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co"># 阈值设定</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>ffdr <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>fpval <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>flogfc <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co"># 模式设定</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>filterc <span class="ot">&lt;-</span> <span class="st">&quot;fppadj&quot;</span> <span class="co"># pvalue, padj均考虑模式 (&quot;fpadj&quot;:仅考虑fdr值模式, &quot;other&quot;: 仅考虑p值模式)</span></span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a><span class="co"># 火山图数据预处理</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>pic_data <span class="ot">&lt;-</span> <span class="fu">DEG_prepareVolcano</span>(<span class="at">df_valcano =</span> df_valcano, <span class="at">filterc =</span> filterc)</span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a><span class="co"># 设定需要标记的marker gene</span></span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>label_gene <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;TFRC&#39;</span>, <span class="st">&#39;ACSL1&#39;</span>, <span class="st">&#39;LPCAT3&#39;</span>, <span class="st">&#39;PCBP1&#39;</span>, <span class="st">&#39;FTH1&#39;</span>, <span class="st">&#39;SLC11A2&#39;</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>                <span class="st">&#39;SLC39A8&#39;</span>, <span class="st">&#39;SAT1&#39;</span>, <span class="st">&#39;FTL&#39;</span>, <span class="st">&#39;GSS&#39;</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co"># 查看想展示的基因在不在差异分析总表中</span></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a><span class="co"># label_gene %in% df_valcano$Gene %&gt;% all</span></span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co"># pic_data %&gt;% filter(Row.names %in% label_gene)</span></span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a><span class="co"># 火山图 无标记</span></span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a><span class="fu">DEGplot_Volcano</span>(<span class="at">result =</span> pic_data, <span class="at">logFC =</span> flogfc,</span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>               <span class="at">adj_P =</span> ffdr, <span class="at">label_geneset =</span> <span class="cn">NULL</span>)</span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a><span class="co"># 保存图片</span></span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a><span class="co"># ggsave(&quot;./valcano.pdf&quot;, width = 7, height = 7)</span></span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a><span class="co"># 火山图 有标记</span></span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a><span class="fu">DEGplot_Volcano</span>(<span class="at">result =</span> pic_data, <span class="at">logFC =</span> flogfc, <span class="co"># log2(2)</span></span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>               <span class="at">adj_P =</span> ffdr, <span class="at">label_geneset =</span> label_gene) <span class="sc">%&gt;%</span></span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>  <span class="fu">ggplotGrob</span>() <span class="sc">%&gt;%</span> cowplot<span class="sc">::</span><span class="fu">plot_grid</span>()</span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a><span class="co"># 保存图片</span></span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a><span class="co"># ggsave(&quot;./result/1.diff/valcano.mark.gene.pdf&quot;, width = 7, height = 7)</span></span></code></pre></div>
+</div>
+<div id="富集分析gokegg" class="section level3">
+<h3>3. 富集分析–GO&amp;KEGG</h3>
+<p>这是一个一键脚本，请新建一个单独的文件写这段脚本，然后按这个脚本的顶部注释修改<code>resdf outd fc.list处即可</code>，运行即可批量出不同FC的富集分析结果。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># 此脚本为GO、KEGG分析（需要一个输入文件即可，为差异分析流程后的resdf文件）</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co"># 即为第一步(或1脚本)的结果的一个结果文件（DIFF_an_***.xlsx）</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># 即为resdf文件，此文件是差异分析后的总表</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># 此脚本中的需要修改的位于 /// *** /// 行中，另外还有一个LZ::setproxy()行，</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#   如果没有代理工具，或者代理工具不支持http代理，或者端口不通，请不要运行。</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>());<span class="fu">gc</span>()</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="fu">suppressMessages</span>({ <span class="fu">suppressWarnings</span>({</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="fu">library</span>(LZ)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  <span class="fu">library</span>(tidyverse);<span class="fu">library</span>(data.table)</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">library</span>(clusterProfiler);<span class="fu">library</span>(enrichplot)</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="fu">library</span>(topGO);<span class="fu">library</span>(Rgraphviz)</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  <span class="fu">library</span>(RColorBrewer);<span class="fu">library</span>(ggsci);<span class="fu">library</span>(pheatmap)</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>  <span class="fu">library</span>(xlsx);<span class="fu">library</span>(readxl)</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>}) })</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co"># 若无代理工具，切勿运行 Sys.getenv(&#39;http_proxy&#39;)  #Sys.setenv(&#39;http_proxy&#39;=&#39;&#39;) Sys.setenv(&#39;https_proxy&#39;=&#39;&#39;)</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co"># LZ::setproxy() # 高危！！！新手不要运行此行，会使当前窗口断网！！！</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="co"># /// 1,2,3均需按实际改写</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co"># 读取数据  resdf存放目录</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>resdf <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">&quot;result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx&quot;</span>,</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>                  <span class="at">sheet =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="do">### 输出目录</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>outd <span class="ot">=</span> <span class="st">&quot;result/rnaseqOR-NC/rich&quot;</span> </span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值的话，写成 list(&#39;2&#39; = log2(2), &#39;1.5&#39; = log2(1.5))</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>fc.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&#39;2&#39;</span><span class="ot">=</span><span class="fu">log2</span>(<span class="dv">2</span>))</span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co"># 设置物种为人类（如是人类则不需要更改）</span></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>GO_database <span class="ot">&lt;-</span> <span class="st">&#39;org.Hs.eg.db&#39;</span> <span class="co"># keytypes(org.Hs.eg.db)</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>KEGG_database <span class="ot">&lt;-</span> <span class="st">&#39;hsa&#39;</span> </span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co"># ///</span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a><span class="co"># 预处理数据符合GOKEGG分析的要求</span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a><span class="co"># # 不同fc条件下的GOgenelist list(ALL, UP, DOWN)</span></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>gogenelist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fc.list, <span class="cf">function</span>(x) <span class="fu">DEG_prepareGOglist</span>(resdf, <span class="at">logfc =</span> x))</span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a><span class="co"># gogenelist %&gt;% length()</span></span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果</span></span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a>go <span class="ot">&lt;-</span> <span class="fu">DEG_runGO</span>(<span class="at">outdir =</span> outd, <span class="at">genelist =</span> gogenelist)</span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的KEGG结果</span></span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a>kegg <span class="ot">&lt;-</span> <span class="fu">DEG_runKEGG</span>(<span class="at">outdir =</span> outd, <span class="at">genelist =</span> gogenelist)</span></code></pre></div>
 </div>
 </section>
 
