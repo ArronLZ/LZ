@@ -85,6 +85,28 @@ DEGp_Dotplot <- function(df, title='xxx', resultdir, filemark, pic.save =T,
 
 
 
+#' Prepare data for DEGp_GOALL_barplot
+#' @description Prepare data for DEGp_GOALL_barplot. Take top n number of each type in the dataframe.
+#' 
+#' @param data dataframe, GO ALL dataframe
+#' @param n_type charater, a colname of data, the type of GO ALL dataframe, such as n_type='ONTOLOGY'
+#' @param n_qu character, a colname of data, sort by this param, such as n_qu='pvaule'
+#'
+#' @return #
+#' @export
+#'
+#' @examples #
+DEGp_preparGOALL <- function(data, n_type='ONTOLOGY', n_qu='pvaule') {
+  ## 自定义函数，提取每个分类的前10名
+  ## data=up,为以数据框，其含有名为ncol的一列；
+  ## n_type='ONTOLOGY', n_qu='pvaule'为data中的列名
+  # 此函数即为，取data$ONTOLOGY的每一类pavlue列的前10名(最小的10个pvalue)
+  lapply(names(data[, n_type] %>% table), function(x) 
+    data[data[,n_type] == x,] %>% arrange(n_qu) %>% .[1:10,]) %>% 
+    do.call(rbind, .) %>% na.omit()
+}
+
+
 #' GO all barplot
 #' @description GO all barplot
 #'
@@ -97,11 +119,13 @@ DEGp_Dotplot <- function(df, title='xxx', resultdir, filemark, pic.save =T,
 #' @export
 #'
 #' @examples #
-DEGp_barplot <- function(GOlisit, resultdir, filemark, pic.save = T) {
-  #GOlist为jGO自定义函数返回对象，该对象为clusterProfiler::enrichGO返回对象的list集合
+DEGp_GOALL_barplot <- function(GOlist.df, resultdir, filemark, pic.save = T) {
+  # GOlist为jGO自定义函数返回对象，该对象为clusterProfiler::enrichGO返回对象的list集合
+  # GOlist.df为GOlist$ALL@result, 为一个data.frame
   # 或者可更改第一句，输入数据框含ONTOLOGY,pvalue,Description列
-  up_df <- GOlist$ALL@result
-  up <- up_df %>% jtype_qu(., 'ONTOLOGY', 'pvalue')
+  # up_df <- GOlist$ALL@result
+  up_df <- GOlist.df
+  up <- up_df %>% DEGp_preparGOALL(., 'ONTOLOGY', 'pvalue')
   up <- up %>% arrange(ONTOLOGY, desc(pvalue))
   dy_levels <- c(filter(up, ONTOLOGY=='MF')[,"Description"],
                  filter(up, ONTOLOGY=='CC')[,"Description"],
