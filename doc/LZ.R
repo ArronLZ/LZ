@@ -137,7 +137,7 @@
 #  kegg <- DEG_runKEGG(outdir = outd, genelist = gogenelist)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  ### 简易GO,KEGG一次分析(即：已经得到了差异基因列表)
+#  # 简易GO,KEGG一次分析(即：已经得到了差异基因列表)
 #  # LZ::setproxy() # 代理设置，新手别碰，会断网
 #  # 差异基因列表
 #  genelist.lh <- pic.list$sig.data$Gene
@@ -152,4 +152,29 @@
 #  # KEGG分析
 #  kegg.lh <- DEG_KEGG(gene_df)
 #  write_xlsx(kegg.lh$pSigDF, path = "./result/proteinOR-NC/lh_kegg.all.xlsx")
+
+## ----eval=FALSE---------------------------------------------------------------
+#  # dotplot go
+#  # 读取go分析保存的表格
+#  dotData <- readxl::read_xlsx("./result/proteinOR-NC/lh_go.all.xlsx", sheet = 1)
+#  # 筛选数据（按需配合其他筛选）
+#  dotData <- DEGp_prepareDotplot(dotData, head = 30, delete = NULL)
+#  pic.dot <- DEGp_Dotplot(dotData, title = 'TOP of GO',
+#                          resultdir = "./result/proteinOR-NC", filemark = 'GO_top',
+#                          pic.save = T)
+#  
+#  # dotplot kegg
+#  # 读取kegg分析保存的表格
+#  dotDatak <- readxl::read_xlsx("./result/proteinOR-NC/lh_kegg.all.xlsx", sheet = 1)
+#  # 筛选数据（按需配合其他筛选）
+#  dotDataK <- DEGp_prepareDotplot(dotDatak, head = 30, delete = NULL)
+#  pic.dotk <- DEGp_Dotplot(dotDataK, title = 'TOP of KEGGpathway',
+#                           resultdir = "./result/proteinOR-NC", filemark = 'KEGG_top',
+#                           pic.save = F)
+#  
+#  # 组合图
+#  gh <- ggplotGrob(pic.dot)
+#  gd <- ggplotGrob(pic.dotk)
+#  cowplot::plot_grid(gh, gd, rel_widths = c(1, 1.25))
+#  ggsave(paste0(dir_out, "/GO_KEGG_top.pdf"), width = 16, height = 10)
 

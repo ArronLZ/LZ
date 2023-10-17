@@ -82,3 +82,56 @@ DEGp_Dotplot <- function(df, title='xxx', resultdir, filemark, pic.save =T,
   }
   return(dotplot)
 }
+
+
+
+#' GO all barplot
+#' @description GO all barplot
+#'
+#' @param GOlisit list, GO result
+#' @param resultdir character, the picture outdir
+#' @param filemark character, the picture filename mark
+#' @param pic.save logic, save picture or not
+#'
+#' @return #
+#' @export
+#'
+#' @examples #
+DEGp_barplot <- function(GOlisit, resultdir, filemark, pic.save = T) {
+  #GOlist为jGO自定义函数返回对象，该对象为clusterProfiler::enrichGO返回对象的list集合
+  # 或者可更改第一句，输入数据框含ONTOLOGY,pvalue,Description列
+  up_df <- GOlist$ALL@result
+  up <- up_df %>% jtype_qu(., 'ONTOLOGY', 'pvalue')
+  up <- up %>% arrange(ONTOLOGY, desc(pvalue))
+  dy_levels <- c(filter(up, ONTOLOGY=='MF')[,"Description"],
+                 filter(up, ONTOLOGY=='CC')[,"Description"],
+                 filter(up, ONTOLOGY=='BP')[,"Description"])
+  up$Description <- factor(up$Description, levels = dy_levels)
+  id_up <- levels(up$Description)
+  # GO
+  #display.brewer.all(colorblindFriendly = T) #展示所有的色板
+  #display.brewer.pal(12,'Paired')# 展示'Accent'色板中8个颜色
+  col <- colorRampPalette(brewer.pal(12,'Paired'))(24)
+  #plot(1:24,rep(1,24),col= col,pch=16,cex=2)
+  colp <- colorRampPalette(c(col[10],col[6],col[3]))(100)
+  #plot(1:10,col=col[6], pch=16, cex=2)
+  p_up <- ggplot(up, aes(Description, -log(pvalue, 10), fill=ONTOLOGY)) +
+    geom_col(color = 'black', width = 0.6) +
+    theme(panel.grid = element_blank(), panel.background = element_rect(fill = 'transparent')) +
+    theme(axis.line.x = element_line(colour = 'black'), 
+          axis.line.y = element_line(colour = 'transparent'), 
+          axis.ticks.y = element_line(colour = 'transparent'),
+          axis.text = element_text(face = 'plain', size = 12)) +
+    theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
+    coord_flip() +
+    geom_hline(yintercept = 0) +
+    labs(x = '', y = '', title = 'UP') +
+    scale_y_continuous(expand = c(0, 0), breaks = c(-15, -10, -5, 0), 
+                       labels = as.character(c(-15, -10, -5, 0))) +     #这儿更改间距设置
+    scale_x_discrete(labels = id_up)
+  if (pic.save == T) {
+    fname=paste0(resultdir, '/', filemark,'.pdf')
+    ggsave(fname, width = 6, height = 10)
+  }
+  return(p_up)
+}

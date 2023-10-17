@@ -187,6 +187,8 @@ Mill<br><h4 class="date project-date">2023-10-17</h4>
 一键脚本(批量处理)</a></li>
 <li><a href="#简易gokegg一次分析" id="toc-简易gokegg一次分析">3.2
 简易GO,KEGG一次分析</a></li>
+<li><a href="#gokegg-可视化" id="toc-gokegg-可视化">3.3 GO、KEGG
+可视化</a></li>
 </ul></li>
 </ul>
 </div>
@@ -427,7 +429,7 @@ p-fdr均考虑模式。仅修改<code>label_gene: 展示基因列表</code>即�
 <p>如果已经得到了差异基因列表，且无需批量分析，可以进行这个简易分析。<br />
 数据格式: <code>head(genelist.lh)</code> <br /> [1] “AARS1” “AATF”
 “ABCB7” “ABCE1” “ABHD11” “ABHD12”</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="do">### 简易GO,KEGG一次分析(即：已经得到了差异基因列表)</span></span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># 简易GO,KEGG一次分析(即：已经得到了差异基因列表)</span></span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co"># LZ::setproxy() # 代理设置，新手别碰，会断网</span></span>
 <span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co"># 差异基因列表</span></span>
 <span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>genelist.lh <span class="ot">&lt;-</span> pic.list<span class="sc">$</span>sig.data<span class="sc">$</span>Gene </span>
@@ -442,6 +444,32 @@ p-fdr均考虑模式。仅修改<code>label_gene: 展示基因列表</code>即�
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co"># KEGG分析</span></span>
 <span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>kegg.lh <span class="ot">&lt;-</span> <span class="fu">DEG_KEGG</span>(gene_df)</span>
 <span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="fu">write_xlsx</span>(kegg.lh<span class="sc">$</span>pSigDF, <span class="at">path =</span> <span class="st">&quot;./result/proteinOR-NC/lh_kegg.all.xlsx&quot;</span>)</span></code></pre></div>
+</div>
+<div id="gokegg-可视化" class="section level4">
+<h4>3.3 GO、KEGG 可视化</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># dotplot go</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co"># 读取go分析保存的表格</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">&quot;./result/proteinOR-NC/lh_go.all.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="dv">1</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotData, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>pic.dot <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotData, <span class="at">title =</span> <span class="st">&#39;TOP of GO&#39;</span>, </span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>                        <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, <span class="at">filemark =</span> <span class="st">&#39;GO_top&#39;</span>, </span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>                        <span class="at">pic.save =</span> T)</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co"># dotplot kegg</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co"># 读取kegg分析保存的表格</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>dotDatak <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">&quot;./result/proteinOR-NC/lh_kegg.all.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="dv">1</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>dotDataK <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotDatak, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>pic.dotk <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotDataK, <span class="at">title =</span> <span class="st">&#39;TOP of KEGGpathway&#39;</span>, </span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>                         <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, <span class="at">filemark =</span> <span class="st">&#39;KEGG_top&#39;</span>, </span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>                         <span class="at">pic.save =</span> F)</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="co"># 组合图</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>gh <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dot)</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>gd <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dotk)</span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gh, gd, <span class="at">rel_widths =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.25</span>))</span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">paste0</span>(dir_out, <span class="st">&quot;/GO_KEGG_top.pdf&quot;</span>), <span class="at">width =</span> <span class="dv">16</span>, <span class="at">height =</span> <span class="dv">10</span>)</span></code></pre></div>
 </div>
 </div>
 </section>

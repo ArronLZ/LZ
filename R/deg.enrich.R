@@ -170,4 +170,3 @@ DEG_runKEGG <- function(outdir, genelist) {
   }, genelist, names(genelist), SIMPLIFY = F)
 }
 
-
