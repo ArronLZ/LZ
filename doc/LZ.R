@@ -94,7 +94,7 @@
 #  # 即我们的resdf对象的列名为Gene, log2FC,PValue,FDR，需要与这些个列名保持一致。
 #  # 此脚本中的需要修改的位于 /// *** /// 行中，另外还有一个LZ::setproxy()行，
 #  #   如果没有代理工具，或者代理工具不支持http代理，或者端口不通，请不要运行。
-#  rm(list = ls());gc()
+#  rm(list = ls());gc() # 清空所有对象，慎用，必要时用
 #  suppressMessages({ suppressWarnings({
 #    library(LZ)
 #    library(tidyverse);library(data.table)
@@ -111,6 +111,9 @@
 #  # 读取数据  resdf存放目录
 #  resdf <- readxl::read_xlsx("result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx",
 #                    sheet = 1) %>% as.data.frame()
+#  # 此处可能需要插入修改列名的代码，需要为标准的resdf格式
+#  #   标准resdf格式，用列名Gene, log2FC, PValue, FDR来表示gene, log2fc, p, q/fdr
+#  
 #  # 输出目录
 #  outd = "result/rnaseqOR-NC/rich"
 #  # logFC阈值, 多个阈值的话，写成 list('2' = log2(2), '1.5' = log2(1.5))

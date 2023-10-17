@@ -372,7 +372,7 @@ p-fdr均考虑模式。仅修改<code>label_gene: 展示基因列表</code>即�
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co"># 即我们的resdf对象的列名为Gene, log2FC,PValue,FDR，需要与这些个列名保持一致。</span></span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co"># 此脚本中的需要修改的位于 /// *** /// 行中，另外还有一个LZ::setproxy()行，</span></span>
 <span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#   如果没有代理工具，或者代理工具不支持http代理，或者端口不通，请不要运行。</span></span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>());<span class="fu">gc</span>()</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>());<span class="fu">gc</span>() <span class="co"># 清空所有对象，慎用，必要时用</span></span>
 <span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="fu">suppressMessages</span>({ <span class="fu">suppressWarnings</span>({</span>
 <span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">library</span>(LZ)</span>
 <span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="fu">library</span>(tidyverse);<span class="fu">library</span>(data.table)</span>
@@ -389,25 +389,28 @@ p-fdr均考虑模式。仅修改<code>label_gene: 展示基因列表</code>即�
 <span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="co"># 读取数据  resdf存放目录</span></span>
 <span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>resdf <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">&quot;result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx&quot;</span>,</span>
 <span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>                  <span class="at">sheet =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
-<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co"># 输出目录</span></span>
-<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>outd <span class="ot">=</span> <span class="st">&quot;result/rnaseqOR-NC/rich&quot;</span> </span>
-<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值的话，写成 list(&#39;2&#39; = log2(2), &#39;1.5&#39; = log2(1.5))</span></span>
-<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>fc.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&#39;2&#39;</span><span class="ot">=</span><span class="fu">log2</span>(<span class="dv">2</span>))</span>
-<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a><span class="co"># 设置物种为人类（如是人类则不需要更改）</span></span>
-<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>GO_database <span class="ot">&lt;-</span> <span class="st">&#39;org.Hs.eg.db&#39;</span> <span class="co"># keytypes(org.Hs.eg.db)</span></span>
-<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>KEGG_database <span class="ot">&lt;-</span> <span class="st">&#39;hsa&#39;</span> </span>
-<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co"># ///</span></span>
-<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a></span>
-<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a></span>
-<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co"># 预处理数据符合GOKEGG分析的要求</span></span>
-<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a><span class="co"># # 不同fc条件下的GOgenelist list(ALL, UP, DOWN)</span></span>
-<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a>gogenelist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fc.list, <span class="cf">function</span>(x) <span class="fu">DEG_prepareGOglist</span>(resdf, <span class="at">logfc =</span> x))</span>
-<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a><span class="co"># gogenelist %&gt;% length()</span></span>
-<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果</span></span>
-<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a>go <span class="ot">&lt;-</span> <span class="fu">DEG_runGO</span>(<span class="at">outdir =</span> outd, <span class="at">genelist =</span> gogenelist)</span>
-<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的KEGG结果</span></span>
-<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a>kegg <span class="ot">&lt;-</span> <span class="fu">DEG_runKEGG</span>(<span class="at">outdir =</span> outd, <span class="at">genelist =</span> gogenelist)</span></code></pre></div>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co"># 此处可能需要插入修改列名的代码，需要为标准的resdf格式</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a><span class="co">#   标准resdf格式，用列名Gene, log2FC, PValue, FDR来表示gene, log2fc, p, q/fdr</span></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co"># 输出目录</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>outd <span class="ot">=</span> <span class="st">&quot;result/rnaseqOR-NC/rich&quot;</span> </span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值的话，写成 list(&#39;2&#39; = log2(2), &#39;1.5&#39; = log2(1.5))</span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>fc.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&#39;2&#39;</span><span class="ot">=</span><span class="fu">log2</span>(<span class="dv">2</span>))</span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co"># 设置物种为人类（如是人类则不需要更改）</span></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>GO_database <span class="ot">&lt;-</span> <span class="st">&#39;org.Hs.eg.db&#39;</span> <span class="co"># keytypes(org.Hs.eg.db)</span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>KEGG_database <span class="ot">&lt;-</span> <span class="st">&#39;hsa&#39;</span> </span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a><span class="co"># ///</span></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a></span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a><span class="co"># 预处理数据符合GOKEGG分析的要求</span></span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a><span class="co"># # 不同fc条件下的GOgenelist list(ALL, UP, DOWN)</span></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a>gogenelist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fc.list, <span class="cf">function</span>(x) <span class="fu">DEG_prepareGOglist</span>(resdf, <span class="at">logfc =</span> x))</span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a><span class="co"># gogenelist %&gt;% length()</span></span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果</span></span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a>go <span class="ot">&lt;-</span> <span class="fu">DEG_runGO</span>(<span class="at">outdir =</span> outd, <span class="at">genelist =</span> gogenelist)</span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的KEGG结果</span></span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a>kegg <span class="ot">&lt;-</span> <span class="fu">DEG_runKEGG</span>(<span class="at">outdir =</span> outd, <span class="at">genelist =</span> gogenelist)</span></code></pre></div>
 </div>
 </section>
 
