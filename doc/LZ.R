@@ -109,7 +109,7 @@
 #  # 读取数据  resdf存放目录
 #  resdf <- readxl::read_xlsx("result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx",
 #                    sheet = 1) %>% as.data.frame()
-#  ### 输出目录
+#  # 输出目录
 #  outd = "result/rnaseqOR-NC/rich"
 #  # logFC阈值, 多个阈值的话，写成 list('2' = log2(2), '1.5' = log2(1.5))
 #  fc.list <- list('2'=log2(2))

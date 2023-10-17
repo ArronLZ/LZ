@@ -387,7 +387,7 @@ p-fdr均考虑模式。仅修改<code>label_gene: 展示基因列表</code>即�
 <span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="co"># 读取数据  resdf存放目录</span></span>
 <span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>resdf <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">&quot;result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx&quot;</span>,</span>
 <span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>                  <span class="at">sheet =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
-<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="do">### 输出目录</span></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co"># 输出目录</span></span>
 <span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>outd <span class="ot">=</span> <span class="st">&quot;result/rnaseqOR-NC/rich&quot;</span> </span>
 <span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值的话，写成 list(&#39;2&#39; = log2(2), &#39;1.5&#39; = log2(1.5))</span></span>
 <span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>fc.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&#39;2&#39;</span><span class="ot">=</span><span class="fu">log2</span>(<span class="dv">2</span>))</span>
