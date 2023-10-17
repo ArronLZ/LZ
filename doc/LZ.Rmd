@@ -149,6 +149,7 @@ DEGplot_Volcano(result = pic_data, logFC = flogfc, # log2(2)
 
 
 ### 3. 富集分析--GO&KEGG
+#### 3.1 一键脚本(批量处理)
 这是一个一键脚本，请新建一个单独的文件写这段脚本，然后按这个脚本的顶部注释修改`resdf outd fc.list处即可`，运行即可批量出不同FC的富集分析结果。
 ```{r eval=FALSE}
 # 此脚本为GO、KEGG分析（需要一个输入文件即可，为差异分析流程后的resdf文件）
@@ -199,4 +200,26 @@ gogenelist <- lapply(fc.list, function(x) DEG_prepareGOglist(resdf, logfc = x))
 go <- DEG_runGO(outdir = outd, genelist = gogenelist)
 # 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的KEGG结果
 kegg <- DEG_runKEGG(outdir = outd, genelist = gogenelist)
+```
+
+#### 3.2 简易GO,KEGG一次分析
+如果已经得到了差异基因列表，且无需批量分析，可以进行这个简易分析。<br/>
+数据格式: `head(genelist.lh)` <br/>
+[1] "AARS1"  "AATF"   "ABCB7"  "ABCE1"  "ABHD11" "ABHD12"
+```{r eval=FALSE}
+### 简易GO,KEGG一次分析(即：已经得到了差异基因列表)
+# LZ::setproxy() # 代理设置，新手别碰，会断网
+# 差异基因列表
+genelist.lh <- pic.list$sig.data$Gene 
+# 转换ID
+gene_df <- bitr(genelist.lh, fromType = "SYMBOL", toType = c("ENTREZID", "UNIPROT"), 
+                OrgDb = 'org.Hs.eg.db')
+# GO分析
+go.lh <- DEG_GO(gene_df, orgdb = "org.Hs.eg.db", sigNodes = 20, 
+                resultdir="./result/proteinOR-NC", filemark = "p1.5_g_2")
+go.lhdf <- sapply(go.lh, function(x) x@result, simplify = T)
+write_xlsx(go.lhdf, path = "./result/proteinOR-NC/lh_go.all.xlsx")
+# KEGG分析
+kegg.lh <- DEG_KEGG(gene_df)
+write_xlsx(kegg.lh$pSigDF, path = "./result/proteinOR-NC/lh_kegg.all.xlsx")
 ```

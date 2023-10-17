@@ -136,3 +136,20 @@
 #  # 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的KEGG结果
 #  kegg <- DEG_runKEGG(outdir = outd, genelist = gogenelist)
 
+## ----eval=FALSE---------------------------------------------------------------
+#  ### 简易GO,KEGG一次分析(即：已经得到了差异基因列表)
+#  # LZ::setproxy() # 代理设置，新手别碰，会断网
+#  # 差异基因列表
+#  genelist.lh <- pic.list$sig.data$Gene
+#  # 转换ID
+#  gene_df <- bitr(genelist.lh, fromType = "SYMBOL", toType = c("ENTREZID", "UNIPROT"),
+#                  OrgDb = 'org.Hs.eg.db')
+#  # GO分析
+#  go.lh <- DEG_GO(gene_df, orgdb = "org.Hs.eg.db", sigNodes = 20,
+#                  resultdir="./result/proteinOR-NC", filemark = "p1.5_g_2")
+#  go.lhdf <- sapply(go.lh, function(x) x@result, simplify = T)
+#  write_xlsx(go.lhdf, path = "./result/proteinOR-NC/lh_go.all.xlsx")
+#  # KEGG分析
+#  kegg.lh <- DEG_KEGG(gene_df)
+#  write_xlsx(kegg.lh$pSigDF, path = "./result/proteinOR-NC/lh_kegg.all.xlsx")
+

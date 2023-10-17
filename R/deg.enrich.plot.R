@@ -1,0 +1,84 @@
+#' Prepare Dotplot
+#' @description Prepare Dotplot
+#' 
+#' @param df dataframe, from go or kegg analysis
+#' @param head numeric or NULL, head = 20：filter the head 20 row of df, head = NULL：all of df 
+#' @param delete numeric or NULL, delete = c(4, 7)：delete 4, 7, NULL: not delete
+#'
+#' @return #
+#' @export
+#'
+#' @examples # 
+#' @author Jiang
+DEGp_prepareDotplot <- function(df, head = 20, delete = NULL) {
+  # df为dataframe, 为go或kegg分析后取出的表格数据
+  #   格式如下（需有Description, pvalue, Count, GeneRatio列）
+  # 建议事先将df排序好或者挑选好
+  # head = 20, 表示取表格前20, head = NULL, 表示取全部 
+  # delete = c(4, 7)， 表示删除表格中的第4和7行，delete = NULL, 表示不删除表格数据
+  df$GeneRatio <- strsplit(df$GeneRatio, '/') %>% 
+    lapply(., function(x) round(as.numeric(x[1])/as.numeric(x[2]), 2)) %>% 
+    as.numeric()
+  if (!is.null(head)) {
+    df <- df %>% head(head) %>% na.omit()
+  }
+  if (!is.null(delete)) {
+    df <- df[-delete, ]
+  }
+  return(df)
+}
+
+
+#' Dotplot 
+#' @description Dotplot of go or kegg result(DEGp_prepareDotplot result)
+#' 
+#' @param df dataframe, from DEGp_prepareDotplot result
+#' @param title character
+#' @param resultdir cahracter, picture save dir
+#' @param filemark character, picture filename mark
+#' @param pic.save logical, save picutre or not?
+#' @param pw number, picuter width
+#' @param ph number, picuter height
+#'
+#' @return # 
+#' @export
+#'
+#' @examples #
+#' @author Jiang
+DEGp_Dotplot <- function(df, title='xxx', resultdir, filemark, pic.save =T, 
+                         pw=8, ph=10) {
+  # data格式如下（需有Description,pvalue,Count,GeneRatio列）
+  #                             Description       pvalue Count GeneRatio
+  #GO:0023061                signal release 5.246744e-06    29      0.06
+  #GO:0050673 epithelial cell proliferation 6.129368e-06    27      0.06
+  #GO:0045444      fat cell differentiation 7.622508e-06    18      0.04
+  # resultdir = './result_stringtie/p005fc15'
+  # filemark = 'GO_BP_top20_common'
+  # 此函数可能需要使用scale_x_continuous调整x轴刻度
+  dotplot <- ggplot(cbind(df, Order = nrow(df):1)) +
+    geom_point(mapping = aes(x = -log10(pvalue), y = Order, 
+                             size = Count, fill = GeneRatio),
+               shape = 21) + 
+    scale_fill_gradientn(colours = c("grey", "gold", "red")) + #自定义配色
+    scale_y_continuous(position = "left", 
+                       breaks = 1:nrow(df), 
+                       labels = Hmisc::capitalize(rev(df$Description))) +
+    #scale_x_continuous(breaks = c(4,5,6,7),
+    #                   #breaks = seq(0, xmax+5, 5),
+    #                   limits = c(4,7),
+    #                   expand = expansion(mult = c(.05, .05))) + #两边留空
+    labs(x = "-log10(P-value)", y = NULL) +
+    guides(size = guide_legend(title = "Gene count"),
+           fill = guide_colorbar(title = "GeneRatio")) +
+    ggtitle(title) +
+    theme_bw() +
+    theme(panel.grid =element_blank(),
+          axis.text = element_text(size = 14, face = "bold", family = 'Times'),
+          title = element_text(size = 14, face = "bold", family = 'Times')) #去除网格线
+  if (pic.save == T) {
+    dotplot %>% ggplotGrob() %>% cowplot::plot_grid()
+    fname=paste0(resultdir, '/', filemark,'.pdf')
+    ggsave(fname, width = 8, height = 10)
+  }
+  return(dotplot)
+}

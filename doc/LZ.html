@@ -181,7 +181,13 @@ Mill<br><h4 class="date project-date">2023-10-17</h4>
 </ul></li>
 <li><a href="#火山图" id="toc-火山图">2. 火山图</a></li>
 <li><a href="#富集分析gokegg" id="toc-富集分析gokegg">3.
-富集分析–GO&amp;KEGG</a></li>
+富集分析–GO&amp;KEGG</a>
+<ul>
+<li><a href="#一键脚本批量处理" id="toc-一键脚本批量处理">3.1
+一键脚本(批量处理)</a></li>
+<li><a href="#简易gokegg一次分析" id="toc-简易gokegg一次分析">3.2
+简易GO,KEGG一次分析</a></li>
+</ul></li>
 </ul>
 </div>
 </div>
@@ -364,6 +370,8 @@ p-fdr均考虑模式。仅修改<code>label_gene: 展示基因列表</code>即�
 </div>
 <div id="富集分析gokegg" class="section level3">
 <h3>3. 富集分析–GO&amp;KEGG</h3>
+<div id="一键脚本批量处理" class="section level4">
+<h4>3.1 一键脚本(批量处理)</h4>
 <p>这是一个一键脚本，请新建一个单独的文件写这段脚本，然后按这个脚本的顶部注释修改<code>resdf outd fc.list处即可</code>，运行即可批量出不同FC的富集分析结果。</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># 此脚本为GO、KEGG分析（需要一个输入文件即可，为差异分析流程后的resdf文件）</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co"># 即为第一步(或1脚本)的结果的一个结果文件（DIFF_an_***.xlsx）</span></span>
@@ -413,6 +421,28 @@ p-fdr均考虑模式。仅修改<code>label_gene: 展示基因列表</code>即�
 <span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a>go <span class="ot">&lt;-</span> <span class="fu">DEG_runGO</span>(<span class="at">outdir =</span> outd, <span class="at">genelist =</span> gogenelist)</span>
 <span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的KEGG结果</span></span>
 <span id="cb5-48"><a href="#cb5-48" tabindex="-1"></a>kegg <span class="ot">&lt;-</span> <span class="fu">DEG_runKEGG</span>(<span class="at">outdir =</span> outd, <span class="at">genelist =</span> gogenelist)</span></code></pre></div>
+</div>
+<div id="简易gokegg一次分析" class="section level4">
+<h4>3.2 简易GO,KEGG一次分析</h4>
+<p>如果已经得到了差异基因列表，且无需批量分析，可以进行这个简易分析。<br />
+数据格式: <code>head(genelist.lh)</code> <br /> [1] “AARS1” “AATF”
+“ABCB7” “ABCE1” “ABHD11” “ABHD12”</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="do">### 简易GO,KEGG一次分析(即：已经得到了差异基因列表)</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co"># LZ::setproxy() # 代理设置，新手别碰，会断网</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co"># 差异基因列表</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>genelist.lh <span class="ot">&lt;-</span> pic.list<span class="sc">$</span>sig.data<span class="sc">$</span>Gene </span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co"># 转换ID</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>gene_df <span class="ot">&lt;-</span> <span class="fu">bitr</span>(genelist.lh, <span class="at">fromType =</span> <span class="st">&quot;SYMBOL&quot;</span>, <span class="at">toType =</span> <span class="fu">c</span>(<span class="st">&quot;ENTREZID&quot;</span>, <span class="st">&quot;UNIPROT&quot;</span>), </span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>                <span class="at">OrgDb =</span> <span class="st">&#39;org.Hs.eg.db&#39;</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co"># GO分析</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>go.lh <span class="ot">&lt;-</span> <span class="fu">DEG_GO</span>(gene_df, <span class="at">orgdb =</span> <span class="st">&quot;org.Hs.eg.db&quot;</span>, <span class="at">sigNodes =</span> <span class="dv">20</span>, </span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>                <span class="at">resultdir=</span><span class="st">&quot;./result/proteinOR-NC&quot;</span>, <span class="at">filemark =</span> <span class="st">&quot;p1.5_g_2&quot;</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>go.lhdf <span class="ot">&lt;-</span> <span class="fu">sapply</span>(go.lh, <span class="cf">function</span>(x) x<span class="sc">@</span>result, <span class="at">simplify =</span> T)</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="fu">write_xlsx</span>(go.lhdf, <span class="at">path =</span> <span class="st">&quot;./result/proteinOR-NC/lh_go.all.xlsx&quot;</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co"># KEGG分析</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>kegg.lh <span class="ot">&lt;-</span> <span class="fu">DEG_KEGG</span>(gene_df)</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="fu">write_xlsx</span>(kegg.lh<span class="sc">$</span>pSigDF, <span class="at">path =</span> <span class="st">&quot;./result/proteinOR-NC/lh_kegg.all.xlsx&quot;</span>)</span></code></pre></div>
+</div>
 </div>
 </section>
 
