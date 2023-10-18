@@ -25,3 +25,6 @@ Note: The go enrich result of the length of different deg genes is different!
 \examples{
 #
 }
+\author{
+Jiang
+}

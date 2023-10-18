@@ -26,3 +26,6 @@ GO analysis by ENTREZID, plot go tree picture and write to disk, retern the resu
 \examples{
 #
 }
+\author{
+Jiang
+}

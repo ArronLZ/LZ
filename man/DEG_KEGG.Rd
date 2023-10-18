@@ -22,3 +22,6 @@ KEGG analysis by UNIPROT, retern the result
 \examples{
 #
 }
+\author{
+Jiang
+}

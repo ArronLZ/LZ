@@ -6,6 +6,7 @@
 #'
 #' @return #
 #' @export
+#' @importFrom BiocManager install
 #'
 #' @examples #
 #' # packs <- c('dplyr', 'stringr', 'DESeq2')
@@ -32,3 +33,37 @@ install <- function(package) {
     cat("Install Complete:  ", package, "\n")
   }
 }
+
+
+#' check if the package is been installed
+#' @description check if the package is been installed
+#'
+#' @param packname character the R package name
+#'
+#' @return # message in console
+#' @export
+#'
+#' @examples #
+require_pack <- function(packname) {
+  if (!requireNamespace(packname, quietly = TRUE)) {
+    cat(paste("Error: '", packname, "' package is required but not installed.\n", sep = ""))
+    cat(paste("Please install the package using install.packages('", packname, "')\n",sep = ""))
+  }
+}
+
+
+#' set http proxy for R session
+#' @description set http proxy for R session
+#'
+#' @param ngate the proxy address, for example, if you use clash, the address is default "http://127.0.0.1:7890"
+#'
+#' @return no return，use unsetproxy to cancel the proxy
+#' @export
+#'
+#' @examples #
+setproxy <- function(ngate="http://127.0.0.1:7890") {
+  Sys.setenv('http_proxy'=ngate)
+  Sys.setenv('https_proxy'=ngate)
+}
+
+

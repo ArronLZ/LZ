@@ -186,7 +186,7 @@ DEGp_Pheat <- function(df, gene, pheno, outdir, f_mark='', nlevel=8,
 #' @importFrom VennDiagram venn.diagram
 #'
 #' @examples #
-DEG_venn <- function(datalist, transparency = 0.6) {
+DEGp_venn <- function(datalist, transparency = 0.6) {
   # datalist为list,见例子 。 注意本函数返回结果必须使用grid.draw()函数打印
   # transparency 为 0-1，表示透明度，或设置为NULL，表示不至于区域颜色
   # 例子：

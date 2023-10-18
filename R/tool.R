@@ -1,24 +1,10 @@
-#' set http proxy for R session
-#' @description set http proxy for R session
-#'
-#' @param ngate the proxy address, for example, if you use clash, the address is default "http://127.0.0.1:7890"
-#'
-#' @return no return，use unsetproxy to cancel the proxy
-#' @export
-#'
-#' @examples #
-setproxy <- function(ngate="http://127.0.0.1:7890") {
-  Sys.setenv('http_proxy'=ngate)
-  Sys.setenv('https_proxy'=ngate)
-}
-
-
 #' delete the duplicate name of the select coloumn of dataframe
 #' delete the duplicate name of the select coloumn of dataframe
 #' @param eset dataframe, the first coloumn must be gene, type: character
 #'
 #' @return no return
 #' @export
+#' @import dplyr
 #' @importFrom tibble column_to_rownames
 #'
 #' @examples #
@@ -41,23 +27,6 @@ quchong <- function(eset) {
 }
 
 
-#' check if the package is been installed
-#' @description check if the package is been installed
-#'
-#' @param packname character the R package name
-#'
-#' @return # message in console
-#' @export
-#'
-#' @examples #
-require_pack <- function(packname) {
-  if (!requireNamespace(packname, quietly = TRUE)) {
-    cat(paste("Error: '", packname, "' package is required but not installed.\n", sep = ""))
-    cat(paste("Please install the package using install.packages('", packname, "')\n",sep = ""))
-  }
-}
-
-
 #' create dir
 #' @description mkdir, in deg analysis usually used to make output dir.
 #'
@@ -68,5 +37,71 @@ require_pack <- function(packname) {
 #'
 #' @examples #
 mkdir <- function(dir) {
-  if(!dir.exists(dir)) { dir.create(dir, recursive = T, showWarnings = T) }
+  if(dir.exists(dir)) {
+    stop(paste0("The directory ", dir, "already exists, do you want to delete the 
+         entire directory and re-create it ? ! IF YOU ARE SURE WHAT YOU ARE DOING,
+         please use the function mkdir.p\n"))
+  } else {
+    dir.create(dir, recursive = T, showWarnings = T) 
+  }
+}
+
+
+#' Create a folder, regardless of whether the folder already exists
+#' @description Create a folder, regardless of whether the folder already exists, overwrite if it exists, in deg analysis usually used to make output dir.
+#'
+#' @param dir character, the dir name
+#'
+#' @return # Create a folder regardless of whether the folder already exists.
+#' @export
+#'
+#' @examples #
+mkdir.p <- function(dir) {
+  unlink(dir)
+  dir.create(dir, recursive = T, showWarnings = T)
+}
+
+
+#' find the NA(NA, grepl("\\s|^$", lie))
+#' @description find the NA(NA, grepl("\\s|^$", lie))
+#' @param lie vector the column or vector of your data
+#'
+#' @return vector
+#' @export
+#'
+#' @examples # lz_isna()
+lz_isna <- function(lie) {
+  # 查空值
+  re <- is.na(lie) | grepl("\\s|^$", lie)
+  return(re)
+}
+
+
+#' show part info of a dataframe
+#' @description show part info of a dataframe
+#' @param df dataframe data
+#' @param ncol number default is 4, the end colomn index
+#' @param nrow number default is 3, the end colomn index
+#' @param rowstart number default is 1, the start row index
+#' @param colstart number default is 1, the start colomn index
+#' 
+#' @return #
+#' @export
+#'
+#' @examples # df %>% lzhead
+lzhead <- function(df, ncol = 4, nrow = 3, rowstart = 1, colstart = 1) {
+  df[rowstart:nrow, colstart:ncol]
+}
+
+
+#' fpkm to tmp
+#' @description fpkm to tmp
+#' @param fpkm numeric the data should be no log data
+#'
+#' @return tpm
+#' @export
+#'
+#' @examples # fpkmToTpm()
+fpkmToTpm <- function(fpkm) {
+  exp(log(fpkm) - log(sum(fpkm)) + log(1e6))
 }

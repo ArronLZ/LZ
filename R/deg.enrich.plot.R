@@ -96,7 +96,8 @@ DEGp_Dotplot <- function(df, title='xxx', resultdir, filemark, pic.save =T,
 #' @export
 #'
 #' @examples #
-DEGp_preparGOALL <- function(data, n_type='ONTOLOGY', n_qu='pvaule') {
+#' @author Jiang
+DEGp_prepareGOALL <- function(data, n_type='ONTOLOGY', n_qu='pvaule') {
   ## 自定义函数，提取每个分类的前10名
   ## data=up,为以数据框，其含有名为ncol的一列；
   ## n_type='ONTOLOGY', n_qu='pvaule'为data中的列名
@@ -119,7 +120,7 @@ DEGp_preparGOALL <- function(data, n_type='ONTOLOGY', n_qu='pvaule') {
 #' @export
 #'
 #' @examples #
-DEGp_GOALL_barplot <- function(GOlist.df, resultdir, filemark, pic.save = T) {
+DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, pic.save = T) {
   # GOlist为jGO自定义函数返回对象，该对象为clusterProfiler::enrichGO返回对象的list集合
   # GOlist.df为GOlist$ALL@result, 为一个data.frame
   # 或者可更改第一句，输入数据框含ONTOLOGY,pvalue,Description列

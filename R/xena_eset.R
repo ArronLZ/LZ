@@ -1,43 +1,16 @@
-#' find the NA(NA, grepl("\\s|^$", lie))
-#' @description find the NA(NA, grepl("\\s|^$", lie))
-#' @param lie vector the column or vector of your data
-#'
-#' @return vector
-#' @export
-#'
-#' @examples # lz_isna()
-lz_isna <- function(lie) {
-  # 查空值
-  re <- is.na(lie) | grepl("\\s|^$", lie)
-  return(re)
-}
-
-
-#' fpkm to tmp
-#' @description fpkm to tmp
-#' @param fpkm numeric the data should be no log data
-#'
-#' @return tpm
-#' @export
-#'
-#' @examples # fpkmToTpm()
-fpkmToTpm <- function(fpkm) {
-  exp(log(fpkm) - log(sum(fpkm)) + log(1e6))
-}
-
-
 #' process xena data(annot & remove duplicate &or fpkm to tpm)
 #' @description process xena data: 1. annot symbol 2. removes duplicate row(keep the max rowmean symbol) 3. fpkm to tpm(optional)
 #' @param eset dataframe refer to examples
-#' @param annot dataframe refer to examples
-#' @param log logical default is TRUE, if the eset is been log transformat
+#' @param annot dataframe refer to examples, must contain the coloumn "id" and "gene"
+#' @param log logical default is TRUE, if the eset have been log transformat
 #' @param tpm logical when set to TURE eset must be FPKM data
 #' @param oid character optional, the xena data first column name usually be Ensembl_ID, if the first column of your data is not Ensemble_ID please modify the param.
-#'
+#' @param id.simplify logical, default is FALSE, if the id is full ensemble id that have the . , the param show set be TRUE
+#' 
 #' @return dataframe(1st col is symbol, 2nd col is the ensemble_id), refer to examples
 #' @export
 #' @import dplyr
-#' @import stringr
+#' @importFrom stringr str_split
 #'
 #' @examples
 #' # eset
@@ -55,9 +28,10 @@ fpkmToTpm <- function(fpkm) {
 #' #    5S_rRNA   ENSG00000271924           1.89573
 #' #  5_8S_rRNA   ENSG00000275877           0.00000
 #' #        7SK   ENSG00000271394           0.00000
-xena_annot <- function(eset, annot, log = TRUE, tpm=FALSE, oid="Ensembl_ID") {
+XENApre_annot <- function(eset, annot, log = TRUE, tpm=FALSE, 
+                       oid="Ensembl_ID", id.simplify = FALSE) {
   if (log == TRUE) {
-    eset[,2:ncol(eset)] <- round(eset[,2:ncol(eset)] - 1)
+    eset[,2:ncol(eset)] <- round(2^eset[,2:ncol(eset)] - 1)
   }
   if (tpm == TRUE) {
     cat("提示: 当设置tpm = TURE时必须保证eset数据为FPKM数据！\n")
@@ -65,12 +39,14 @@ xena_annot <- function(eset, annot, log = TRUE, tpm=FALSE, oid="Ensembl_ID") {
     eset[,2:ncol(eset)] <- apply(eset[,2:ncol(eset)], 2, fpkmToTpm)
     #eset[,2:ncol(eset)] <- apply(eset[,2:ncol(eset)], 2, function(x) log2(x + 1))
   }
+  if (id.simplify == TRUE) {
+    # 简化ensambleID
+    eset[, oid] <- str_split(eset[, oid], "\\.", simplify = T)[,1]
+  }
   # 注释
   eset <- cbind.data.frame(
     SYMBOL = annot[match(eset[, oid], annot$id), "gene"],
     eset)
-  # 简化ensambleID
-  eset$Ensembl_ID <- str_split(eset[, oid], "\\.", simplify = T)[,1]
   # 去重
   eset$MEAN <- abs(rowMeans(eset[,3:ncol(eset)]))
   eset <- eset %>% arrange(SYMBOL, desc(MEAN))
