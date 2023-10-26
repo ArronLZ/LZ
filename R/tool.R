@@ -1,13 +1,13 @@
-#' delete the duplicate name of the select coloumn of dataframe
-#' delete the duplicate name of the select coloumn of dataframe
-#' @param eset dataframe, the first coloumn must be gene, type: character
+#' delete the duplicate name of the first column of dataframe
+#' @param eset dataframe, the first column must be gene, type: character
 #'
-#' @return no return
+#' @return dataframe
 #' @export
 #' @import dplyr
 #' @importFrom tibble column_to_rownames
 #'
 #' @examples #
+#' # head(eset)[,1:3]
 #' #           gene_id cont-1 cont-2
 #' #   ENSG00000186827      0      1
 #' #   ENSG00000186891     63     50
@@ -89,11 +89,12 @@ lz_isna <- function(lie) {
 #' @export
 #'
 #' @examples # df %>% lzhead
-lzhead <- function(df, ncol = 4, nrow = 3, rowstart = 1, colstart = 1) {
-  if(ncol < 4) df[rowstart:nrow, ]
-  if(nrow < 3) df[, colstart:ncol]
-  if(ncol < 4 & nrow < 3) df
-  df[rowstart:nrow, colstart:ncol]
+lzhead <- function(df, ncol = 4, colstart = 1) {
+  if (ncol(df) > 4) { 
+    head(df)[, colstart:ncol] 
+  } else {
+    head(df)
+  }
 }
 
 

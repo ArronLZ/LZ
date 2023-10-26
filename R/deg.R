@@ -25,7 +25,7 @@
 #' # rowname4 |   normal  |  2
 DEG_prepareData <- function(eset_file="gene_count.csv",
                             group_file="group.csv",
-                            annot_trans="T", f_mark="diff") {
+                            annot_trans=T, f_mark="diff") {
   # f_mark="SHUANG-CONTROL"
   # 需要转换注释，需要这个文件
   data(gencode.v22.annot)
@@ -33,7 +33,7 @@ DEG_prepareData <- function(eset_file="gene_count.csv",
   # 读取差异基因表(若不是csv文件，请转为csv文件)
   eset <- data.table::fread(eset_file, data.table = F)
   eset <- quchong(eset = eset)
-  if (annot_trans == T) {
+  if (annot_trans) {
     # 挑出mRNA
     eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$ensembl_gene_id, ]
     eset <- cbind(SYMBOL = all_anot$hugo_mRNA[
