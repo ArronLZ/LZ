@@ -90,6 +90,9 @@ lz_isna <- function(lie) {
 #'
 #' @examples # df %>% lzhead
 lzhead <- function(df, ncol = 4, nrow = 3, rowstart = 1, colstart = 1) {
+  if(ncol < 4) df[rowstart:nrow, ]
+  if(nrow < 3) df[, colstart:ncol]
+  if(ncol < 4 & nrow < 3) df
   df[rowstart:nrow, colstart:ncol]
 }
 

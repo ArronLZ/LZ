@@ -33,12 +33,14 @@ DEG_prepareData <- function(eset_file="gene_count.csv",
   # 读取差异基因表(若不是csv文件，请转为csv文件)
   eset <- data.table::fread(eset_file, data.table = F)
   eset <- quchong(eset = eset)
-  # 挑出mRNA
-  eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$ensembl_gene_id, ]
   if (annot_trans == T) {
+    # 挑出mRNA
+    eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$ensembl_gene_id, ]
     eset <- cbind(SYMBOL = all_anot$hugo_mRNA[
       match(rownames(eset), all_anot$hugo_mRNA$ensembl_gene_id), 3], eset)
     eset <- quchong(eset)
+  } else {
+    eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$symbol, ]
   }
 
   # group

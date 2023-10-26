@@ -14,7 +14,7 @@
 #' @examples #
 #' @author Jiang
 DEG_GO <- function(genelist, orgdb="org.Hs.eg.db", sigNodes=20,
-                   resultdir, filemark) {
+                   resultdir, filemark, rapid = FALSE) {
   ## go分析，并画go关系图，保存golist对象
   #genelist为数据框，需有一列为entrzid
   go_list <- list()
@@ -31,14 +31,15 @@ DEG_GO <- function(genelist, orgdb="org.Hs.eg.db", sigNodes=20,
     if (ont=='ALL') {
       go_list[[ont]] <- GO
       #go_all_df <- data.frame(GO)
-    } else {
-      go_list[[ont]] <- GO
-      # plot关系图
-      fname <- paste0(resultdir, '/', ont, '_',filemark, '.pdf')
-      cat(fname)
-      pdf(fname, height = 8, width = 12)
-      plotGOgraph(GO, firstSigNodes = sigNodes)
-      dev.off()
+    }
+    if (rapid == T & ont != "ALL") {
+        go_list[[ont]] <- GO
+        # plot关系图
+        fname <- paste0(resultdir, '/', ont, '_',filemark, '.pdf')
+        cat(fname)
+        pdf(fname, height = 8, width = 12)
+        plotGOgraph(GO, firstSigNodes = sigNodes)
+        dev.off()
     }
   }
   return(go_list)
@@ -101,12 +102,12 @@ DEG_prepareGOglist <- function(resdf, logfc, p=0.05, fdr=0.1) {
 #' run KEGG analysis inFCs(2, 1.5) in batches(upgene, downgene, allgene)
 #' @description run GO analysis in batches(upgene, downgene, allgene) and write result to xlsx
 #'
-#' @param outdir character, the output dir
 #' @param genelist list, must be two-dimensional name list, result of sapply DEG_prepareGOglist
+#' @param outdir character, the output dir
 #' @param glist.save logical default is TRUE, wether save genelist
-#' @param filemark character filename mark
 #' @param rungo logical default is TRUE, wether run go analysis
 #' @param runkegg logical default is TRUE, wether run kegg analysis
+#' @param rapid loggicla defaut is F, if set F, the function will plot go tree picture, which make cost much time.
 #'
 #' @return # GO object & write result to xlsx
 #' @export
@@ -115,8 +116,8 @@ DEG_prepareGOglist <- function(resdf, logfc, p=0.05, fdr=0.1) {
 #'
 #' @examples #
 #' @author Jiang
-DEG_runENRICH <- function(outdir, genelist, glist.save = T, filemark,
-                          rungo=T, runkegg=T) {
+DEG_runENRICH <- function(genelist, outdir, glist.save = T, 
+                          rungo=T, runkegg=T, rapid = F) {
   # 对logFC迭代，每次FC新建一个目录，下存upgene, downgene, allgene的KEGG结果
   kegg.list <- list()
   kegg.df.list <- list()
@@ -125,15 +126,15 @@ DEG_runENRICH <- function(outdir, genelist, glist.save = T, filemark,
   go.df.list <- list()
   
   name.list <- names(genelist)
-  for (x in name.list) {
+  for (name_x in name.list) {
     cat("  ", x, "...\n")
-    genedf.list <- sapply(genelist[[x]], function(x) {
+    genedf.list <- sapply(genelist[[name_x]], function(x) {
       bitr(x, fromType = 'SYMBOL', toType = c('UNIPROT', 'ENTREZID', 'ENSEMBL'),
            OrgDb = GO_database) 
     }, simplify = F)
     #
-    outdir <- paste0(outdir, "/FC_", x)
-    mkdir(outdir)
+    outd <- paste0(outdir, "/FC_", x)
+    mkdir(outd)
     #
     if (glist.save == T) {
       genedf.list.symbol <- sapply(genedf.list, function(x) {
@@ -141,35 +142,35 @@ DEG_runENRICH <- function(outdir, genelist, glist.save = T, filemark,
         x[, 1, drop = F]
       }, simplify = F)
       writexl::write_xlsx(genedf.list, 
-                          path = paste0(outdir, "/genelist.multiID.", filemark, ".xlsx"))
+                          path = paste0(outd, "/genelist.multiID.fc.", name_x, ".xlsx"))
       writexl::write_xlsx(genedf.list.symbol, 
-                          path = paste0(outdir, "/genelist.symbol.", filemark, ".xlsx"))
+                          path = paste0(outd, "/genelist.symbol.fc.", name_x, ".xlsx"))
     }
     if (runkegg == T) {
       # part KEGG
       cat("  ... KEGG ...\n")
       kegg.an <- sapply(genedf.list, function(x) DEG_KEGG(genelist = x), simplify = F)
       # 向kegg.list保存kegg分析结果
-      kegg.list[[x]] <- kegg.an
+      kegg.list[[name_x]] <- kegg.an
       # 获取kegg分析结果中的dataframe
       kegg.an.df <- sapply(kegg.an, function(x) x$pSigDF, simplify = F)
       # 向kegg.df.list保存kegg dataframe结果
-      kegg.df.list[[x]] <- kegg.an.df
+      kegg.df.list[[name_x]] <- kegg.an.df
       writexl::write_xlsx(kegg.an.df, 
-                          path = paste0(outdir, "/kegg.", filemark, ".xlsx"))
+                          path = paste0(outd, "/kegg.fc", name_x, ".xlsx"))
       cat("  KEGG Done!\n")
     }
     # part GO 
     if (rungo == T) {
       cat("  ... GO ...\n")
       go.an <- mapply(function(x, xn) {
-        DEG_GO(genelist = x, resultdir = outdir, filemark = xn)
+        DEG_GO(genelist = x, resultdir = outd, filemark = name_x, rapid = rapid)
       }, genedf.list, names(genedf.list), SIMPLIFY = F)
-      go.list[[x]] <- go.an
+      go.list[[name_x]] <- go.an
       go.an.df <- sapply(go.an, function(x) data.frame(x$ALL), simplify = F)
-      go.df.list[[x]] <- go.an.df
+      go.df.list[[name_x]] <- go.an.df
       writexl::write_xlsx(go.an.df, 
-                          path = paste0(outdir, "/go.", filemark, ".xlsx"))
+                          path = paste0(outd, "/go.", name_x, ".xlsx"))
       cat("  GO Done!\n")
     }
 

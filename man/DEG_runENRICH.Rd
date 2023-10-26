@@ -5,26 +5,26 @@
 \title{run KEGG analysis inFCs(2, 1.5) in batches(upgene, downgene, allgene)}
 \usage{
 DEG_runENRICH(
-  outdir,
   genelist,
+  outdir,
   glist.save = T,
-  filemark,
   rungo = T,
-  runkegg = T
+  runkegg = T,
+  rapid = F
 )
 }
 \arguments{
-\item{outdir}{character, the output dir}
-
 \item{genelist}{list, must be two-dimensional name list, result of sapply DEG_prepareGOglist}
 
-\item{glist.save}{logical default is TRUE, wether save genelist}
+\item{outdir}{character, the output dir}
 
-\item{filemark}{character filename mark}
+\item{glist.save}{logical default is TRUE, wether save genelist}
 
 \item{rungo}{logical default is TRUE, wether run go analysis}
 
 \item{runkegg}{logical default is TRUE, wether run kegg analysis}
+
+\item{rapid}{loggicla defaut is F, if set F, the function will plot go tree picture, which make cost much time.}
 }
 \value{
 # GO object & write result to xlsx

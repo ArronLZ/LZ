@@ -4,7 +4,14 @@
 \alias{DEG_GO}
 \title{GO analysis}
 \usage{
-DEG_GO(genelist, orgdb = "org.Hs.eg.db", sigNodes = 20, resultdir, filemark)
+DEG_GO(
+  genelist,
+  orgdb = "org.Hs.eg.db",
+  sigNodes = 20,
+  resultdir,
+  filemark,
+  rapid = FALSE
+)
 }
 \arguments{
 \item{genelist}{dataframe, the dataframe must contain "ENTREZID" coloum}
