@@ -1,4 +1,8 @@
-url: https://arronlz.github.io/LZ/
+url: https://github.com/ArronLZ/LZ
+
+development:
+  mode: auto
+
 template:
   bootstrap: 5
 navbar:
@@ -11,4 +15,3 @@ navbar:
     right:
     - search
     - github
-
