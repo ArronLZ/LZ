@@ -8,7 +8,7 @@ prepare the data that LZ diff analysis need}
 DEG_prepareData(
   eset_file = "gene_count.csv",
   group_file = "group.csv",
-  annot_trans = "T",
+  annot_trans = T,
   f_mark = "diff"
 )
 }

@@ -10,7 +10,7 @@ DEG_runENRICH(
   glist.save = T,
   rungo = T,
   runkegg = T,
-  rapid = F
+  rapid = T
 )
 }
 \arguments{

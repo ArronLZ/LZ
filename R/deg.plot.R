@@ -71,7 +71,7 @@ DEGp_Volcano <- function(result, logFC = 1, adj_P = 0.2, label_geneset = NULL) {
       theme(panel.grid = element_blank(),
             panel.grid.minor = element_blank(),
             axis.text = element_text(color = "black"))+
-      xlab("log10FoldChange")+ylab("-log10P-value")+
+      xlab("log2(Fold Change)")+ylab("-log10(Pvalue)")+
       scale_color_manual(values = c("NONE" = "grey","UP" = "red","DOWN" = "blue"))
   } else {
     p = ggplot(result,aes(x = log2FoldChange, y = -log10(padj)))+
@@ -94,7 +94,7 @@ DEGp_Volcano <- function(result, logFC = 1, adj_P = 0.2, label_geneset = NULL) {
       theme(panel.grid = element_blank(),
             panel.grid.minor = element_blank(),
             axis.text = element_text(color = "black"))+
-      xlab("log10FoldChange")+ylab("-log10P-value")+
+      xlab("log2(Fold Change)")+ylab("-log10(Pvalue)")+
       scale_color_manual(values = c("UP" = jco[8],"DOWN" = jco[4],"NONE" = "grey"))
   }
   return(p)

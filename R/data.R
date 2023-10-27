@@ -1,16 +1,19 @@
-## how to document datasets: you need to specify @docType and @name; do not
-## forget NULL in the end
-
-#' the genecode v22 annot and hugo annot
+#' Datasets
+#' gencode.v22.annot contains gene annot info.
 #'
-#' the genecode v22 annot and hugo annot,
-#' use data(gencode.v22.annot) to load it, its name: all_anot.
 #'
+#' @name DataSet
+#' @aliases gencode.v22.annot
 #' @docType data
-#' @name gencode.v22.annot
-#' @format A `list`.
+#' @keywords datasets
+NULL
+
+#' Datasets
+#' keggpathway.gmt contains kegg pathway information
 #'
-#' @examples
-#' data(gencode.v22.annot)
-#' str(gencode.v22.annot)
+#'
+#' @name DataSet
+#' @aliases keggpathway.gmt
+#' @docType data
+#' @keywords datasets
 NULL

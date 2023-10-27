@@ -109,3 +109,13 @@ lzhead <- function(df, ncol = 4, colstart = 1) {
 fpkmToTpm <- function(fpkm) {
   exp(log(fpkm) - log(sum(fpkm)) + log(1e6))
 }
+
+
+#' Annot Data -- gencode.v22.annot
+#'
+#' @return list Large list
+#' @export
+#' @author Jiang
+getGencodeV22.annot <- function() {
+  data('gencode.v22.annot')
+}

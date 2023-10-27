@@ -10,7 +10,7 @@ DEG_GO(
   sigNodes = 20,
   resultdir,
   filemark,
-  rapid = FALSE
+  rapid = T
 )
 }
 \arguments{

@@ -2,23 +2,22 @@
 % Please edit documentation in R/tool.R
 \name{quchong}
 \alias{quchong}
-\title{delete the duplicate name of the select coloumn of dataframe
-delete the duplicate name of the select coloumn of dataframe}
+\title{delete the duplicate name of the first column of dataframe}
 \usage{
 quchong(eset)
 }
 \arguments{
-\item{eset}{dataframe, the first coloumn must be gene, type: character}
+\item{eset}{dataframe, the first column must be gene, type: character}
 }
 \value{
-no return
+dataframe
 }
 \description{
-delete the duplicate name of the select coloumn of dataframe
-delete the duplicate name of the select coloumn of dataframe
+delete the duplicate name of the first column of dataframe
 }
 \examples{
 #
+# head(eset)[,1:3]
 #           gene_id cont-1 cont-2
 #   ENSG00000186827      0      1
 #   ENSG00000186891     63     50

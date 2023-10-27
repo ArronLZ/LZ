@@ -28,8 +28,7 @@ DEG_prepareData <- function(eset_file="gene_count.csv",
                             annot_trans=T, f_mark="diff") {
   # f_mark="SHUANG-CONTROL"
   # 需要转换注释，需要这个文件
-  data(gencode.v22.annot)
-  all_anot <- gencode.v22.annot
+  all_anot <- getGencodeV22.annot()
   # 读取差异基因表(若不是csv文件，请转为csv文件)
   eset <- data.table::fread(eset_file, data.table = F)
   eset <- quchong(eset = eset)
