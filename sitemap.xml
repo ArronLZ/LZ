@@ -1,117 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://arronlz.github.io/LZ/404.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/404.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/articles/LZ.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/articles/LZ.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/articles/index.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/authors.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/authors.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/index.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/index.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEG_DESeq2.ana.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_DESeq2.ana.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEG_DESeq2.dds.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_DESeq2.dds.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEG_DESeq2.pca.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_DESeq2.pca.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEG_GO.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_GO.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEG_KEGG.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_KEGG.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEG_edgeR.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_edgeR.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEG_prepareData.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_prepareData.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEG_prepareGOglist.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_prepareGOglist.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEG_runENRICH.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_runENRICH.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEG_voom.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_voom.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEGp_Dotplot.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_Dotplot.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEGp_GOALL_bar.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_GOALL_bar.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEGp_Pheat.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_Pheat.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEGp_Volcano.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_Volcano.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEGp_prepareDotplot.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_prepareDotplot.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEGp_prepareGOALL.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_prepareGOALL.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEGp_prepareVolcano.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_prepareVolcano.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEGp_venn.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_venn.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEGres_ToGSEA.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGres_ToGSEA.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DEGres_ToRICH.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGres_ToRICH.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/DataSet.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/DataSet.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/XENApre_annot.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/XENApre_annot.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/fpkmToTpm.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/fpkmToTpm.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/index.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/install.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/install.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/limma.general.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/limma.general.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/lz_isna.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/lz_isna.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/lzhead.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/lzhead.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/mkdir.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/mkdir.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/mkdir.p.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/mkdir.p.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/quchong.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/quchong.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/require_pack.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/require_pack.html</loc>
   </url>
   <url>
-    <loc>https://arronlz.github.io/LZ/reference/setproxy.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/setproxy.html</loc>
   </url>
 </urlset>
