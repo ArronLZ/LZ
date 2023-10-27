@@ -1,4 +1,14 @@
 url: https://arronlz.github.io/LZ/
 template:
   bootstrap: 5
+navbar:
+  structure:
+    left:
+    - setup
+    - reference
+    - articles
+    - news
+    right:
+    - search
+    - github
 
