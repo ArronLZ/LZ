@@ -5,6 +5,5 @@
 ### 安装
 ```r
 BiocManager::install(c("DOSE", "clusterProfiler"))
-devtools::install_github("ArronLZ/LZ", build_manual = T, build_vignettes = T, 
-                         upgrade ="never", force = T)
+devtools::install_github("ArronLZ/LZ", upgrade ="never", force = T)
 ```
