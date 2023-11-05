@@ -69,6 +69,14 @@
 <h2 id="lz">LZ<a class="anchor" aria-label="anchor" href="#lz"></a>
 </h2>
 <p>本包致力于简化生信分析流程和批量分析。<br> 目前主要为RNAseq分析流程，后期会加入多组学联合分析流程。<br></p>
+<div class="section level3">
+<h3 id="安装">安装<a class="anchor" aria-label="anchor" href="#%E5%AE%89%E8%A3%85"></a>
+</h3>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://bioconductor.github.io/BiocManager/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"DOSE"</span>, <span class="st">"clusterProfiler"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ArronLZ/LZ"</span>, build_manual <span class="op">=</span> <span class="cn">T</span>, build_vignettes <span class="op">=</span> <span class="cn">T</span>, </span>
+<span>                         upgrade <span class="op">=</span><span class="st">"never"</span>, force <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
