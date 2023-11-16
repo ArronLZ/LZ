@@ -1,28 +1,50 @@
 #' delete the duplicate name of the first column of dataframe
+#'
 #' @param eset dataframe, the first column must be gene, type: character
+#' @param col.by character, delete the duplicate by this column
+#' @param col.del character, manually delete some column
+#' @param auto.del.character logical, if auto delete the column those class is character
 #'
 #' @return dataframe
 #' @export
 #' @import dplyr
 #' @importFrom tibble column_to_rownames
-#'
-#' @examples #
-#' # head(eset)[,1:3]
-#' #           gene_id cont-1 cont-2
-#' #   ENSG00000186827      0      1
-#' #   ENSG00000186891     63     50
-#' #   ENSG00000160072   1218   1023
-quchong <- function(eset) {
-  if (is.numeric(eset[,1]) == T) {
-    stop("第一列必须为character, 请注意数据第一列是否为gene")
+#' 
+#' @author Jiang
+#' @examples
+#' \dontrun{
+#' quchong(eset, col.by="id")
+#' head(eset)[,1:3]
+#'           gene_id cont-1 cont-2
+#'   ENSG00000186827      0      1
+#'   ENSG00000186891     63     50
+#'   ENSG00000160072   1218   1023
+#' }
+quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T) {
+  if (!is.null(col.del)) {
+    eset <- eset[, -col.del]
+    cat("!!! 请注意 ", col.del, "列被删除\n")
   }
-  names(eset)[1] <- "ID"
-  eset$MEAN <- abs(rowMeans(eset[,2:ncol(eset)]))
-  eset <- eset %>% arrange(ID, desc(MEAN))
-  eset <- eset[!duplicated(eset$ID), ]
+  if (!col.by %in% names(eset)) {
+    stop("col.by必须为eset的列名之一，请重新设置col.by参数")
+  }
+  if (sum(sapply(eset, is.numeric)) < 1) {
+    stop("eset数据整体格式不对，数据中没有一列是数值型变量，请正确载入数据")
+  }
+  # col.by.num <- match(col.by, names(eset))
+  if (is.numeric(eset[, col.by]) == T) {
+    stop("col.by列的变量类型必须为character, 请注意数据col.by列是否为gene")
+  }
+  # names(eset)[col.by.num] <- "IDtemplz"
+  eset$MEAN <- abs(rowMeans(eset[, sapply(eset, is.numeric)]))
+  eset <- eset[!duplicated(eset[, col.by]), ]
   rownames(eset) <- NULL
-  eset <- tibble::column_to_rownames(eset, var = "ID")
+  eset <- tibble::column_to_rownames(eset, var = col.by)
   if (!is.null(eset$MEAN)) { eset$MEAN <- NULL }
+  if (auto.del.character & (sum(!sapply(eset, is.numeric)) > 0) ) {
+    eset <- eset[, !sapply(eset, is.numeric)]
+    cat("!!! 请注意 ", names(eset)[!sapply(eset, is.numeric)], "列被删除\n")
+  }
   return(eset)
 }
 
@@ -112,10 +134,19 @@ fpkmToTpm <- function(fpkm) {
 
 
 #' Annot Data -- gencode.v22.annot
-#'
+#' @description Annot Data -- gencode.v22.annot
+#' @param ... character, the alias of bulit-in dataset, ex. gencode.v22.annot
+#' keggpathway.gmt
+#' 
 #' @return list Large list
 #' @export
+#' 
+#' @example path.R
 #' @author Jiang
-getGencodeV22.annot <- function() {
-  data('gencode.v22.annot')
+#' \dontrun{
+#'   data(gencode.v22.annot, package = "LZ")
+#'   data(keggpathway.gmt, package = "LZ")
+#' }
+getData <- function(..., package = "LZ") {
+  data(..., package = package)
 }

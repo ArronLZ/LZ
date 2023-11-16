@@ -1,11 +1,16 @@
 #' prepare the data that LZ diff analysis need
 #' prepare the data that LZ diff analysis need
-#' @param eset_file the exps data file name, default: "gene_count.csv"
+#'
+#' @param eset_file character, the exps data file name, default: "gene_count.csv"
+#' @param id_dot logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3
+#' @param col.by character, delete the duplicate by this column
+#' @param col.del character, manually delete some column
+#' @param auto.del.character logical, if auto delete the column those class is character
 #' @param group_file the group data file name, default: "group.csv"
 #' @param annot_trans logical, do the eset need be annot to symbol? if the datafame's first coloumn is not offical symbol, you can set to TRUE.
 #' @param f_mark file mark(optional), default: diff
 #'
-#' @return #
+#' @return list
 #' @export
 #' @importFrom data.table fread
 #'
@@ -24,14 +29,23 @@
 #' # rowname3 |   normal  |  2
 #' # rowname4 |   normal  |  2
 DEG_prepareData <- function(eset_file="gene_count.csv",
+                            id_dot = F, col.by = "ID",
+                            col.del=NULL, auto.del.character=T,
                             group_file="group.csv",
                             annot_trans=T, f_mark="diff") {
   # f_mark="SHUANG-CONTROL"
   # 需要转换注释，需要这个文件
-  all_anot <- getGencodeV22.annot()
+  tmpenv <- new.env()
+  data(gencode.v22.annot, package = "LZ", envir = tmpenv)
+  all_anot <- tmpenv$gencode.v22.annot
   # 读取差异基因表(若不是csv文件，请转为csv文件)
   eset <- data.table::fread(eset_file, data.table = F)
-  eset <- quchong(eset = eset)
+  eset <- quchong(eset = eset, col.by= col.by,
+                  col.del = col.del, auto.del.character=auto.del.character)
+  if (id_dot) {
+    eset$annot <- sapply(strsplit(rownames(eset), '\\.'), function(x) x[[1]])
+    eset <- quchong(eset = eset, col.by = "annot")
+  }
   if (annot_trans) {
     # 挑出mRNA
     eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$ensembl_gene_id, ]
@@ -53,6 +67,7 @@ DEG_prepareData <- function(eset_file="gene_count.csv",
   } else {
     stop("提供的分组信息和表达信息不匹配，请检查后再运行")
   }
+  rm(tmpenv)
   return(glist)
 }
 

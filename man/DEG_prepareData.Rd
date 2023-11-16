@@ -7,13 +7,25 @@ prepare the data that LZ diff analysis need}
 \usage{
 DEG_prepareData(
   eset_file = "gene_count.csv",
+  id_dot = F,
+  col.by = "ID",
+  col.del = NULL,
+  auto.del.character = T,
   group_file = "group.csv",
   annot_trans = T,
   f_mark = "diff"
 )
 }
 \arguments{
-\item{eset_file}{the exps data file name, default: "gene_count.csv"}
+\item{eset_file}{character, the exps data file name, default: "gene_count.csv"}
+
+\item{id_dot}{logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3}
+
+\item{col.by}{character, delete the duplicate by this column}
+
+\item{col.del}{character, manually delete some column}
+
+\item{auto.del.character}{logical, if auto delete the column those class is character}
 
 \item{group_file}{the group data file name, default: "group.csv"}
 
@@ -22,7 +34,7 @@ DEG_prepareData(
 \item{f_mark}{file mark(optional), default: diff}
 }
 \value{
-#
+list
 }
 \description{
 prepare the data that LZ diff analysis need

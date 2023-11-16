@@ -4,10 +4,16 @@
 \alias{quchong}
 \title{delete the duplicate name of the first column of dataframe}
 \usage{
-quchong(eset)
+quchong(eset, col.by, col.del = NULL, auto.del.character = T)
 }
 \arguments{
 \item{eset}{dataframe, the first column must be gene, type: character}
+
+\item{col.by}{character, delete the duplicate by this column}
+
+\item{col.del}{character, manually delete some column}
+
+\item{auto.del.character}{logical, if auto delete the column those class is character}
 }
 \value{
 dataframe
@@ -16,10 +22,15 @@ dataframe
 delete the duplicate name of the first column of dataframe
 }
 \examples{
-#
-# head(eset)[,1:3]
-#           gene_id cont-1 cont-2
-#   ENSG00000186827      0      1
-#   ENSG00000186891     63     50
-#   ENSG00000160072   1218   1023
+\dontrun{
+quchong(eset, col.by="id")
+head(eset)[,1:3]
+          gene_id cont-1 cont-2
+  ENSG00000186827      0      1
+  ENSG00000186891     63     50
+  ENSG00000160072   1218   1023
+}
+}
+\author{
+Jiang
 }
