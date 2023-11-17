@@ -22,6 +22,8 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
+<p style="color:red;">**此文档已经作废，部分函数已经更新或已不存在！请点击[LZ Documents](https://arronlz.github.io/LZ)查阅最新文档。**<p/>
+
 ### 1. 差异分析
 #### 1.1 加载包
 ```{r eval=FALSE}
