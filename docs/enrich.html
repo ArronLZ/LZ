@@ -151,8 +151,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1" data-path="deg.html"><a href="deg.html#deg-mian"><i class="fa fa-check"></i><b>2.1</b> 差异分析</a>
 <ul>
 <li class="chapter" data-level="2.1.1" data-path="deg.html"><a href="deg.html#加载包"><i class="fa fa-check"></i><b>2.1.1</b> 加载包</a></li>
-<li class="chapter" data-level="2.1.2" data-path="deg.html"><a href="deg.html#设置输出文件夹"><i class="fa fa-check"></i><b>2.1.2</b> 设置输出文件夹</a></li>
-<li class="chapter" data-level="2.1.3" data-path="deg.html"><a href="deg.html#差异分析"><i class="fa fa-check"></i><b>2.1.3</b> 差异分析</a></li>
+<li class="chapter" data-level="2.1.2" data-path="deg.html"><a href="deg.html#数据准备"><i class="fa fa-check"></i><b>2.1.2</b> 数据准备</a></li>
+<li class="chapter" data-level="2.1.3" data-path="deg.html"><a href="deg.html#文件夹准备"><i class="fa fa-check"></i><b>2.1.3</b> 文件夹准备</a></li>
+<li class="chapter" data-level="2.1.4" data-path="deg.html"><a href="deg.html#差异分析预设置"><i class="fa fa-check"></i><b>2.1.4</b> 差异分析预设置</a></li>
+<li class="chapter" data-level="2.1.5" data-path="deg.html"><a href="deg.html#差异分析"><i class="fa fa-check"></i><b>2.1.5</b> 差异分析</a></li>
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="deg.html"><a href="deg.html#deg-valcano"><i class="fa fa-check"></i><b>2.2</b> 火山图</a></li>
 <li class="chapter" data-level="2.3" data-path="deg.html"><a href="deg.html#热图"><i class="fa fa-check"></i><b>2.3</b> 热图</a></li>
@@ -221,38 +223,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-14"><a href="enrich.html#cb6-14" tabindex="-1"></a>  <span class="fu">library</span>(RColorBrewer);<span class="fu">library</span>(ggsci);<span class="fu">library</span>(pheatmap)</span>
 <span id="cb6-15"><a href="enrich.html#cb6-15" tabindex="-1"></a>  <span class="fu">library</span>(xlsx);<span class="fu">library</span>(readxl)</span>
 <span id="cb6-16"><a href="enrich.html#cb6-16" tabindex="-1"></a>}) })</span>
-<span id="cb6-17"><a href="enrich.html#cb6-17" tabindex="-1"></a><span class="co"># 若无代理工具，切勿运行 Sys.getenv(&#39;http_proxy&#39;)  #Sys.setenv(&#39;http_proxy&#39;=&#39;&#39;) Sys.setenv(&#39;https_proxy&#39;=&#39;&#39;)</span></span>
+<span id="cb6-17"><a href="enrich.html#cb6-17" tabindex="-1"></a><span class="co"># 若无代理工具，切勿运行 </span></span>
 <span id="cb6-18"><a href="enrich.html#cb6-18" tabindex="-1"></a><span class="co"># LZ::setproxy() # 高危！！！新手不要运行此行，会使当前窗口断网！！！</span></span>
-<span id="cb6-19"><a href="enrich.html#cb6-19" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="enrich.html#cb6-19" tabindex="-1"></a><span class="co"># Sys.getenv(&#39;http_proxy&#39;) Sys.setenv(&#39;http_proxy&#39;=&#39;&#39;) Sys.setenv(&#39;https_proxy&#39;=&#39;&#39;)</span></span>
 <span id="cb6-20"><a href="enrich.html#cb6-20" tabindex="-1"></a></span>
-<span id="cb6-21"><a href="enrich.html#cb6-21" tabindex="-1"></a><span class="co"># /// 1,2,3均需按实际改写</span></span>
-<span id="cb6-22"><a href="enrich.html#cb6-22" tabindex="-1"></a><span class="co"># 读取数据  resdf存放目录</span></span>
-<span id="cb6-23"><a href="enrich.html#cb6-23" tabindex="-1"></a>resdf <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">&quot;result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx&quot;</span>,</span>
-<span id="cb6-24"><a href="enrich.html#cb6-24" tabindex="-1"></a>                  <span class="at">sheet =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>()</span>
-<span id="cb6-25"><a href="enrich.html#cb6-25" tabindex="-1"></a><span class="co"># 此处可能需要插入修改列名的代码，需要为标准的resdf格式</span></span>
-<span id="cb6-26"><a href="enrich.html#cb6-26" tabindex="-1"></a><span class="co">#   标准resdf格式，用列名Gene, log2FC, PValue, FDR来表示gene, log2fc, p, q/fdr</span></span>
-<span id="cb6-27"><a href="enrich.html#cb6-27" tabindex="-1"></a></span>
-<span id="cb6-28"><a href="enrich.html#cb6-28" tabindex="-1"></a><span class="co"># 输出目录</span></span>
-<span id="cb6-29"><a href="enrich.html#cb6-29" tabindex="-1"></a>outd <span class="ot">=</span> <span class="st">&quot;result/rnaseqOR-NC/rich&quot;</span> </span>
-<span id="cb6-30"><a href="enrich.html#cb6-30" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值的话，写成fc.list &lt;- list(&#39;1.2&#39; = log2(1.2), &#39;2&#39; = log2(2))</span></span>
-<span id="cb6-31"><a href="enrich.html#cb6-31" tabindex="-1"></a><span class="co"># 注意！！！！！！：括号里log2(2)的2，和引号里&#39;2&#39;的2都要需同步要改。！！！</span></span>
-<span id="cb6-32"><a href="enrich.html#cb6-32" tabindex="-1"></a><span class="co"># 否则可能会覆盖结果</span></span>
-<span id="cb6-33"><a href="enrich.html#cb6-33" tabindex="-1"></a>fc.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&#39;2&#39;</span><span class="ot">=</span><span class="fu">log2</span>(<span class="dv">2</span>))</span>
-<span id="cb6-34"><a href="enrich.html#cb6-34" tabindex="-1"></a><span class="co"># 设置物种为人类（如是人类则不需要更改）</span></span>
-<span id="cb6-35"><a href="enrich.html#cb6-35" tabindex="-1"></a>GO_database <span class="ot">&lt;-</span> <span class="st">&#39;org.Hs.eg.db&#39;</span> <span class="co"># keytypes(org.Hs.eg.db)</span></span>
-<span id="cb6-36"><a href="enrich.html#cb6-36" tabindex="-1"></a>KEGG_database <span class="ot">&lt;-</span> <span class="st">&#39;hsa&#39;</span> </span>
-<span id="cb6-37"><a href="enrich.html#cb6-37" tabindex="-1"></a><span class="co"># ///</span></span>
-<span id="cb6-38"><a href="enrich.html#cb6-38" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="enrich.html#cb6-21" tabindex="-1"></a><span class="co"># 读取数据  resdf存放目录</span></span>
+<span id="cb6-22"><a href="enrich.html#cb6-22" tabindex="-1"></a><span class="co"># resdf &lt;- readxl::read_xlsx(&quot;result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx&quot;,</span></span>
+<span id="cb6-23"><a href="enrich.html#cb6-23" tabindex="-1"></a><span class="co">#                  sheet = 1) %&gt;% as.data.frame()</span></span>
+<span id="cb6-24"><a href="enrich.html#cb6-24" tabindex="-1"></a><span class="co"># 此处可能需要插入修改列名的代码，需要为标准的resdf格式</span></span>
+<span id="cb6-25"><a href="enrich.html#cb6-25" tabindex="-1"></a><span class="co">#   标准resdf格式，用列名Gene, log2FC, PValue, FDR来表示gene, log2fc, p, q/fdr</span></span>
+<span id="cb6-26"><a href="enrich.html#cb6-26" tabindex="-1"></a>resdf <span class="ot">&lt;-</span> all_father<span class="sc">$</span>DIFF.ALL</span>
+<span id="cb6-27"><a href="enrich.html#cb6-27" tabindex="-1"></a><span class="co"># 输出目录</span></span>
+<span id="cb6-28"><a href="enrich.html#cb6-28" tabindex="-1"></a>outd <span class="ot">=</span> <span class="st">&quot;result/xx/rich&quot;</span> </span>
+<span id="cb6-29"><a href="enrich.html#cb6-29" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值的话，写成fc.list &lt;- list(&#39;1.2&#39; = log2(1.2), &#39;2&#39; = log2(2))</span></span>
+<span id="cb6-30"><a href="enrich.html#cb6-30" tabindex="-1"></a><span class="co"># 注意！！！！！！：括号里log2(2)的2，和引号里&#39;2&#39;的2都要需同步要改。！！！</span></span>
+<span id="cb6-31"><a href="enrich.html#cb6-31" tabindex="-1"></a><span class="co"># 否则可能会覆盖结果 </span></span>
+<span id="cb6-32"><a href="enrich.html#cb6-32" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值</span></span>
+<span id="cb6-33"><a href="enrich.html#cb6-33" tabindex="-1"></a>fc.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&#39;1.5&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="fl">1.5</span>), <span class="st">&#39;2&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="dv">2</span>), <span class="st">&#39;4&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="dv">4</span>) )</span>
+<span id="cb6-34"><a href="enrich.html#cb6-34" tabindex="-1"></a><span class="co"># logFC阈值, 单个阈值</span></span>
+<span id="cb6-35"><a href="enrich.html#cb6-35" tabindex="-1"></a><span class="co"># fc.list &lt;- list(&#39;2&#39;=log2(2))</span></span>
+<span id="cb6-36"><a href="enrich.html#cb6-36" tabindex="-1"></a><span class="co"># 设置物种为人类（如是人类则不需要更改）</span></span>
+<span id="cb6-37"><a href="enrich.html#cb6-37" tabindex="-1"></a>GO_database <span class="ot">&lt;-</span> <span class="st">&#39;org.Hs.eg.db&#39;</span> <span class="co"># keytypes(org.Hs.eg.db)</span></span>
+<span id="cb6-38"><a href="enrich.html#cb6-38" tabindex="-1"></a>KEGG_database <span class="ot">&lt;-</span> <span class="st">&#39;hsa&#39;</span> </span>
 <span id="cb6-39"><a href="enrich.html#cb6-39" tabindex="-1"></a></span>
 <span id="cb6-40"><a href="enrich.html#cb6-40" tabindex="-1"></a><span class="co"># 预处理数据符合GOKEGG分析的要求</span></span>
 <span id="cb6-41"><a href="enrich.html#cb6-41" tabindex="-1"></a><span class="co"># # 不同fc条件下的GOgenelist list(ALL, UP, DOWN)</span></span>
-<span id="cb6-42"><a href="enrich.html#cb6-42" tabindex="-1"></a>gogenelist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fc.list, <span class="cf">function</span>(x) <span class="fu">DEG_prepareGOglist</span>(resdf, <span class="at">logfc =</span> x))</span>
-<span id="cb6-43"><a href="enrich.html#cb6-43" tabindex="-1"></a><span class="co"># gogenelist %&gt;% length()</span></span>
-<span id="cb6-44"><a href="enrich.html#cb6-44" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb6-42"><a href="enrich.html#cb6-42" tabindex="-1"></a>gogenelist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fc.list, <span class="cf">function</span>(x) <span class="fu">DEG_prepareGOglist</span>(resdf, <span class="at">logfc =</span> x, </span>
+<span id="cb6-43"><a href="enrich.html#cb6-43" tabindex="-1"></a>                                                             <span class="at">p =</span> <span class="fl">0.05</span>, <span class="at">fdr =</span> <span class="fl">0.1</span>))</span>
+<span id="cb6-44"><a href="enrich.html#cb6-44" tabindex="-1"></a><span class="co"># gogenelist %&gt;% length()</span></span>
 <span id="cb6-45"><a href="enrich.html#cb6-45" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果</span></span>
-<span id="cb6-46"><a href="enrich.html#cb6-46" tabindex="-1"></a>go <span class="ot">&lt;-</span> <span class="fu">DEG_runGO</span>(<span class="at">outdir =</span> outd, <span class="at">genelist =</span> gogenelist)</span>
-<span id="cb6-47"><a href="enrich.html#cb6-47" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的KEGG结果</span></span>
-<span id="cb6-48"><a href="enrich.html#cb6-48" tabindex="-1"></a>kegg <span class="ot">&lt;-</span> <span class="fu">DEG_runKEGG</span>(<span class="at">outdir =</span> outd, <span class="at">genelist =</span> gogenelist)</span></code></pre></div>
+<span id="cb6-46"><a href="enrich.html#cb6-46" tabindex="-1"></a>enrich <span class="ot">&lt;-</span> <span class="fu">DEG_runENRICH</span>(<span class="at">genelist =</span> gogenelist, <span class="at">outdir =</span> outd, <span class="at">glist.save =</span> T, </span>
+<span id="cb6-47"><a href="enrich.html#cb6-47" tabindex="-1"></a>                        <span class="at">rungo =</span> T, <span class="at">runkegg =</span> T, <span class="at">rapid =</span> T)</span></code></pre></div>
 </div>
 <div id="enrich-simple" class="section level3 hasAnchor" number="3.1.2">
 <h3><span class="header-section-number">3.1.2</span> 简易GO,KEGG一次分析<a href="enrich.html#enrich-simple" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -270,36 +271,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-9"><a href="enrich.html#cb7-9" tabindex="-1"></a>go.lh <span class="ot">&lt;-</span> <span class="fu">DEG_GO</span>(gene_df, <span class="at">orgdb =</span> <span class="st">&quot;org.Hs.eg.db&quot;</span>, <span class="at">sigNodes =</span> <span class="dv">20</span>, </span>
 <span id="cb7-10"><a href="enrich.html#cb7-10" tabindex="-1"></a>                <span class="at">resultdir=</span><span class="st">&quot;./result/proteinOR-NC&quot;</span>, <span class="at">filemark =</span> <span class="st">&quot;p1.5_g_2&quot;</span>)</span>
 <span id="cb7-11"><a href="enrich.html#cb7-11" tabindex="-1"></a>go.lhdf <span class="ot">&lt;-</span> <span class="fu">sapply</span>(go.lh, <span class="cf">function</span>(x) x<span class="sc">@</span>result, <span class="at">simplify =</span> T)</span>
-<span id="cb7-12"><a href="enrich.html#cb7-12" tabindex="-1"></a><span class="fu">write_xlsx</span>(go.lhdf, <span class="at">path =</span> <span class="st">&quot;./result/proteinOR-NC/lh_go.all.xlsx&quot;</span>)</span>
+<span id="cb7-12"><a href="enrich.html#cb7-12" tabindex="-1"></a><span class="fu">write_xlsx</span>(go.lhdf, <span class="at">path =</span> <span class="st">&quot;./result/xx/lh_go.all.xlsx&quot;</span>)</span>
 <span id="cb7-13"><a href="enrich.html#cb7-13" tabindex="-1"></a><span class="co"># KEGG分析</span></span>
 <span id="cb7-14"><a href="enrich.html#cb7-14" tabindex="-1"></a>kegg.lh <span class="ot">&lt;-</span> <span class="fu">DEG_KEGG</span>(gene_df)</span>
-<span id="cb7-15"><a href="enrich.html#cb7-15" tabindex="-1"></a><span class="fu">write_xlsx</span>(kegg.lh<span class="sc">$</span>pSigDF, <span class="at">path =</span> <span class="st">&quot;./result/proteinOR-NC/lh_kegg.all.xlsx&quot;</span>)</span></code></pre></div>
+<span id="cb7-15"><a href="enrich.html#cb7-15" tabindex="-1"></a><span class="fu">write_xlsx</span>(kegg.lh<span class="sc">$</span>pSigDF, <span class="at">path =</span> <span class="st">&quot;./result/xx/lh_kegg.all.xlsx&quot;</span>)</span></code></pre></div>
 </div>
 <div id="dotplot" class="section level3 hasAnchor" number="3.1.3">
 <h3><span class="header-section-number">3.1.3</span> GO、KEGG分析结果可视化 {#enrich-visual}<a href="enrich.html#dotplot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="enrich.html#cb8-1" tabindex="-1"></a><span class="co"># dotplot go</span></span>
 <span id="cb8-2"><a href="enrich.html#cb8-2" tabindex="-1"></a><span class="co"># 读取go分析保存的表格</span></span>
-<span id="cb8-3"><a href="enrich.html#cb8-3" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">&quot;./result/proteinOR-NC/lh_go.all.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="dv">1</span>)</span>
-<span id="cb8-4"><a href="enrich.html#cb8-4" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
-<span id="cb8-5"><a href="enrich.html#cb8-5" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotData, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
-<span id="cb8-6"><a href="enrich.html#cb8-6" tabindex="-1"></a>pic.dot <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotData, <span class="at">title =</span> <span class="st">&#39;TOP of GO&#39;</span>, </span>
-<span id="cb8-7"><a href="enrich.html#cb8-7" tabindex="-1"></a>                        <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, <span class="at">filemark =</span> <span class="st">&#39;GO_top&#39;</span>, </span>
-<span id="cb8-8"><a href="enrich.html#cb8-8" tabindex="-1"></a>                        <span class="at">pic.save =</span> T)</span>
-<span id="cb8-9"><a href="enrich.html#cb8-9" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="enrich.html#cb8-10" tabindex="-1"></a><span class="co"># dotplot kegg</span></span>
-<span id="cb8-11"><a href="enrich.html#cb8-11" tabindex="-1"></a><span class="co"># 读取kegg分析保存的表格</span></span>
-<span id="cb8-12"><a href="enrich.html#cb8-12" tabindex="-1"></a>dotDatak <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">&quot;./result/proteinOR-NC/lh_kegg.all.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="dv">1</span>)</span>
-<span id="cb8-13"><a href="enrich.html#cb8-13" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
-<span id="cb8-14"><a href="enrich.html#cb8-14" tabindex="-1"></a>dotDataK <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotDatak, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
-<span id="cb8-15"><a href="enrich.html#cb8-15" tabindex="-1"></a>pic.dotk <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotDataK, <span class="at">title =</span> <span class="st">&#39;TOP of KEGGpathway&#39;</span>, </span>
-<span id="cb8-16"><a href="enrich.html#cb8-16" tabindex="-1"></a>                         <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, <span class="at">filemark =</span> <span class="st">&#39;KEGG_top&#39;</span>, </span>
-<span id="cb8-17"><a href="enrich.html#cb8-17" tabindex="-1"></a>                         <span class="at">pic.save =</span> F)</span>
-<span id="cb8-18"><a href="enrich.html#cb8-18" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="enrich.html#cb8-19" tabindex="-1"></a><span class="co"># 组合图</span></span>
-<span id="cb8-20"><a href="enrich.html#cb8-20" tabindex="-1"></a>gh <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dot)</span>
-<span id="cb8-21"><a href="enrich.html#cb8-21" tabindex="-1"></a>gd <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dotk)</span>
-<span id="cb8-22"><a href="enrich.html#cb8-22" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gh, gd, <span class="at">rel_widths =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.25</span>))</span>
-<span id="cb8-23"><a href="enrich.html#cb8-23" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">paste0</span>(dir_out, <span class="st">&quot;/GO_KEGG_top.pdf&quot;</span>), <span class="at">width =</span> <span class="dv">16</span>, <span class="at">height =</span> <span class="dv">10</span>)</span></code></pre></div>
+<span id="cb8-3"><a href="enrich.html#cb8-3" tabindex="-1"></a><span class="co">#dotData &lt;- go$GODF$&quot;倍数&quot;$变化趋势(BP)</span></span>
+<span id="cb8-4"><a href="enrich.html#cb8-4" tabindex="-1"></a><span class="co">#dotData &lt;- readxl::read_xlsx(&quot;kegg.xlsx&quot;, sheet = 1) 自定义挑选想要通路后的表格</span></span>
+<span id="cb8-5"><a href="enrich.html#cb8-5" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> go<span class="sc">$</span>GODF<span class="sc">$</span><span class="st">&quot;1.5&quot;</span><span class="sc">$</span>all</span>
+<span id="cb8-6"><a href="enrich.html#cb8-6" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
+<span id="cb8-7"><a href="enrich.html#cb8-7" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotData, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
+<span id="cb8-8"><a href="enrich.html#cb8-8" tabindex="-1"></a>pic.dot <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotData, <span class="at">title =</span> <span class="st">&#39;TOP of GO&#39;</span>, </span>
+<span id="cb8-9"><a href="enrich.html#cb8-9" tabindex="-1"></a>                        <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, <span class="at">filemark =</span> <span class="st">&#39;GO_top&#39;</span>, </span>
+<span id="cb8-10"><a href="enrich.html#cb8-10" tabindex="-1"></a>                        <span class="at">pic.save =</span> T)</span>
+<span id="cb8-11"><a href="enrich.html#cb8-11" tabindex="-1"></a><span class="co"># dotplot kegg</span></span>
+<span id="cb8-12"><a href="enrich.html#cb8-12" tabindex="-1"></a><span class="co"># 读取kegg分析保存的表格</span></span>
+<span id="cb8-13"><a href="enrich.html#cb8-13" tabindex="-1"></a><span class="co"># dotDatak &lt;- readxl::read_xlsx(&quot;./result/proteinOR-NC/lh_kegg.all.xlsx&quot;, sheet = 1)</span></span>
+<span id="cb8-14"><a href="enrich.html#cb8-14" tabindex="-1"></a><span class="co"># 读取kegg分析保存的表格</span></span>
+<span id="cb8-15"><a href="enrich.html#cb8-15" tabindex="-1"></a>dotDatak <span class="ot">&lt;-</span> go<span class="sc">$</span>KEGGDF<span class="sc">$</span><span class="st">&#39;1.5&#39;</span><span class="sc">$</span>up</span>
+<span id="cb8-16"><a href="enrich.html#cb8-16" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
+<span id="cb8-17"><a href="enrich.html#cb8-17" tabindex="-1"></a>dotDataK <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotDatak, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
+<span id="cb8-18"><a href="enrich.html#cb8-18" tabindex="-1"></a>pic.dotk <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotDataK, <span class="at">title =</span> <span class="st">&#39;TOP of KEGGpathway&#39;</span>, </span>
+<span id="cb8-19"><a href="enrich.html#cb8-19" tabindex="-1"></a>                         <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, <span class="at">filemark =</span> <span class="st">&#39;KEGG_top&#39;</span>, </span>
+<span id="cb8-20"><a href="enrich.html#cb8-20" tabindex="-1"></a>                         <span class="at">pic.save =</span> F)</span>
+<span id="cb8-21"><a href="enrich.html#cb8-21" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="enrich.html#cb8-22" tabindex="-1"></a><span class="co"># 组合图</span></span>
+<span id="cb8-23"><a href="enrich.html#cb8-23" tabindex="-1"></a>gh <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dot)</span>
+<span id="cb8-24"><a href="enrich.html#cb8-24" tabindex="-1"></a>gd <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dotk)</span>
+<span id="cb8-25"><a href="enrich.html#cb8-25" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gh, gd, <span class="at">rel_widths =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.25</span>))</span>
+<span id="cb8-26"><a href="enrich.html#cb8-26" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">paste0</span>(dir_out, <span class="st">&quot;/GO_KEGG_top.pdf&quot;</span>), <span class="at">width =</span> <span class="dv">16</span>, <span class="at">height =</span> <span class="dv">10</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="enrich-gsea" class="section level2 hasAnchor" number="3.2">

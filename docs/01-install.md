@@ -13,20 +13,24 @@ if (!require("BiocManager", quietly = TRUE)) {
   # R 4.2.0
   BiocManager::install(version = "3.18") # 4.3 == 3.18
 }
+
 # 设置镜像(可选)
 options("repos" = c(CRAN = "https://mirrors.tuna.tsinghua.edu.cn/CRAN/")) 
 options(BioC_mirror="https://mirrors.tuna.tsinghua.edu.cn/bioconductor")
+
 # 安装LZ依赖包
 # 安装cran包
-cran_pack <- c('devtools', 'prettydoc', 'Hmisc')
+cran_pack <- c('devtools', 'prettydoc', 'Hmisc', 'markdown', 'tidyverse')
 for (p in cran_pack) { if (!requireNamespace(p, quietly = T)) install.packages(p) }
 # 安装bioconductor包
-bioc_pack <- c("DOSE", "clusterProfiler", 'DESeq2', 'edgeR', 'limma')
+bioc_pack <- c("HPO.db", "DOSE", "clusterProfiler", 'DESeq2', 'edgeR', 'limma')
 for (p in bioc_pack) { 
   cat(p, '=========\n') 
   if (!requireNamespace(p, quietly = T)) BiocManager::install(p, update = F, ask =F) 
-  }
+}
 # 安装LZ包
 devtools::install_github("ArronLZ/LZ", upgrade ="never", force = T, 
                          build_vignettes = T)
+# 查看文档（点击LZ Documents查看网页版）
+vignette('LZ')
 ```

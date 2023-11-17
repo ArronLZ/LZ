@@ -183,22 +183,26 @@ email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
   \CommentTok{\# R 4.2.0}
 \NormalTok{  BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\AttributeTok{version =} \StringTok{"3.18"}\NormalTok{) }\CommentTok{\# 4.3 == 3.18}
 \NormalTok{\}}
+
 \CommentTok{\# 设置镜像(可选)}
 \FunctionTok{options}\NormalTok{(}\StringTok{"repos"} \OtherTok{=} \FunctionTok{c}\NormalTok{(}\AttributeTok{CRAN =} \StringTok{"https://mirrors.tuna.tsinghua.edu.cn/CRAN/"}\NormalTok{)) }
 \FunctionTok{options}\NormalTok{(}\AttributeTok{BioC\_mirror=}\StringTok{"https://mirrors.tuna.tsinghua.edu.cn/bioconductor"}\NormalTok{)}
+
 \CommentTok{\# 安装LZ依赖包}
 \CommentTok{\# 安装cran包}
-\NormalTok{cran\_pack }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}devtools\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}prettydoc\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Hmisc\textquotesingle{}}\NormalTok{)}
+\NormalTok{cran\_pack }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}devtools\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}prettydoc\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Hmisc\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}markdown\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}tidyverse\textquotesingle{}}\NormalTok{)}
 \ControlFlowTok{for}\NormalTok{ (p }\ControlFlowTok{in}\NormalTok{ cran\_pack) \{ }\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(p, }\AttributeTok{quietly =}\NormalTok{ T)) }\FunctionTok{install.packages}\NormalTok{(p) \}}
 \CommentTok{\# 安装bioconductor包}
-\NormalTok{bioc\_pack }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"DOSE"}\NormalTok{, }\StringTok{"clusterProfiler"}\NormalTok{, }\StringTok{\textquotesingle{}DESeq2\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}edgeR\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}limma\textquotesingle{}}\NormalTok{)}
+\NormalTok{bioc\_pack }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"HPO.db"}\NormalTok{, }\StringTok{"DOSE"}\NormalTok{, }\StringTok{"clusterProfiler"}\NormalTok{, }\StringTok{\textquotesingle{}DESeq2\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}edgeR\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}limma\textquotesingle{}}\NormalTok{)}
 \ControlFlowTok{for}\NormalTok{ (p }\ControlFlowTok{in}\NormalTok{ bioc\_pack) \{ }
   \FunctionTok{cat}\NormalTok{(p, }\StringTok{\textquotesingle{}=========}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{) }
   \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(p, }\AttributeTok{quietly =}\NormalTok{ T)) BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(p, }\AttributeTok{update =}\NormalTok{ F, }\AttributeTok{ask =}\NormalTok{F) }
-\NormalTok{  \}}
+\NormalTok{\}}
 \CommentTok{\# 安装LZ包}
 \NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"ArronLZ/LZ"}\NormalTok{, }\AttributeTok{upgrade =}\StringTok{"never"}\NormalTok{, }\AttributeTok{force =}\NormalTok{ T, }
                          \AttributeTok{build\_vignettes =}\NormalTok{ T)}
+\CommentTok{\# 查看文档（点击LZ Documents查看网页版）}
+\FunctionTok{vignette}\NormalTok{(}\StringTok{\textquotesingle{}LZ\textquotesingle{}}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -216,37 +220,24 @@ email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
 \FunctionTok{rm}\NormalTok{(}\AttributeTok{list =} \FunctionTok{ls}\NormalTok{());}\FunctionTok{gc}\NormalTok{()}
 \FunctionTok{library}\NormalTok{(LZ)}
 \FunctionTok{library}\NormalTok{(tibble)}
-\FunctionTok{library}\NormalTok{(parallel)}
 \FunctionTok{library}\NormalTok{(data.table)}
 \FunctionTok{library}\NormalTok{(DESeq2)}
+\FunctionTok{library}\NormalTok{(parallel)}
+\FunctionTok{library}\NormalTok{(BiocParallel)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
 \FunctionTok{cat}\NormalTok{(}\StringTok{" 您电脑线程为:"}\NormalTok{, }\FunctionTok{detectCores}\NormalTok{())}
 \CommentTok{\# 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，但不能大于线程总数。}
-\CommentTok{\# 此处如果电脑一般，建议直接使用n=4或者2。}
-\NormalTok{n }\OtherTok{=} \DecValTok{6}  
+\CommentTok{\# 此处如果电脑性能一般，建议直接使用n=4或者2。}
+\NormalTok{n }\OtherTok{=} \DecValTok{4}
 \CommentTok{\# register(MulticoreParam(n)) 苹果和linux电脑使用这句替代下句}
 \FunctionTok{register}\NormalTok{(}\FunctionTok{SnowParam}\NormalTok{(n))}
 \end{Highlighting}
 \end{Shaded}
 
-\hypertarget{ux8bbeux7f6eux8f93ux51faux6587ux4ef6ux5939}{%
-\subsection{设置输出文件夹}\label{ux8bbeux7f6eux8f93ux51faux6587ux4ef6ux5939}}
+\hypertarget{ux6570ux636eux51c6ux5907}{%
+\subsection{数据准备}\label{ux6570ux636eux51c6ux5907}}
 
-结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请
-务必修改outdir，例如可改为\texttt{outdir\ \textless{}-\ "result2"}，其余后面不需要修改。
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{mark }\OtherTok{\textless{}{-}} \StringTok{"OR{-}NC"}  \CommentTok{\# 此次差异分析的标记(记录谁比谁或和筛选阈值)}
-\NormalTok{outdir }\OtherTok{\textless{}{-}} \StringTok{"result/rnaseq"}  \CommentTok{\# 按需设定（可保持默认，如果修改只修改此处即可，下面无需修改）}
-\NormalTok{outdirsub }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(outdir, mark)}
-\NormalTok{outdirsub.gsea }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(outdirsub, }\StringTok{"/gsea"}\NormalTok{)}
-\NormalTok{outdirsub.rich }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(outdirsub, }\StringTok{"/rich"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\hypertarget{ux5deeux5f02ux5206ux6790}{%
-\subsection{差异分析}\label{ux5deeux5f02ux5206ux6790}}
-
+RNAseq下游分析必须准备两个文件：表达矩阵表格文件，分组表格文件
 将gene\_count.csv，group.csv放在工作目录下
 
 \begin{itemize}
@@ -257,7 +248,7 @@ email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
 
 \begin{longtable}[]{@{}lllll@{}}
 \toprule\noalign{}
-gene & row1 & row2 & row3 & row4 \\
+ID & row1 & row2 & row3 & row4 \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
@@ -286,12 +277,65 @@ rowname3 & normal & 2 \\
 rowname4 & normal & 2 \\
 \end{longtable}
 
+\begin{itemize}
+\tightlist
+\item
+  注意：
+  表达文件中的基因名是SYMBOL还是ESembleID。如为EsembleID,要注意是有小数点的ID还是没有小数点的。
+  有小数点的形式为这样：ESEM00000123.34，没有点的是ESEM00000123。
+  还有记住基因名这列的列名，建议统一设置为ID。
+\end{itemize}
+
+\hypertarget{ux6587ux4ef6ux5939ux51c6ux5907}{%
+\subsection{文件夹准备}\label{ux6587ux4ef6ux5939ux51c6ux5907}}
+
+本文中有时也将文件夹称为目录，这两者等价。建议每个项目新建一个文件夹，例如本项目新建了一个名为
+LZexample的文件夹，然后再在这个文件夹下建了一个data文件夹，以后data目录专门用来存原始文件，例
+如RNAseq分析所需的eset.csv, group.csv或者更加原始的文件。
+
+\textbf{目录结构建议}：本项目的目录初始结构，建议每个项目按着这个形式来。项目文件夹LZexample这个文
+件夹名建议改成有意义的名称，一眼便能看出这个项目是什么数据或者什么目的，而data文件夹名不建议更改。
+图片
+
+\hypertarget{ux5deeux5f02ux5206ux6790ux9884ux8bbeux7f6e}{%
+\subsection{差异分析预设置}\label{ux5deeux5f02ux5206ux6790ux9884ux8bbeux7f6e}}
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{glist }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_prepareData}\NormalTok{(}\AttributeTok{eset\_file =} \StringTok{"gene\_count.csv"}\NormalTok{,}
-                         \AttributeTok{group\_file =} \StringTok{"group.csv"}\NormalTok{,}
-                         \AttributeTok{annot\_trans =}\NormalTok{ T,}
+\CommentTok{\# 设置工作目录，即之后所有的操作如果不指定文件夹，都将会在这个文件夹下进行}
+\FunctionTok{setwd}\NormalTok{(}\StringTok{"C:/data/LZexample"}\NormalTok{)  }\CommentTok{\# 按需更改成你的项目文件夹}
+\FunctionTok{getwd}\NormalTok{() }\CommentTok{\# 检查是否更改工作目录成功了？}
+\CommentTok{\# Windows系统下默认的文件夹路径是 "C:/data/LZexample" 这中斜杆分隔文件夹，}
+\CommentTok{\# 如果是直接从win复制而来的，请将斜杠\textbackslash{}改成反斜杠/, 就如下面设置的这样。（改成\textbackslash{}\textbackslash{}也行）}
+
+\CommentTok{\# 设置此次分析的标记}
+\NormalTok{mark }\OtherTok{\textless{}{-}} \StringTok{"T\_C"}  \CommentTok{\# 此次分析的标记(记录谁比谁或和筛选阈值，建议设置的有意义)}
+\CommentTok{\# 设置结果输出的文件夹，按需设定，可保持默认，如果修改只修改此处即可，下面无需修改。}
+\CommentTok{\# 第一次分析可以不用改，但如是第二分析，必须改这个，否则会覆盖第一次的结果。}
+\NormalTok{outdir }\OtherTok{\textless{}{-}} \StringTok{"result"}  
+\NormalTok{outdirsub }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(outdir, }\StringTok{"/"}\NormalTok{,mark)}
+\NormalTok{outdirsub.gsea }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(outdirsub, }\StringTok{"/gsea"}\NormalTok{)}
+\NormalTok{outdirsub.rich }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(outdirsub, }\StringTok{"/rich"}\NormalTok{)}
+\CommentTok{\# 差异分析阈值设定}
+\NormalTok{ffdr }\OtherTok{\textless{}{-}} \FloatTok{0.1}
+\NormalTok{fpval }\OtherTok{\textless{}{-}} \FloatTok{0.05}
+\NormalTok{flogfc }\OtherTok{\textless{}{-}} \DecValTok{1}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ux5deeux5f02ux5206ux6790}{%
+\subsection{差异分析}\label{ux5deeux5f02ux5206ux6790}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 读取并整理数据（如果都是按照上面的要求来的，不需要改这里的参数）}
+\NormalTok{glist }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_prepareData}\NormalTok{(}\AttributeTok{eset\_file =} \StringTok{"data/eset.csv"}\NormalTok{, }\CommentTok{\# 表达数据的相对路径}
+                         \AttributeTok{group\_file =} \StringTok{"data/group.csv"}\NormalTok{, }\CommentTok{\# 分组文件的相对路径}
+                         \AttributeTok{id\_dot =}\NormalTok{ F,  }\CommentTok{\# ESEM是否有点，有点设为T}
+                         \AttributeTok{col.by =} \StringTok{"ID"}\NormalTok{,  }\CommentTok{\# 基因名列的列名}
+                         \AttributeTok{annot\_trans =}\NormalTok{ F, }\CommentTok{\# 是否要注释，如果是EsembleID就需要设置为T}
                          \AttributeTok{f\_mark =}\NormalTok{ mark)}
+
 \CommentTok{\# 差异分析 deseq2三部曲}
 \NormalTok{dds }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_DESeq2.dds}\NormalTok{(}\AttributeTok{exprset.group=}\NormalTok{glist, }\AttributeTok{batch =}\NormalTok{ F)}
 \FunctionTok{DEG\_DESeq2.pca}\NormalTok{(dds, }\AttributeTok{outdir =}\NormalTok{ outdirsub) }\CommentTok{\# 此处有warning信息，不用管。}
@@ -303,18 +347,16 @@ rowname4 & normal & 2 \\
   \FunctionTok{file.remove}\NormalTok{(}\FunctionTok{list.files}\NormalTok{(outdirsub.gsea, }\AttributeTok{full.names =}\NormalTok{ T))}
 \NormalTok{\}}
 \CommentTok{\# 构建GSEA官网软件分析所需格式文件}
-\CommentTok{\# 此处有warning信息，不用管。}
-\FunctionTok{DEGres\_ToGSEA}\NormalTok{(}\AttributeTok{diffan.obj =}\NormalTok{ dds\_list, }\AttributeTok{outdir =}\NormalTok{ outdirsub.gsea) }
-
+\FunctionTok{DEGres\_ToGSEA}\NormalTok{(}\AttributeTok{diffan.obj =}\NormalTok{ dds\_list, }\AttributeTok{outdir =}\NormalTok{ outdirsub.gsea) }\CommentTok{\# 此处有warning，不用管。}
 \CommentTok{\# all\_father中记录了}
 \CommentTok{\#             差异分析的总表，默认阈值的差异基因表，}
 \CommentTok{\#             上调基因列表，下调基因列表}
 \CommentTok{\#             以及R{-}GSEA分析所需要的所有mRNA的表达排序列表。}
 \CommentTok{\#   是我们后续各种分析的万恶之源（因此命名all\_father）}
 \CommentTok{\#   上述数据同时被保存在本地硬盘的到一个多sheet的xlsx表中【outdirsub.rich目录中】}
-\NormalTok{all\_father }\OtherTok{\textless{}{-}} \FunctionTok{DEGres\_ToRICH}\NormalTok{(}\AttributeTok{diffan.obj =}\NormalTok{ dds\_list, }\AttributeTok{p=}\FloatTok{0.05}\NormalTok{, }\AttributeTok{q=}\FloatTok{0.1}\NormalTok{, }\AttributeTok{f=}\DecValTok{1}\NormalTok{,}
+\NormalTok{all\_father }\OtherTok{\textless{}{-}} \FunctionTok{DEGres\_ToRICH}\NormalTok{(}\AttributeTok{diffan.obj =}\NormalTok{ dds\_list, }\AttributeTok{p=}\NormalTok{fpval, }\AttributeTok{q=}\NormalTok{ffdr, }\AttributeTok{f=}\NormalTok{flogfc,}
                             \AttributeTok{mark=}\NormalTok{mark, }\AttributeTok{outdir =}\NormalTok{ outdirsub.rich)}
-\FunctionTok{save.image}\NormalTok{(}\AttributeTok{file =} \FunctionTok{paste0}\NormalTok{(outdirsub, }\StringTok{"/1.diff.img.RDATA"}\NormalTok{))}
+\FunctionTok{save.image}\NormalTok{(}\AttributeTok{file =} \FunctionTok{paste0}\NormalTok{(outdirsub, }\StringTok{"/1.diff.img.RDATA"}\NormalTok{)) }\CommentTok{\# 保存中间数据}
 \end{Highlighting}
 \end{Shaded}
 
@@ -328,50 +370,45 @@ fpval: PValue阈值
 flogfc: logFC阈值
 filterc: 火山图展示模式(p,fdr均考虑模式, 仅考虑p值模式，仅考虑fdr值模式，默认为第一种''fppadj'')
 label\_gene: 展示基因列表
-不清楚建议默认：fdr=0.2, pval=0.05, p-fdr均考虑模式。仅修改\texttt{label\_gene:\ 展示基因列表}即可。
+不清楚建议默认：fdr=0.1, pval=0.05, p,fdr均考虑模式。仅修改\texttt{label\_gene:\ 展示基因列表}即可。
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# rm(list = ls());gc()}
-\CommentTok{\#library(ggpubr);library(ggrepel);library(ggsci);library(scales)}
+\CommentTok{\# 本流程中不需要运行，后续想再次分析时可从此步开始}
+\CommentTok{\# load("./result/T\_C/1.diff.img.RDATA") }
+\CommentTok{\# library(LZ)}
+\FunctionTok{library}\NormalTok{(ggpubr);}\FunctionTok{library}\NormalTok{(ggrepel);}\FunctionTok{library}\NormalTok{(ggsci);}\FunctionTok{library}\NormalTok{(scales)}
 \FunctionTok{library}\NormalTok{(tidyverse);}\FunctionTok{library}\NormalTok{(dplyr);}\FunctionTok{library}\NormalTok{(pheatmap);}\FunctionTok{library}\NormalTok{(RColorBrewer)}
-\CommentTok{\# 导入火山图需要的差异分析后的基因全部表格(我们也称这个对象为resdf,}
+\CommentTok{\# 导入火山图需要的数据，即差异分析后的未筛选表格(我们也称这个对象为resdf,}
 \CommentTok{\#  resdf文件涵盖差异分析的所有结果信息，可以做后续所有基于差异分析或者基因列表}
-\CommentTok{\#  的所有分析，如果后续分析时用到了不同的数据，请按这个resdf的格式改数据，主要}
-\CommentTok{\#  就是把数据的列名改成和resdf的列名相同即可用此包的函数分析)}
-\NormalTok{df\_valcano }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"./result/1.diff/rich/DIFF.an\_SHUANG{-}CONTROL.xlsx"}\NormalTok{,}
-                                \AttributeTok{sheetIndex =} \DecValTok{1}\NormalTok{)}
-\CommentTok{\# saveRDS(df\_valcano, file = "./result/1.diff/rich/DIFF.an\_SHUANG{-}CONTROL.rds")}
-\CommentTok{\# df\_valcano \textless{}{-} readRDS("./result/1.diff/rich/DIFF.an\_SHUANG{-}CONTROL.rds")}
+\CommentTok{\#  的所有分析，如果后续分析时使用其它数据，请按这个resdf的格式改数据，主要}
+\CommentTok{\#  就是把数据的列名改成和resdf的列名相同，即可用此包的函数分析画图)}
+\CommentTok{\#  即df\_valcano \textless{}{-} readxl::read\_xlsx("xxx.xlsx", sheet = 1)}
+\NormalTok{df\_valcano }\OtherTok{\textless{}{-}}\NormalTok{ all\_father}\SpecialCharTok{$}\NormalTok{DIFF.ALL}
 \FunctionTok{names}\NormalTok{(df\_valcano) }\CommentTok{\# 对应的列名必须为Gene, log2FC, PValue, FDR}
-\CommentTok{\# 阈值设定}
-\NormalTok{ffdr }\OtherTok{\textless{}{-}} \FloatTok{0.2}
+\CommentTok{\# 差异分析阈值设定}
+\NormalTok{ffdr }\OtherTok{\textless{}{-}} \FloatTok{0.1}
 \NormalTok{fpval }\OtherTok{\textless{}{-}} \FloatTok{0.05}
 \NormalTok{flogfc }\OtherTok{\textless{}{-}} \DecValTok{1}
 \CommentTok{\# 模式设定}
-\CommentTok{\# pvalue, padj均考虑模式 ("fpadj":仅考虑fdr值模式, "other": 仅考虑p值模式)}
-\NormalTok{filterc }\OtherTok{\textless{}{-}} \StringTok{"fppadj"} 
-\CommentTok{\# 火山图数据预处理}
-\NormalTok{pic\_data }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_prepareVolcano}\NormalTok{(}\AttributeTok{df\_valcano =}\NormalTok{ df\_valcano, }\AttributeTok{filterc =}\NormalTok{ filterc)}
-
+\NormalTok{filterc }\OtherTok{\textless{}{-}} \StringTok{"fppadj"} \CommentTok{\# pvalue, padj均考虑模式 ("fpadj":仅考虑fdr值模式, "other": 仅考虑p值模式)}
 \CommentTok{\# 设定需要标记的marker gene}
 \NormalTok{label\_gene }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}TFRC\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}ACSL1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}LPCAT3\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}PCBP1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}FTH1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}SLC11A2\textquotesingle{}}\NormalTok{,}
                 \StringTok{\textquotesingle{}SLC39A8\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}SAT1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}FTL\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}GSS\textquotesingle{}}\NormalTok{)}
 \CommentTok{\# 查看想展示的基因在不在差异分析总表中}
 \CommentTok{\# label\_gene \%in\% df\_valcano$Gene \%\textgreater{}\% all}
 \CommentTok{\# pic\_data \%\textgreater{}\% filter(Row.names \%in\% label\_gene)}
-
+\CommentTok{\# 火山图数据预处理}
+\NormalTok{pic\_data }\OtherTok{\textless{}{-}} \FunctionTok{DEGp\_prepareVolcano}\NormalTok{(}\AttributeTok{df\_valcano =}\NormalTok{ df\_valcano, }\AttributeTok{filterc =}\NormalTok{ filterc)}
 \CommentTok{\# 火山图 无标记}
-\FunctionTok{DEGplot\_Volcano}\NormalTok{(}\AttributeTok{result =}\NormalTok{ pic\_data, }\AttributeTok{logFC =}\NormalTok{ flogfc,}
-               \AttributeTok{adj\_P =}\NormalTok{ ffdr, }\AttributeTok{label\_geneset =} \ConstantTok{NULL}\NormalTok{)}
-\CommentTok{\# 保存图片}
-\CommentTok{\# ggsave("./valcano.pdf", width = 7, height = 7)}
+\FunctionTok{DEGp\_Volcano}\NormalTok{(}\AttributeTok{result =}\NormalTok{ pic\_data, }\AttributeTok{logFC =}\NormalTok{ flogfc,}
+             \AttributeTok{adj\_P =}\NormalTok{ ffdr, }\AttributeTok{label\_geneset =} \ConstantTok{NULL}\NormalTok{)}
+\FunctionTok{ggsave}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(outdirsub,}\StringTok{"/valcano.pdf"}\NormalTok{), }\AttributeTok{width =} \DecValTok{7}\NormalTok{, }\AttributeTok{height =} \DecValTok{7}\NormalTok{) }\CommentTok{\# 保存}
 \CommentTok{\# 火山图 有标记}
-\FunctionTok{DEGplot\_Volcano}\NormalTok{(}\AttributeTok{result =}\NormalTok{ pic\_data, }\AttributeTok{logFC =}\NormalTok{ flogfc, }\CommentTok{\# log2(2)}
-               \AttributeTok{adj\_P =}\NormalTok{ ffdr, }\AttributeTok{label\_geneset =}\NormalTok{ label\_gene) }\SpecialCharTok{\%\textgreater{}\%}
+\FunctionTok{DEGp\_Volcano}\NormalTok{(}\AttributeTok{result =}\NormalTok{ pic\_data, }\AttributeTok{logFC =}\NormalTok{ flogfc, }\CommentTok{\# log2(2)}
+             \AttributeTok{adj\_P =}\NormalTok{ ffdr, }\AttributeTok{label\_geneset =}\NormalTok{ label\_gene) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{ggplotGrob}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ cowplot}\SpecialCharTok{::}\FunctionTok{plot\_grid}\NormalTok{()}
-\CommentTok{\# 保存图片}
-\CommentTok{\# ggsave("./result/1.diff/valcano.mark.gene.pdf", width = 7, height = 7)}
+\FunctionTok{ggsave}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(outdirsub, }\StringTok{"/valcano.mark.gene.pdf"}\NormalTok{), }\AttributeTok{width =} \DecValTok{7}\NormalTok{, }\AttributeTok{height =} \DecValTok{7}\NormalTok{) }\CommentTok{\# 保存}
 \end{Highlighting}
 \end{Shaded}
 
@@ -413,36 +450,33 @@ On the way \ldots{}
 \CommentTok{\# LZ::setproxy() \# 高危！！！新手不要运行此行，会使当前窗口断网！！！}
 \CommentTok{\# Sys.getenv(\textquotesingle{}http\_proxy\textquotesingle{}) Sys.setenv(\textquotesingle{}http\_proxy\textquotesingle{}=\textquotesingle{}\textquotesingle{}) Sys.setenv(\textquotesingle{}https\_proxy\textquotesingle{}=\textquotesingle{}\textquotesingle{})}
 
-
-
-\CommentTok{\# /// 1,2,3均需按实际改写}
 \CommentTok{\# 读取数据  resdf存放目录}
-\NormalTok{resdf }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"result/rnaseqOR{-}NC/rich/DIFF.an\_OR{-}NC.xlsx"}\NormalTok{,}
-                  \AttributeTok{sheet =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{as.data.frame}\NormalTok{()}
+\CommentTok{\# resdf \textless{}{-} readxl::read\_xlsx("result/rnaseqOR{-}NC/rich/DIFF.an\_OR{-}NC.xlsx",}
+\CommentTok{\#                  sheet = 1) \%\textgreater{}\% as.data.frame()}
 \CommentTok{\# 此处可能需要插入修改列名的代码，需要为标准的resdf格式}
 \CommentTok{\#   标准resdf格式，用列名Gene, log2FC, PValue, FDR来表示gene, log2fc, p, q/fdr}
-
+\NormalTok{resdf }\OtherTok{\textless{}{-}}\NormalTok{ all\_father}\SpecialCharTok{$}\NormalTok{DIFF.ALL}
 \CommentTok{\# 输出目录}
-\NormalTok{outd }\OtherTok{=} \StringTok{"result/rnaseqOR{-}NC/rich"} 
+\NormalTok{outd }\OtherTok{=} \StringTok{"result/xx/rich"} 
 \CommentTok{\# logFC阈值, 多个阈值的话，写成fc.list \textless{}{-} list(\textquotesingle{}1.2\textquotesingle{} = log2(1.2), \textquotesingle{}2\textquotesingle{} = log2(2))}
 \CommentTok{\# 注意！！！！！！：括号里log2(2)的2，和引号里\textquotesingle{}2\textquotesingle{}的2都要需同步要改。！！！}
-\CommentTok{\# 否则可能会覆盖结果}
-\NormalTok{fc.list }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{\textquotesingle{}2\textquotesingle{}}\OtherTok{=}\FunctionTok{log2}\NormalTok{(}\DecValTok{2}\NormalTok{))}
+\CommentTok{\# 否则可能会覆盖结果 }
+\CommentTok{\# logFC阈值, 多个阈值}
+\NormalTok{fc.list }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{\textquotesingle{}1.5\textquotesingle{}} \OtherTok{=} \FunctionTok{log2}\NormalTok{(}\FloatTok{1.5}\NormalTok{), }\StringTok{\textquotesingle{}2\textquotesingle{}} \OtherTok{=} \FunctionTok{log2}\NormalTok{(}\DecValTok{2}\NormalTok{), }\StringTok{\textquotesingle{}4\textquotesingle{}} \OtherTok{=} \FunctionTok{log2}\NormalTok{(}\DecValTok{4}\NormalTok{) )}
+\CommentTok{\# logFC阈值, 单个阈值}
+\CommentTok{\# fc.list \textless{}{-} list(\textquotesingle{}2\textquotesingle{}=log2(2))}
 \CommentTok{\# 设置物种为人类（如是人类则不需要更改）}
 \NormalTok{GO\_database }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}org.Hs.eg.db\textquotesingle{}} \CommentTok{\# keytypes(org.Hs.eg.db)}
 \NormalTok{KEGG\_database }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}hsa\textquotesingle{}} 
-\CommentTok{\# ///}
-
 
 \CommentTok{\# 预处理数据符合GOKEGG分析的要求}
 \CommentTok{\# \# 不同fc条件下的GOgenelist list(ALL, UP, DOWN)}
-\NormalTok{gogenelist }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(fc.list, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{DEG\_prepareGOglist}\NormalTok{(resdf, }\AttributeTok{logfc =}\NormalTok{ x))}
+\NormalTok{gogenelist }\OtherTok{\textless{}{-}} \FunctionTok{lapply}\NormalTok{(fc.list, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{DEG\_prepareGOglist}\NormalTok{(resdf, }\AttributeTok{logfc =}\NormalTok{ x, }
+                                                             \AttributeTok{p =} \FloatTok{0.05}\NormalTok{, }\AttributeTok{fdr =} \FloatTok{0.1}\NormalTok{))}
 \CommentTok{\# gogenelist \%\textgreater{}\% length()}
-\CommentTok{\#}
 \CommentTok{\# 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果}
-\NormalTok{go }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_runGO}\NormalTok{(}\AttributeTok{outdir =}\NormalTok{ outd, }\AttributeTok{genelist =}\NormalTok{ gogenelist)}
-\CommentTok{\# 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的KEGG结果}
-\NormalTok{kegg }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_runKEGG}\NormalTok{(}\AttributeTok{outdir =}\NormalTok{ outd, }\AttributeTok{genelist =}\NormalTok{ gogenelist)}
+\NormalTok{enrich }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_runENRICH}\NormalTok{(}\AttributeTok{genelist =}\NormalTok{ gogenelist, }\AttributeTok{outdir =}\NormalTok{ outd, }\AttributeTok{glist.save =}\NormalTok{ T, }
+                        \AttributeTok{rungo =}\NormalTok{ T, }\AttributeTok{runkegg =}\NormalTok{ T, }\AttributeTok{rapid =}\NormalTok{ T)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -466,10 +500,10 @@ On the way \ldots{}
 \NormalTok{go.lh }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_GO}\NormalTok{(gene\_df, }\AttributeTok{orgdb =} \StringTok{"org.Hs.eg.db"}\NormalTok{, }\AttributeTok{sigNodes =} \DecValTok{20}\NormalTok{, }
                 \AttributeTok{resultdir=}\StringTok{"./result/proteinOR{-}NC"}\NormalTok{, }\AttributeTok{filemark =} \StringTok{"p1.5\_g\_2"}\NormalTok{)}
 \NormalTok{go.lhdf }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(go.lh, }\ControlFlowTok{function}\NormalTok{(x) x}\SpecialCharTok{@}\NormalTok{result, }\AttributeTok{simplify =}\NormalTok{ T)}
-\FunctionTok{write\_xlsx}\NormalTok{(go.lhdf, }\AttributeTok{path =} \StringTok{"./result/proteinOR{-}NC/lh\_go.all.xlsx"}\NormalTok{)}
+\FunctionTok{write\_xlsx}\NormalTok{(go.lhdf, }\AttributeTok{path =} \StringTok{"./result/xx/lh\_go.all.xlsx"}\NormalTok{)}
 \CommentTok{\# KEGG分析}
 \NormalTok{kegg.lh }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_KEGG}\NormalTok{(gene\_df)}
-\FunctionTok{write\_xlsx}\NormalTok{(kegg.lh}\SpecialCharTok{$}\NormalTok{pSigDF, }\AttributeTok{path =} \StringTok{"./result/proteinOR{-}NC/lh\_kegg.all.xlsx"}\NormalTok{)}
+\FunctionTok{write\_xlsx}\NormalTok{(kegg.lh}\SpecialCharTok{$}\NormalTok{pSigDF, }\AttributeTok{path =} \StringTok{"./result/xx/lh\_kegg.all.xlsx"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -480,16 +514,19 @@ On the way \ldots{}
 \begin{Highlighting}[]
 \CommentTok{\# dotplot go}
 \CommentTok{\# 读取go分析保存的表格}
-\NormalTok{dotData }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"./result/proteinOR{-}NC/lh\_go.all.xlsx"}\NormalTok{, }\AttributeTok{sheet =} \DecValTok{1}\NormalTok{)}
+\CommentTok{\#dotData \textless{}{-} go$GODF$"倍数"$变化趋势(BP)}
+\CommentTok{\#dotData \textless{}{-} readxl::read\_xlsx("kegg.xlsx", sheet = 1) 自定义挑选想要通路后的表格}
+\NormalTok{dotData }\OtherTok{\textless{}{-}}\NormalTok{ go}\SpecialCharTok{$}\NormalTok{GODF}\SpecialCharTok{$}\StringTok{"1.5"}\SpecialCharTok{$}\NormalTok{all}
 \CommentTok{\# 筛选数据（按需配合其他筛选）}
 \NormalTok{dotData }\OtherTok{\textless{}{-}} \FunctionTok{DEGp\_prepareDotplot}\NormalTok{(dotData, }\AttributeTok{head =} \DecValTok{30}\NormalTok{, }\AttributeTok{delete =} \ConstantTok{NULL}\NormalTok{)}
 \NormalTok{pic.dot }\OtherTok{\textless{}{-}} \FunctionTok{DEGp\_Dotplot}\NormalTok{(dotData, }\AttributeTok{title =} \StringTok{\textquotesingle{}TOP of GO\textquotesingle{}}\NormalTok{, }
                         \AttributeTok{resultdir =} \StringTok{"./result/proteinOR{-}NC"}\NormalTok{, }\AttributeTok{filemark =} \StringTok{\textquotesingle{}GO\_top\textquotesingle{}}\NormalTok{, }
                         \AttributeTok{pic.save =}\NormalTok{ T)}
-
 \CommentTok{\# dotplot kegg}
 \CommentTok{\# 读取kegg分析保存的表格}
-\NormalTok{dotDatak }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"./result/proteinOR{-}NC/lh\_kegg.all.xlsx"}\NormalTok{, }\AttributeTok{sheet =} \DecValTok{1}\NormalTok{)}
+\CommentTok{\# dotDatak \textless{}{-} readxl::read\_xlsx("./result/proteinOR{-}NC/lh\_kegg.all.xlsx", sheet = 1)}
+\CommentTok{\# 读取kegg分析保存的表格}
+\NormalTok{dotDatak }\OtherTok{\textless{}{-}}\NormalTok{ go}\SpecialCharTok{$}\NormalTok{KEGGDF}\SpecialCharTok{$}\StringTok{\textquotesingle{}1.5\textquotesingle{}}\SpecialCharTok{$}\NormalTok{up}
 \CommentTok{\# 筛选数据（按需配合其他筛选）}
 \NormalTok{dotDataK }\OtherTok{\textless{}{-}} \FunctionTok{DEGp\_prepareDotplot}\NormalTok{(dotDatak, }\AttributeTok{head =} \DecValTok{30}\NormalTok{, }\AttributeTok{delete =} \ConstantTok{NULL}\NormalTok{)}
 \NormalTok{pic.dotk }\OtherTok{\textless{}{-}} \FunctionTok{DEGp\_Dotplot}\NormalTok{(dotDataK, }\AttributeTok{title =} \StringTok{\textquotesingle{}TOP of KEGGpathway\textquotesingle{}}\NormalTok{, }

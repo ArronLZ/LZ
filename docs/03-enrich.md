@@ -25,36 +25,33 @@ suppressMessages({ suppressWarnings({
 # LZ::setproxy() # 高危！！！新手不要运行此行，会使当前窗口断网！！！
 # Sys.getenv('http_proxy') Sys.setenv('http_proxy'='') Sys.setenv('https_proxy'='')
 
-
-
-# /// 1,2,3均需按实际改写
 # 读取数据  resdf存放目录
-resdf <- readxl::read_xlsx("result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx",
-                  sheet = 1) %>% as.data.frame()
+# resdf <- readxl::read_xlsx("result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx",
+#                  sheet = 1) %>% as.data.frame()
 # 此处可能需要插入修改列名的代码，需要为标准的resdf格式
 #   标准resdf格式，用列名Gene, log2FC, PValue, FDR来表示gene, log2fc, p, q/fdr
-
+resdf <- all_father$DIFF.ALL
 # 输出目录
-outd = "result/rnaseqOR-NC/rich" 
+outd = "result/xx/rich" 
 # logFC阈值, 多个阈值的话，写成fc.list <- list('1.2' = log2(1.2), '2' = log2(2))
 # 注意！！！！！！：括号里log2(2)的2，和引号里'2'的2都要需同步要改。！！！
-# 否则可能会覆盖结果
-fc.list <- list('2'=log2(2))
+# 否则可能会覆盖结果 
+# logFC阈值, 多个阈值
+fc.list <- list('1.5' = log2(1.5), '2' = log2(2), '4' = log2(4) )
+# logFC阈值, 单个阈值
+# fc.list <- list('2'=log2(2))
 # 设置物种为人类（如是人类则不需要更改）
 GO_database <- 'org.Hs.eg.db' # keytypes(org.Hs.eg.db)
 KEGG_database <- 'hsa' 
-# ///
-
 
 # 预处理数据符合GOKEGG分析的要求
 # # 不同fc条件下的GOgenelist list(ALL, UP, DOWN)
-gogenelist <- lapply(fc.list, function(x) DEG_prepareGOglist(resdf, logfc = x))
+gogenelist <- lapply(fc.list, function(x) DEG_prepareGOglist(resdf, logfc = x, 
+                                                             p = 0.05, fdr = 0.1))
 # gogenelist %>% length()
-#
 # 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果
-go <- DEG_runGO(outdir = outd, genelist = gogenelist)
-# 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的KEGG结果
-kegg <- DEG_runKEGG(outdir = outd, genelist = gogenelist)
+enrich <- DEG_runENRICH(genelist = gogenelist, outdir = outd, glist.save = T, 
+                        rungo = T, runkegg = T, rapid = T)
 ```
 
 ### 简易GO,KEGG一次分析  {#enrich-simple}
@@ -74,10 +71,10 @@ gene_df <- bitr(genelist.lh, fromType = "SYMBOL", toType = c("ENTREZID", "UNIPRO
 go.lh <- DEG_GO(gene_df, orgdb = "org.Hs.eg.db", sigNodes = 20, 
                 resultdir="./result/proteinOR-NC", filemark = "p1.5_g_2")
 go.lhdf <- sapply(go.lh, function(x) x@result, simplify = T)
-write_xlsx(go.lhdf, path = "./result/proteinOR-NC/lh_go.all.xlsx")
+write_xlsx(go.lhdf, path = "./result/xx/lh_go.all.xlsx")
 # KEGG分析
 kegg.lh <- DEG_KEGG(gene_df)
-write_xlsx(kegg.lh$pSigDF, path = "./result/proteinOR-NC/lh_kegg.all.xlsx")
+write_xlsx(kegg.lh$pSigDF, path = "./result/xx/lh_kegg.all.xlsx")
 ```
 
 ### GO、KEGG分析结果可视化 {#enrich-visual} {#dotplot}
@@ -85,16 +82,19 @@ write_xlsx(kegg.lh$pSigDF, path = "./result/proteinOR-NC/lh_kegg.all.xlsx")
 ```r
 # dotplot go
 # 读取go分析保存的表格
-dotData <- readxl::read_xlsx("./result/proteinOR-NC/lh_go.all.xlsx", sheet = 1)
+#dotData <- go$GODF$"倍数"$变化趋势(BP)
+#dotData <- readxl::read_xlsx("kegg.xlsx", sheet = 1) 自定义挑选想要通路后的表格
+dotData <- go$GODF$"1.5"$all
 # 筛选数据（按需配合其他筛选）
 dotData <- DEGp_prepareDotplot(dotData, head = 30, delete = NULL)
 pic.dot <- DEGp_Dotplot(dotData, title = 'TOP of GO', 
                         resultdir = "./result/proteinOR-NC", filemark = 'GO_top', 
                         pic.save = T)
-
 # dotplot kegg
 # 读取kegg分析保存的表格
-dotDatak <- readxl::read_xlsx("./result/proteinOR-NC/lh_kegg.all.xlsx", sheet = 1)
+# dotDatak <- readxl::read_xlsx("./result/proteinOR-NC/lh_kegg.all.xlsx", sheet = 1)
+# 读取kegg分析保存的表格
+dotDatak <- go$KEGGDF$'1.5'$up
 # 筛选数据（按需配合其他筛选）
 dotDataK <- DEGp_prepareDotplot(dotDatak, head = 30, delete = NULL)
 pic.dotk <- DEGp_Dotplot(dotDataK, title = 'TOP of KEGGpathway', 
