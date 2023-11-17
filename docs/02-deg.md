@@ -1,0 +1,132 @@
+# RNAseq差异分析 {#deg}
+
+## 差异分析 {#deg-mian}
+### 加载包
+
+```r
+rm(list = ls());gc()
+library(LZ)
+library(tibble)
+library(parallel)
+library(data.table)
+library(DESeq2)
+cat(" 您电脑线程为:", detectCores())
+# 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，但不能大于线程总数。此处如果电脑一般，建议直接使用n=4或者2。
+n = 6  
+# register(MulticoreParam(n)) 苹果和linux电脑使用这句替代下句
+register(SnowParam(n))
+```
+
+### 设置输出文件夹
+结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请务必修改outdir，例如可改为`outdir <- "result2"`，其余后面不需要修改。
+
+```r
+mark <- "OR-NC"  # 此次差异分析的标记(记录谁比谁或和筛选阈值)
+outdir <- "result/rnaseq"  # 按需设定（可保持默认，如果修改只修改此处即可，下面无需修改）
+outdirsub <- paste0(outdir, mark)
+outdirsub.gsea <- paste0(outdirsub, "/gsea")
+outdirsub.rich <- paste0(outdirsub, "/rich")
+```
+
+### 差异分析
+将gene_count.csv，group.csv放在工作目录下
+
+* gene_count.csv 矩阵数据格式(数值型，整型)
+
+| gene  | row1 | row2 | row3  | row4|
+| :---  | :--- | :--- | :---  | :---|
+| gene1 |  34  |  23  |  56   |  23 |
+| gene2 |  35  |  23  |  12   |  23 |
+| gene3 |  12  |  78  |  78   |  78 |
+
+* group.csv 分组数据格式：需要组的行名 包含于 表达谱的列名 rownames(group) %in% colname(eset)
+
+| Sample   |   Type    | BATCH|
+| :----    | :----     | :----|
+| rowname1 |   tumor   |  1   |
+| rowname2 |   tumor   |  1   |
+| rowname3 |   normal  |  2   |
+| rowname4 |   normal  |  2   |
+
+```r
+glist <- DEG_prepareData(eset_file = "gene_count.csv",
+                         group_file = "group.csv",
+                         annot_trans = T,
+                         f_mark = mark)
+# 差异分析 deseq2三部曲
+dds <- DEG_DESeq2.dds(exprset.group=glist, batch = F)
+DEG_DESeq2.pca(dds, outdir = outdirsub) # 此处有warning信息，不用管。
+dds_list <- DEG_DESeq2.ana(dds)
+
+# 差异后分析
+if ( dir.exists(outdirsub.gsea) ) {
+  # 如果outdirsub.gsea文件夹存在，清空该文件夹下所有文件
+  file.remove(list.files(outdirsub.gsea, full.names = T))
+}
+# 构建GSEA官网软件分析所需格式文件
+DEGres_ToGSEA(diffan.obj = dds_list, outdir = outdirsub.gsea) # 此处有warning信息，不用管。
+# all_father中记录了
+#             差异分析的总表，默认阈值的差异基因表，
+#             上调基因列表，下调基因列表
+#             以及R-GSEA分析所需要的所有mRNA的表达排序列表。
+#   是我们后续各种分析的万恶之源（因此命名all_father）
+#   上述数据同时被保存在本地硬盘的到一个多sheet的xlsx表中【outdirsub.rich目录中】
+all_father <- DEGres_ToRICH(diffan.obj = dds_list, p=0.05, q=0.1, f=1,
+                            mark=mark, outdir = outdirsub.rich)
+save.image(file = paste0(outdirsub, "/1.diff.img.RDATA"))
+```
+
+## 火山图 {#deg-valcano}
+需要修改的是以下几个值：<br/>
+df_valcano：文件读取时的文件路径<br/>
+ffdr: FDR阈值<br/>
+fpval: PValue阈值<br/>
+flogfc: logFC阈值<br/>
+filterc: 火山图展示模式(p,fdr均考虑模式, 仅考虑p值模式，仅考虑fdr值模式，默认为第一种"fppadj")<br/>
+label_gene: 展示基因列表<br/>
+不清楚建议默认：fdr=0.2, pval=0.05, p-fdr均考虑模式。仅修改`label_gene: 展示基因列表`即可。
+
+```r
+# rm(list = ls());gc()
+#library(ggpubr);library(ggrepel);library(ggsci);library(scales)
+library(tidyverse);library(dplyr);library(pheatmap);library(RColorBrewer)
+library(xlsx)
+# 导入火山图需要的差异分析后的基因全部表格(我们也称这个对象为resdf,
+#  resdf文件涵盖差异分析的所有结果信息，可以做后续所有基于差异分析或者基因列表
+#  的所有分析，如果后续分析时用到了不同的数据，请按这个resdf的格式改数据，主要
+#  就是把数据的列名改成和resdf的列名相同即可用此包的函数分析)
+df_valcano <- xlsx::read.xlsx("./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.xlsx", sheetIndex = 1)
+# saveRDS(df_valcano, file = "./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.rds")
+# df_valcano <- readRDS("./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.rds")
+names(df_valcano) # 对应的列名必须为Gene, log2FC, PValue, FDR
+# 阈值设定
+ffdr <- 0.2
+fpval <- 0.05
+flogfc <- 1
+# 模式设定
+filterc <- "fppadj" # pvalue, padj均考虑模式 ("fpadj":仅考虑fdr值模式, "other": 仅考虑p值模式)
+# 火山图数据预处理
+pic_data <- DEG_prepareVolcano(df_valcano = df_valcano, filterc = filterc)
+
+# 设定需要标记的marker gene
+label_gene <- c('TFRC', 'ACSL1', 'LPCAT3', 'PCBP1', 'FTH1', 'SLC11A2',
+                'SLC39A8', 'SAT1', 'FTL', 'GSS')
+# 查看想展示的基因在不在差异分析总表中
+# label_gene %in% df_valcano$Gene %>% all
+# pic_data %>% filter(Row.names %in% label_gene)
+
+# 火山图 无标记
+DEGplot_Volcano(result = pic_data, logFC = flogfc,
+               adj_P = ffdr, label_geneset = NULL)
+# 保存图片
+# ggsave("./valcano.pdf", width = 7, height = 7)
+# 火山图 有标记
+DEGplot_Volcano(result = pic_data, logFC = flogfc, # log2(2)
+               adj_P = ffdr, label_geneset = label_gene) %>%
+  ggplotGrob() %>% cowplot::plot_grid()
+# 保存图片
+# ggsave("./result/1.diff/valcano.mark.gene.pdf", width = 7, height = 7)
+```
+
+## 热图
+On the way ...
