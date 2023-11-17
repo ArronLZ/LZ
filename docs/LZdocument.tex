@@ -131,7 +131,7 @@
 
 \title{LZ 文档}
 \author{作者：荔枝 \href{mailto:earth_farmer@outlook.com}{\nolinkurl{earth\_farmer@outlook.com}}}
-\date{更新：2023-11-16}
+\date{更新：2023-11-17}
 
 \begin{document}
 \maketitle
@@ -144,15 +144,19 @@
 \chapter*{前言}\label{ux524dux8a00}}
 \addcontentsline{toc}{chapter}{前言}
 
-本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会加入多组学联合分析流程。
+本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会加入多组学联合
+分析流程。
 
 \hypertarget{ux4e3aux4f55ux9605ux8bfbux672cux4e66}{%
 \section*{为何阅读本书}\label{ux4e3aux4f55ux9605ux8bfbux672cux4e66}}
 \addcontentsline{toc}{section}{为何阅读本书}
 
-本书是为LZ R package写的使用文档。旨在让完全没有编程基础或R基础的人学会使用LZ包来进行一些生信分析。LZ包致力于简化生信分析流程和批量分析。
-目前LZ包已经完成了RNAseq下游分析流程的大部分，后期完善后还有加入更多的功能。例如RNAseq的上有分析流程，多组学联合分析流程，单细胞分析流程。
-通过学习完本书，您将会在不需要系统学习R语言的情况下快速分析测序数据，如有疑问请发email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
+本书是为LZ R package写的使用文档。旨在让完全没有编程基础或R基础的人学会使用LZ包来进
+行一些生信分析。LZ包致力于简化生信分析流程和批量分析。
+目前LZ包已经完成了RNAseq下游分析流程的大部分，后期完善后还有加入更多的功能。例如
+RNAseq的上有分析流程，多组学联合分析流程，单细胞分析流程。
+通过学习完本书，您将会在不需要系统学习R语言的情况下快速分析测序数据，如有疑问请发
+email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
 
 \hypertarget{ux672cux4e66ux7ed3ux6784}{%
 \section*{本书结构}\label{ux672cux4e66ux7ed3ux6784}}
@@ -216,7 +220,8 @@
 \FunctionTok{library}\NormalTok{(data.table)}
 \FunctionTok{library}\NormalTok{(DESeq2)}
 \FunctionTok{cat}\NormalTok{(}\StringTok{" 您电脑线程为:"}\NormalTok{, }\FunctionTok{detectCores}\NormalTok{())}
-\CommentTok{\# 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，但不能大于线程总数。此处如果电脑一般，建议直接使用n=4或者2。}
+\CommentTok{\# 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，但不能大于线程总数。}
+\CommentTok{\# 此处如果电脑一般，建议直接使用n=4或者2。}
 \NormalTok{n }\OtherTok{=} \DecValTok{6}  
 \CommentTok{\# register(MulticoreParam(n)) 苹果和linux电脑使用这句替代下句}
 \FunctionTok{register}\NormalTok{(}\FunctionTok{SnowParam}\NormalTok{(n))}
@@ -226,7 +231,8 @@
 \hypertarget{ux8bbeux7f6eux8f93ux51faux6587ux4ef6ux5939}{%
 \subsection{设置输出文件夹}\label{ux8bbeux7f6eux8f93ux51faux6587ux4ef6ux5939}}
 
-结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请务必修改outdir，例如可改为\texttt{outdir\ \textless{}-\ "result2"}，其余后面不需要修改。
+结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请
+务必修改outdir，例如可改为\texttt{outdir\ \textless{}-\ "result2"}，其余后面不需要修改。
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -297,7 +303,9 @@ rowname4 & normal & 2 \\
   \FunctionTok{file.remove}\NormalTok{(}\FunctionTok{list.files}\NormalTok{(outdirsub.gsea, }\AttributeTok{full.names =}\NormalTok{ T))}
 \NormalTok{\}}
 \CommentTok{\# 构建GSEA官网软件分析所需格式文件}
-\FunctionTok{DEGres\_ToGSEA}\NormalTok{(}\AttributeTok{diffan.obj =}\NormalTok{ dds\_list, }\AttributeTok{outdir =}\NormalTok{ outdirsub.gsea) }\CommentTok{\# 此处有warning信息，不用管。}
+\CommentTok{\# 此处有warning信息，不用管。}
+\FunctionTok{DEGres\_ToGSEA}\NormalTok{(}\AttributeTok{diffan.obj =}\NormalTok{ dds\_list, }\AttributeTok{outdir =}\NormalTok{ outdirsub.gsea) }
+
 \CommentTok{\# all\_father中记录了}
 \CommentTok{\#             差异分析的总表，默认阈值的差异基因表，}
 \CommentTok{\#             上调基因列表，下调基因列表}
@@ -327,12 +335,12 @@ label\_gene: 展示基因列表
 \CommentTok{\# rm(list = ls());gc()}
 \CommentTok{\#library(ggpubr);library(ggrepel);library(ggsci);library(scales)}
 \FunctionTok{library}\NormalTok{(tidyverse);}\FunctionTok{library}\NormalTok{(dplyr);}\FunctionTok{library}\NormalTok{(pheatmap);}\FunctionTok{library}\NormalTok{(RColorBrewer)}
-\FunctionTok{library}\NormalTok{(xlsx)}
 \CommentTok{\# 导入火山图需要的差异分析后的基因全部表格(我们也称这个对象为resdf,}
 \CommentTok{\#  resdf文件涵盖差异分析的所有结果信息，可以做后续所有基于差异分析或者基因列表}
 \CommentTok{\#  的所有分析，如果后续分析时用到了不同的数据，请按这个resdf的格式改数据，主要}
 \CommentTok{\#  就是把数据的列名改成和resdf的列名相同即可用此包的函数分析)}
-\NormalTok{df\_valcano }\OtherTok{\textless{}{-}}\NormalTok{ xlsx}\SpecialCharTok{::}\FunctionTok{read.xlsx}\NormalTok{(}\StringTok{"./result/1.diff/rich/DIFF.an\_SHUANG{-}CONTROL.xlsx"}\NormalTok{, }\AttributeTok{sheetIndex =} \DecValTok{1}\NormalTok{)}
+\NormalTok{df\_valcano }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"./result/1.diff/rich/DIFF.an\_SHUANG{-}CONTROL.xlsx"}\NormalTok{,}
+                                \AttributeTok{sheetIndex =} \DecValTok{1}\NormalTok{)}
 \CommentTok{\# saveRDS(df\_valcano, file = "./result/1.diff/rich/DIFF.an\_SHUANG{-}CONTROL.rds")}
 \CommentTok{\# df\_valcano \textless{}{-} readRDS("./result/1.diff/rich/DIFF.an\_SHUANG{-}CONTROL.rds")}
 \FunctionTok{names}\NormalTok{(df\_valcano) }\CommentTok{\# 对应的列名必须为Gene, log2FC, PValue, FDR}
@@ -341,7 +349,8 @@ label\_gene: 展示基因列表
 \NormalTok{fpval }\OtherTok{\textless{}{-}} \FloatTok{0.05}
 \NormalTok{flogfc }\OtherTok{\textless{}{-}} \DecValTok{1}
 \CommentTok{\# 模式设定}
-\NormalTok{filterc }\OtherTok{\textless{}{-}} \StringTok{"fppadj"} \CommentTok{\# pvalue, padj均考虑模式 ("fpadj":仅考虑fdr值模式, "other": 仅考虑p值模式)}
+\CommentTok{\# pvalue, padj均考虑模式 ("fpadj":仅考虑fdr值模式, "other": 仅考虑p值模式)}
+\NormalTok{filterc }\OtherTok{\textless{}{-}} \StringTok{"fppadj"} 
 \CommentTok{\# 火山图数据预处理}
 \NormalTok{pic\_data }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_prepareVolcano}\NormalTok{(}\AttributeTok{df\_valcano =}\NormalTok{ df\_valcano, }\AttributeTok{filterc =}\NormalTok{ filterc)}
 
@@ -400,8 +409,10 @@ On the way \ldots{}
   \FunctionTok{library}\NormalTok{(RColorBrewer);}\FunctionTok{library}\NormalTok{(ggsci);}\FunctionTok{library}\NormalTok{(pheatmap)}
   \FunctionTok{library}\NormalTok{(xlsx);}\FunctionTok{library}\NormalTok{(readxl)}
 \NormalTok{\}) \})}
-\CommentTok{\# 若无代理工具，切勿运行 Sys.getenv(\textquotesingle{}http\_proxy\textquotesingle{})  \#Sys.setenv(\textquotesingle{}http\_proxy\textquotesingle{}=\textquotesingle{}\textquotesingle{}) Sys.setenv(\textquotesingle{}https\_proxy\textquotesingle{}=\textquotesingle{}\textquotesingle{})}
+\CommentTok{\# 若无代理工具，切勿运行 }
 \CommentTok{\# LZ::setproxy() \# 高危！！！新手不要运行此行，会使当前窗口断网！！！}
+\CommentTok{\# Sys.getenv(\textquotesingle{}http\_proxy\textquotesingle{}) Sys.setenv(\textquotesingle{}http\_proxy\textquotesingle{}=\textquotesingle{}\textquotesingle{}) Sys.setenv(\textquotesingle{}https\_proxy\textquotesingle{}=\textquotesingle{}\textquotesingle{})}
+
 
 
 \CommentTok{\# /// 1,2,3均需按实际改写}

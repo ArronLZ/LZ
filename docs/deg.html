@@ -5,19 +5,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 RNAseq差异分析 | LZ 文档</title>
-  <meta name="description" content="本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会加入多组学联合分析流程。" />
+  <meta name="description" content="本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会 加入多组学联合分析流程。" />
   <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 RNAseq差异分析 | LZ 文档" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会加入多组学联合分析流程。" />
+  <meta property="og:description" content="本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会 加入多组学联合分析流程。" />
   <meta name="github-repo" content="ArronLZ/LZ" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="2 RNAseq差异分析 | LZ 文档" />
   
-  <meta name="twitter:description" content="本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会加入多组学联合分析流程。" />
+  <meta name="twitter:description" content="本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会 加入多组学联合分析流程。" />
   
 
 <meta name="author" content="作者：荔枝 earth_farmer@outlook.com" />
@@ -211,14 +211,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-5"><a href="deg.html#cb2-5" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
 <span id="cb2-6"><a href="deg.html#cb2-6" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
 <span id="cb2-7"><a href="deg.html#cb2-7" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot; 您电脑线程为:&quot;</span>, <span class="fu">detectCores</span>())</span>
-<span id="cb2-8"><a href="deg.html#cb2-8" tabindex="-1"></a><span class="co"># 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，但不能大于线程总数。此处如果电脑一般，建议直接使用n=4或者2。</span></span>
-<span id="cb2-9"><a href="deg.html#cb2-9" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">6</span>  </span>
-<span id="cb2-10"><a href="deg.html#cb2-10" tabindex="-1"></a><span class="co"># register(MulticoreParam(n)) 苹果和linux电脑使用这句替代下句</span></span>
-<span id="cb2-11"><a href="deg.html#cb2-11" tabindex="-1"></a><span class="fu">register</span>(<span class="fu">SnowParam</span>(n))</span></code></pre></div>
+<span id="cb2-8"><a href="deg.html#cb2-8" tabindex="-1"></a><span class="co"># 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，但不能大于线程总数。</span></span>
+<span id="cb2-9"><a href="deg.html#cb2-9" tabindex="-1"></a><span class="co"># 此处如果电脑一般，建议直接使用n=4或者2。</span></span>
+<span id="cb2-10"><a href="deg.html#cb2-10" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">6</span>  </span>
+<span id="cb2-11"><a href="deg.html#cb2-11" tabindex="-1"></a><span class="co"># register(MulticoreParam(n)) 苹果和linux电脑使用这句替代下句</span></span>
+<span id="cb2-12"><a href="deg.html#cb2-12" tabindex="-1"></a><span class="fu">register</span>(<span class="fu">SnowParam</span>(n))</span></code></pre></div>
 </div>
 <div id="设置输出文件夹" class="section level3 hasAnchor" number="2.1.2">
 <h3><span class="header-section-number">2.1.2</span> 设置输出文件夹<a href="deg.html#设置输出文件夹" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请务必修改outdir，例如可改为<code>outdir &lt;- "result2"</code>，其余后面不需要修改。</p>
+<p>结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请
+务必修改outdir，例如可改为<code>outdir &lt;- "result2"</code>，其余后面不需要修改。</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="deg.html#cb3-1" tabindex="-1"></a>mark <span class="ot">&lt;-</span> <span class="st">&quot;OR-NC&quot;</span>  <span class="co"># 此次差异分析的标记(记录谁比谁或和筛选阈值)</span></span>
 <span id="cb3-2"><a href="deg.html#cb3-2" tabindex="-1"></a>outdir <span class="ot">&lt;-</span> <span class="st">&quot;result/rnaseq&quot;</span>  <span class="co"># 按需设定（可保持默认，如果修改只修改此处即可，下面无需修改）</span></span>
 <span id="cb3-3"><a href="deg.html#cb3-3" tabindex="-1"></a>outdirsub <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdir, mark)</span>
@@ -353,28 +355,29 @@ label_gene: 展示基因列表<br/>
 <span id="cb5-15"><a href="deg.html#cb5-15" tabindex="-1"></a>fpval <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
 <span id="cb5-16"><a href="deg.html#cb5-16" tabindex="-1"></a>flogfc <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb5-17"><a href="deg.html#cb5-17" tabindex="-1"></a><span class="co"># 模式设定</span></span>
-<span id="cb5-18"><a href="deg.html#cb5-18" tabindex="-1"></a>filterc <span class="ot">&lt;-</span> <span class="st">&quot;fppadj&quot;</span> <span class="co"># pvalue, padj均考虑模式 (&quot;fpadj&quot;:仅考虑fdr值模式, &quot;other&quot;: 仅考虑p值模式)</span></span>
-<span id="cb5-19"><a href="deg.html#cb5-19" tabindex="-1"></a><span class="co"># 火山图数据预处理</span></span>
-<span id="cb5-20"><a href="deg.html#cb5-20" tabindex="-1"></a>pic_data <span class="ot">&lt;-</span> <span class="fu">DEG_prepareVolcano</span>(<span class="at">df_valcano =</span> df_valcano, <span class="at">filterc =</span> filterc)</span>
-<span id="cb5-21"><a href="deg.html#cb5-21" tabindex="-1"></a></span>
-<span id="cb5-22"><a href="deg.html#cb5-22" tabindex="-1"></a><span class="co"># 设定需要标记的marker gene</span></span>
-<span id="cb5-23"><a href="deg.html#cb5-23" tabindex="-1"></a>label_gene <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;TFRC&#39;</span>, <span class="st">&#39;ACSL1&#39;</span>, <span class="st">&#39;LPCAT3&#39;</span>, <span class="st">&#39;PCBP1&#39;</span>, <span class="st">&#39;FTH1&#39;</span>, <span class="st">&#39;SLC11A2&#39;</span>,</span>
-<span id="cb5-24"><a href="deg.html#cb5-24" tabindex="-1"></a>                <span class="st">&#39;SLC39A8&#39;</span>, <span class="st">&#39;SAT1&#39;</span>, <span class="st">&#39;FTL&#39;</span>, <span class="st">&#39;GSS&#39;</span>)</span>
-<span id="cb5-25"><a href="deg.html#cb5-25" tabindex="-1"></a><span class="co"># 查看想展示的基因在不在差异分析总表中</span></span>
-<span id="cb5-26"><a href="deg.html#cb5-26" tabindex="-1"></a><span class="co"># label_gene %in% df_valcano$Gene %&gt;% all</span></span>
-<span id="cb5-27"><a href="deg.html#cb5-27" tabindex="-1"></a><span class="co"># pic_data %&gt;% filter(Row.names %in% label_gene)</span></span>
-<span id="cb5-28"><a href="deg.html#cb5-28" tabindex="-1"></a></span>
-<span id="cb5-29"><a href="deg.html#cb5-29" tabindex="-1"></a><span class="co"># 火山图 无标记</span></span>
-<span id="cb5-30"><a href="deg.html#cb5-30" tabindex="-1"></a><span class="fu">DEGplot_Volcano</span>(<span class="at">result =</span> pic_data, <span class="at">logFC =</span> flogfc,</span>
-<span id="cb5-31"><a href="deg.html#cb5-31" tabindex="-1"></a>               <span class="at">adj_P =</span> ffdr, <span class="at">label_geneset =</span> <span class="cn">NULL</span>)</span>
-<span id="cb5-32"><a href="deg.html#cb5-32" tabindex="-1"></a><span class="co"># 保存图片</span></span>
-<span id="cb5-33"><a href="deg.html#cb5-33" tabindex="-1"></a><span class="co"># ggsave(&quot;./valcano.pdf&quot;, width = 7, height = 7)</span></span>
-<span id="cb5-34"><a href="deg.html#cb5-34" tabindex="-1"></a><span class="co"># 火山图 有标记</span></span>
-<span id="cb5-35"><a href="deg.html#cb5-35" tabindex="-1"></a><span class="fu">DEGplot_Volcano</span>(<span class="at">result =</span> pic_data, <span class="at">logFC =</span> flogfc, <span class="co"># log2(2)</span></span>
-<span id="cb5-36"><a href="deg.html#cb5-36" tabindex="-1"></a>               <span class="at">adj_P =</span> ffdr, <span class="at">label_geneset =</span> label_gene) <span class="sc">%&gt;%</span></span>
-<span id="cb5-37"><a href="deg.html#cb5-37" tabindex="-1"></a>  <span class="fu">ggplotGrob</span>() <span class="sc">%&gt;%</span> cowplot<span class="sc">::</span><span class="fu">plot_grid</span>()</span>
-<span id="cb5-38"><a href="deg.html#cb5-38" tabindex="-1"></a><span class="co"># 保存图片</span></span>
-<span id="cb5-39"><a href="deg.html#cb5-39" tabindex="-1"></a><span class="co"># ggsave(&quot;./result/1.diff/valcano.mark.gene.pdf&quot;, width = 7, height = 7)</span></span></code></pre></div>
+<span id="cb5-18"><a href="deg.html#cb5-18" tabindex="-1"></a><span class="co"># pvalue, padj均考虑模式 (&quot;fpadj&quot;:仅考虑fdr值模式, &quot;other&quot;: 仅考虑p值模式)</span></span>
+<span id="cb5-19"><a href="deg.html#cb5-19" tabindex="-1"></a>filterc <span class="ot">&lt;-</span> <span class="st">&quot;fppadj&quot;</span> </span>
+<span id="cb5-20"><a href="deg.html#cb5-20" tabindex="-1"></a><span class="co"># 火山图数据预处理</span></span>
+<span id="cb5-21"><a href="deg.html#cb5-21" tabindex="-1"></a>pic_data <span class="ot">&lt;-</span> <span class="fu">DEG_prepareVolcano</span>(<span class="at">df_valcano =</span> df_valcano, <span class="at">filterc =</span> filterc)</span>
+<span id="cb5-22"><a href="deg.html#cb5-22" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="deg.html#cb5-23" tabindex="-1"></a><span class="co"># 设定需要标记的marker gene</span></span>
+<span id="cb5-24"><a href="deg.html#cb5-24" tabindex="-1"></a>label_gene <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;TFRC&#39;</span>, <span class="st">&#39;ACSL1&#39;</span>, <span class="st">&#39;LPCAT3&#39;</span>, <span class="st">&#39;PCBP1&#39;</span>, <span class="st">&#39;FTH1&#39;</span>, <span class="st">&#39;SLC11A2&#39;</span>,</span>
+<span id="cb5-25"><a href="deg.html#cb5-25" tabindex="-1"></a>                <span class="st">&#39;SLC39A8&#39;</span>, <span class="st">&#39;SAT1&#39;</span>, <span class="st">&#39;FTL&#39;</span>, <span class="st">&#39;GSS&#39;</span>)</span>
+<span id="cb5-26"><a href="deg.html#cb5-26" tabindex="-1"></a><span class="co"># 查看想展示的基因在不在差异分析总表中</span></span>
+<span id="cb5-27"><a href="deg.html#cb5-27" tabindex="-1"></a><span class="co"># label_gene %in% df_valcano$Gene %&gt;% all</span></span>
+<span id="cb5-28"><a href="deg.html#cb5-28" tabindex="-1"></a><span class="co"># pic_data %&gt;% filter(Row.names %in% label_gene)</span></span>
+<span id="cb5-29"><a href="deg.html#cb5-29" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="deg.html#cb5-30" tabindex="-1"></a><span class="co"># 火山图 无标记</span></span>
+<span id="cb5-31"><a href="deg.html#cb5-31" tabindex="-1"></a><span class="fu">DEGplot_Volcano</span>(<span class="at">result =</span> pic_data, <span class="at">logFC =</span> flogfc,</span>
+<span id="cb5-32"><a href="deg.html#cb5-32" tabindex="-1"></a>               <span class="at">adj_P =</span> ffdr, <span class="at">label_geneset =</span> <span class="cn">NULL</span>)</span>
+<span id="cb5-33"><a href="deg.html#cb5-33" tabindex="-1"></a><span class="co"># 保存图片</span></span>
+<span id="cb5-34"><a href="deg.html#cb5-34" tabindex="-1"></a><span class="co"># ggsave(&quot;./valcano.pdf&quot;, width = 7, height = 7)</span></span>
+<span id="cb5-35"><a href="deg.html#cb5-35" tabindex="-1"></a><span class="co"># 火山图 有标记</span></span>
+<span id="cb5-36"><a href="deg.html#cb5-36" tabindex="-1"></a><span class="fu">DEGplot_Volcano</span>(<span class="at">result =</span> pic_data, <span class="at">logFC =</span> flogfc, <span class="co"># log2(2)</span></span>
+<span id="cb5-37"><a href="deg.html#cb5-37" tabindex="-1"></a>               <span class="at">adj_P =</span> ffdr, <span class="at">label_geneset =</span> label_gene) <span class="sc">%&gt;%</span></span>
+<span id="cb5-38"><a href="deg.html#cb5-38" tabindex="-1"></a>  <span class="fu">ggplotGrob</span>() <span class="sc">%&gt;%</span> cowplot<span class="sc">::</span><span class="fu">plot_grid</span>()</span>
+<span id="cb5-39"><a href="deg.html#cb5-39" tabindex="-1"></a><span class="co"># 保存图片</span></span>
+<span id="cb5-40"><a href="deg.html#cb5-40" tabindex="-1"></a><span class="co"># ggsave(&quot;./result/1.diff/valcano.mark.gene.pdf&quot;, width = 7, height = 7)</span></span></code></pre></div>
 </div>
 <div id="热图" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> 热图<a href="deg.html#热图" class="anchor-section" aria-label="Anchor link to header"></a></h2>

@@ -21,8 +21,10 @@ suppressMessages({ suppressWarnings({
   library(RColorBrewer);library(ggsci);library(pheatmap)
   library(xlsx);library(readxl)
 }) })
-# 若无代理工具，切勿运行 Sys.getenv('http_proxy')  #Sys.setenv('http_proxy'='') Sys.setenv('https_proxy'='')
+# 若无代理工具，切勿运行 
 # LZ::setproxy() # 高危！！！新手不要运行此行，会使当前窗口断网！！！
+# Sys.getenv('http_proxy') Sys.setenv('http_proxy'='') Sys.setenv('https_proxy'='')
+
 
 
 # /// 1,2,3均需按实际改写

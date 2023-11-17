@@ -11,14 +11,16 @@ library(parallel)
 library(data.table)
 library(DESeq2)
 cat(" 您电脑线程为:", detectCores())
-# 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，但不能大于线程总数。此处如果电脑一般，建议直接使用n=4或者2。
+# 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，但不能大于线程总数。
+# 此处如果电脑一般，建议直接使用n=4或者2。
 n = 6  
 # register(MulticoreParam(n)) 苹果和linux电脑使用这句替代下句
 register(SnowParam(n))
 ```
 
 ### 设置输出文件夹
-结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请务必修改outdir，例如可改为`outdir <- "result2"`，其余后面不需要修改。
+结果数据均在result文件夹下，如果不懂，不要修改。但是如果多次运行的话，第二次及以后请
+务必修改outdir，例如可改为`outdir <- "result2"`，其余后面不需要修改。
 
 ```r
 mark <- "OR-NC"  # 此次差异分析的标记(记录谁比谁或和筛选阈值)
@@ -64,7 +66,9 @@ if ( dir.exists(outdirsub.gsea) ) {
   file.remove(list.files(outdirsub.gsea, full.names = T))
 }
 # 构建GSEA官网软件分析所需格式文件
-DEGres_ToGSEA(diffan.obj = dds_list, outdir = outdirsub.gsea) # 此处有warning信息，不用管。
+# 此处有warning信息，不用管。
+DEGres_ToGSEA(diffan.obj = dds_list, outdir = outdirsub.gsea) 
+
 # all_father中记录了
 #             差异分析的总表，默认阈值的差异基因表，
 #             上调基因列表，下调基因列表
@@ -90,12 +94,12 @@ label_gene: 展示基因列表<br/>
 # rm(list = ls());gc()
 #library(ggpubr);library(ggrepel);library(ggsci);library(scales)
 library(tidyverse);library(dplyr);library(pheatmap);library(RColorBrewer)
-library(xlsx)
 # 导入火山图需要的差异分析后的基因全部表格(我们也称这个对象为resdf,
 #  resdf文件涵盖差异分析的所有结果信息，可以做后续所有基于差异分析或者基因列表
 #  的所有分析，如果后续分析时用到了不同的数据，请按这个resdf的格式改数据，主要
 #  就是把数据的列名改成和resdf的列名相同即可用此包的函数分析)
-df_valcano <- xlsx::read.xlsx("./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.xlsx", sheetIndex = 1)
+df_valcano <- readxl::read_xlsx("./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.xlsx",
+                                sheetIndex = 1)
 # saveRDS(df_valcano, file = "./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.rds")
 # df_valcano <- readRDS("./result/1.diff/rich/DIFF.an_SHUANG-CONTROL.rds")
 names(df_valcano) # 对应的列名必须为Gene, log2FC, PValue, FDR
@@ -104,7 +108,8 @@ ffdr <- 0.2
 fpval <- 0.05
 flogfc <- 1
 # 模式设定
-filterc <- "fppadj" # pvalue, padj均考虑模式 ("fpadj":仅考虑fdr值模式, "other": 仅考虑p值模式)
+# pvalue, padj均考虑模式 ("fpadj":仅考虑fdr值模式, "other": 仅考虑p值模式)
+filterc <- "fppadj" 
 # 火山图数据预处理
 pic_data <- DEG_prepareVolcano(df_valcano = df_valcano, filterc = filterc)
 
