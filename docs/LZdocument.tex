@@ -131,7 +131,7 @@
 
 \title{LZ 文档}
 \author{作者：荔枝 \href{mailto:earth_farmer@outlook.com}{\nolinkurl{earth\_farmer@outlook.com}}}
-\date{更新：2023-11-17}
+\date{更新：2023-11-20}
 
 \begin{document}
 \maketitle
@@ -174,6 +174,8 @@ email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
 1. 安装\href{https://www.r-project.org/}{R最新版}
 2. 安装\href{https://posit.co/download/rstudio-desktop/}{Rstudio最新版}
 3. Win电脑可以考虑安装R版本对应的\href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} (可选项)
+4. \textbf{重要提示：请卸载或者至少退出一切杀毒软件(微软自带的不用退出)，否则安装包时可能会出现难以解决的奇怪
+bug}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -190,10 +192,12 @@ email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
 
 \CommentTok{\# 安装LZ依赖包}
 \CommentTok{\# 安装cran包}
-\NormalTok{cran\_pack }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}devtools\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}prettydoc\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Hmisc\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}markdown\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}tidyverse\textquotesingle{}}\NormalTok{)}
+\NormalTok{cran\_pack }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}devtools\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}prettydoc\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Hmisc\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}markdown\textquotesingle{}}\NormalTok{, }
+               \StringTok{\textquotesingle{}Hmisc\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}tidyverse\textquotesingle{}}\NormalTok{)}
 \ControlFlowTok{for}\NormalTok{ (p }\ControlFlowTok{in}\NormalTok{ cran\_pack) \{ }\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(p, }\AttributeTok{quietly =}\NormalTok{ T)) }\FunctionTok{install.packages}\NormalTok{(p) \}}
 \CommentTok{\# 安装bioconductor包}
-\NormalTok{bioc\_pack }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"HPO.db"}\NormalTok{, }\StringTok{"DOSE"}\NormalTok{, }\StringTok{"clusterProfiler"}\NormalTok{, }\StringTok{\textquotesingle{}DESeq2\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}edgeR\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}limma\textquotesingle{}}\NormalTok{)}
+\NormalTok{bioc\_pack }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"HPO.db"}\NormalTok{, }\StringTok{"DOSE"}\NormalTok{, }\StringTok{"clusterProfiler"}\NormalTok{, }\StringTok{\textquotesingle{}DESeq2\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}edgeR\textquotesingle{}}\NormalTok{, }
+               \StringTok{\textquotesingle{}limma\textquotesingle{}}\NormalTok{, }\StringTok{"topGO"}\NormalTok{, }\StringTok{\textquotesingle{}Rgraphviz\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}org.Hs.eg.db\textquotesingle{}}\NormalTok{)}
 \ControlFlowTok{for}\NormalTok{ (p }\ControlFlowTok{in}\NormalTok{ bioc\_pack) \{ }
   \FunctionTok{cat}\NormalTok{(p, }\StringTok{\textquotesingle{}=========}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{) }
   \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(p, }\AttributeTok{quietly =}\NormalTok{ T)) BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(p, }\AttributeTok{update =}\NormalTok{ F, }\AttributeTok{ask =}\NormalTok{F) }
@@ -516,7 +520,7 @@ On the way \ldots{}
 \CommentTok{\# 读取go分析保存的表格}
 \CommentTok{\#dotData \textless{}{-} go$GODF$"倍数"$变化趋势(BP)}
 \CommentTok{\#dotData \textless{}{-} readxl::read\_xlsx("kegg.xlsx", sheet = 1) 自定义挑选想要通路后的表格}
-\NormalTok{dotData }\OtherTok{\textless{}{-}}\NormalTok{ go}\SpecialCharTok{$}\NormalTok{GODF}\SpecialCharTok{$}\StringTok{"1.5"}\SpecialCharTok{$}\NormalTok{all}
+\NormalTok{dotData }\OtherTok{\textless{}{-}}\NormalTok{ enrich}\SpecialCharTok{$}\NormalTok{GODF}\SpecialCharTok{$}\StringTok{"2"}\SpecialCharTok{$}\NormalTok{all}
 \CommentTok{\# 筛选数据（按需配合其他筛选）}
 \NormalTok{dotData }\OtherTok{\textless{}{-}} \FunctionTok{DEGp\_prepareDotplot}\NormalTok{(dotData, }\AttributeTok{head =} \DecValTok{30}\NormalTok{, }\AttributeTok{delete =} \ConstantTok{NULL}\NormalTok{)}
 \NormalTok{pic.dot }\OtherTok{\textless{}{-}} \FunctionTok{DEGp\_Dotplot}\NormalTok{(dotData, }\AttributeTok{title =} \StringTok{\textquotesingle{}TOP of GO\textquotesingle{}}\NormalTok{, }
@@ -526,7 +530,7 @@ On the way \ldots{}
 \CommentTok{\# 读取kegg分析保存的表格}
 \CommentTok{\# dotDatak \textless{}{-} readxl::read\_xlsx("./result/proteinOR{-}NC/lh\_kegg.all.xlsx", sheet = 1)}
 \CommentTok{\# 读取kegg分析保存的表格}
-\NormalTok{dotDatak }\OtherTok{\textless{}{-}}\NormalTok{ go}\SpecialCharTok{$}\NormalTok{KEGGDF}\SpecialCharTok{$}\StringTok{\textquotesingle{}1.5\textquotesingle{}}\SpecialCharTok{$}\NormalTok{up}
+\NormalTok{dotDatak }\OtherTok{\textless{}{-}}\NormalTok{ enrich}\SpecialCharTok{$}\NormalTok{KEGGDF}\SpecialCharTok{$}\StringTok{\textquotesingle{}2\textquotesingle{}}\SpecialCharTok{$}\NormalTok{up}
 \CommentTok{\# 筛选数据（按需配合其他筛选）}
 \NormalTok{dotDataK }\OtherTok{\textless{}{-}} \FunctionTok{DEGp\_prepareDotplot}\NormalTok{(dotDatak, }\AttributeTok{head =} \DecValTok{30}\NormalTok{, }\AttributeTok{delete =} \ConstantTok{NULL}\NormalTok{)}
 \NormalTok{pic.dotk }\OtherTok{\textless{}{-}} \FunctionTok{DEGp\_Dotplot}\NormalTok{(dotDataK, }\AttributeTok{title =} \StringTok{\textquotesingle{}TOP of KEGGpathway\textquotesingle{}}\NormalTok{, }

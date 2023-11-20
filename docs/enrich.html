@@ -282,7 +282,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-2"><a href="enrich.html#cb8-2" tabindex="-1"></a><span class="co"># 读取go分析保存的表格</span></span>
 <span id="cb8-3"><a href="enrich.html#cb8-3" tabindex="-1"></a><span class="co">#dotData &lt;- go$GODF$&quot;倍数&quot;$变化趋势(BP)</span></span>
 <span id="cb8-4"><a href="enrich.html#cb8-4" tabindex="-1"></a><span class="co">#dotData &lt;- readxl::read_xlsx(&quot;kegg.xlsx&quot;, sheet = 1) 自定义挑选想要通路后的表格</span></span>
-<span id="cb8-5"><a href="enrich.html#cb8-5" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> go<span class="sc">$</span>GODF<span class="sc">$</span><span class="st">&quot;1.5&quot;</span><span class="sc">$</span>all</span>
+<span id="cb8-5"><a href="enrich.html#cb8-5" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> enrich<span class="sc">$</span>GODF<span class="sc">$</span><span class="st">&quot;2&quot;</span><span class="sc">$</span>all</span>
 <span id="cb8-6"><a href="enrich.html#cb8-6" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
 <span id="cb8-7"><a href="enrich.html#cb8-7" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotData, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
 <span id="cb8-8"><a href="enrich.html#cb8-8" tabindex="-1"></a>pic.dot <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotData, <span class="at">title =</span> <span class="st">&#39;TOP of GO&#39;</span>, </span>
@@ -292,7 +292,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-12"><a href="enrich.html#cb8-12" tabindex="-1"></a><span class="co"># 读取kegg分析保存的表格</span></span>
 <span id="cb8-13"><a href="enrich.html#cb8-13" tabindex="-1"></a><span class="co"># dotDatak &lt;- readxl::read_xlsx(&quot;./result/proteinOR-NC/lh_kegg.all.xlsx&quot;, sheet = 1)</span></span>
 <span id="cb8-14"><a href="enrich.html#cb8-14" tabindex="-1"></a><span class="co"># 读取kegg分析保存的表格</span></span>
-<span id="cb8-15"><a href="enrich.html#cb8-15" tabindex="-1"></a>dotDatak <span class="ot">&lt;-</span> go<span class="sc">$</span>KEGGDF<span class="sc">$</span><span class="st">&#39;1.5&#39;</span><span class="sc">$</span>up</span>
+<span id="cb8-15"><a href="enrich.html#cb8-15" tabindex="-1"></a>dotDatak <span class="ot">&lt;-</span> enrich<span class="sc">$</span>KEGGDF<span class="sc">$</span><span class="st">&#39;2&#39;</span><span class="sc">$</span>up</span>
 <span id="cb8-16"><a href="enrich.html#cb8-16" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
 <span id="cb8-17"><a href="enrich.html#cb8-17" tabindex="-1"></a>dotDataK <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotDatak, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
 <span id="cb8-18"><a href="enrich.html#cb8-18" tabindex="-1"></a>pic.dotk <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotDataK, <span class="at">title =</span> <span class="st">&#39;TOP of KEGGpathway&#39;</span>, </span>

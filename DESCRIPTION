@@ -18,6 +18,7 @@ Suggests:
     prettydoc
 Imports:
     data.table,
+    readr,
     tibble,
     DESeq2,
     BiocManager,
@@ -34,8 +35,8 @@ Imports:
     VennDiagram,
     scales
 Depends:
-    dplyr,
     stringr,
-    readr,
-    writexl
+    readxl,
+    writexl,
+    dplyr
 URL: https://github.com/ArronLZ/LZ

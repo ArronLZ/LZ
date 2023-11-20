@@ -84,7 +84,7 @@ write_xlsx(kegg.lh$pSigDF, path = "./result/xx/lh_kegg.all.xlsx")
 # 读取go分析保存的表格
 #dotData <- go$GODF$"倍数"$变化趋势(BP)
 #dotData <- readxl::read_xlsx("kegg.xlsx", sheet = 1) 自定义挑选想要通路后的表格
-dotData <- go$GODF$"1.5"$all
+dotData <- enrich$GODF$"2"$all
 # 筛选数据（按需配合其他筛选）
 dotData <- DEGp_prepareDotplot(dotData, head = 30, delete = NULL)
 pic.dot <- DEGp_Dotplot(dotData, title = 'TOP of GO', 
@@ -94,7 +94,7 @@ pic.dot <- DEGp_Dotplot(dotData, title = 'TOP of GO',
 # 读取kegg分析保存的表格
 # dotDatak <- readxl::read_xlsx("./result/proteinOR-NC/lh_kegg.all.xlsx", sheet = 1)
 # 读取kegg分析保存的表格
-dotDatak <- go$KEGGDF$'1.5'$up
+dotDatak <- enrich$KEGGDF$'2'$up
 # 筛选数据（按需配合其他筛选）
 dotDataK <- DEGp_prepareDotplot(dotDatak, head = 30, delete = NULL)
 pic.dotk <- DEGp_Dotplot(dotDataK, title = 'TOP of KEGGpathway', 

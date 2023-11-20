@@ -206,7 +206,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 先安装R及Rstudio, 前者是核心，后者是编辑器(写代码的地方)。<br>
 1. 安装<a href="https://www.r-project.org/">R最新版</a><br>
 2. 安装<a href="https://posit.co/download/rstudio-desktop/">Rstudio最新版</a><br>
-3. Win电脑可以考虑安装R版本对应的<a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a> (可选项)</p>
+3. Win电脑可以考虑安装R版本对应的<a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a> (可选项)<br>
+4. <strong>重要提示：请卸载或者至少退出一切杀毒软件(微软自带的不用退出)，否则安装包时可能会出现难以解决的奇怪
+bug</strong></p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="install.html#cb1-1" tabindex="-1"></a><span class="co"># 安装biocondutor</span></span>
 <span id="cb1-2"><a href="install.html#cb1-2" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
 <span id="cb1-3"><a href="install.html#cb1-3" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
@@ -220,19 +222,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-11"><a href="install.html#cb1-11" tabindex="-1"></a></span>
 <span id="cb1-12"><a href="install.html#cb1-12" tabindex="-1"></a><span class="co"># 安装LZ依赖包</span></span>
 <span id="cb1-13"><a href="install.html#cb1-13" tabindex="-1"></a><span class="co"># 安装cran包</span></span>
-<span id="cb1-14"><a href="install.html#cb1-14" tabindex="-1"></a>cran_pack <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;devtools&#39;</span>, <span class="st">&#39;prettydoc&#39;</span>, <span class="st">&#39;Hmisc&#39;</span>, <span class="st">&#39;markdown&#39;</span>, <span class="st">&#39;tidyverse&#39;</span>)</span>
-<span id="cb1-15"><a href="install.html#cb1-15" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> cran_pack) { <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(p, <span class="at">quietly =</span> T)) <span class="fu">install.packages</span>(p) }</span>
-<span id="cb1-16"><a href="install.html#cb1-16" tabindex="-1"></a><span class="co"># 安装bioconductor包</span></span>
-<span id="cb1-17"><a href="install.html#cb1-17" tabindex="-1"></a>bioc_pack <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HPO.db&quot;</span>, <span class="st">&quot;DOSE&quot;</span>, <span class="st">&quot;clusterProfiler&quot;</span>, <span class="st">&#39;DESeq2&#39;</span>, <span class="st">&#39;edgeR&#39;</span>, <span class="st">&#39;limma&#39;</span>)</span>
-<span id="cb1-18"><a href="install.html#cb1-18" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> bioc_pack) { </span>
-<span id="cb1-19"><a href="install.html#cb1-19" tabindex="-1"></a>  <span class="fu">cat</span>(p, <span class="st">&#39;=========</span><span class="sc">\n</span><span class="st">&#39;</span>) </span>
-<span id="cb1-20"><a href="install.html#cb1-20" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(p, <span class="at">quietly =</span> T)) BiocManager<span class="sc">::</span><span class="fu">install</span>(p, <span class="at">update =</span> F, <span class="at">ask =</span>F) </span>
-<span id="cb1-21"><a href="install.html#cb1-21" tabindex="-1"></a>}</span>
-<span id="cb1-22"><a href="install.html#cb1-22" tabindex="-1"></a><span class="co"># 安装LZ包</span></span>
-<span id="cb1-23"><a href="install.html#cb1-23" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ArronLZ/LZ&quot;</span>, <span class="at">upgrade =</span><span class="st">&quot;never&quot;</span>, <span class="at">force =</span> T, </span>
-<span id="cb1-24"><a href="install.html#cb1-24" tabindex="-1"></a>                         <span class="at">build_vignettes =</span> T)</span>
-<span id="cb1-25"><a href="install.html#cb1-25" tabindex="-1"></a><span class="co"># 查看文档（点击LZ Documents查看网页版）</span></span>
-<span id="cb1-26"><a href="install.html#cb1-26" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">&#39;LZ&#39;</span>)</span></code></pre></div>
+<span id="cb1-14"><a href="install.html#cb1-14" tabindex="-1"></a>cran_pack <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;devtools&#39;</span>, <span class="st">&#39;prettydoc&#39;</span>, <span class="st">&#39;Hmisc&#39;</span>, <span class="st">&#39;markdown&#39;</span>, </span>
+<span id="cb1-15"><a href="install.html#cb1-15" tabindex="-1"></a>               <span class="st">&#39;Hmisc&#39;</span>, <span class="st">&#39;tidyverse&#39;</span>)</span>
+<span id="cb1-16"><a href="install.html#cb1-16" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> cran_pack) { <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(p, <span class="at">quietly =</span> T)) <span class="fu">install.packages</span>(p) }</span>
+<span id="cb1-17"><a href="install.html#cb1-17" tabindex="-1"></a><span class="co"># 安装bioconductor包</span></span>
+<span id="cb1-18"><a href="install.html#cb1-18" tabindex="-1"></a>bioc_pack <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HPO.db&quot;</span>, <span class="st">&quot;DOSE&quot;</span>, <span class="st">&quot;clusterProfiler&quot;</span>, <span class="st">&#39;DESeq2&#39;</span>, <span class="st">&#39;edgeR&#39;</span>, </span>
+<span id="cb1-19"><a href="install.html#cb1-19" tabindex="-1"></a>               <span class="st">&#39;limma&#39;</span>, <span class="st">&quot;topGO&quot;</span>, <span class="st">&#39;Rgraphviz&#39;</span>, <span class="st">&#39;org.Hs.eg.db&#39;</span>)</span>
+<span id="cb1-20"><a href="install.html#cb1-20" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> bioc_pack) { </span>
+<span id="cb1-21"><a href="install.html#cb1-21" tabindex="-1"></a>  <span class="fu">cat</span>(p, <span class="st">&#39;=========</span><span class="sc">\n</span><span class="st">&#39;</span>) </span>
+<span id="cb1-22"><a href="install.html#cb1-22" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(p, <span class="at">quietly =</span> T)) BiocManager<span class="sc">::</span><span class="fu">install</span>(p, <span class="at">update =</span> F, <span class="at">ask =</span>F) </span>
+<span id="cb1-23"><a href="install.html#cb1-23" tabindex="-1"></a>}</span>
+<span id="cb1-24"><a href="install.html#cb1-24" tabindex="-1"></a><span class="co"># 安装LZ包</span></span>
+<span id="cb1-25"><a href="install.html#cb1-25" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ArronLZ/LZ&quot;</span>, <span class="at">upgrade =</span><span class="st">&quot;never&quot;</span>, <span class="at">force =</span> T, </span>
+<span id="cb1-26"><a href="install.html#cb1-26" tabindex="-1"></a>                         <span class="at">build_vignettes =</span> T)</span>
+<span id="cb1-27"><a href="install.html#cb1-27" tabindex="-1"></a><span class="co"># 查看文档（点击LZ Documents查看网页版）</span></span>
+<span id="cb1-28"><a href="install.html#cb1-28" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">&#39;LZ&#39;</span>)</span></code></pre></div>
 
 </div>
             </section>
