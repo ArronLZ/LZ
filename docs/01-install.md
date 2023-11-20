@@ -7,7 +7,7 @@
 版本，win用户可以直接点[R-4.3.2](https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/windows/base/R-4.3.2-win.exe)下载。<br>
 2. 安装[Rstudio最新版](https://posit.co/download/rstudio-desktop/)，win用户可直接点[Rstudio Desktop](https://download1.rstudio.org/electron/windows/RStudio-2023.09.1-494.exe)下载<br>
 3. Win电脑可以考虑安装R版本对应的[Rtools](https://cran.r-project.org/bin/windows/Rtools/) (可选项，新手可以不安装)<br>
-4. **重要提示：请卸载或者至少退出一切杀毒软件(微软自带的不用退出)，否则安装包时可能会出现难以解决的奇怪。bug**
+4. **重要提示：请卸载或者至少退出一切杀毒软件(微软自带的不用退出)，否则安装包时可能会出现难以解决的奇怪bug。**
 
 ## 安装LZ包
 1. 安装LZ包所需的依赖包
