@@ -169,13 +169,26 @@ email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
 \hypertarget{install}{%
 \chapter{安装}\label{install}}
 
+\hypertarget{ux5b89ux88c5rux53carsudioux73afux5883}{%
+\section{安装R及Rsudio环境}\label{ux5b89ux88c5rux53carsudioux73afux5883}}
+
 \textbf{LZ} R包可以从Github上安装。
 先安装R及Rstudio, 前者是核心，后者是编辑器(写代码的地方)。
-1. 安装\href{https://www.r-project.org/}{R最新版}
-2. 安装\href{https://posit.co/download/rstudio-desktop/}{Rstudio最新版}
-3. Win电脑可以考虑安装R版本对应的\href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} (可选项)
-4. \textbf{重要提示：请卸载或者至少退出一切杀毒软件(微软自带的不用退出)，否则安装包时可能会出现难以解决的奇怪
-bug}
+1. 安装\href{https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/}{R最新版}，根据系统自行选择
+版本，win用户可以直接点\href{https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/windows/base/R-4.3.2-win.exe}{R-4.3.2}下载。
+2. 安装\href{https://posit.co/download/rstudio-desktop/}{Rstudio最新版}，win用户可直接点\href{https://download1.rstudio.org/electron/windows/RStudio-2023.09.1-494.exe}{Rstudio Desktop}下载
+3. Win电脑可以考虑安装R版本对应的\href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} (可选项，新手可以不安装)
+4. \textbf{重要提示：请卸载或者至少退出一切杀毒软件(微软自带的不用退出)，否则安装包时可能会出现难以解决的奇怪。bug}
+
+\hypertarget{ux5b89ux88c5lzux5305}{%
+\section{安装LZ包}\label{ux5b89ux88c5lzux5305}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  安装LZ包所需的依赖包
+\end{enumerate}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -202,6 +215,19 @@ bug}
   \FunctionTok{cat}\NormalTok{(p, }\StringTok{\textquotesingle{}=========}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{) }
   \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(p, }\AttributeTok{quietly =}\NormalTok{ T)) BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(p, }\AttributeTok{update =}\NormalTok{ F, }\AttributeTok{ask =}\NormalTok{F) }
 \NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  安装LZ包(此包会不定时更新，后续更新只需要重新运行这句即可，上面的包不需要重新安装)
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \CommentTok{\# 安装LZ包}
 \NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"ArronLZ/LZ"}\NormalTok{, }\AttributeTok{upgrade =}\StringTok{"never"}\NormalTok{, }\AttributeTok{force =}\NormalTok{ T, }
                          \AttributeTok{build\_vignettes =}\NormalTok{ T)}

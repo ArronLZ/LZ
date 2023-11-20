@@ -1,4 +1,6 @@
 install
+安装r及rsudio环境
+安装lz包
 deg
 deg-mian
 加载包

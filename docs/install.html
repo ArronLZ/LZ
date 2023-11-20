@@ -145,7 +145,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#本书结构"><i class="fa fa-check"></i>本书结构</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#致谢"><i class="fa fa-check"></i>致谢</a></li>
 </ul></li>
-<li class="chapter" data-level="1" data-path="install.html"><a href="install.html"><i class="fa fa-check"></i><b>1</b> 安装</a></li>
+<li class="chapter" data-level="1" data-path="install.html"><a href="install.html"><i class="fa fa-check"></i><b>1</b> 安装</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="install.html"><a href="install.html#安装r及rsudio环境"><i class="fa fa-check"></i><b>1.1</b> 安装R及Rsudio环境</a></li>
+<li class="chapter" data-level="1.2" data-path="install.html"><a href="install.html#安装lz包"><i class="fa fa-check"></i><b>1.2</b> 安装LZ包</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="deg.html"><a href="deg.html"><i class="fa fa-check"></i><b>2</b> RNAseq差异分析</a>
 <ul>
 <li class="chapter" data-level="2.1" data-path="deg.html"><a href="deg.html#deg-mian"><i class="fa fa-check"></i><b>2.1</b> 差异分析</a>
@@ -202,13 +206,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="install" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">1</span> 安装<a href="install.html#install" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="安装r及rsudio环境" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> 安装R及Rsudio环境<a href="install.html#安装r及rsudio环境" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><strong>LZ</strong> R包可以从Github上安装。<br>
 先安装R及Rstudio, 前者是核心，后者是编辑器(写代码的地方)。<br>
-1. 安装<a href="https://www.r-project.org/">R最新版</a><br>
-2. 安装<a href="https://posit.co/download/rstudio-desktop/">Rstudio最新版</a><br>
-3. Win电脑可以考虑安装R版本对应的<a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a> (可选项)<br>
-4. <strong>重要提示：请卸载或者至少退出一切杀毒软件(微软自带的不用退出)，否则安装包时可能会出现难以解决的奇怪
-bug</strong></p>
+1. 安装<a href="https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/">R最新版</a>，根据系统自行选择
+版本，win用户可以直接点<a href="https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/windows/base/R-4.3.2-win.exe">R-4.3.2</a>下载。<br>
+2. 安装<a href="https://posit.co/download/rstudio-desktop/">Rstudio最新版</a>，win用户可直接点<a href="https://download1.rstudio.org/electron/windows/RStudio-2023.09.1-494.exe">Rstudio Desktop</a>下载<br>
+3. Win电脑可以考虑安装R版本对应的<a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a> (可选项，新手可以不安装)<br>
+4. <strong>重要提示：请卸载或者至少退出一切杀毒软件(微软自带的不用退出)，否则安装包时可能会出现难以解决的奇怪。bug</strong></p>
+</div>
+<div id="安装lz包" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> 安装LZ包<a href="install.html#安装lz包" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li>安装LZ包所需的依赖包</li>
+</ol>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="install.html#cb1-1" tabindex="-1"></a><span class="co"># 安装biocondutor</span></span>
 <span id="cb1-2"><a href="install.html#cb1-2" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
 <span id="cb1-3"><a href="install.html#cb1-3" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
@@ -231,13 +243,17 @@ bug</strong></p>
 <span id="cb1-20"><a href="install.html#cb1-20" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> bioc_pack) { </span>
 <span id="cb1-21"><a href="install.html#cb1-21" tabindex="-1"></a>  <span class="fu">cat</span>(p, <span class="st">&#39;=========</span><span class="sc">\n</span><span class="st">&#39;</span>) </span>
 <span id="cb1-22"><a href="install.html#cb1-22" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(p, <span class="at">quietly =</span> T)) BiocManager<span class="sc">::</span><span class="fu">install</span>(p, <span class="at">update =</span> F, <span class="at">ask =</span>F) </span>
-<span id="cb1-23"><a href="install.html#cb1-23" tabindex="-1"></a>}</span>
-<span id="cb1-24"><a href="install.html#cb1-24" tabindex="-1"></a><span class="co"># 安装LZ包</span></span>
-<span id="cb1-25"><a href="install.html#cb1-25" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ArronLZ/LZ&quot;</span>, <span class="at">upgrade =</span><span class="st">&quot;never&quot;</span>, <span class="at">force =</span> T, </span>
-<span id="cb1-26"><a href="install.html#cb1-26" tabindex="-1"></a>                         <span class="at">build_vignettes =</span> T)</span>
-<span id="cb1-27"><a href="install.html#cb1-27" tabindex="-1"></a><span class="co"># 查看文档（点击LZ Documents查看网页版）</span></span>
-<span id="cb1-28"><a href="install.html#cb1-28" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">&#39;LZ&#39;</span>)</span></code></pre></div>
+<span id="cb1-23"><a href="install.html#cb1-23" tabindex="-1"></a>}</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>安装LZ包(此包会不定时更新，后续更新只需要重新运行这句即可，上面的包不需要重新安装)</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="install.html#cb2-1" tabindex="-1"></a><span class="co"># 安装LZ包</span></span>
+<span id="cb2-2"><a href="install.html#cb2-2" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ArronLZ/LZ&quot;</span>, <span class="at">upgrade =</span><span class="st">&quot;never&quot;</span>, <span class="at">force =</span> T, </span>
+<span id="cb2-3"><a href="install.html#cb2-3" tabindex="-1"></a>                         <span class="at">build_vignettes =</span> T)</span>
+<span id="cb2-4"><a href="install.html#cb2-4" tabindex="-1"></a><span class="co"># 查看文档（点击LZ Documents查看网页版）</span></span>
+<span id="cb2-5"><a href="install.html#cb2-5" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">&#39;LZ&#39;</span>)</span></code></pre></div>
 
+</div>
 </div>
             </section>
 
