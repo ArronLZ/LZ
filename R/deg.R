@@ -51,7 +51,7 @@ DEG_prepareData <- function(eset_file="gene_count.csv",
     eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$ensembl_gene_id, ]
     eset <- cbind(SYMBOL = all_anot$hugo_mRNA[
       match(rownames(eset), all_anot$hugo_mRNA$ensembl_gene_id), 3], eset)
-    eset <- quchong(eset)
+    eset <- quchong(eset, col.by = "SYMBOL")
   } else {
     eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$symbol, ]
   }
