@@ -141,12 +141,10 @@ fpkmToTpm <- function(fpkm) {
 #' @return list Large list
 #' @export
 #' 
-#' @example path.R
 #' @author Jiang
-#' \dontrun{
-#'   data(gencode.v22.annot, package = "LZ")
-#'   data(keggpathway.gmt, package = "LZ")
-#' }
+#' @examples
+#' #  data(gencode.v22.annot, package = "LZ")
+#' #  data(keggpathway.gmt, package = "LZ")
 getData <- function(..., package = "LZ") {
   data(..., package = package)
 }

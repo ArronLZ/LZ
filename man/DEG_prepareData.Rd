@@ -13,7 +13,11 @@ DEG_prepareData(
   auto.del.character = T,
   group_file = "group.csv",
   annot_trans = T,
-  f_mark = "diff"
+  f_mark = "diff",
+  is.human = T,
+  orgDb = "org.Mm.eg.db",
+  fromType = "ENSEMBL",
+  toType = c("SYMBOL", "UNIPROT")
 )
 }
 \arguments{
@@ -32,6 +36,14 @@ DEG_prepareData(
 \item{annot_trans}{logical, do the eset need be annot to symbol? if the datafame's first coloumn is not offical symbol, you can set to TRUE.}
 
 \item{f_mark}{file mark(optional), default: diff}
+
+\item{is.human}{logical, default is True, if it is True, the param orgDB,fromTyp and toType will be ignore}
+
+\item{orgDb}{character, annotation db, ex. "org.Mm.eg.db"}
+
+\item{fromType}{character, eset id column type}
+
+\item{toType}{character, the annot result}
 }
 \value{
 list
@@ -55,4 +67,5 @@ prepare the data that LZ diff analysis need
 # rowname2 |   tumor   |  1
 # rowname3 |   normal  |  2
 # rowname4 |   normal  |  2
+# if is.human = F, please set the orgDb and fromType correctly.
 }

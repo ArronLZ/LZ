@@ -9,10 +9,15 @@
 #' @param group_file the group data file name, default: "group.csv"
 #' @param annot_trans logical, do the eset need be annot to symbol? if the datafame's first coloumn is not offical symbol, you can set to TRUE.
 #' @param f_mark file mark(optional), default: diff
+#' @param is.human logical, default is True, if it is True, the param orgDB,fromTyp and toType will be ignore
+#' @param orgDb character, annotation db, ex. "org.Mm.eg.db"
+#' @param fromType character, eset id column type
+#' @param toType character, the annot result
 #'
 #' @return list
 #' @export
 #' @importFrom data.table fread
+#' @importFrom clusterProfiler bitr
 #'
 #' @examples #
 #' #' # exprset.group = list(eset, group, f_mark)
@@ -28,11 +33,16 @@
 #' # rowname2 |   tumor   |  1
 #' # rowname3 |   normal  |  2
 #' # rowname4 |   normal  |  2
+#' # if is.human = F, please set the orgDb and fromType correctly.
 DEG_prepareData <- function(eset_file="gene_count.csv",
                             id_dot = F, col.by = "ID",
                             col.del=NULL, auto.del.character=T,
                             group_file="group.csv",
-                            annot_trans=T, f_mark="diff") {
+                            annot_trans=T, f_mark="diff",
+                            is.human = T, orgDb = "org.Mm.eg.db",
+                            fromType = "ENSEMBL", 
+                            toType = c("SYMBOL", "UNIPROT")
+                            ) {
   # f_mark="SHUANG-CONTROL"
   # 需要转换注释，需要这个文件
   tmpenv <- new.env()
@@ -52,6 +62,16 @@ DEG_prepareData <- function(eset_file="gene_count.csv",
     eset <- cbind(SYMBOL = all_anot$hugo_mRNA[
       match(rownames(eset), all_anot$hugo_mRNA$ensembl_gene_id), 3], eset)
     eset <- quchong(eset, col.by = "SYMBOL")
+    #　非人注释
+    if (!is.human) {
+      annot.df.org <- bitr(rownames(eset), fromType = fromType, 
+                           toType = toType, 
+                           OrgDb = "org.Hs.eg.db")
+      eset <- eset[rownames(eset) %in% annot.df.org[,1], ]
+      eset <- cbind(SYMBOL = annot.df.org[
+        match(rownames(eset), annot.df.org[,1]), "SYMBOL"], eset)
+      eset <- quchong(eset, col.by = "SYMBOL")
+    }
   } else {
     eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$symbol, ]
   }

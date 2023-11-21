@@ -16,10 +16,10 @@ list Large list
 \description{
 Annot Data -- gencode.v22.annot
 }
+\examples{
+#  data(gencode.v22.annot, package = "LZ")
+#  data(keggpathway.gmt, package = "LZ")
+}
 \author{
 Jiang
-\dontrun{
-  data(gencode.v22.annot, package = "LZ")
-  data(keggpathway.gmt, package = "LZ")
-}
 }
