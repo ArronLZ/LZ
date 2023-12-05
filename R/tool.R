@@ -58,7 +58,8 @@ quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T) {
 #' 
 #' @author Jiang
 dirclean <- function(dir) {
-  trimws(dir, which = "both", whitespace = "[ \t\r\n\\/\\\\]")
+  dir <- trimws(dir, which = "both", whitespace = "[ \t\r\n\\/\\\\]")
+  return(dir)
 }
 
 
