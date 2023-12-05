@@ -53,7 +53,7 @@ quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T) {
 #' @description clean a dir name
 #' @param dir character the dir name
 #'
-#' @return dirname
+#' @return character
 #' @export
 #' 
 #' @author Jiang
