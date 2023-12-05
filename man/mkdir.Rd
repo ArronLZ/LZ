@@ -10,10 +10,10 @@ mkdir(dir)
 \item{dir}{character, the dir name}
 }
 \value{
-# if the dir no exist the function will create the dir.
+# if the dir no exist the function will create the dir
 }
 \description{
-mkdir, in deg analysis usually used to make output dir.
+mkdir, in deg analysis usually used to make output dir
 }
 \examples{
 #
