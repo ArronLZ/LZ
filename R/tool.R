@@ -55,6 +55,7 @@ quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T) {
 #'
 #' @return dirname
 #' @export
+#' 
 #' @author Jiang
 dirclean <- function(dir) {
   trimws(dir, which = "both", whitespace = "[ \t\r\n\\/\\\\]")
