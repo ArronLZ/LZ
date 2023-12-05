@@ -93,10 +93,9 @@ mkdir <- function(dir) {
 #'
 #' @examples #
 mkdir.p <- function(dir) {
-  unlink(dir)
+  unlink(dir, recursive = T)
   dir.create(dir, recursive = T, showWarnings = T)
 }
-
 
 #' find the NA(NA, grepl("\\s|^$", lie))
 #' @description find the NA(NA, grepl("\\s|^$", lie))
