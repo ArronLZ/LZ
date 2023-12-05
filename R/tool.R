@@ -49,12 +49,23 @@ quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T) {
 }
 
 
+#' clean a dir name
+#' @description clean a dir name
+#' @param dir character the dir name
+#'
+#' @return dirname
+#' @export
+dirclean <- function(dir) {
+  trimws(dir, which = "both", whitespace = "[ \t\r\n\\/\\\\]")
+}
+
+
 #' create dir
-#' @description mkdir, in deg analysis usually used to make output dir.
+#' @description mkdir, in deg analysis usually used to make output dir
 #'
 #' @param dir character, the dir name
 #'
-#' @return # if the dir no exist the function will create the dir.
+#' @return # if the dir no exist the function will create the dir
 #' @export
 #'
 #' @examples #
