@@ -43,51 +43,73 @@ DEG_prepareData <- function(eset_file="gene_count.csv",
                             fromType = "ENSEMBL", 
                             toType = c("SYMBOL", "UNIPROT")
                             ) {
-  # f_mark="SHUANG-CONTROL"
-  # 需要转换注释，需要这个文件
-  tmpenv <- new.env()
-  data(gencode.v22.annot, package = "LZ", envir = tmpenv)
-  all_anot <- tmpenv$gencode.v22.annot
-  # 读取差异基因表(若不是csv文件，请转为csv文件)
   eset <- data.table::fread(eset_file, data.table = F)
-  eset <- quchong(eset = eset, col.by= col.by,
-                  col.del = col.del, auto.del.character=auto.del.character)
+  eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 
+                  auto.del.character = auto.del.character)
+  
+  # if the id contain ., only keep the part before .  ---------
   if (id_dot) {
-    eset$annot <- sapply(strsplit(rownames(eset), '\\.'), function(x) x[[1]])
+    eset$annot <- sapply(strsplit(rownames(eset), "\\."), 
+                         function(x) x[[1]])
     eset <- quchong(eset = eset, col.by = "annot")
   }
-  if (annot_trans) {
-    # 挑出mRNA
-    eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$ensembl_gene_id, ]
-    eset <- cbind(SYMBOL = all_anot$hugo_mRNA[
-      match(rownames(eset), all_anot$hugo_mRNA$ensembl_gene_id), 3], eset)
-    eset <- quchong(eset, col.by = "SYMBOL")
-    #　非人注释
-    if (!is.human) {
+  # if the id contain ., only keep the part before .///  ---------
+  
+  # id annot or not  ----------
+  if (is.human) {
+    # human
+    tmpenv <- new.env()
+    data(gencode.v22.annot, package = "LZ", envir = tmpenv)
+    all_anot <- tmpenv$gencode.v22.annot
+    if (annot_trans) {
+      eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$ensembl_gene_id, 
+      ]
+      eset <- cbind(SYMBOL = all_anot$hugo_mRNA[match(rownames(eset), 
+                                                      all_anot$hugo_mRNA$ensembl_gene_id), 3], eset)
+      eset <- quchong(eset, col.by = "SYMBOL")
+    } else {
+      eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$symbol, 
+      ]
+    }
+    rm(tmpenv)
+  } else {
+    # not human , default is mm
+    if (annot_trans) {
       annot.df.org <- bitr(rownames(eset), fromType = fromType, 
-                           toType = toType, 
-                           OrgDb = "org.Hs.eg.db")
-      eset <- eset[rownames(eset) %in% annot.df.org[,1], ]
-      eset <- cbind(SYMBOL = annot.df.org[
-        match(rownames(eset), annot.df.org[,1]), "SYMBOL"], eset)
+                           toType = toType, OrgDb = orgDb)
+      eset <- eset[rownames(eset) %in% annot.df.org[, 1], ]
+      eset <- cbind(SYMBOL = annot.df.org[match(rownames(eset), 
+                                                annot.df.org[, 1]), "SYMBOL"], eset)
       eset <- quchong(eset, col.by = "SYMBOL")
     }
-  } else {
-    eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$symbol, ]
   }
-
-  # group
-  # group <- data.frame(row.names = names(eset)[1:6], Type=c(rep("CONTROL",3), rep("DAC_OSI",3)))
+  # id annot or not ///  ----------
+  
   group <- read.csv(group_file, row.names = 1)
-  if ( !all(names(eset) == rownames(group)) ) {
+  
+  # check if the rowname of group is all from the colnames of eset -----
+  if ( all(rownames(group) %in% names(eset)) ) {
+    # eset's coloumns > group's rows
+    if (length(names(eset)) > length(rownames(group))) {
+      cat(" 请注意：!!!\n 提供的分组文件中样本数量少于表达矩阵中的样本数：\n
+ 这意味着将会只保留分组文件中的样本来进行后续分析，\n 不在分组文件中的样本将会被剔除!!!\n
+ 分组文件内容展示：\n")
+      print(group)
+    }
+    # only keep the eset's coloumn by group's rownames sample
     eset <- eset[, rownames(group)]
-  }
-  if ( all(names(eset) == rownames(group)) ) {
-    glist <- list(eset=eset, group=group, f_mark=f_mark)
+    # check all eset's coloumn == group's rowname
+    if (all(names(eset) == rownames(group))) {
+      glist <- list(eset = eset, group = group, f_mark = f_mark)
+      glist$group[,1] <- factor(glist$group[,1])
+    } else {
+      stop("提供的分组信息和表达信息不匹配，请检查后再运行\n")
+    }
   } else {
-    stop("提供的分组信息和表达信息不匹配，请检查后再运行")
+    stop("提供的分组信息和表达信息不匹配(分组文件有样本名不在表达矩阵的样本名中)，\n
+         请检查后再运行\n")
   }
-  rm(tmpenv)
+  # check if the rowname of group is all from the colnames of eset /// -----
   return(glist)
 }
 
