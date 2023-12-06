@@ -9,7 +9,7 @@ DEG_DESeq2.pca(dds, outdir)
 \arguments{
 \item{dds}{the result of DEG_DESeq2.dds}
 
-\item{outdir}{output dir, pca plot output dir}
+\item{outdir}{output dir, pca plot output dir, if the outdir exit the function will remove it}
 }
 \value{
 no return, pca plot to disk

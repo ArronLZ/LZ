@@ -172,7 +172,7 @@ DEG_DESeq2.dds <- function(exprset.group, batch = F) {
 #' RNAseq differential analysis DESeq2 002<pca>
 #' @description The function is designed to perform differential analysis by DESeq2<pca>.
 #' @param dds the result of DEG_DESeq2.dds
-#' @param outdir output dir, pca plot output dir
+#' @param outdir output dir, pca plot output dir, if the outdir exit the function will remove it
 #' @return no return, pca plot to disk
 #'
 #' @export
@@ -183,9 +183,11 @@ DEG_DESeq2.dds <- function(exprset.group, batch = F) {
 #' @examples
 #' #
 DEG_DESeq2.pca <- function(dds, outdir) {
-  if (!dir.exists(outdir)) {
-    dir.create(outdir, recursive = T, showWarnings = T)
-  }
+  # if (!dir.exists(outdir)) {
+  #   dir.create(outdir, recursive = T, showWarnings = T)
+  # }
+  outdir <- dirclean(outdir)
+  mkdir.p(outdir)
   ## 数据转换
   # library(factoextra)
   vsd <- vst(dds, blind=FALSE)
@@ -463,9 +465,11 @@ limma.general <- function(eset, group) {
 #' # })
 DEGres_ToGSEA <- function(diffan.obj, outdir) {
   # diffan.obj # DEG_edgerR结果，outdir：结果输出文件夹，不能带/。
-  if (!dir.exists(outdir)) {
-    dir.create(outdir, recursive = T, showWarnings = T)
-  }
+  # if (!dir.exists(outdir)) {
+  #   dir.create(outdir, recursive = T, showWarnings = T)
+  # }
+  outdir <- dirclean(outdir)
+  mkdir.p(outdir)
   ### eset
   resdf <- diffan.obj$resdf
   df.gsea <- data.frame(NAME=resdf$Gene,
@@ -539,7 +543,8 @@ DEGres_ToRICH <- function(diffan.obj, p, q, f, mark, outdir) {
                 UP = genelist.up, DOWN = genelist.down,
                 gsealist = genelist))
   } else {
-    if(!dir.exists(outdir)) { dir.create(outdir, recursive = T) }
+    outdir <- dirclean(outdir)
+    mkdir.p(outdir)
     ## 保存结果
     tryCatch({
       write_xlsx(list(DIFF.ALL = res, DEG.ALL = genelist.deg,
