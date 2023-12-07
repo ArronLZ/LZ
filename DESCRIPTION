@@ -19,7 +19,6 @@ Suggests:
 Imports:
     data.table,
     readr,
-    tibble,
     DESeq2,
     BiocManager,
     BiocParallel,
@@ -38,5 +37,6 @@ Depends:
     stringr,
     readxl,
     writexl,
+    tibble,
     dplyr
 URL: https://github.com/ArronLZ/LZ
