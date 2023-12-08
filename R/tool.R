@@ -71,12 +71,13 @@ dirclean <- function(dir) {
 #' @return # if the dir no exist the function will create the dir
 #' @export
 #'
-#' @examples #
+#' @author Jiang
 mkdir <- function(dir) {
   if(dir.exists(dir)) {
-    stop(paste0("The directory ", dir, "already exists, do you want to delete the 
-         entire directory and re-create it ? ! IF YOU ARE SURE WHAT YOU ARE DOING,
-         please use the function mkdir.p\n"))
+    cat(paste0("Warning: The directory ", dir, "already exists, do you want to 
+    delete the entire directory and re-create it ? ! 
+    IF YOU ARE SURE WHAT YOU ARE DOING, please use the function mkdir.p.
+    Otherwise, you can ignore this warning message.\n"))
   } else {
     dir.create(dir, recursive = T, showWarnings = T) 
   }

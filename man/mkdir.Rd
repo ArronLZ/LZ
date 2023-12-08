@@ -15,6 +15,6 @@ mkdir(dir)
 \description{
 mkdir, in deg analysis usually used to make output dir
 }
-\examples{
-#
+\author{
+Jiang
 }

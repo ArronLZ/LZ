@@ -158,7 +158,7 @@ DEG_DESeq2.dds <- function(exprset.group, batch = F) {
   dds <- DESeqDataSetFromMatrix(countData = exprset,
                                 colData = pheno,
                                 design = design_type)
-  keep <- rowSums(counts(dds) >= 10) >= 0.1*ncol(exprset)  #过滤低表达基因，至少有3个样品都满足10个以上的reads数
+  keep <- rowSums(counts(dds) >= 10) >= ncol(exprset)/3  #过滤低表达基因，至少有3个样品都满足10个以上的reads数
   dds <- dds[keep, ]
   # 1.3
   dds <- DESeq(dds, parallel = T)
