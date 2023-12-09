@@ -2,70 +2,16 @@
 % Please edit documentation in R/deg.R
 \name{DEG_prepareData}
 \alias{DEG_prepareData}
-\title{prepare the data that LZ diff analysis need
-prepare the data that LZ diff analysis need}
+\title{S3 DEG_prepareData: general function DEG_prepareData}
 \usage{
-DEG_prepareData(
-  eset_file = "gene_count.csv",
-  id_dot = F,
-  col.by = "ID",
-  col.del = NULL,
-  auto.del.character = T,
-  group_file = "group.csv",
-  annot_trans = T,
-  f_mark = "diff",
-  is.human = T,
-  orgDb = "org.Mm.eg.db",
-  fromType = "ENSEMBL",
-  toType = c("SYMBOL", "UNIPROT")
-)
+DEG_prepareData(obj)
 }
 \arguments{
-\item{eset_file}{character, the exps data file name, default: "gene_count.csv"}
-
-\item{id_dot}{logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3}
-
-\item{col.by}{character, delete the duplicate by this column}
-
-\item{col.del}{character, manually delete some column}
-
-\item{auto.del.character}{logical, if auto delete the column those class is character}
-
-\item{group_file}{the group data file name, default: "group.csv"}
-
-\item{annot_trans}{logical, do the eset need be annot to symbol? if the datafame's first coloumn is not offical symbol, you can set to TRUE.}
-
-\item{f_mark}{file mark(optional), default: diff}
-
-\item{is.human}{logical, default is True, if it is True, the param orgDB,fromTyp and toType will be ignore}
-
-\item{orgDb}{character, annotation db, ex. "org.Mm.eg.db"}
-
-\item{fromType}{character, eset id column type}
-
-\item{toType}{character, the annot result}
+\item{obj}{object}
 }
 \value{
 list
 }
 \description{
-prepare the data that LZ diff analysis need
-prepare the data that LZ diff analysis need
-}
-\examples{
-#
-#' # exprset.group = list(eset, group, f_mark)
-# ** 如果bacth=T，则group中第二列为batch列。
-# ** 矩阵数据格式(数值型，整型)
-# gene  | row1 | row2 | row3  | row4
-# gene1 |  34  |  23  |  56   |  23
-# gene2 |  35  |  23  |  12   |  23
-# gene3 |  12  |  78  |  78   |  78
-# ** 分组数据格式：需要组的行名 包含于 表达谱的列名 rownames(group) \%in\% colname(eset)
-# Sample   |   Type    | BATCH
-# rowname1 |   tumor   |  1
-# rowname2 |   tumor   |  1
-# rowname3 |   normal  |  2
-# rowname4 |   normal  |  2
-# if is.human = F, please set the orgDb and fromType correctly.
+S3 method initialize, initialize the S3 general function DEG_prepareData()
 }
