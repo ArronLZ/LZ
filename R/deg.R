@@ -1,11 +1,5 @@
-#' @title S3 DEG_prepareData: general function DEG_prepareData
-#' @description S3 method initialize, initialize the S3 general function DEG_prepareData()
-#' 
-#' @param obj object
-#'
-#' @return list
 #' @export
-DEG_prepareData <- function(obj, ...) { UseMethod("DEG_prepareData") }
+DEG_prepareData <- function(obj, ...) UseMethod("DEG_prepareData")
 
 #' @title S3 DEG_prepareData.default: prepare the data that LZ diff analysis need
 #' @description S3 method of default, prepare the data that LZ diff analysis need, \cr
