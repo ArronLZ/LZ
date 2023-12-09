@@ -5,7 +5,7 @@
 #'
 #' @return list
 #' @export
-DEG_prepareData <- function(obj) { UseMethod("DEG_prepareData", obj) }
+DEG_prepareData <- function(obj, ...) { UseMethod("DEG_prepareData") }
 
 #' @title S3 DEG_prepareData.default: prepare the data that LZ diff analysis need
 #' @description S3 method of default, prepare the data that LZ diff analysis need, \cr
