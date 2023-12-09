@@ -9,7 +9,6 @@
 DEG_prepareData(...)
 
 \method{DEG_prepareData}{default}(
-  obj,
   eset_file = "gene_count.csv",
   id_dot = F,
   col.by = "ID",
@@ -27,8 +26,6 @@ DEG_prepareData(...)
 \method{DEG_prepareData}{DEeset}(obj, f_mark = "DE")
 }
 \arguments{
-\item{obj}{obeject}
-
 \item{eset_file}{character, the exps data file name, default: "gene_count.csv"}
 
 \item{id_dot}{logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3}
@@ -52,6 +49,8 @@ DEG_prepareData(...)
 \item{fromType}{character, eset id column type}
 
 \item{toType}{character, the annot result}
+
+\item{obj}{obeject}
 }
 \value{
 list
@@ -59,10 +58,9 @@ list
 list
 }
 \description{
-S3 general function DEG_prepareData(), \cr
-prepare the data that LZ diff analysis need, return a list(eset=xx, group=xx, f_mark="xx")\cr
-`DEG_prepareData.default` default method \cr
-`DEG_prepareData.DEeset`  DEeset method
+S3 general function DEG_prepareData(), prepare the data that LZ diff analysis need, return a list(eset=xx, group=xx, f_mark="xx")\cr
+DEG_prepareData.default default method \cr
+DEG_prepareData.DEeset  DEeset method
 }
 \examples{
 #

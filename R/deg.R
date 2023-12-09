@@ -1,15 +1,13 @@
 #' @title S3 general function DEG_prepareData()
-#' @description S3 general function DEG_prepareData(), \cr
-#' prepare the data that LZ diff analysis need, return a list(eset=xx, group=xx, f_mark="xx")\cr
-#' `DEG_prepareData.default` default method \cr
-#' `DEG_prepareData.DEeset`  DEeset method
+#' @description S3 general function DEG_prepareData(), prepare the data that LZ diff analysis need, return a list(eset=xx, group=xx, f_mark="xx")\cr
+#' DEG_prepareData.default default method \cr
+#' DEG_prepareData.DEeset  DEeset method
 #'
 #' @export
 DEG_prepareData <- function(...) {
   UseMethod("DEG_prepareData")
 }
 
-#' @param obj obeject
 #' @param eset_file character, the exps data file name, default: "gene_count.csv"
 #' @param id_dot logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3
 #' @param col.by character, delete the duplicate by this column
@@ -44,8 +42,7 @@ DEG_prepareData <- function(...) {
 #' # rowname3 |   normal  |  2
 #' # rowname4 |   normal  |  2
 #' # if is.human = F, please set the orgDb and fromType correctly.
-DEG_prepareData.default <- function(obj,
-                            eset_file="gene_count.csv",
+DEG_prepareData.default <- function(eset_file="gene_count.csv",
                             id_dot = F, col.by = "ID",
                             col.del=NULL, auto.del.character=T,
                             group_file="group.csv",
@@ -124,6 +121,7 @@ DEG_prepareData.default <- function(obj,
   return(glist)
 }
 
+#' @param obj obeject
 #' @param f_mark character a analysis mark(optional), default: "DE"
 #'
 #' @return list
