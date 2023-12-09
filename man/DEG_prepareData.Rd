@@ -3,10 +3,10 @@
 \name{DEG_prepareData}
 \alias{DEG_prepareData}
 \alias{DEG_prepareData.default}
-\alias{DEG_prepareData.DEres}
+\alias{DEG_prepareData.DEeset}
 \title{S3 general function DEG_prepareData()}
 \usage{
-DEG_prepareData(obj, ...)
+DEG_prepareData(...)
 
 \method{DEG_prepareData}{default}(
   obj,
@@ -24,12 +24,10 @@ DEG_prepareData(obj, ...)
   toType = c("SYMBOL", "UNIPROT")
 )
 
-\method{DEG_prepareData}{DEres}(obj, f_mark = "DE")
+\method{DEG_prepareData}{DEeset}(obj, f_mark = "DE")
 }
 \arguments{
-\item{obj}{object}
-
-\item{...}{other param}
+\item{obj}{obeject}
 
 \item{eset_file}{character, the exps data file name, default: "gene_count.csv"}
 
@@ -61,14 +59,10 @@ list
 list
 }
 \description{
-S3 general function DEG_prepareData() initialize, \cr
-prepare the data that LZ diff analysis need, return a list(eset=xx, group=xx, f_mark="xx")
-
-S3 method of default, prepare the data that LZ diff analysis need, \cr
-#' return a list(eset=xx, group=xx, f_mark="xx"), S3 general function DEG_prepareData.default
-
-S3 method of object DEres, prepare the data that LZ diff analysis need, \cr
-return a list(eset=xx, group=xx, f_mark="xx"), S3 general function DEG_prepareData.DEres
+S3 general function DEG_prepareData(), \cr
+prepare the data that LZ diff analysis need, return a list(eset=xx, group=xx, f_mark="xx")\cr
+`DEG_prepareData.default` default method \cr
+`DEG_prepareData.DEeset`  DEeset method
 }
 \examples{
 #

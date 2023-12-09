@@ -1,19 +1,14 @@
 #' @title S3 general function DEG_prepareData()
-#' @description S3 general function DEG_prepareData() initialize, \cr
-#' prepare the data that LZ diff analysis need, return a list(eset=xx, group=xx, f_mark="xx")
-#' @param obj object
-#' @param ... other param
+#' @description S3 general function DEG_prepareData(), \cr
+#' prepare the data that LZ diff analysis need, return a list(eset=xx, group=xx, f_mark="xx")\cr
+#' `DEG_prepareData.default` default method \cr
+#' `DEG_prepareData.DEeset`  DEeset method
 #'
 #' @export
-DEG_prepareData <- function(obj, ...) {
+DEG_prepareData <- function(...) {
   UseMethod("DEG_prepareData")
 }
 
-
-#' @title S3 DEG_prepareData.default: prepare the data that LZ diff analysis need
-#' @description S3 method of default, prepare the data that LZ diff analysis need, \cr
-#' #' return a list(eset=xx, group=xx, f_mark="xx"), S3 general function DEG_prepareData.default
-#'
 #' @param obj obeject
 #' @param eset_file character, the exps data file name, default: "gene_count.csv"
 #' @param id_dot logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3
@@ -129,18 +124,13 @@ DEG_prepareData.default <- function(obj,
   return(glist)
 }
 
-#' @title S3 DEG_prepareData.DEres: prepare the data that LZ diff analysis need
-#' @description S3 method of object DEres, prepare the data that LZ diff analysis need, \cr
-#' return a list(eset=xx, group=xx, f_mark="xx"), S3 general function DEG_prepareData.DEres
-#' 
-#' @param obj object
 #' @param f_mark character a analysis mark(optional), default: "DE"
 #'
 #' @return list
 #' @export
 #' @rdname DEG_prepareData
-#' @method DEG_prepareData DEres
-DEG_prepareData.DEres <- function(obj, f_mark = "DE") {
+#' @method DEG_prepareData DEeset
+DEG_prepareData.DEeset <- function(obj, f_mark = "DE") {
   glist <- list(eset = obj$eset, group = obj$group, f_mark = f_mark)
   return(glist)
 }
