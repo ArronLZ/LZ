@@ -1,9 +1,20 @@
+#' @title S3 general function DEG_prepareData()
+#' @description S3 general function DEG_prepareData() initialize, \cr
+#' prepare the data that LZ diff analysis need, return a list(eset=xx, group=xx, f_mark="xx")
+#' @param obj object
+#' @param ... other param
+#'
 #' @export
-DEG_prepareData <- function(obj, ...) UseMethod("DEG_prepareData")
+DEG_prepareData <- function(obj, ...) {
+  UseMethod("DEG_prepareData")
+}
+
 
 #' @title S3 DEG_prepareData.default: prepare the data that LZ diff analysis need
 #' @description S3 method of default, prepare the data that LZ diff analysis need, \cr
 #' #' return a list(eset=xx, group=xx, f_mark="xx"), S3 general function DEG_prepareData.default
+#'
+#' @param obj obeject
 #' @param eset_file character, the exps data file name, default: "gene_count.csv"
 #' @param id_dot logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3
 #' @param col.by character, delete the duplicate by this column
@@ -19,6 +30,7 @@ DEG_prepareData <- function(obj, ...) UseMethod("DEG_prepareData")
 #'
 #' @return list
 #' @export
+#' @rdname DEG_prepareData
 #' @importFrom data.table fread
 #' @importFrom clusterProfiler bitr
 #'
@@ -37,7 +49,8 @@ DEG_prepareData <- function(obj, ...) UseMethod("DEG_prepareData")
 #' # rowname3 |   normal  |  2
 #' # rowname4 |   normal  |  2
 #' # if is.human = F, please set the orgDb and fromType correctly.
-DEG_prepareData.default <- function(eset_file="gene_count.csv",
+DEG_prepareData.default <- function(obj,
+                            eset_file="gene_count.csv",
                             id_dot = F, col.by = "ID",
                             col.del=NULL, auto.del.character=T,
                             group_file="group.csv",
@@ -125,6 +138,8 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
 #'
 #' @return list
 #' @export
+#' @rdname DEG_prepareData
+#' @method DEG_prepareData DEres
 DEG_prepareData.DEres <- function(obj, f_mark = "DE") {
   glist <- list(eset = obj$eset, group = obj$group, f_mark = f_mark)
   return(glist)
