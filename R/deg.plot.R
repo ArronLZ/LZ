@@ -177,7 +177,7 @@ DEGp_Volcano2 <- function(resdf, filterc = "both",
                               y = -log10(PValue), color = Category), 
                shape = shape, alpha = alpha)
   # mark valcano
-  if (!is.null(label_gene)) {
+  if (!is.null(label_geneset)) {
     df_label <- df[which(df$Gene %in% label_geneset), ]
     p <- p + 
       geom_point(data = df_label, aes(x = log2FC, y = -log10(PValue)), 
