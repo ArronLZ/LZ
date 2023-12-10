@@ -127,15 +127,20 @@ DEG_runENRICH <- function(genelist, outdir, glist.save = T,
   go.df.list <- list()
   
   name.list <- names(genelist)
+  progressbar <- (1:length(name.list))/length(name.list)
+  progressbar <- paste0(round(progressbar)*100 - 0.01, "%")
+  i = 1
+  cat("========", "START ENRICH...", "\n")
   for (name_x in name.list) {
     cat("  ", name_x, "...\n")
+    cat("========\n")
     genedf.list <- sapply(genelist[[name_x]], function(x) {
       bitr(x, fromType = 'SYMBOL', toType = c('UNIPROT', 'ENTREZID', 'ENSEMBL'),
            OrgDb = GO_database) 
     }, simplify = F)
     #
-    outd <- paste0(outdir, "/FC_", name_x)
-    mkdir(outd)
+    outd <- paste0(dirclean(outdir), "/", name_x)
+    mkdir.p(outd)
     #
     if (glist.save) {
       genedf.list.symbol <- sapply(genedf.list, function(x) {
@@ -143,9 +148,9 @@ DEG_runENRICH <- function(genelist, outdir, glist.save = T,
         x[, 1, drop = F]
       }, simplify = F)
       writexl::write_xlsx(genedf.list, 
-                          path = paste0(outd, "/genelist.multiID.fc.", name_x, ".xlsx"))
+                          path = paste0(outd, "/genelist.multiID.", name_x, ".xlsx"))
       writexl::write_xlsx(genedf.list.symbol, 
-                          path = paste0(outd, "/genelist.symbol.fc.", name_x, ".xlsx"))
+                          path = paste0(outd, "/genelist.symbol.", name_x, ".xlsx"))
     }
     if (runkegg) {
       # part KEGG
@@ -158,7 +163,7 @@ DEG_runENRICH <- function(genelist, outdir, glist.save = T,
       # 向kegg.df.list保存kegg dataframe结果
       kegg.df.list[[name_x]] <- kegg.an.df
       writexl::write_xlsx(kegg.an.df, 
-                          path = paste0(outd, "/kegg.fc", name_x, ".xlsx"))
+                          path = paste0(outd, "/kegg.", name_x, ".xlsx"))
       cat("  KEGG Done!\n")
     }
     # part GO 
@@ -176,7 +181,8 @@ DEG_runENRICH <- function(genelist, outdir, glist.save = T,
                           path = paste0(outd, "/go.", name_x, ".xlsx"))
       cat("  GO Done!\n")
     }
-
+    cat("========", progressbar[i], "\n")
+    i = i + 1
   }
   #
   return.list <- list('KEGG'= kegg.list, 'KEGGDF'=kegg.df.list,

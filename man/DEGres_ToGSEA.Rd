@@ -4,7 +4,7 @@
 \alias{DEGres_ToGSEA}
 \title{Transformat DEG anlysis result obj to GSEA APP files}
 \usage{
-DEGres_ToGSEA(diffan.obj, outdir, startcol = 8, dt.copy = F)
+DEGres_ToGSEA(diffan.obj, outdir, startcol = 8, txt.del = T)
 }
 \arguments{
 \item{diffan.obj}{object DEG analysis result obj(such as dds)}
@@ -13,7 +13,7 @@ DEGres_ToGSEA(diffan.obj, outdir, startcol = 8, dt.copy = F)
 
 \item{startcol}{number the first data keep col, default is 8, please do not modify unless you know whate you are doing!}
 
-\item{dt.copy}{logical if copy the result dataframe by txt file, default is FALSE, please do not modify unless you know whate you are doing!}
+\item{txt.del}{logical if delete the original txt file, default is TRUE, please do not modify unless you know whate you are doing!}
 }
 \value{
 no

@@ -385,7 +385,7 @@ limma.general <- function(eset, group) {
 #' @param diffan.obj object DEG analysis result obj(such as dds)
 #' @param outdir character the result output dir
 #' @param startcol number the first data keep col, default is 8, please do not modify unless you know whate you are doing!
-#' @param dt.copy logical if copy the result dataframe by txt file, default is FALSE, please do not modify unless you know whate you are doing!
+#' @param txt.del logical if delete the original txt file, default is TRUE, please do not modify unless you know whate you are doing!
 #'
 #' @return no
 #' @export
@@ -396,7 +396,7 @@ limma.general <- function(eset, group) {
 #' # DEG_resTogesa(diffan.obj = diffan.d,
 #' #               outdir = z_result4)
 #' # })
-DEGres_ToGSEA <- function(diffan.obj, outdir, startcol = 8, dt.copy=F) {
+DEGres_ToGSEA <- function(diffan.obj, outdir, startcol = 8, txt.del=T) {
   outdir <- dirclean(outdir)
   mkdir.p(outdir)
   ### eset
@@ -417,11 +417,14 @@ DEGres_ToGSEA <- function(diffan.obj, outdir, startcol = 8, dt.copy=F) {
     paste0("#", "\t", paste(unique(group$group), collapse = "\t") ),
     paste(group$group, collapse = "\t") )
   write_lines(g.g, file = paste0(outdir, "/gesa_group", ".txt"))
-  if (dt.copy) {
-    file.copy(paste0(outdir, "/gesa_eset", ".txt"),
-              paste0(outdir, "/gesa_eset", ".gct"))
-    file.copy(paste0(outdir, "/gesa_group", ".txt"),
-              paste0(outdir, "/gesa_group", ".cls"))
+
+  file.copy(paste0(outdir, "/gesa_eset", ".txt"),
+            paste0(outdir, "/gesa_eset", ".gct"))
+  file.copy(paste0(outdir, "/gesa_group", ".txt"),
+            paste0(outdir, "/gesa_group", ".cls"))
+  if (txt.del) {
+    file.remove(paste0(outdir, "/gesa_eset", ".txt"))
+    file.remove(paste0(outdir, "/gesa_group", ".txt"))
   }
 }
 
