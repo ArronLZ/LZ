@@ -84,6 +84,115 @@ DEGp_Dotplot <- function(df, title='xxx', resultdir, filemark, pic.save =T,
 }
 
 
+#' Dotplot2
+#' @description Dotplot of go or kegg result(clusterProfiler enrich result) or your own data\cr
+#' the dataframe must contain colname : "Description", "GeneRatio", "pvalue", "qvalue", "Count"\cr
+#' note: the col GeneRatio data type should be numeric, if not please trans to numeric \cr
+#' this function do not need prepare data  using DEGp_prepareDotplot() 
+#' @param df data.frame the dataframe must contain colname : "Description", "GeneRatio", "pvalue", "qvalue", "Count"
+#' @param head numeric deafault is 20：keep the head 20 row of df, if not set, use all of the df
+#' @param delete numeric or NULL delete = c(4, 7)：delete 4, 7, NULL: not delete
+#' @param method number picture plot method, can be set one of 1:4, default is 1
+#' @param title character the picture title
+#' @param resultdir character outdir name where the picture save
+#' @param filemark character the picture filename, default is "xxx"
+#' @param pic.save logical save the picture or not,, default is T
+#' @param pw number the picture width, default is 8
+#' @param ph number the picture height, default is 10
+#' @param pcompress number create a blank area at the top of the picture, default is 1
+#' @param size1 number the dot size start, default is 3
+#' @param size2 number the dot size end, default is 5
+#' @param color1 character color rgb
+#' @param color2 character color rgb
+#'
+#' @return ggplot2 picutre
+#' @export
+#'
+#' @author Jiang
+DEGp_Dotplot2 <- function(df, head = 20, delete = NULL,
+                          method = 1, title = "xxx", 
+                          resultdir, filemark, pic.save = T, 
+                          pw = 8, ph = 10, pcompress = 1, 
+                          size1=3, size2=5, 
+                          color1="#AC001D", color2="#888888") {
+  # condition check
+  stopifnot("Description" %in% names(df))
+  stopifnot("GeneRatio" %in% names(df))
+  stopifnot("pvalue" %in% names(df))
+  stopifnot("qvalue" %in% names(df))
+  stopifnot("Count" %in% names(df))
+  # tryCatch({
+  #   stopifnot(3 > 4)
+  # }, error = function(e) {
+  #   message("x必须大于y，请检查。")
+  # })
+  
+  # data clean ------------------
+  predata <- function(df, head = 20, delete = NULL) {
+    if(!is.numeric(df$GeneRatio)) {
+      # only in the condition that the GeneRatio if result of clusterProfiler,
+      #  its GeneRatio is two number sperated by "/"
+      df$GeneRatio <- strsplit(df$GeneRatio, "/") %>% 
+        lapply(., function(x) round(as.numeric(x[1])/as.numeric(x[2]), 2)) %>% 
+        as.numeric()
+    }
+    if (!missing(head)) {
+      df <- df %>% head(head) %>% na.omit()
+    }
+    if (!is.null(delete)) {
+      df <- df[-delete, ]
+    }
+    return(df)
+  }
+  df <- predata(df, head = head, delete = delete)
+  
+  # plot picture ---------------
+  p <- ggplot(cbind(df, Order = nrow(df):1))
+  if (method == 1) {
+    p <-  p + 
+      geom_point(mapping = aes(x = -log10(pvalue), y = Order, 
+                               size = GeneRatio, fill = qvalue), shape = 21)
+  } else if (method == 2) {
+    p <- p + 
+      geom_point(mapping = aes(x = GeneRatio, y = Order, 
+                               size = pvalue, fill = qvalue), shape = 21)
+  } else if (method == 3) {
+    p <- p + 
+      geom_point(mapping = aes(x = -log10(pvalue), y = Order, 
+                               size = Count, fill = pvalue), shape = 21)
+  } else if (method == 4) {
+    p <- p + 
+      geom_point(mapping = aes(x = -log10(qvalue), y = Order, 
+                               size = Count, fill = qvalue), shape = 21)
+  } else {
+    p <- p + 
+      geom_point(mapping = aes(x = -log10(pvalue), y = Order, 
+                               size = GeneRatio, fill = qvalue), shape = 21)
+  }
+  p <- p + scale_y_continuous(position = "left", expand = c(0.05,0.5),
+                              breaks = 1:nrow(df),
+                              labels = Hmisc::capitalize(rev(df$Description))) +
+    labs(y = NULL) +
+    scale_size(range = c(size1, size2)) +
+    scale_fill_gradientn(colours = c(color1, color2)) + 
+    ggtitle(paste0(paste(rep("\n", pcompress), collapse = ""), title)) +  
+    theme_bw() + 
+    theme(panel.grid = element_blank()) +
+    ggtheme.update.text() +
+    guides(size = guide_legend(reverse = TRUE),
+           fill = guide_colourbar(reverse = TRUE))
+  p # %>% ggplotGrob() %>% cowplot::plot_grid()
+  
+  # data output --------------
+  if (pic.save == T) {
+    fname = paste0(resultdir, "/", filemark, ".pdf")
+    pdf(fname, width = pw, height = ph)
+    print(p)
+    dev.off()
+  }
+  return(p)
+}
+
 
 #' Prepare data for DEGp_GOALL_barplot
 #' @description Prepare data for DEGp_GOALL_barplot. Take top n number of each type in the dataframe.
