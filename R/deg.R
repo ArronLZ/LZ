@@ -243,6 +243,7 @@ DEG_edgeR <- function(exprset.group, pval=0.05, fdr=0.1, logfc=1, coef = 2) {
   # 获取排名靠前的基因，这里设置n=80000是为了输出所以基因
   et <- topTags(qlf, n = 80000)
   et <- as.data.frame(et) # 转换为数据框类型
+  et$placeholder <- "Farmer"
   et.norm <- merge(et, cpm.tmm, by = 0)
   et.norm <- tibble::column_to_rownames(et.norm, var = "Row.names")
   et.norm$Gene <- rownames(et.norm)
@@ -377,13 +378,16 @@ limma.general <- function(eset, group) {
 }
 
 
-#' Transformat DEG_edgeR obj to GSEA APP files
-#' @description transformat DEG_edgeR obj to the files that GSEA APP need
+#' Transformat DEG anlysis result obj to GSEA APP files
+#' @description transformat DEG_edgeR obj to the files that GSEA APP need\cr
+#' write the file that GSEA app need to local disk without anything retrun to object
 #'
-#' @param diffan.obj DEG_edgeR obj
-#' @param outdir the result output dir
+#' @param diffan.obj object DEG analysis result obj(such as dds)
+#' @param outdir character the result output dir
+#' @param startcol number the first data keep col, default is 8, please do not modify unless you know whate you are doing!
+#' @param dt.copy logical if copy the result dataframe by txt file, default is FALSE, please do not modify unless you know whate you are doing!
 #'
-#' @return write to local disk without anything retrun to object
+#' @return no
 #' @export
 #' @importFrom readr write_lines
 #'
@@ -392,18 +396,14 @@ limma.general <- function(eset, group) {
 #' # DEG_resTogesa(diffan.obj = diffan.d,
 #' #               outdir = z_result4)
 #' # })
-DEGres_ToGSEA <- function(diffan.obj, outdir) {
-  # diffan.obj # DEG_edgerR结果，outdir：结果输出文件夹，不能带/。
-  # if (!dir.exists(outdir)) {
-  #   dir.create(outdir, recursive = T, showWarnings = T)
-  # }
+DEGres_ToGSEA <- function(diffan.obj, outdir, startcol = 8, dt.copy=F) {
   outdir <- dirclean(outdir)
   mkdir.p(outdir)
   ### eset
   resdf <- diffan.obj$resdf
   df.gsea <- data.frame(NAME=resdf$Gene,
                         Description = 'Farmer',
-                        resdf[, 7:ncol(resdf)],
+                        resdf[, startcol:ncol(resdf)],
                         check.names = F)
   g.h <- c("#1.2" , paste(nrow(df.gsea), ncol(df.gsea)-2, sep = "\t"))
   write_lines(g.h, file = paste0(outdir, "/gesa_eset", ".txt"),
@@ -417,10 +417,12 @@ DEGres_ToGSEA <- function(diffan.obj, outdir) {
     paste0("#", "\t", paste(unique(group$group), collapse = "\t") ),
     paste(group$group, collapse = "\t") )
   write_lines(g.g, file = paste0(outdir, "/gesa_group", ".txt"))
-  file.copy(paste0(outdir, "/gesa_eset", ".txt"),
-            paste0(outdir, "/gesa_eset", ".gct"))
-  file.copy(paste0(outdir, "/gesa_group", ".txt"),
-            paste0(outdir, "/gesa_group", ".cls"))
+  if (dt.copy) {
+    file.copy(paste0(outdir, "/gesa_eset", ".txt"),
+              paste0(outdir, "/gesa_eset", ".gct"))
+    file.copy(paste0(outdir, "/gesa_group", ".txt"),
+              paste0(outdir, "/gesa_group", ".cls"))
+  }
 }
 
 

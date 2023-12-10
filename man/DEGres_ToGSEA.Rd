@@ -2,20 +2,25 @@
 % Please edit documentation in R/deg.R
 \name{DEGres_ToGSEA}
 \alias{DEGres_ToGSEA}
-\title{Transformat DEG_edgeR obj to GSEA APP files}
+\title{Transformat DEG anlysis result obj to GSEA APP files}
 \usage{
-DEGres_ToGSEA(diffan.obj, outdir)
+DEGres_ToGSEA(diffan.obj, outdir, startcol = 8, dt.copy = F)
 }
 \arguments{
-\item{diffan.obj}{DEG_edgeR obj}
+\item{diffan.obj}{object DEG analysis result obj(such as dds)}
 
-\item{outdir}{the result output dir}
+\item{outdir}{character the result output dir}
+
+\item{startcol}{number the first data keep col, default is 8, please do not modify unless you know whate you are doing!}
+
+\item{dt.copy}{logical if copy the result dataframe by txt file, default is FALSE, please do not modify unless you know whate you are doing!}
 }
 \value{
-write to local disk without anything retrun to object
+no
 }
 \description{
-transformat DEG_edgeR obj to the files that GSEA APP need
+transformat DEG_edgeR obj to the files that GSEA APP need\cr
+write the file that GSEA app need to local disk without anything retrun to object
 }
 \examples{
 # suppressWarnings({
