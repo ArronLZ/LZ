@@ -143,9 +143,8 @@ DEGp_Volcano2 <- function(resdf, filterc = "both",
   if (max(resdf$log2FC) > 30) {
     cat("警告，严重警告：基因的变化倍数列数据最大值大于30,意味着该数据可能尚未log2化\n")
   }
-  df <- resdf %>% dplyr::select(Gene, log2FC, PValue, FDR) # %>% 
-  # dplyr::rename(Row.names = Gene, log2FoldChange = log2FC, 
-  #               pvalue = PValue, padj = FDR) %>% na.omit()
+  df <- resdf %>% dplyr::select(Gene, log2FC, PValue, FDR)
+  
   if (filterc == "both") {
     df$Category <- ifelse(df$FDR < fdr & df$PValue < pvalue & (
       df$log2FC > logfc.p | df$log2FC < logfc.n), 
@@ -161,7 +160,7 @@ DEGp_Volcano2 <- function(resdf, filterc = "both",
       df$log2FC > logfc.p | df$log2FC < logfc.n), 
       ifelse(df$log2FC > logfc.p, "UP", "DOWN"), "NOT")
   }
-  df$Category %>% table
+  
   # return(df_valcano)
   xlim = max(abs(df$log2FC))
   #minp <- -log10(max(df[df$Category != "NOT", "PValue"]))
