@@ -484,7 +484,7 @@ DEGres_ToRICH <- function(diffan.obj, p, q, f, mark, outdir) {
     }, finally = {
       return(list(DIFF.ALL = res, DEG.ALL = genelist.deg,
                   UP = genelist.up, DOWN = genelist.down,
-                  gsealist = genelist))
+                  gsealist = genelist, diffan.obj = diffan.obj))
     })
   }
 }
