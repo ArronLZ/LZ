@@ -128,7 +128,7 @@ DEG_runENRICH <- function(genelist, outdir, glist.save = T,
   
   name.list <- names(genelist)
   progressbar <- (1:length(name.list))/length(name.list)
-  progressbar <- paste0(round(progressbar)*100 - 0.01, "%")
+  progressbar <- paste0(round(progressbar*100) - 0.01, "%")
   i = 1
   cat("========", "START ENRICH...", "\n")
   for (name_x in name.list) {
@@ -154,7 +154,7 @@ DEG_runENRICH <- function(genelist, outdir, glist.save = T,
     }
     if (runkegg) {
       # part KEGG
-      cat("  ... KEGG ...\n")
+      cat("  ... KEGG START...\n")
       kegg.an <- sapply(genedf.list, function(x) DEG_KEGG(genelist = x), simplify = F)
       # 向kegg.list保存kegg分析结果
       kegg.list[[name_x]] <- kegg.an
@@ -164,13 +164,13 @@ DEG_runENRICH <- function(genelist, outdir, glist.save = T,
       kegg.df.list[[name_x]] <- kegg.an.df
       writexl::write_xlsx(kegg.an.df, 
                           path = paste0(outd, "/kegg.", name_x, ".xlsx"))
-      cat("  KEGG Done!\n")
+      cat("  ... KEGG END!\n")
     }
     # part GO 
     if (rungo) {
-      cat("  ... GO ...\n")
+      cat("  ... GO START...\n")
       go.an <- mapply(function(x, xn) {
-        cat(xn, "=====\n")
+        cat("  ... ", xn, "...\n")
         DEG_GO(genelist = x, resultdir = outd, filemark = paste0(name_x, "_", xn), 
                rapid = rapid)
       }, genedf.list, names(genedf.list), SIMPLIFY = F)
@@ -179,14 +179,14 @@ DEG_runENRICH <- function(genelist, outdir, glist.save = T,
       go.df.list[[name_x]] <- go.an.df
       writexl::write_xlsx(go.an.df, 
                           path = paste0(outd, "/go.", name_x, ".xlsx"))
-      cat("  GO Done!\n")
+      cat("  ... GO END!\n")
     }
-    cat("========", progressbar[i], "\n")
+    cat("==============", progressbar[i], "\n")
     i = i + 1
   }
   #
   return.list <- list('KEGG'= kegg.list, 'KEGGDF'=kegg.df.list,
                       'GO'=go.list, 'GODF'=go.df.list)
-  cat("  ALL Done!\n")
+  cat(" ALL Done! 100% \n")
   return(return.list)
 }
