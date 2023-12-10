@@ -91,20 +91,23 @@ qlf: mid data of edgeR, et.norm: all result of DEG, sig result of DEG.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Run: diffan &lt;- DEG_edgeR(exprset.group) # pval=0.05, fdr=0.1, logfc=1</span></span></span>
-<span class="r-in"><span><span class="co"># exprset.group  由下列三个数据打包而成，示例：list(eset=exprset, group=phen, f_mark="")</span></span></span>
-<span class="r-in"><span><span class="co"># *1 exprset.group$eset： 矩阵数据格式(数值型，整型)</span></span></span>
-<span class="r-in"><span><span class="co">#       | row1 | row2 | row3  | row4</span></span></span>
-<span class="r-in"><span><span class="co"># gene1 |  34  |  23  |  56   |  23</span></span></span>
-<span class="r-in"><span><span class="co"># gene2 |  35  |  23  |  12   |  23</span></span></span>
-<span class="r-in"><span><span class="co"># gene3 |  12  |  78  |  78   |  78</span></span></span>
-<span class="r-in"><span><span class="co"># *2 exprset.group$group： 分组数据格式：建议只有一列数据</span></span></span>
-<span class="r-in"><span><span class="co">#    # 需要组的行名=表达谱的列名 rownames(group) == colname(eset)</span></span></span>
-<span class="r-in"><span><span class="co">#            type</span></span></span>
-<span class="r-in"><span><span class="co"># rowname1 | tumor</span></span></span>
-<span class="r-in"><span><span class="co"># rowname2 | tumor</span></span></span>
-<span class="r-in"><span><span class="co"># rowname3 | normal</span></span></span>
-<span class="r-in"><span><span class="co"># rowname4 | normal</span></span></span>
-<span class="r-in"><span><span class="co"># *3 exprset.group$f_mark：list标记项，可以为空，但是如果是批量差异分析，建议必须要有此参数，方便后续对个结果进行保存和导出</span></span></span>
+<span class="r-in"><span><span class="co"># exprset.group 由下列三个数据打包而成，示例：list(eset=exprset, group=phen, f_mark="")</span></span></span>
+<span class="r-in"><span><span class="co"># 1. eset：</span></span></span>
+<span class="r-in"><span><span class="co"># ** 表达谱数据格式(数值型，整型)</span></span></span>
+<span class="r-in"><span><span class="co">#       | sample1 | sample2 | sample3  | sample4</span></span></span>
+<span class="r-in"><span><span class="co"># gene1 |  34     |  23     |  56      |  23</span></span></span>
+<span class="r-in"><span><span class="co"># gene2 |  35     |  23     |  12      |  23</span></span></span>
+<span class="r-in"><span><span class="co"># gene3 |  12     |  78     |  78      |  78</span></span></span>
+<span class="r-in"><span><span class="co"># 2. group：</span></span></span>
+<span class="r-in"><span><span class="co"># ** 分组数据格式：需要组的行名=表达谱的列名 rownames(group) == colname(eseti)</span></span></span>
+<span class="r-in"><span><span class="co"># BATCH列可以没有</span></span></span>
+<span class="r-in"><span><span class="co">#            Type     BATCH</span></span></span>
+<span class="r-in"><span><span class="co"># sample1  | tumor   | 1</span></span></span>
+<span class="r-in"><span><span class="co"># sample2  | tumor   | 1</span></span></span>
+<span class="r-in"><span><span class="co"># sample3  | control | 2</span></span></span>
+<span class="r-in"><span><span class="co"># sample4  | control | 2</span></span></span>
+<span class="r-in"><span><span class="co"># 3. f_mark：list标记项，可以为空，但是如果是批量差异分析，建议必须要有此参数，方便后续对个结果进行保存和导出</span></span></span>
+<span class="r-in"><span><span class="co"># 默认的比法是后比前（字符排序在后面的比前面的，如示例中的就是 t vs c,因为c排在前面）</span></span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>

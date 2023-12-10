@@ -73,19 +73,31 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># exprset.group = list(eset, group, f_mark)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Run: diffan &lt;- DEG_DESeq2.dds(exprset.group) # batch = F</span></span></span>
+<span class="r-in"><span><span class="co"># exprset.group 由下列三个数据打包而成，示例：list(eset=exprset, group=phen, f_mark="")</span></span></span>
 <span class="r-in"><span><span class="co"># ** 如果bacth=T，则group中第二列为batch列。</span></span></span>
-<span class="r-in"><span><span class="co"># ** 矩阵数据格式(数值型，整型)</span></span></span>
-<span class="r-in"><span><span class="co">#       | row1 | row2 | row3  | row4</span></span></span>
-<span class="r-in"><span><span class="co"># gene1 |  34  |  23  |  56   |  23</span></span></span>
-<span class="r-in"><span><span class="co"># gene2 |  35  |  23  |  12   |  23</span></span></span>
-<span class="r-in"><span><span class="co"># gene3 |  12  |  78  |  78   |  78</span></span></span>
-<span class="r-in"><span><span class="co"># ** 分组数据格式：需要组的行名=表达谱的列名 rownames(group) == colname(eset)</span></span></span>
-<span class="r-in"><span><span class="co">#            Type   BATCH</span></span></span>
-<span class="r-in"><span><span class="co"># rowname1 | tumor  1</span></span></span>
-<span class="r-in"><span><span class="co"># rowname2 | tumor  1</span></span></span>
-<span class="r-in"><span><span class="co"># rowname3 | normal 2</span></span></span>
-<span class="r-in"><span><span class="co"># rowname4 | normal 2</span></span></span>
+<span class="r-in"><span><span class="co"># 1. eset：</span></span></span>
+<span class="r-in"><span><span class="co"># ** 表达谱数据格式(数值型，整型)</span></span></span>
+<span class="r-in"><span><span class="co">#       | sample1 | sample2 | sample3  | sample4</span></span></span>
+<span class="r-in"><span><span class="co"># gene1 |  34     |  23     |  56      |  23</span></span></span>
+<span class="r-in"><span><span class="co"># gene2 |  35     |  23     |  12      |  23</span></span></span>
+<span class="r-in"><span><span class="co"># gene3 |  12     |  78     |  78      |  78</span></span></span>
+<span class="r-in"><span><span class="co"># 2. group：</span></span></span>
+<span class="r-in"><span><span class="co"># ** 分组数据格式：需要组的行名=表达谱的列名 rownames(group) == colname(eseti)</span></span></span>
+<span class="r-in"><span><span class="co"># BATCH列可以没有(如果设置了bacth=T，BATCH列必须有，且必须位于第二列)</span></span></span>
+<span class="r-in"><span><span class="co">#            Type     BATCH</span></span></span>
+<span class="r-in"><span><span class="co"># sample1  | tumor   | 1</span></span></span>
+<span class="r-in"><span><span class="co"># sample2  | tumor   | 1</span></span></span>
+<span class="r-in"><span><span class="co"># sample3  | control | 2</span></span></span>
+<span class="r-in"><span><span class="co"># sample4  | control | 2</span></span></span>
+<span class="r-in"><span><span class="co"># 3. f_mark：list标记项，可以为空，但是如果是批量差异分析，建议必须要有此参数，方便后续对个结果进行保存和导出</span></span></span>
+<span class="r-in"><span><span class="co"># 默认的比法是后比前（字符排序在后面的比前面的，如示例中的就是 t vs c,因为c排在前面）</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># LZ包将DESeq2差异分析整合拆解成了三个函数，因此需要如下代码才能完整进行差异分析。</span></span></span>
+<span class="r-in"><span><span class="co"># 差异分析 deseq2三部曲</span></span></span>
+<span class="r-in"><span><span class="co"># dds &lt;- DEG_DESeq2.dds(exprset.group=glist, batch = F)  # 差异分析1：准备工作</span></span></span>
+<span class="r-in"><span><span class="co"># DEG_DESeq2.pca(dds, outdir = outdirsub)   # 画PCA图。 此处有warning信息，不用管。</span></span></span>
+<span class="r-in"><span><span class="co"># dds_list &lt;- DEG_DESeq2.ana(dds)           # 差异分析1：得到结果并进行初步筛选</span></span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
