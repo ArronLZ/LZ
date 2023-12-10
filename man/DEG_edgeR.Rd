@@ -29,18 +29,21 @@ Following data is requried: express, group.
 }
 \examples{
 # Run: diffan <- DEG_edgeR(exprset.group) # pval=0.05, fdr=0.1, logfc=1
-# exprset.group  由下列三个数据打包而成，示例：list(eset=exprset, group=phen, f_mark="")
-# *1 exprset.group$eset： 矩阵数据格式(数值型，整型)
-#       | row1 | row2 | row3  | row4
-# gene1 |  34  |  23  |  56   |  23
-# gene2 |  35  |  23  |  12   |  23
-# gene3 |  12  |  78  |  78   |  78
-# *2 exprset.group$group： 分组数据格式：建议只有一列数据
-#    # 需要组的行名=表达谱的列名 rownames(group) == colname(eset)
-#            type
-# rowname1 | tumor
-# rowname2 | tumor
-# rowname3 | normal
-# rowname4 | normal
-# *3 exprset.group$f_mark：list标记项，可以为空，但是如果是批量差异分析，建议必须要有此参数，方便后续对个结果进行保存和导出
+# exprset.group 由下列三个数据打包而成，示例：list(eset=exprset, group=phen, f_mark="")
+# 1. eset：
+# ** 表达谱数据格式(数值型，整型)
+#       | sample1 | sample2 | sample3  | sample4
+# gene1 |  34     |  23     |  56      |  23
+# gene2 |  35     |  23     |  12      |  23
+# gene3 |  12     |  78     |  78      |  78
+# 2. group：
+# ** 分组数据格式：需要组的行名=表达谱的列名 rownames(group) == colname(eseti)
+# BATCH列可以没有
+#            Type     BATCH
+# sample1  | tumor   | 1
+# sample2  | tumor   | 1
+# sample3  | control | 2
+# sample4  | control | 2
+# 3. f_mark：list标记项，可以为空，但是如果是批量差异分析，建议必须要有此参数，方便后续对个结果进行保存和导出
+# 默认的比法是后比前（字符排序在后面的比前面的，如示例中的就是 t vs c,因为c排在前面）
 }

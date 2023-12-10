@@ -78,7 +78,7 @@ DEGp_Dotplot <- function(df, title='xxx', resultdir, filemark, pic.save =T,
   if (pic.save == T) {
     dotplot %>% ggplotGrob() %>% cowplot::plot_grid()
     fname=paste0(resultdir, '/', filemark,'.pdf')
-    ggsave(fname, width = 8, height = 10)
+    ggsave(fname, width = pw, height = ph)
   }
   return(dotplot)
 }
