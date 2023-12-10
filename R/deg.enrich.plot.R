@@ -169,17 +169,18 @@ DEGp_Dotplot2 <- function(df, head = 20, delete = NULL,
       geom_point(mapping = aes(x = -log10(pvalue), y = Order, 
                                size = GeneRatio, fill = qvalue), shape = 21)
   }
-  p <- p + scale_y_continuous(position = "left", expand = c(0.05,0.5),
+  p <- p + scale_y_continuous(position = "left", # expand = c(0.05,0.5),
                               breaks = 1:nrow(df),
                               labels = Hmisc::capitalize(rev(df$Description))) +
     labs(y = NULL) +
     scale_size(range = c(size1, size2)) +
     scale_fill_gradientn(colours = c(color1, color2)) + 
-    ggtitle(paste0(paste(rep("\n", pcompress), collapse = ""), title)) +  
-    theme_bw() + 
+    ggtitle(paste0(paste(rep("\n", pcompress), collapse = ""), title)) +
+    theme_classic() +
+    # theme_bw() + 
     theme(panel.grid = element_blank()) +
     ggtheme.update.text() +
-    guides(size = guide_legend(reverse = TRUE),
+    guides(# size = guide_legend(reverse = TRUE),
            fill = guide_colourbar(reverse = TRUE))
   p # %>% ggplotGrob() %>% cowplot::plot_grid()
   
