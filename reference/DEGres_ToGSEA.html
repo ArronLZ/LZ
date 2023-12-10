@@ -54,7 +54,7 @@ write the file that GSEA app need to local disk without anything retrun to objec
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">DEGres_ToGSEA</span><span class="op">(</span><span class="va">diffan.obj</span>, <span class="va">outdir</span>, startcol <span class="op">=</span> <span class="fl">8</span>, dt.copy <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">DEGres_ToGSEA</span><span class="op">(</span><span class="va">diffan.obj</span>, <span class="va">outdir</span>, startcol <span class="op">=</span> <span class="fl">8</span>, txt.del <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -71,8 +71,8 @@ write the file that GSEA app need to local disk without anything retrun to objec
 <dd><p>number the first data keep col, default is 8, please do not modify unless you know whate you are doing!</p></dd>
 
 
-<dt>dt.copy</dt>
-<dd><p>logical if copy the result dataframe by txt file, default is FALSE, please do not modify unless you know whate you are doing!</p></dd>
+<dt>txt.del</dt>
+<dd><p>logical if delete the original txt file, default is TRUE, please do not modify unless you know whate you are doing!</p></dd>
 
 </dl></div>
     <div class="section level2">
