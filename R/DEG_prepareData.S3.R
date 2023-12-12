@@ -136,18 +136,21 @@ DEG_prepareData.DEeset <- function(obj, f_mark = "DE") {
   return(glist)
 }
 
-#' @inherit DEG_prepareData.default
-#' @param obj obeject the object DEeset
 #' @param eset eset obj
 #' @param group group obj
 #'
 #' @return list
 #' @export
 #' @rdname DEG_prepareData
-DEG_prepareData.XENA <- function(obj, eset, group) {
+DEG_prepareData.XENA <- function(obj, eset, group, id_dot = F, col.by = "ID",
+                                 col.del=NULL, auto.del.character=T,
+                                 annot_trans=T, f_mark="diff",
+                                 is.human = T, orgDb = "org.Mm.eg.db",
+                                 fromType = "ENSEMBL", 
+                                 toType = c("SYMBOL", "UNIPROT")) {
+  eset <- eset                                 
   eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 
                   auto.del.character = auto.del.character)
-  eset <- eset
   # if the id contain ., only keep the part before .  ---------
   if (id_dot) {
     eset$annot <- sapply(strsplit(rownames(eset), "\\."), 

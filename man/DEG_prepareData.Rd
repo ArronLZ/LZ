@@ -26,7 +26,21 @@ DEG_prepareData(...)
 
 \method{DEG_prepareData}{DEeset}(obj, f_mark = "DE")
 
-\method{DEG_prepareData}{XENA}(obj, eset, group)
+\method{DEG_prepareData}{XENA}(
+  obj,
+  eset,
+  group,
+  id_dot = F,
+  col.by = "ID",
+  col.del = NULL,
+  auto.del.character = T,
+  annot_trans = T,
+  f_mark = "diff",
+  is.human = T,
+  orgDb = "org.Mm.eg.db",
+  fromType = "ENSEMBL",
+  toType = c("SYMBOL", "UNIPROT")
+)
 }
 \arguments{
 \item{eset_file}{character, the exps data file name, default: "gene_count.csv"}
