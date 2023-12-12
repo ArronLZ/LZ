@@ -135,10 +135,14 @@ DEG_prepareData.DEeset <- function(obj, f_mark = "DE") {
   return(glist)
 }
 
+#' @param obj obeject the object DEeset
+#' @param eset eset obj
+#' @param group group obj
+#'
 #' @return list
 #' @export
 #' @rdname DEG_prepareData
-DEG_prepareData.XENA <- function(eset, group) {
+DEG_prepareData.XENA <- function(obj, eset, group) {
   eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 
                   auto.del.character = auto.del.character)
   eset <- eset

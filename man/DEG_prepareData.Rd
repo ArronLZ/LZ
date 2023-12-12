@@ -26,7 +26,7 @@ DEG_prepareData(...)
 
 \method{DEG_prepareData}{DEeset}(obj, f_mark = "DE")
 
-\method{DEG_prepareData}{XENA}(eset, group)
+\method{DEG_prepareData}{XENA}(obj, eset, group)
 }
 \arguments{
 \item{eset_file}{character, the exps data file name, default: "gene_count.csv"}
@@ -54,6 +54,10 @@ DEG_prepareData(...)
 \item{toType}{character, the annot result}
 
 \item{obj}{obeject the object DEeset}
+
+\item{eset}{eset obj}
+
+\item{group}{group obj}
 }
 \value{
 list
