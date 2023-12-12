@@ -1,4 +1,4 @@
-#' @title S3 general function DEG_prepareData()
+#' S3 general function DEG_prepareData()
 #' @description S3 general function DEG_prepareData(), prepare the data that LZ diff analysis need,\cr
 #' return a list(eset=xx, group=xx, f_mark="xx")\cr
 #' DEG_prepareData.default default method \cr
@@ -9,6 +9,7 @@
 DEG_prepareData <- function(...) {
   UseMethod("DEG_prepareData")
 }
+
 
 #' @param eset_file character, the exps data file name, default: "gene_count.csv"
 #' @param id_dot logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3
@@ -135,6 +136,7 @@ DEG_prepareData.DEeset <- function(obj, f_mark = "DE") {
   return(glist)
 }
 
+#' @inherit DEG_prepareData.default
 #' @param obj obeject the object DEeset
 #' @param eset eset obj
 #' @param group group obj
