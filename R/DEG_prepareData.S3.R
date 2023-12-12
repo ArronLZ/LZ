@@ -2,7 +2,8 @@
 #' @description S3 general function DEG_prepareData(), prepare the data that LZ diff analysis need,\cr
 #' return a list(eset=xx, group=xx, f_mark="xx")\cr
 #' DEG_prepareData.default default method \cr
-#' DEG_prepareData.DEeset  DEeset method
+#' DEG_prepareData.DEeset  DEeset method\cr
+#' DEG_prepareData.XENA xena method
 #'
 #' @export
 DEG_prepareData <- function(...) {
@@ -137,7 +138,7 @@ DEG_prepareData.DEeset <- function(obj, f_mark = "DE") {
 #' @return list
 #' @export
 #' @rdname DEG_prepareData
-DEG_prepareData.xena <- function(eset, group) {
+DEG_prepareData.XENA <- function(eset, group) {
   eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 
                   auto.del.character = auto.del.character)
   eset <- eset

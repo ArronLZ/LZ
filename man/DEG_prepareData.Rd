@@ -4,7 +4,7 @@
 \alias{DEG_prepareData}
 \alias{DEG_prepareData.default}
 \alias{DEG_prepareData.DEeset}
-\alias{DEG_prepareData.xena}
+\alias{DEG_prepareData.XENA}
 \title{S3 general function DEG_prepareData()}
 \usage{
 DEG_prepareData(...)
@@ -26,7 +26,7 @@ DEG_prepareData(...)
 
 \method{DEG_prepareData}{DEeset}(obj, f_mark = "DE")
 
-\method{DEG_prepareData}{xena}(eset, group)
+\method{DEG_prepareData}{XENA}(eset, group)
 }
 \arguments{
 \item{eset_file}{character, the exps data file name, default: "gene_count.csv"}
@@ -66,7 +66,8 @@ list
 S3 general function DEG_prepareData(), prepare the data that LZ diff analysis need,\cr
 return a list(eset=xx, group=xx, f_mark="xx")\cr
 DEG_prepareData.default default method \cr
-DEG_prepareData.DEeset  DEeset method
+DEG_prepareData.DEeset  DEeset method\cr
+DEG_prepareData.XENA xena method
 }
 \examples{
 #
