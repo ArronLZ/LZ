@@ -4,6 +4,7 @@
 \alias{DEG_prepareData}
 \alias{DEG_prepareData.default}
 \alias{DEG_prepareData.DEeset}
+\alias{DEG_prepareData.xena}
 \title{S3 general function DEG_prepareData()}
 \usage{
 DEG_prepareData(...)
@@ -24,6 +25,8 @@ DEG_prepareData(...)
 )
 
 \method{DEG_prepareData}{DEeset}(obj, f_mark = "DE")
+
+\method{DEG_prepareData}{xena}(eset, group)
 }
 \arguments{
 \item{eset_file}{character, the exps data file name, default: "gene_count.csv"}
@@ -53,6 +56,8 @@ DEG_prepareData(...)
 \item{obj}{obeject the object DEeset}
 }
 \value{
+list
+
 list
 
 list

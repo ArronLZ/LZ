@@ -2,6 +2,7 @@
 
 S3method(DEG_prepareData,DEeset)
 S3method(DEG_prepareData,default)
+S3method(DEG_prepareData,xena)
 export(DEG_DESeq2.ana)
 export(DEG_DESeq2.dds)
 export(DEG_DESeq2.pca)
