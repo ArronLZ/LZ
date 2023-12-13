@@ -154,10 +154,12 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
         endT = oop.group.endT,
         endF = oop.group.endF
       )
+      return(DEeset)
     } else {
       group <- read.csv(group_file, row.names = 1)
       glist <- checkgroup(eset = eset, group = group)
       DEeset <- YZ::DEeset$new(mark = f_mark, eset = glist$eset, group = glist$group)
+      return(DEeset)
     }
   }
 }
