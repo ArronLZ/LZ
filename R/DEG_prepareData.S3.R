@@ -67,7 +67,7 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
                                     oop.group.endF = "Normal"
 ) {
   eset <- data.table::fread(eset_file, data.table = F)
-  if (eset.islog) { eset <- round(2^eset[, 2:ncol(eset)] - 1) }
+  if (eset.islog) { eset[, 2:ncol(eset)] <- round(2^eset[, 2:ncol(eset)] - 1) }
   eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 
                   auto.del.character = auto.del.character)
   
@@ -198,7 +198,7 @@ DEG_prepareData.XENA <- function(obj, # eset_file="gene_count.csv"
                                  oop.group.endF = "Normal"
                                  ) {
   eset <- obj$eset.count
-  if (eset.islog) { eset <- round(2^eset[, 2:ncol(eset)] - 1) }
+  if (eset.islog) { eset[, 2:ncol(eset)] <- round(2^eset[, 2:ncol(eset)] - 1) }
   eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 
                   auto.del.character = auto.del.character)
   
