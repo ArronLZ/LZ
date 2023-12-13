@@ -11,6 +11,7 @@ DEG_prepareData(...)
 
 \method{DEG_prepareData}{default}(
   eset_file = "gene_count.csv",
+  eset.islog = F,
   id_dot = F,
   col.by = "ID",
   col.del = NULL,
@@ -33,22 +34,29 @@ DEG_prepareData(...)
 
 \method{DEG_prepareData}{XENA}(
   obj,
-  eset,
-  group,
-  id_dot = F,
-  col.by = "ID",
+  eset.islog = T,
+  id_dot = T,
+  col.by = "Ensembl_ID",
   col.del = NULL,
   auto.del.character = T,
+  group_file,
   annot_trans = T,
   f_mark = "diff",
   is.human = T,
   orgDb = "org.Mm.eg.db",
   fromType = "ENSEMBL",
-  toType = c("SYMBOL", "UNIPROT")
+  toType = c("SYMBOL", "UNIPROT"),
+  oop = T,
+  oop.group.suffix1 = "01A",
+  oop.group.suffix2 = "11A",
+  oop.group.endT = "Tumor",
+  oop.group.endF = "Normal"
 )
 }
 \arguments{
 \item{eset_file}{character, the exps data file name, default: "gene_count.csv"}
+
+\item{eset.islog}{logical, if the eset have been log2, default is F, meaning the eset data is not log2}
 
 \item{id_dot}{logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3}
 
@@ -83,10 +91,6 @@ DEG_prepareData(...)
 \item{oop.group.endF}{character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup()}
 
 \item{obj}{obeject the object DEeset}
-
-\item{eset}{eset obj}
-
-\item{group}{group obj}
 }
 \value{
 list

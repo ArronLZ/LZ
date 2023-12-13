@@ -12,7 +12,7 @@ DEG_prepareData <- function(...) {
 
 
 #' @param eset_file character, the exps data file name, default: "gene_count.csv"
-#'
+#' @param eset.islog logical, if the eset have been log2, default is F, meaning the eset data is not log2
 #' @param id_dot logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3
 #' @param col.by character, delete the duplicate by this column
 #' @param col.del character, manually delete some column
@@ -52,6 +52,7 @@ DEG_prepareData <- function(...) {
 #' # rowname4 |   normal  |  2
 #' # if is.human = F, please set the orgDb and fromType correctly.
 DEG_prepareData.default <- function(eset_file="gene_count.csv",
+                                    eset.islog = F,
                                     id_dot = F, col.by = "ID",
                                     col.del=NULL, auto.del.character=T,
                                     group_file,
@@ -66,6 +67,7 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
                                     oop.group.endF = "Normal"
 ) {
   eset <- data.table::fread(eset_file, data.table = F)
+  if (eset.islog) { eset <- round(2^eset[, 2:ncol(eset)] - 1) }
   eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 
                   auto.del.character = auto.del.character)
   
@@ -176,21 +178,30 @@ DEG_prepareData.DEeset <- function(obj, f_mark = "DE") {
   return(glist)
 }
 
-#' @param eset eset obj
-#' @param group group obj
-#'
+
 #' @return list
 #' @export
 #' @rdname DEG_prepareData
-DEG_prepareData.XENA <- function(obj, eset, group, id_dot = F, col.by = "ID",
+DEG_prepareData.XENA <- function(obj, # eset_file="gene_count.csv"
+                                 eset.islog = T,
+                                 id_dot = T, col.by = "Ensembl_ID",
                                  col.del=NULL, auto.del.character=T,
+                                 group_file, 
                                  annot_trans=T, f_mark="diff",
                                  is.human = T, orgDb = "org.Mm.eg.db",
                                  fromType = "ENSEMBL", 
-                                 toType = c("SYMBOL", "UNIPROT")) {
-  eset <- eset                                 
+                                 toType = c("SYMBOL", "UNIPROT"),
+                                 oop = T,
+                                 oop.group.suffix1 = "01A",
+                                 oop.group.suffix2 = "11A",
+                                 oop.group.endT = "Tumor",
+                                 oop.group.endF = "Normal"
+                                 ) {
+  eset <- obj$eset.count
+  if (eset.islog) { eset <- round(2^eset[, 2:ncol(eset)] - 1) }
   eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 
                   auto.del.character = auto.del.character)
+  
   # if the id contain ., only keep the part before .  ---------
   if (id_dot) {
     eset$annot <- sapply(strsplit(rownames(eset), "\\."), 
@@ -227,34 +238,63 @@ DEG_prepareData.XENA <- function(obj, eset, group, id_dot = F, col.by = "ID",
       eset <- quchong(eset, col.by = "SYMBOL")
     }
   }
-  # id annot or not ///  ----------
   
-  group <- group
   
-  # check if the rowname of group is all from the colnames of eset -----
-  if ( all(rownames(group) %in% names(eset)) ) {
-    # eset's coloumns > group's rows
-    if (length(names(eset)) > length(rownames(group))) {
-      cat(" 请注意：!!!\n 提供的分组文件中样本数量少于表达矩阵中的样本数：\n
+  # sekf function
+  checkgroup <- function(eset, group) {
+    # check if the rowname of group is all from the colnames of eset -----
+    if ( all(rownames(group) %in% names(eset)) ) {
+      # eset's coloumns > group's rows
+      if (length(names(eset)) > length(rownames(group))) {
+        cat(" 请注意：!!!\n 提供的分组文件中样本数量少于表达矩阵中的样本数：\n
  这意味着将会只保留分组文件中的样本来进行后续分析，\n 不在分组文件中的样本将会被剔除!!!\n
  分组文件内容展示：\n")
-      print(group)
-    }
-    # only keep the eset's coloumn by group's rownames sample
-    eset <- eset[, rownames(group)]
-    # check all eset's coloumn == group's rowname
-    if (all(names(eset) == rownames(group))) {
-      glist <- list(eset = eset, group = group, f_mark = f_mark)
-      glist$group[,1] <- factor(glist$group[,1])
+        print(group)
+      }
+      # only keep the eset's coloumn by group's rownames sample
+      eset <- eset[, rownames(group)]
+      # check all eset's coloumn == group's rowname
+      if (all(names(eset) == rownames(group))) {
+        glist <- list(eset = eset, group = group, f_mark = f_mark)
+        glist$group[,1] <- factor(glist$group[,1])
+      } else {
+        stop("提供的分组信息和表达信息不匹配，请检查后再运行\n")
+      }
     } else {
-      stop("提供的分组信息和表达信息不匹配，请检查后再运行\n")
-    }
-  } else {
-    stop("提供的分组信息和表达信息不匹配(分组文件有样本名不在表达矩阵的样本名中)，\n
+      stop("提供的分组信息和表达信息不匹配(分组文件有样本名不在表达矩阵的样本名中)，\n
          请检查后再运行\n")
+    }
+    return(glist)
   }
-  # check if the rowname of group is all from the colnames of eset /// -----
-  return(glist)
+  
+  
+  if (!oop) {
+    # id annot or not ///  ----------
+    group <- read.csv(group_file, row.names = 1)
+    glist <- checkgroup(eset = eset, group = group)
+    # check if the rowname of group is all from the colnames of eset /// -----
+    return(glist)
+  } 
+  
+  # OOP ---------
+  if (oop) {
+    if (missing(group_file)) {
+      group <- NULL
+      DEeset <- YZ::DEeset$new(mark = f_mark, eset = eset)
+      DEeset$updateGroup(
+        suffix1 = oop.group.suffix1,
+        suffix2 = oop.group.suffix2,
+        endT = oop.group.endT,
+        endF = oop.group.endF
+      )
+      return(DEeset)
+    } else {
+      group <- read.csv(group_file, row.names = 1)
+      glist <- checkgroup(eset = eset, group = group)
+      DEeset <- YZ::DEeset$new(mark = f_mark, eset = glist$eset, group = glist$group)
+      return(DEeset)
+    }
+  }
 }
 
 
