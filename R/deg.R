@@ -413,9 +413,9 @@ DEGres_ToGSEA <- function(diffan.obj, outdir, startcol = 8, txt.del=T) {
   ### group
   group <- diffan.obj$groupdata[, 1, drop=F]
   g.g <- c(
-    paste(nrow(group), length(unique(group$group)), 1, sep = "\t"),
-    paste0("#", "\t", paste(unique(group$group), collapse = "\t") ),
-    paste(group$group, collapse = "\t") )
+    paste(nrow(group), length(unique(group[,1])), 1, sep = "\t"),
+    paste0("#", "\t", paste(unique(group[,1]), collapse = "\t") ),
+    paste(group[,1], collapse = "\t") )
   write_lines(g.g, file = paste0(outdir, "/gesa_group", ".txt"))
 
   file.copy(paste0(outdir, "/gesa_eset", ".txt"),
