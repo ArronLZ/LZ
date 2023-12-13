@@ -72,13 +72,18 @@ DEG_prepareData.XENA xena method</p>
 <span>  col.by <span class="op">=</span> <span class="st">"ID"</span>,</span>
 <span>  col.del <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  auto.del.character <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  group_file <span class="op">=</span> <span class="st">"group.csv"</span>,</span>
+<span>  <span class="va">group_file</span>,</span>
 <span>  annot_trans <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  f_mark <span class="op">=</span> <span class="st">"diff"</span>,</span>
 <span>  is.human <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  orgDb <span class="op">=</span> <span class="st">"org.Mm.eg.db"</span>,</span>
 <span>  fromType <span class="op">=</span> <span class="st">"ENSEMBL"</span>,</span>
-<span>  toType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SYMBOL"</span>, <span class="st">"UNIPROT"</span><span class="op">)</span></span>
+<span>  toType <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SYMBOL"</span>, <span class="st">"UNIPROT"</span><span class="op">)</span>,</span>
+<span>  oop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  oop.group.suffix1 <span class="op">=</span> <span class="st">"01A"</span>,</span>
+<span>  oop.group.suffix2 <span class="op">=</span> <span class="st">"11A"</span>,</span>
+<span>  oop.group.endT <span class="op">=</span> <span class="st">"Tumor"</span>,</span>
+<span>  oop.group.endF <span class="op">=</span> <span class="st">"Normal"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for DEeset</span></span>
@@ -125,7 +130,7 @@ DEG_prepareData.XENA xena method</p>
 
 
 <dt>group_file</dt>
-<dd><p>the group data file name, default: "group.csv"</p></dd>
+<dd><p>the group data file name, such as: "group.csv", if the param group_file is missing and oop = T this function will use DEeset$updateGroup() method</p></dd>
 
 
 <dt>annot_trans</dt>
@@ -150,6 +155,26 @@ DEG_prepareData.XENA xena method</p>
 
 <dt>toType</dt>
 <dd><p>character, the annot result</p></dd>
+
+
+<dt>oop</dt>
+<dd><p>logical, if use oop flow</p></dd>
+
+
+<dt>oop.group.suffix1</dt>
+<dd><p>character, default 01A, eset's name end with 01A will use as group Tumor, DEeset$updateGroup()</p></dd>
+
+
+<dt>oop.group.suffix2</dt>
+<dd><p>character, default 01A, eset's name end with 11A will use as group Normal, DEeset$updateGroup()</p></dd>
+
+
+<dt>oop.group.endT</dt>
+<dd><p>character, default Tumor, eset's name end with 01A will use as group Tumor, DEeset$updateGroup()</p></dd>
+
+
+<dt>oop.group.endF</dt>
+<dd><p>character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup()</p></dd>
 
 
 <dt>obj</dt>
