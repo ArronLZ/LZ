@@ -15,13 +15,18 @@ DEG_prepareData(...)
   col.by = "ID",
   col.del = NULL,
   auto.del.character = T,
-  group_file = "group.csv",
+  group_file,
   annot_trans = T,
   f_mark = "diff",
   is.human = T,
   orgDb = "org.Mm.eg.db",
   fromType = "ENSEMBL",
-  toType = c("SYMBOL", "UNIPROT")
+  toType = c("SYMBOL", "UNIPROT"),
+  oop = FALSE,
+  oop.group.suffix1 = "01A",
+  oop.group.suffix2 = "11A",
+  oop.group.endT = "Tumor",
+  oop.group.endF = "Normal"
 )
 
 \method{DEG_prepareData}{DEeset}(obj, f_mark = "DE")
@@ -53,7 +58,7 @@ DEG_prepareData(...)
 
 \item{auto.del.character}{logical, if auto delete the column those class is character}
 
-\item{group_file}{the group data file name, default: "group.csv"}
+\item{group_file}{the group data file name, such as: "group.csv", if the param group_file is missing and oop = T this function will use DEeset$updateGroup() method}
 
 \item{annot_trans}{logical, do the eset need be annot to symbol? if the datafame's first coloumn is not offical symbol, you can set to TRUE.}
 
@@ -66,6 +71,16 @@ DEG_prepareData(...)
 \item{fromType}{character, eset id column type}
 
 \item{toType}{character, the annot result}
+
+\item{oop}{logical, if use oop flow}
+
+\item{oop.group.suffix1}{character, default 01A, eset's name end with 01A will use as group Tumor, DEeset$updateGroup()}
+
+\item{oop.group.suffix2}{character, default 01A, eset's name end with 11A will use as group Normal, DEeset$updateGroup()}
+
+\item{oop.group.endT}{character, default Tumor, eset's name end with 01A will use as group Tumor, DEeset$updateGroup()}
+
+\item{oop.group.endF}{character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup()}
 
 \item{obj}{obeject the object DEeset}
 
