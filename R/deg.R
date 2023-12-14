@@ -406,7 +406,7 @@ DEGres_ToGSEA <- function(diffan.obj, outdir, startcol = 8, txt.del=T) {
                         resdf[, startcol:ncol(resdf)],
                         check.names = F)
   g.h <- c("#1.2" , paste(nrow(df.gsea), ncol(df.gsea)-2, sep = "\t"))
-  write_lines(g.h, file = paste0(outdir, "/gesa_eset", ".txt"),
+  readr::write_lines(g.h, file = paste0(outdir, "/gesa_eset", ".txt"),
               append = T)
   write.table(df.gsea, file = paste0(outdir, "/gesa_eset", ".txt"),
               sep = "\t", row.names = F, append = T)
@@ -416,7 +416,7 @@ DEGres_ToGSEA <- function(diffan.obj, outdir, startcol = 8, txt.del=T) {
     paste(nrow(group), length(unique(group[,1])), 1, sep = "\t"),
     paste0("#", "\t", paste(unique(group[,1]), collapse = "\t") ),
     paste(group[,1], collapse = "\t") )
-  write_lines(g.g, file = paste0(outdir, "/gesa_group", ".txt"))
+  readr::write_lines(g.g, file = paste0(outdir, "/gesa_group", ".txt"))
 
   file.copy(paste0(outdir, "/gesa_eset", ".txt"),
             paste0(outdir, "/gesa_eset", ".gct"))
