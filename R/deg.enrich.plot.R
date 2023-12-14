@@ -57,7 +57,7 @@ DEGp_Dotplot <- function(df, title='xxx', resultdir, filemark, pic.save =T,
   # 此函数可能需要使用scale_x_continuous调整x轴刻度
   dotplot <- ggplot(cbind(df, Order = nrow(df):1)) +
     geom_point(mapping = aes(x = -log10(pvalue), y = Order, 
-                             size = Count, fill = GeneRatio),
+                             size = GeneRatio, fill = qvalue),
                shape = 21) + 
     scale_fill_gradientn(colours = c("grey", "gold", "red")) + #自定义配色
     scale_y_continuous(position = "left", 
@@ -68,13 +68,12 @@ DEGp_Dotplot <- function(df, title='xxx', resultdir, filemark, pic.save =T,
     #                   limits = c(4,7),
     #                   expand = expansion(mult = c(.05, .05))) + #两边留空
     labs(x = "-log10(P-value)", y = NULL) +
-    guides(size = guide_legend(title = "Gene count"),
-           fill = guide_colorbar(title = "GeneRatio")) +
+    guides(size = guide_legend(title = "GeneRatio"),
+           fill = guide_colorbar(title = "qvalue")) +
     ggtitle(title) +
     theme_bw() +
-    theme(panel.grid =element_blank(),
-          axis.text = element_text(size = 14, face = "bold", family = 'Times'),
-          title = element_text(size = 14, face = "bold", family = 'Times')) #去除网格线
+    theme(panel.grid = element_blank()) +
+    ggtheme.update.text()
   if (pic.save == T) {
     dotplot %>% ggplotGrob() %>% cowplot::plot_grid()
     fname=paste0(resultdir, '/', filemark,'.pdf')
