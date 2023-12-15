@@ -105,6 +105,7 @@ find_pathway <- function(your_pathway = "^Ferr") {
 #' # pathwayx   genex
 #'
 #' @return gmt.wide
+#' @export
 #' @importFrom dplyr `%>%`
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
