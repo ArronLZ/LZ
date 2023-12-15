@@ -1,7 +1,7 @@
 Package: LZ
 Type: Package
 Title: RNAseq analysis pipeline & other skill
-Version: 1.5.2
+Version: 1.5.3
 Date: `Sys.Date()`
 Author: Farmer
 Maintainer: Turkey <yydslz@sina.com>
@@ -19,20 +19,25 @@ Suggests:
 Imports:
     data.table,
     readr,
-    DESeq2,
+    Hmisc,
     BiocManager,
-    BiocParallel,
+    parallel,
     factoextra,
-    edgeR,
-    limma,
     ggrepel,
     ggsci,
     RColorBrewer,
     pheatmap,
+    VennDiagram,
+    scales,
+    reshape2,
+    tidyverse,
+    DESeq2,
+    edgeR,
+    limma,
     DOSE,
     clusterProfiler,
-    VennDiagram,
-    scales
+    enrichplot,
+    BiocParallel
 Depends:
     stringr,
     readxl,
@@ -48,5 +53,6 @@ Collate:
     'deg.enrich.plot.R'
     'tool.R'
     'deg.plot.R'
+    'gsea.R'
     'setting.R'
     'xena_eset.R'

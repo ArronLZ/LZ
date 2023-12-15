@@ -126,9 +126,13 @@ lz_isna <- function(lie) {
 #'
 #' @examples # df %>% lzhead
 lzhead <- function(df, ncol = 4, colstart = 1) {
+  cat('=== shape ===\n')
+  cat(dim(df)[1], "rows", dim(df)[2], "columns\n")
   if (ncol(df) > 4) { 
+    cat('=== head', colstart, ":", ncol,'===\n')
     head(df)[, colstart:ncol] 
   } else {
+    cat('=== head', colstart, ":", ncol(df),'===\n')
     head(df)
   }
 }
