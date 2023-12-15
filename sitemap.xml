@@ -55,6 +55,12 @@
     <loc>https://github.com/ArronLZ/LZ/reference/DEGp_GOALL_bar.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_GSEA.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_GSEA_plotALL.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ArronLZ/LZ/reference/DEGp_Pheat.html</loc>
   </url>
   <url>
@@ -85,9 +91,6 @@
     <loc>https://github.com/ArronLZ/LZ/reference/DataSet.html</loc>
   </url>
   <url>
-    <loc>https://github.com/ArronLZ/LZ/reference/GSEA_plotALL.html</loc>
-  </url>
-  <url>
     <loc>https://github.com/ArronLZ/LZ/reference/XENApre_annot.html</loc>
   </url>
   <url>
@@ -106,7 +109,7 @@
     <loc>https://github.com/ArronLZ/LZ/reference/gmt_longTOwide2.html</loc>
   </url>
   <url>
-    <loc>https://github.com/ArronLZ/LZ/reference/gmt_longTOwide_s2.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/gmt_longTOwide3.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/index.html</loc>
@@ -119,9 +122,6 @@
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/lz_isna.html</loc>
-  </url>
-  <url>
-    <loc>https://github.com/ArronLZ/LZ/reference/lzgsea.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/lzhead.html</loc>
@@ -137,6 +137,9 @@
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/require_pack.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/runGSEA.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/setproxy.html</loc>
