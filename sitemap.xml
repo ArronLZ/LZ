@@ -43,6 +43,9 @@
     <loc>https://github.com/ArronLZ/LZ/reference/DEG_runENRICH.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_runGSEA.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ArronLZ/LZ/reference/DEG_voom.html</loc>
   </url>
   <url>
@@ -137,9 +140,6 @@
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/require_pack.html</loc>
-  </url>
-  <url>
-    <loc>https://github.com/ArronLZ/LZ/reference/runGSEA.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/setproxy.html</loc>
