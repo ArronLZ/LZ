@@ -2,7 +2,7 @@
 % Please edit documentation in R/gsea.R
 \name{gmt_longTowide2}
 \alias{gmt_longTowide2}
-\title{GMT Long to Wide data}
+\title{GMT Long to Wide data use groub_by}
 \usage{
 gmt_longTowide2(gmtdf)
 }
@@ -16,10 +16,10 @@ gmt_longTowide2(gmtdf)
 # pathwayx   genex}
 }
 \value{
-gmt.wide
+gmtdf.w
 }
 \description{
-trans long GMT dataframe to wide dataframe
+transformat long GMT dataframe to wide dataframe
 }
 \examples{
 # return datafame as this:

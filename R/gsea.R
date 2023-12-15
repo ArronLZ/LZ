@@ -10,16 +10,16 @@
 #' @importFrom ggsci pal_jco
 #'
 #' @author Jiang
-lzgsea <- function(GSEA.obj, num=1) {
+DEGp_GSEA <- function(GSEA.obj, num=1) {
   p.color <- ifelse(GSEA.obj[,"enrichmentScore"][num] < 0, ggsci::pal_jco()(9)[6],
                     ggsci::pal_jco()(9)[4])
-  pic_gsea <- gseaplot2(GSEA.obj, num,
-                        title = GSEA.obj[,"ID"][num],
-                        color= p.color, #线条颜色
-                        base_size = 14, #基础字体的大小
-                        #subplots = 1:2, #展示上2部分
-                        rel_heights = c(1.2, 0.3, 0.5),
-                        pvalue_table = F)
+  pic_gsea <- enrichplot::gseaplot2(GSEA.obj, num,
+                                    title = GSEA.obj[,"ID"][num],
+                                    color= p.color, #线条颜色
+                                    base_size = 14, #基础字体的大小
+                                    #subplots = 1:2, #展示上2部分
+                                    rel_heights = c(1.2, 0.3, 0.5),
+                                    pvalue_table = F)
   x.pos <- length(GSEA.obj@geneList) - 2000
   y.pos <- ifelse(GSEA.obj[num,"enrichmentScore"] < 0, -0.1, GSEA.obj[num,"enrichmentScore"]-0.1)
   annotate_p <- paste0("PValue=", round(GSEA.obj[num,"pvalue"], 6), "\nPadjust=", round(GSEA.obj[num,"p.adjust"], 6))
@@ -34,7 +34,7 @@ lzgsea <- function(GSEA.obj, num=1) {
 #' 
 #' @param gsea.all object result of clusterProfiler::GSEA() using lots pathway gmt files
 #' @param result_dir character the outdir name
-#' @param filename character the out filename
+#' @param xl_filename character the out filename
 #'
 #' @return NULL
 #' @export
@@ -42,11 +42,11 @@ lzgsea <- function(GSEA.obj, num=1) {
 #' @importFrom dplyr filter
 #'
 #' @author Jiang
-GSEA_plotALL <- function(gsea.all, result_dir, filename) {
+DEGp_GSEA_plotALL <- function(gsea.all, result_dir, xl_filename) {
   result_dir <- dirclean(result_dir)
   mkdir(result_dir)
   for( i in seq_along(gsea.all[,'ID'])) {
-    pic_gsea <- lzgsea(gsea.all, num = i)
+    pic_gsea <- DEGp_GSEA(gsea.all, num = i)
     id = gsea.all[,'ID'][i]
     # saveRDS(gsea, file = "result/M1_p0.05fdr0.1log2fc1/gesa.ecm.plot.rds")
     # 使用正则表达式检查字符串是否包含不合法的字符
@@ -66,8 +66,9 @@ GSEA_plotALL <- function(gsea.all, result_dir, filename) {
   gsea.alldf <- data.frame(gsea.all, check.names = F)
   gsea.alldf.sig <- gsea.alldf %>% filter(., pvalue < 0.05 & p.adjust < 0.1)
   writexl::write_xlsx(list(GSEA.ALL=gsea.alldf, GSEA.sig = gsea.alldf.sig), 
-                      path = paste0(result_dir, "/", filename, ".gsea.xlsx"))
-  saveRDS(gsea.all, file = paste0(result_dir, "/", filename, ".gsea.rds"))
+                      path = paste0(result_dir, "/", xl_filename, ".gsea.xlsx"))
+  saveRDS(gsea.all, file = paste0(result_dir, "/", xl_filename, ".gsea.rds"))
+  cat("保存完成\n")
 }
 
 
@@ -154,4 +155,50 @@ gmt_longTOwide3 <- function(df) {
   })
   df.new <- dftt %>% dplyr::select(term, GENE)
   return(df.new)
+}
+
+
+#' Run GSEA of gmt
+#' @description Run GSEA analysis with a gmt file consist of lots of pathway or a single pathway
+#' @param genelist list, a name list store the value of all gene after arrage
+#' @param gmt_set dataframe or a object, a gmt dataframe filename or gmt object, col1: term, col2: gene
+#' #            term  gene
+#' # GOBP_PYROPTOSIS  AIM2
+#' # GOBP_PYROPTOSIS  APIP
+#' # GOBP_PYROPTOSIS CASP1
+#' # GOBP_PYROPTOSIS CASP4
+#' # ...               ...
+#' # KEGG...          ...
+#' @param pic.save logical if save the picture, default is F, it's not reccommed set as T if gmt is lots of pathway
+#' @param outdir character the picture outdir
+#' @param filename character the dataframe result filename
+#' @param pic.w number picture width
+#' @param pic.h number picture height
+#' @param num number the row postion of result of  clusterProfiler::GSEA() 
+#' @param pvalue number the p value of gsea analysis
+#'
+#' @return gsea
+#' @export
+#' @importFrom clusterProfiler GSEA
+#'
+#' @author Jiang
+runGSEA <- function(genelist, gmt_set, pic.save, outdir, filename,
+                    pic.w=7, pic.h=6, num = 1, pvalue = 1) {
+  stopifnot(is.character(gmt_set) | is.data.frame(gmt_set))
+  if (is.character(gmt_set)) {
+    gmt <- read.gmt(gmt_set) 
+  } else {
+    gmt <- gmt_set
+  }
+  #
+  gsea <- clusterProfiler::GSEA(genelist, TERM2GENE = gmt, pvalueCutoff = pvalue) #GSEA分析
+  DEGp_GSEA(gsea, num = num)
+  if (pic.save) {
+    stopifnot(!missing(outdir), !missing(filename))
+    outdir <- dirclean(outdir)
+    mkdir(outdir)
+    ggsave(filename = paste0(outdir, "/", filename, ".pdf"),
+           width = pic.w, height = pic.h)
+  }
+  return(gsea)
 }
