@@ -194,7 +194,7 @@ DEG_runGSEA <- function(genelist, gmt_set, pic.save, outdir, filename,
   gsea <- clusterProfiler::GSEA(genelist, TERM2GENE = gmt, pvalueCutoff = pvalue) #GSEA分析
   if (pic.save) {
     stopifnot(!missing(outdir) | !missing(filename))
-    pic_gsea <- DEGp_GSEA(gsea.all, num = num)
+    pic_gsea <- DEGp_GSEA(gsea, num = num)
     outdir <- dirclean(outdir)
     mkdir(outdir)
     pdf(paste0(outdir, "/", filename, ".pdf"), width = pic.w, height = pic.h)
