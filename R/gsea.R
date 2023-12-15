@@ -96,6 +96,36 @@ find_pathway <- function(your_pathway = "^Ferr") {
 #' GMT Long to Wide data
 #' @description trans long GMT dataframe to wide dataframe
 #' 
+#' @param gmtdf dataframe the long dataframe consist of two coloumns.\cr
+#' # term        gene
+#' # pathway1   gene1
+#' # pahtway1   gene2
+#' # ...        ...
+#' # pahtwayn   gene1
+#' # pathwayx   genex
+#'
+#' @return gmt.wide
+#' @importFrom dplyr `%>%`
+#' @importFrom dplyr group_by
+#' @importFrom dplyr summarise
+#'
+#' @examples
+#' # return datafame as this:
+#' # term       gene
+#' # pathway1   gene1,gene2,...
+#' # pathway2   gene1,genex,...
+#' @author Jiang
+gmt_longTowide2 <- function(gmtdf) {
+  gmt.w <- gmtdf %>% 
+    dplyr::group_by(term) %>%
+    dplyr::summarize(gene = paste(gene, collapse = ", "))
+  return(gmt.w)
+}
+
+
+#' GMT Long to Wide data
+#' @description trans long GMT dataframe to wide dataframe
+#' 
 #' @param df dataframe the long dataframe consist of two coloumns.\cr
 #' # term        gene
 #' # pathway1   gene1
@@ -105,7 +135,6 @@ find_pathway <- function(your_pathway = "^Ferr") {
 #' # pathwayx   genex
 #'
 #' @return gmt.wide
-#' @export
 #' @importFrom reshape2 dcast
 #' @importFrom dplyr `%>%`
 #' @importFrom dplyr select
@@ -116,7 +145,7 @@ find_pathway <- function(your_pathway = "^Ferr") {
 #' # pathway1   gene1,gene2,...
 #' # pathway2   gene1,genex,...
 #' @author Jiang
-gmt_longTOwide2 <- function(df) {
+gmt_longTOwide_s2 <- function(df) {
   dftt <- reshape2::dcast(df, term~gene)
   xn <- names(dftt)[2:ncol(dftt)]
   dftt$GENE <- apply(dftt[, 2:ncol(dftt)], 1, function(x) {
