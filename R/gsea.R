@@ -171,7 +171,7 @@ gmt_longTOwide3 <- function(df) {
 #' # KEGG...          ...
 #' @param pic.save logical if save the picture, default is F, it's not reccommed set as T if gmt is lots of pathway
 #' @param outdir character the picture outdir
-#' @param filename character the dataframe result filename
+#' @param filename character the picture filename
 #' @param pic.w number picture width
 #' @param pic.h number picture height
 #' @param num number the row postion of result of  clusterProfiler::GSEA() 
@@ -192,13 +192,14 @@ DEG_runGSEA <- function(genelist, gmt_set, pic.save, outdir, filename,
   }
   #
   gsea <- clusterProfiler::GSEA(genelist, TERM2GENE = gmt, pvalueCutoff = pvalue) #GSEA分析
-  DEGp_GSEA(gsea, num = num)
   if (pic.save) {
-    stopifnot(!missing(outdir), !missing(filename))
+    stopifnot(!missing(outdir) | !missing(filename))
+    pic_gsea <- DEGp_GSEA(gsea.all, num = num)
     outdir <- dirclean(outdir)
     mkdir(outdir)
-    ggsave(filename = paste0(outdir, "/", filename, ".pdf"),
-           width = pic.w, height = pic.h)
+    pdf(paste0(outdir, "/", filename, ".pdf"), width = pic.w, height = pic.h)
+    print(pic_gsea)
+    dev.off()
   }
   return(gsea)
 }

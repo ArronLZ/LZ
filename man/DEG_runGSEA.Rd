@@ -32,7 +32,7 @@ DEG_runGSEA(
 
 \item{outdir}{character the picture outdir}
 
-\item{filename}{character the dataframe result filename}
+\item{filename}{character the picture filename}
 
 \item{pic.w}{number picture width}
 
