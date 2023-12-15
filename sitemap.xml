@@ -85,16 +85,25 @@
     <loc>https://github.com/ArronLZ/LZ/reference/DataSet.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/GSEA_plotALL.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ArronLZ/LZ/reference/XENApre_annot.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/dirclean.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/find_pathway.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ArronLZ/LZ/reference/fpkmToTpm.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/getData.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/gmt_longTOwide2.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/index.html</loc>
@@ -107,6 +116,9 @@
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/lz_isna.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/lzgsea.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/lzhead.html</loc>

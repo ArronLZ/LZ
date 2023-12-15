@@ -29,7 +29,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">LZ</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.5.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,7 +72,7 @@
                         <h4 data-toc-skip class="author">Author:
 Jiang</h4>
             <address class="author_afil">
-      Affiliation: Diploma Mill<br><h4 data-toc-skip class="date">2023-12-14</h4>
+      Affiliation: Diploma Mill<br><h4 data-toc-skip class="date">2023-12-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ArronLZ/LZ/blob/HEAD/vignettes/LZ.Rmd"><code>vignettes/LZ.Rmd</code></a></small>
       <div class="d-none name"><code>LZ.Rmd</code></div>
@@ -266,7 +266,7 @@ p-fdr均考虑模式。仅修改<code>label_gene: 展示基因列表</code>即�
 <span><span class="co"># 火山图 有标记</span></span>
 <span><span class="fu">DEGplot_Volcano</span><span class="op">(</span>result <span class="op">=</span> <span class="va">pic_data</span>, logFC <span class="op">=</span> <span class="va">flogfc</span>, <span class="co"># log2(2)</span></span>
 <span>               adj_P <span class="op">=</span> <span class="va">ffdr</span>, label_geneset <span class="op">=</span> <span class="va">label_gene</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu">ggplotGrob</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplotGrob.html" class="external-link">ggplotGrob</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># 保存图片</span></span>
 <span><span class="co"># ggsave("./result/1.diff/valcano.mark.gene.pdf", width = 7, height = 7)</span></span></code></pre></div>
 </div>
@@ -373,10 +373,10 @@ p-fdr均考虑模式。仅修改<code>label_gene: 展示基因列表</code>即�
 <span>                         pic.save <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 组合图</span></span>
-<span><span class="va">gh</span> <span class="op">&lt;-</span> <span class="fu">ggplotGrob</span><span class="op">(</span><span class="va">pic.dot</span><span class="op">)</span></span>
-<span><span class="va">gd</span> <span class="op">&lt;-</span> <span class="fu">ggplotGrob</span><span class="op">(</span><span class="va">pic.dotk</span><span class="op">)</span></span>
+<span><span class="va">gh</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplotGrob.html" class="external-link">ggplotGrob</a></span><span class="op">(</span><span class="va">pic.dot</span><span class="op">)</span></span>
+<span><span class="va">gd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplotGrob.html" class="external-link">ggplotGrob</a></span><span class="op">(</span><span class="va">pic.dotk</span><span class="op">)</span></span>
 <span><span class="fu">cowplot</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/cowplot/reference/plot_grid.html" class="external-link">plot_grid</a></span><span class="op">(</span><span class="va">gh</span>, <span class="va">gd</span>, rel_widths <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1.25</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu">ggsave</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">dir_out</span>, <span class="st">"/GO_KEGG_top.pdf"</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">16</span>, height <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">dir_out</span>, <span class="st">"/GO_KEGG_top.pdf"</span><span class="op">)</span>, width <span class="op">=</span> <span class="fl">16</span>, height <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
