@@ -43,7 +43,7 @@ DEGp_GSEA <- function(GSEA.obj, num=1) {
 #'
 #' @author Jiang
 DEGp_GSEA_plotALL <- function(GSEA.obj, result_dir, xl_filename) {
-  gsea.ll = GSEA.obj
+  gsea.all = GSEA.obj
   result_dir <- dirclean(result_dir)
   mkdir(result_dir)
   # store data
