@@ -4,10 +4,10 @@
 \alias{DEGp_GSEA_plotALL}
 \title{GSEA plot loop}
 \usage{
-DEGp_GSEA_plotALL(gsea.all, result_dir, xl_filename)
+DEGp_GSEA_plotALL(GSEA.obj, result_dir, xl_filename)
 }
 \arguments{
-\item{gsea.all}{object result of clusterProfiler::GSEA() using lots pathway gmt files}
+\item{GSEA.obj}{object result of clusterProfiler::GSEA() using lots pathway gmt files}
 
 \item{result_dir}{character the outdir name}
 

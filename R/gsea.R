@@ -32,7 +32,7 @@ DEGp_GSEA <- function(GSEA.obj, num=1) {
 #' GSEA plot loop
 #' @description Plot all pictures from a result of clusterProfiler::GSEA()
 #' 
-#' @param gsea.all object result of clusterProfiler::GSEA() using lots pathway gmt files
+#' @param GSEA.obj object result of clusterProfiler::GSEA() using lots pathway gmt files
 #' @param result_dir character the outdir name
 #' @param xl_filename character the out filename
 #'
@@ -42,9 +42,17 @@ DEGp_GSEA <- function(GSEA.obj, num=1) {
 #' @importFrom dplyr filter
 #'
 #' @author Jiang
-DEGp_GSEA_plotALL <- function(gsea.all, result_dir, xl_filename) {
+DEGp_GSEA_plotALL <- function(GSEA.obj, result_dir, xl_filename) {
+  gsea.ll = GSEA.obj
   result_dir <- dirclean(result_dir)
   mkdir(result_dir)
+  # store data
+  gsea.alldf <- data.frame(gsea.all, check.names = F)
+  gsea.alldf.sig <- gsea.alldf %>% filter(., pvalue < 0.05 & p.adjust < 0.1)
+  writexl::write_xlsx(list(GSEA.ALL=gsea.alldf, GSEA.sig = gsea.alldf.sig), 
+                      path = paste0(result_dir, "/", xl_filename, ".gsea.xlsx"))
+  saveRDS(gsea.all, file = paste0(result_dir, "/", xl_filename, ".gsea.rds"))
+  # pic
   for( i in seq_along(gsea.all[,'ID'])) {
     pic_gsea <- DEGp_GSEA(gsea.all, num = i)
     id = gsea.all[,'ID'][i]
@@ -62,13 +70,7 @@ DEGp_GSEA_plotALL <- function(gsea.all, result_dir, xl_filename) {
     dev.off()
     cat(i, id , "\n")
   }
-  cat("画图全部完成，正在保存数据中...\n")
-  gsea.alldf <- data.frame(gsea.all, check.names = F)
-  gsea.alldf.sig <- gsea.alldf %>% filter(., pvalue < 0.05 & p.adjust < 0.1)
-  writexl::write_xlsx(list(GSEA.ALL=gsea.alldf, GSEA.sig = gsea.alldf.sig), 
-                      path = paste0(result_dir, "/", xl_filename, ".gsea.xlsx"))
-  saveRDS(gsea.all, file = paste0(result_dir, "/", xl_filename, ".gsea.rds"))
-  cat("保存完成\n")
+  cat("画图全部完成\n")
 }
 
 
