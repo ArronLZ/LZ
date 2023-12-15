@@ -182,7 +182,7 @@ gmt_longTOwide3 <- function(df) {
 #' @importFrom clusterProfiler GSEA
 #'
 #' @author Jiang
-runGSEA <- function(genelist, gmt_set, pic.save, outdir, filename,
+DEG_runGSEA <- function(genelist, gmt_set, pic.save, outdir, filename,
                     pic.w=7, pic.h=6, num = 1, pvalue = 1) {
   stopifnot(is.character(gmt_set) | is.data.frame(gmt_set))
   if (is.character(gmt_set)) {
