@@ -38,7 +38,8 @@ Imports:
     clusterProfiler,
     enrichplot,
     BiocParallel,
-    shiny
+    shiny,
+    ggplot2
 Depends:
     stringr,
     readxl,
