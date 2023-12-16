@@ -7,7 +7,7 @@
 runAPP_GSEA(genelist)
 }
 \arguments{
-\item{genelist}{list, a name list store the value of all gene after arrage}
+\item{genelist}{list, a name list, gene list sorted by log2FC}
 }
 \value{
 no

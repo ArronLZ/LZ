@@ -4,7 +4,12 @@
 \alias{syGSEA}
 \title{Shiny APP GSEA}
 \usage{
-syGSEA()
+syGSEA(gmt.largelist, genelist)
+}
+\arguments{
+\item{gmt.largelist}{dataframe or gmt file from msigdb}
+
+\item{genelist}{list, a name list, gene list sorted by log2FC}
 }
 \value{
 no

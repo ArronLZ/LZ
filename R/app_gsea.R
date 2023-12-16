@@ -1,11 +1,13 @@
 #' Shiny APP GSEA
 #' @description Shiny APP GSEA
+#' @param gmt.largelist dataframe or gmt file from msigdb
+#' @param genelist list, a name list, gene list sorted by log2FC 
 #' 
 #' @return no
 #' @import shiny
 #'
 #' @author Jiang
-syGSEA <- function() {
+syGSEA <- function(gmt.largelist, genelist) {
   source.name <- names(gmt.largelist)
   shinyApp(
     ui = fluidPage(
@@ -81,7 +83,8 @@ syGSEA <- function() {
               uiOutput('pathway_title'),
               textOutput('pathway_genelist')
             )
-          )
+          ),
+          fileInput("upload_file", "上传表格文件（XLSX格式）", accept = ".xlsx")
         ),
         column(
           width = 6,
@@ -97,8 +100,13 @@ syGSEA <- function() {
     ),
     server = function(input, output, session) {
       selected_pathway <- reactiveVal(NULL)  # 创建一个响应式对象来存储选择的值
-      gmt_data <- reactiveValues(gmt = NULL)  # 创建一个reactiveValues对象来存储gmt数据
+      gmt_data <- reactiveValues(gmt = NULL, gmt_taget = NULL)  # 创建一个reactiveValues对象来存储gmt数据
       plot_requested <- reactiveVal(FALSE)
+      # Server logic for handling file upload
+      uploaded_data <- reactiveVal(NULL)
+      xlsx_data <- reactiveValues(genelist = genelist)
+      pic <- reactiveValues(gsea = NULL)
+      
       
       observeEvent(input$source_set, {
         # 获取第一个选择的值
@@ -139,12 +147,41 @@ syGSEA <- function() {
                                duration = NULL, closeButton = FALSE)
         on.exit(removeNotification(id), add = TRUE)
         taget_gmtdf <- gmt_data$gmt[gmt_data$gmt$term == input$pathway_name, ]
-        gsea <- DEG_runGSEA(genelist=genelist, gmt_set=taget_gmtdf, pic.save=F)
+        gsea <- DEG_runGSEA(genelist=xlsx_data$genelist, gmt_set=taget_gmtdf, pic.save=F)
+        gmt_data$gmt_taget <- taget_gmtdf
+        pic$gsea <- DEGp_GSEA(gsea, num = 1)
         # Sys.sleep(10)
         output$plot_gsea <- renderPlot(width = 700, height=600, res = 100,
-                                       DEGp_GSEA(gsea, num = 1) %>% print()
-        )
+                                       pic$gsea %>% print() )
       })
+      
+      
+      observeEvent(input$upload_file, {
+        req(input$upload_file) # Require the file to be uploaded
+        uploaded <- readxl::read_xlsx(input$upload_file$datapath, sheet = 1)
+        
+        # Check if uploaded file has two columns: Gene and log2FC
+        if (ncol(uploaded) == 2 && all(c("Gene", "log2FC") == colnames(uploaded))) {
+          uploaded_data(uploaded)
+        } else {
+          showModal(modalDialog(
+            title = "文件检验失败",
+            "请确保上传的文件仅包含两列，第一列为Gene，第二列为log2FC。",
+            easyClose = TRUE
+          ))
+          uploaded_data(NULL)
+        }
+      })
+      
+      observeEvent(input$upload_file, {
+        if (!is.null(uploaded_data())) {
+          genelist <- uploaded_data()$log2FC # Assigning the Gene column to genelist
+          names(genelist) <- uploaded_data()$Gene
+          genelist <- sort(genelist, decreasing = T)
+          xlsx_data$genelist <- genelist
+        }
+      })
+      
       
       # output$download_plot <- downloadHandler(
       #   filename = function() {
@@ -167,17 +204,26 @@ syGSEA <- function() {
           cat("Selected Pathway is:", selected_pathway())
           assign("sy_pathway_name", selected_pathway(), envir = .GlobalEnv)
           assign("sy_gmt", gmt_data$gmt, envir = .GlobalEnv)
+          assign("sy_gmt_taget", gmt_data$gmt_taget, envir = .GlobalEnv)
+          assign("pic_gsea", pic$gsea, envir = .GlobalEnv)
           stopApp()  # 停止Shiny应用程序
         }
+      })
+      
+      # Function to execute when the session ends
+      onSessionEnded(function() {
+        # Clean-up operations or actions when the session ends
+        stopApp()  # Stop the Shiny app explicitly
       })
       
     }
   )
 }
 
+
 #' Run Shiny APP GSEA
 #' @description Run Shiny APP GSEA
-#' @param genelist  list, a name list store the value of all gene after arrage
+#' @param genelist list, a name list, gene list sorted by log2FC 
 #' @return no
 #' @export
 #' @import shiny
@@ -192,9 +238,7 @@ runAPP_GSEA <- function(genelist) {
   tmpenv <- new.env(parent = emptyenv())
   data(gmt.largelist.23.12.Hs.symbols, package = "LZ", envir = tmpenv)
   gmt.largelist <- tmpenv$gmt.largelist.23.12.Hs.symbols
-  if (interactive()) {
-    syGSEA()
-  }
   rm(tmpenv)
+  syGSEA(gmt.largelist = gmt.largelist, genelist = genelist)
 }
 
