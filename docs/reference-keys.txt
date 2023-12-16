@@ -16,7 +16,8 @@ enrich-auto
 enrich-simple
 dotplot
 enrich-gsea
-r-gsea
+r-gsea-批量分析
+r-gsea-图形界面
 gsea官方软件
 visual
 rnaseq-rsubread

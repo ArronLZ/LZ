@@ -12,3 +12,14 @@ pre {
 pre code {
   white-space: inherit;
 }
+.book .book-body .page-wrapper .page-inner section.normal table {
+  display:table;
+  width:50%;
+  border-collapse:collapse;
+  border-spacing:0;
+  overflow:auto;
+  margin:0; /* 取消默认的居中样式 */
+}
+
+
+/* ID选择器#，类选择器.，具体选择器 */

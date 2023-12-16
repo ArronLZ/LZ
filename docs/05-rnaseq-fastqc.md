@@ -1,3 +1,0 @@
-# RNAseq上游流程 {#rnaseq-rsubread}
-
-On the way ...

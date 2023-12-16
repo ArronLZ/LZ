@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>1 安装 | LZ 文档</title>
   <meta name="description" content="本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会 加入多组学联合分析流程。" />
-  <meta name="generator" content="bookdown 0.36 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
   <meta property="og:title" content="1 安装 | LZ 文档" />
   <meta property="og:type" content="book" />
@@ -55,7 +55,7 @@
 
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -136,7 +136,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">LZ 文档</a></li>
+<li><a href="./">LZ Document</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>前言</a>
@@ -173,8 +173,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="enrich.html"><a href="enrich.html#enrich-gsea"><i class="fa fa-check"></i><b>3.2</b> GSEA分析</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="enrich.html"><a href="enrich.html#r-gsea"><i class="fa fa-check"></i><b>3.2.1</b> R GSEA</a></li>
-<li class="chapter" data-level="3.2.2" data-path="enrich.html"><a href="enrich.html#gsea官方软件"><i class="fa fa-check"></i><b>3.2.2</b> GSEA官方软件</a></li>
+<li class="chapter" data-level="3.2.1" data-path="enrich.html"><a href="enrich.html#r-gsea-批量分析"><i class="fa fa-check"></i><b>3.2.1</b> R GSEA 批量分析</a></li>
+<li class="chapter" data-level="3.2.2" data-path="enrich.html"><a href="enrich.html#r-gsea-图形界面"><i class="fa fa-check"></i><b>3.2.2</b> R GSEA 图形界面</a></li>
+<li class="chapter" data-level="3.2.3" data-path="enrich.html"><a href="enrich.html#gsea官方软件"><i class="fa fa-check"></i><b>3.2.3</b> GSEA官方软件</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="visual.html"><a href="visual.html"><i class="fa fa-check"></i><b>4</b> 差异及富集分析可视化专题</a></li>
@@ -185,7 +186,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9" data-path="spatial.html"><a href="spatial.html"><i class="fa fa-check"></i><b>9</b> 空间转录组</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Edited by LZ <br> Published with bookdown</a></li>
+<li><a href="https://github.com/ArronLZ/LZ" target="blank">编著：荔枝</a></li>
 
 </ul>
 
@@ -224,26 +225,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="install.html#cb1-1" tabindex="-1"></a><span class="co"># 安装biocondutor</span></span>
 <span id="cb1-2"><a href="install.html#cb1-2" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
 <span id="cb1-3"><a href="install.html#cb1-3" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
-<span id="cb1-4"><a href="install.html#cb1-4" tabindex="-1"></a>  <span class="co"># R 4.2.0</span></span>
-<span id="cb1-5"><a href="install.html#cb1-5" tabindex="-1"></a>  BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="at">version =</span> <span class="st">&quot;3.18&quot;</span>) <span class="co"># 4.3 == 3.18</span></span>
-<span id="cb1-6"><a href="install.html#cb1-6" tabindex="-1"></a>}</span>
-<span id="cb1-7"><a href="install.html#cb1-7" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="install.html#cb1-8" tabindex="-1"></a><span class="co"># 设置镜像(可选)</span></span>
-<span id="cb1-9"><a href="install.html#cb1-9" tabindex="-1"></a><span class="fu">options</span>(<span class="st">&quot;repos&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="at">CRAN =</span> <span class="st">&quot;https://mirrors.tuna.tsinghua.edu.cn/CRAN/&quot;</span>)) </span>
-<span id="cb1-10"><a href="install.html#cb1-10" tabindex="-1"></a><span class="fu">options</span>(<span class="at">BioC_mirror=</span><span class="st">&quot;https://mirrors.tuna.tsinghua.edu.cn/bioconductor&quot;</span>)</span>
-<span id="cb1-11"><a href="install.html#cb1-11" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="install.html#cb1-12" tabindex="-1"></a><span class="co"># 安装LZ依赖包</span></span>
-<span id="cb1-13"><a href="install.html#cb1-13" tabindex="-1"></a><span class="co"># 安装cran包</span></span>
-<span id="cb1-14"><a href="install.html#cb1-14" tabindex="-1"></a>cran_pack <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;devtools&#39;</span>, <span class="st">&#39;prettydoc&#39;</span>, <span class="st">&#39;Hmisc&#39;</span>, <span class="st">&#39;markdown&#39;</span>, </span>
-<span id="cb1-15"><a href="install.html#cb1-15" tabindex="-1"></a>               <span class="st">&#39;Hmisc&#39;</span>, <span class="st">&#39;tidyverse&#39;</span>)</span>
-<span id="cb1-16"><a href="install.html#cb1-16" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> cran_pack) { <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(p, <span class="at">quietly =</span> T)) <span class="fu">install.packages</span>(p) }</span>
-<span id="cb1-17"><a href="install.html#cb1-17" tabindex="-1"></a><span class="co"># 安装bioconductor包</span></span>
-<span id="cb1-18"><a href="install.html#cb1-18" tabindex="-1"></a>bioc_pack <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;HPO.db&quot;</span>, <span class="st">&quot;DOSE&quot;</span>, <span class="st">&quot;clusterProfiler&quot;</span>, <span class="st">&#39;DESeq2&#39;</span>, <span class="st">&#39;edgeR&#39;</span>, </span>
-<span id="cb1-19"><a href="install.html#cb1-19" tabindex="-1"></a>               <span class="st">&#39;limma&#39;</span>, <span class="st">&quot;topGO&quot;</span>, <span class="st">&#39;Rgraphviz&#39;</span>, <span class="st">&#39;org.Hs.eg.db&#39;</span>)</span>
-<span id="cb1-20"><a href="install.html#cb1-20" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> bioc_pack) { </span>
-<span id="cb1-21"><a href="install.html#cb1-21" tabindex="-1"></a>  <span class="fu">cat</span>(p, <span class="st">&#39;=========</span><span class="sc">\n</span><span class="st">&#39;</span>) </span>
-<span id="cb1-22"><a href="install.html#cb1-22" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(p, <span class="at">quietly =</span> T)) BiocManager<span class="sc">::</span><span class="fu">install</span>(p, <span class="at">update =</span> F, <span class="at">ask =</span>F) </span>
-<span id="cb1-23"><a href="install.html#cb1-23" tabindex="-1"></a>}</span></code></pre></div>
+<span id="cb1-4"><a href="install.html#cb1-4" tabindex="-1"></a>  BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="at">version =</span> <span class="st">&quot;3.18&quot;</span>) <span class="co"># 4.3 == 3.18</span></span>
+<span id="cb1-5"><a href="install.html#cb1-5" tabindex="-1"></a>}</span>
+<span id="cb1-6"><a href="install.html#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="install.html#cb1-7" tabindex="-1"></a><span class="co"># 设置镜像(可选)</span></span>
+<span id="cb1-8"><a href="install.html#cb1-8" tabindex="-1"></a><span class="fu">options</span>(<span class="st">&quot;repos&quot;</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="at">CRAN =</span> <span class="st">&quot;https://mirrors.tuna.tsinghua.edu.cn/CRAN/&quot;</span>)) </span>
+<span id="cb1-9"><a href="install.html#cb1-9" tabindex="-1"></a><span class="fu">options</span>(<span class="at">BioC_mirror=</span><span class="st">&quot;https://mirrors.tuna.tsinghua.edu.cn/bioconductor&quot;</span>)</span>
+<span id="cb1-10"><a href="install.html#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="install.html#cb1-11" tabindex="-1"></a><span class="co"># 安装LZ依赖包</span></span>
+<span id="cb1-12"><a href="install.html#cb1-12" tabindex="-1"></a><span class="co"># 安装cran包</span></span>
+<span id="cb1-13"><a href="install.html#cb1-13" tabindex="-1"></a>cran_pack <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;devtools&#39;</span>, <span class="st">&#39;prettydoc&#39;</span>, <span class="st">&#39;Hmisc&#39;</span>, <span class="st">&#39;markdown&#39;</span>, </span>
+<span id="cb1-14"><a href="install.html#cb1-14" tabindex="-1"></a>               <span class="st">&#39;Hmisc&#39;</span>, <span class="st">&#39;tidyverse&#39;</span>)</span>
+<span id="cb1-15"><a href="install.html#cb1-15" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> cran_pack) { </span>
+<span id="cb1-16"><a href="install.html#cb1-16" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(p, <span class="at">quietly =</span> T)) <span class="fu">install.packages</span>(p) </span>
+<span id="cb1-17"><a href="install.html#cb1-17" tabindex="-1"></a>}</span>
+<span id="cb1-18"><a href="install.html#cb1-18" tabindex="-1"></a><span class="co"># 安装bioconductor包</span></span>
+<span id="cb1-19"><a href="install.html#cb1-19" tabindex="-1"></a>bioc_pack <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;DOSE&quot;</span>, <span class="st">&quot;clusterProfiler&quot;</span>, <span class="st">&#39;DESeq2&#39;</span>, <span class="st">&#39;edgeR&#39;</span>, </span>
+<span id="cb1-20"><a href="install.html#cb1-20" tabindex="-1"></a>               <span class="st">&#39;limma&#39;</span>, <span class="st">&quot;topGO&quot;</span>, <span class="st">&#39;Rgraphviz&#39;</span>, <span class="st">&#39;org.Hs.eg.db&#39;</span>)</span>
+<span id="cb1-21"><a href="install.html#cb1-21" tabindex="-1"></a><span class="cf">for</span> (p <span class="cf">in</span> bioc_pack) { </span>
+<span id="cb1-22"><a href="install.html#cb1-22" tabindex="-1"></a>  <span class="fu">cat</span>(p, <span class="st">&#39;=========</span><span class="sc">\n</span><span class="st">&#39;</span>) </span>
+<span id="cb1-23"><a href="install.html#cb1-23" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(p, <span class="at">quietly =</span> T)) </span>
+<span id="cb1-24"><a href="install.html#cb1-24" tabindex="-1"></a>    BiocManager<span class="sc">::</span><span class="fu">install</span>(p, <span class="at">update =</span> F, <span class="at">ask =</span>F) </span>
+<span id="cb1-25"><a href="install.html#cb1-25" tabindex="-1"></a>}</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>安装LZ包(此包会不定时更新，后续更新只需要重新运行这句即可，上面的包不需要重新安装)</li>
 </ol>
@@ -292,8 +295,8 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/ArronLZ/LZ/01-install.Rmd",
-"text": "Edit"
+"link": null,
+"text": null
 },
 "history": {
 "link": null,
@@ -303,7 +306,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["LZdocument.pdf", "LZdocument.epub"],
+"download": ["LZ.pdf", "LZ.epub"],
 "search": {
 "engine": "fuse",
 "options": null
