@@ -229,7 +229,7 @@ syGSEA <- function(gmt.largelist, genelist) {
 #' @import shiny
 #'
 #' @author Jiang
-runAPP_GSEA <- function(genelist) {
+runAPP_GSEA <- function(genelist = NA) {
   library(LZ)
   library(clusterProfiler)
   library(enrichplot)

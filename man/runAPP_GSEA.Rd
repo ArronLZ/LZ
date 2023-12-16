@@ -4,7 +4,7 @@
 \alias{runAPP_GSEA}
 \title{Run Shiny APP GSEA}
 \usage{
-runAPP_GSEA(genelist)
+runAPP_GSEA(genelist = NA)
 }
 \arguments{
 \item{genelist}{list, a name list, gene list sorted by log2FC}
