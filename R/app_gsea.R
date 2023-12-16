@@ -1,0 +1,195 @@
+#' Shiny APP GSEA
+#' @description Shiny APP GSEA
+#' 
+#' @return no
+#' @import shiny
+#'
+#' @author Jiang
+syGSEA <- function() {
+  source.name <- names(gmt.largelist.23.12.Hs.symbols)
+  shinyApp(
+    ui = fluidPage(
+      tags$head(
+        tags$title("GSEA"),
+        tags$style(
+          HTML(
+            ".panel-body {
+              padding-top: 8px;
+            }
+            .btn-primary {
+              background-color: #3498db;
+              border-color: #3498db;
+            }
+            .btn-primary:hover {
+              background-color: #2980b9;
+              border-color: #2980b9;
+            }
+            .panel-primary > .panel-heading {
+              color: #fff;
+              background-color: #3498db;
+              border-color: #3498db;
+            }
+            .selectize-dropdown {
+              z-index: 9999;
+            }
+            .notification-center {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(128, 128, 128, 0.1);
+            color: rgba(70,130,180,1);
+            font-weight: bold;
+            font-size: 24px;
+            position: fixed;
+            padding: 8px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            }"
+          )
+        )
+      ),
+      # tags$div(h4("Gene Set Enrichment Analysis(GSEA)")),
+      tags$div(HTML("<p style='font-size: 18px; font-family: Microsoft Yahei; font-weight:bold; color: #3498db;'> Gene Set Enrichment Analysis(GSEA) </p>")),
+      fluidRow(
+        column(
+          width = 6,
+          tags$div(
+            class = "panel panel-primary",
+            tags$div(
+              class = "panel-body",
+              selectInput("source_set", 
+                          label = "通路数据集来源选择",
+                          choices = source.name, 
+                          selected = NULL,
+                          width = '100%'),
+              selectInput("pathway_name", 
+                          label = "通路名称：选择或输入关键字查找",
+                          choices = NULL, 
+                          width = '100%'),
+              actionButton("plot_btn", "画图", class = "btn-primary"),
+              actionButton("download_plot", "暂不可用", class = "btn-primary"),
+              actionButton("submit_btn", "结束", class = "btn-primary")
+            )
+          ),
+          br(),
+          tags$div(
+            class = "panel panel-primary",
+            tags$div(
+              class = "panel-body",
+              uiOutput('pathway_title'),
+              textOutput('pathway_genelist')
+            )
+          )
+        ),
+        column(
+          width = 6,
+          plotOutput("plot_gsea")
+        )
+      ),
+      fluidRow(
+        column(
+          width = 6,
+          
+        )
+      )
+    ),
+    server = function(input, output, session) {
+      selected_pathway <- reactiveVal(NULL)  # 创建一个响应式对象来存储选择的值
+      gmt_data <- reactiveValues(gmt = NULL)  # 创建一个reactiveValues对象来存储gmt数据
+      plot_requested <- reactiveVal(FALSE)
+      
+      observeEvent(input$source_set, {
+        # 获取第一个选择的值
+        selected_option <- input$source_set
+        gmt_data$gmt <- gmt.largelist.23.12.Hs.symbols[[selected_option]]
+        source.path.name <- sort(unique(gmt_data$gmt$term))
+        
+        # 根据第一个选择更新第二个选择的内容
+        updateSelectInput(session, "pathway_name",
+                          choices = source.path.name)
+      })
+      
+      
+      output$pathway_title <- renderUI({
+        if (!is.null(gmt_data$gmt) & !is.null(input$pathway_name)) {
+          HTML(paste0("<div style='font-size: 18px; font-family: Arial; font-weight:bold; color: #FF0000;'>", 
+                      input$pathway_name, " 通路基因列表：",
+                      "</div>")
+          )
+        }
+      })
+      
+      
+      output$pathway_genelist <- renderText({
+        if (!is.null(gmt_data$gmt) & !is.null(input$pathway_name)) {
+          gene <- gmt_data$gmt[gmt_data$gmt$term == input$pathway_name, 2]
+          c(sapply(gene[1:(length(gene)-1)], function(x) paste0(x, ",")), 
+            tail(gene, 1))
+        }
+      })
+      
+      observeEvent(input$plot_btn, {
+        id <- showNotification('通知', 
+                               tags$div(
+                                 "正在计算中，请勿关闭网页...",
+                                 class = "notification-center"
+                               ),
+                               duration = NULL, closeButton = FALSE)
+        on.exit(removeNotification(id), add = TRUE)
+        taget_gmtdf <- gmt_data$gmt[gmt_data$gmt$term == input$pathway_name, ]
+        gsea <- DEG_runGSEA(genelist=genelist, gmt_set=taget_gmtdf, pic.save=F)
+        # Sys.sleep(10)
+        output$plot_gsea <- renderPlot(width = 700, height=600, res = 100,
+                                       DEGp_GSEA(gsea, num = 1) %>% print()
+        )
+      })
+      
+      # output$download_plot <- downloadHandler(
+      #   filename = function() {
+      #     paste("plot", "png", sep = ".")
+      #   },
+      #   content = function(file) {
+      #     file.copy("plot.png", file)
+      #   }
+      # )
+      
+      # 关闭应用时的动作
+      observeEvent(input$submit_btn, {
+        selected_pathway(input$pathway_name)  # 将选择的值存储到响应式对象中
+        # 关闭Shiny应用程序
+        session$reload()  # 重新加载应用程序，模拟关闭应用的效果
+      })
+      # 当应用程序重新加载时，执行一些操作
+      observe({
+        if (!is.null(selected_pathway())) {
+          cat("Selected Pathway is:", selected_pathway())
+          assign("sy_pathway_name", selected_pathway(), envir = .GlobalEnv)
+          assign("sy_gmt", gmt_data$gmt, envir = .GlobalEnv)
+          stopApp()  # 停止Shiny应用程序
+        }
+      })
+      
+    }
+  )
+}
+
+#' Run Shiny APP GSEA
+#' @description Run Shiny APP GSEA
+#' 
+#' @return no
+#' @export
+#' @import shiny
+#'
+#' @author Jiang
+runAPP_GSEA <- function() {
+  library(LZ)
+  library(clusterProfiler)
+  library(enrichplot)
+  data("gmt.largelist.23.12.Hs.symbols")
+  if (interactive()) {
+    library(shiny)
+    syGSEA()
+  }
+}

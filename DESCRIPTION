@@ -37,7 +37,8 @@ Imports:
     DOSE,
     clusterProfiler,
     enrichplot,
-    BiocParallel
+    BiocParallel,
+    shiny
 Depends:
     stringr,
     readxl,
@@ -47,6 +48,7 @@ Depends:
 URL: https://github.com/ArronLZ/LZ
 Collate: 
     'DEG_prepareData.S3.R'
+    'app_gsea.R'
     'data.R'
     'deg.R'
     'deg.enrich.R'
