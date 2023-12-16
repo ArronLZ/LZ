@@ -4,7 +4,10 @@
 \alias{runAPP_GSEA}
 \title{Run Shiny APP GSEA}
 \usage{
-runAPP_GSEA()
+runAPP_GSEA(genelist)
+}
+\arguments{
+\item{genelist}{list, a name list store the value of all gene after arrage}
 }
 \value{
 no

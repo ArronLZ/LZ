@@ -8,6 +8,7 @@
 #' @export
 #' @importFrom enrichplot gseaplot2
 #' @importFrom ggsci pal_jco
+#' @importFrom ggplot2 annotate
 #'
 #' @author Jiang
 DEGp_GSEA <- function(GSEA.obj, num=1) {

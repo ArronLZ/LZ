@@ -6,7 +6,7 @@
 #'
 #' @author Jiang
 syGSEA <- function() {
-  source.name <- names(gmt.largelist.23.12.Hs.symbols)
+  source.name <- names(gmt.largelist)
   shinyApp(
     ui = fluidPage(
       tags$head(
@@ -103,7 +103,7 @@ syGSEA <- function() {
       observeEvent(input$source_set, {
         # 获取第一个选择的值
         selected_option <- input$source_set
-        gmt_data$gmt <- gmt.largelist.23.12.Hs.symbols[[selected_option]]
+        gmt_data$gmt <-  gmt.largelist[[selected_option]]
         source.path.name <- sort(unique(gmt_data$gmt$term))
         
         # 根据第一个选择更新第二个选择的内容
@@ -177,19 +177,24 @@ syGSEA <- function() {
 
 #' Run Shiny APP GSEA
 #' @description Run Shiny APP GSEA
-#' 
+#' @param genelist  list, a name list store the value of all gene after arrage
 #' @return no
 #' @export
 #' @import shiny
 #'
 #' @author Jiang
-runAPP_GSEA <- function() {
+runAPP_GSEA <- function(genelist) {
   library(LZ)
   library(clusterProfiler)
   library(enrichplot)
-  data("gmt.largelist.23.12.Hs.symbols")
+  library(ggplot2)
+  library(shiny)
+  tmpenv <- new.env(parent = emptyenv())
+  data(gmt.largelist.23.12.Hs.symbols, package = "LZ", envir = tmpenv)
+  gmt.largelist <- tmpenv$gmt.largelist.23.12.Hs.symbols
   if (interactive()) {
-    library(shiny)
     syGSEA()
   }
+  rm(tmpenv)
 }
+
