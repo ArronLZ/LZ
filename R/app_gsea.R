@@ -71,7 +71,7 @@ syGSEA <- function(gmt.largelist, genelist) {
                           choices = NULL, 
                           width = '100%'),
               actionButton("plot_btn", "画图", class = "btn-primary"),
-              actionButton("download_plot", "暂不可用", class = "btn-primary"),
+              downloadButton("download_plot", "下载", class = "btn-primary"),
               actionButton("submit_btn", "结束", class = "btn-primary")
             )
           ),
@@ -138,25 +138,44 @@ syGSEA <- function(gmt.largelist, genelist) {
         }
       })
       
+      
       observeEvent(input$plot_btn, {
-        id <- showNotification('通知', 
-                               tags$div(
-                                 "正在计算中，请勿关闭网页...",
-                                 class = "notification-center"
-                               ),
-                               duration = NULL, closeButton = FALSE)
-        on.exit(removeNotification(id), add = TRUE)
-        taget_gmtdf <- gmt_data$gmt[gmt_data$gmt$term == input$pathway_name, ]
-        gsea <- DEG_runGSEA(genelist=xlsx_data$genelist, gmt_set=taget_gmtdf, pic.save=F)
-        gmt_data$gmt_taget <- taget_gmtdf
-        pic$gsea <- DEGp_GSEA(gsea, num = 1)
-        # Sys.sleep(10)
-        output$plot_gsea <- renderPlot(width = 700, height=600, res = 100,
-                                       pic$gsea %>% print() )
+        tryre <- tryCatch({
+          if (length(xlsx_data$genelist) == 1) {
+            showModal(modalDialog(
+              title = "提示",
+              HTML("<p>由于启动时未提供genelist，因此需要用户上传genelist数据。两种解决方法:
+            <br>1. 请按要求上传数据
+            <br>2. 或关闭程序在下次启动时设置genelist参数</p>"),
+              easyClose = TRUE,
+              footer = modalButton("关闭")
+            ))
+          } else {
+            id <- showNotification('通知', 
+                                   tags$div(
+                                     "正在计算中，请勿关闭网页...",
+                                     class = "notification-center"
+                                   ),
+                                   duration = NULL, closeButton = FALSE)
+            on.exit(removeNotification(id), add = TRUE)
+            taget_gmtdf <- gmt_data$gmt[gmt_data$gmt$term == input$pathway_name, ]
+            gsea <- DEG_runGSEA(genelist=xlsx_data$genelist, gmt_set=taget_gmtdf, pic.save=F)
+            gmt_data$gmt_taget <- taget_gmtdf
+            pic$gsea <- DEGp_GSEA(gsea, num = 1)
+            pic$data <- gsea
+            # Sys.sleep(10)
+            output$plot_gsea <- renderPlot(width = 600, height=514, res = 100,
+                                           pic$gsea %>% print() )
+          }
+        }, error = function(err) {
+          stop(cat(conditionMessage(err), "\n"))
+        })
       })
       
       
       observeEvent(input$upload_file, {
+        uploaded_data(NULL)
+        xlsx_data$genelist <- NA
         req(input$upload_file) # Require the file to be uploaded
         uploaded <- readxl::read_xlsx(input$upload_file$datapath, sheet = 1)
         
@@ -164,33 +183,44 @@ syGSEA <- function(gmt.largelist, genelist) {
         if (ncol(uploaded) == 2 && all(c("Gene", "log2FC") == colnames(uploaded))) {
           uploaded_data(uploaded)
         } else {
+          uploaded_data(NULL)
           showModal(modalDialog(
             title = "文件检验失败",
             "请确保上传的文件仅包含两列，第一列为Gene，第二列为log2FC。",
-            easyClose = TRUE
+            easyClose = TRUE,
+            footer = modalButton("关闭")
           ))
-          uploaded_data(NULL)
         }
-      })
-      
-      observeEvent(input$upload_file, {
+        
         if (!is.null(uploaded_data())) {
           genelist <- uploaded_data()$log2FC # Assigning the Gene column to genelist
           names(genelist) <- uploaded_data()$Gene
           genelist <- sort(genelist, decreasing = T)
           xlsx_data$genelist <- genelist
+        } else {
+          updateFileInput(session, "upload_file", "上传表格文件（XLSX格式）", accept = ".xlsx")
         }
       })
       
-      
-      # output$download_plot <- downloadHandler(
-      #   filename = function() {
-      #     paste("plot", "png", sep = ".")
-      #   },
-      #   content = function(file) {
-      #     file.copy("plot.png", file)
-      #   }
-      # )
+      output$download_plot <- downloadHandler(
+        filename = function() {
+          if (is.null(pic$gsea)) { 
+            "please plot picture and then click download button.txt"
+          } else {
+            paste0('gsea_plot_', input$pathway_name, 
+                   format(Sys.time(), "-%Y-%m-%d-%H%:%M:%S"), '.pdf')
+          }
+        },
+        content = function(file) {
+          if (is.null(pic$gsea)) { 
+            writeLines("错误：请先按要求画图后再点击下载按键", con = file) 
+          } else {
+            pdf(file, width = 7, height = 6)
+            print(pic$gsea)
+            dev.off()
+          }
+        }
+      )
       
       # 关闭应用时的动作
       observeEvent(input$submit_btn, {
@@ -209,7 +239,6 @@ syGSEA <- function(gmt.largelist, genelist) {
           stopApp()  # 停止Shiny应用程序
         }
       })
-      
       # Function to execute when the session ends
       onSessionEnded(function() {
         # Clean-up operations or actions when the session ends
