@@ -84,7 +84,8 @@ syGSEA <- function(gmt.largelist, genelist) {
               textOutput('pathway_genelist')
             )
           ),
-          fileInput("upload_file", "上传表格文件（XLSX格式）", accept = ".xlsx")
+          uiOutput("upload_file_ui")
+          # fileInput("upload_file", "上传表格文件（XLSX格式）", accept = ".xlsx")
         ),
         column(
           width = 6,
@@ -107,6 +108,9 @@ syGSEA <- function(gmt.largelist, genelist) {
       xlsx_data <- reactiveValues(genelist = genelist)
       pic <- reactiveValues(gsea = NULL)
       
+      output$upload_file_ui <- renderUI({
+        fileInput("upload_file", "上传表格文件（XLSX格式）", accept = ".xlsx")
+      })
       
       observeEvent(input$source_set, {
         # 获取第一个选择的值
@@ -198,7 +202,9 @@ syGSEA <- function(gmt.largelist, genelist) {
           genelist <- sort(genelist, decreasing = T)
           xlsx_data$genelist <- genelist
         } else {
-          updateFileInput(session, "upload_file", "上传表格文件（XLSX格式）", accept = ".xlsx")
+          output$upload_file_ui <- renderUI({
+            fileInput("upload_file", "上传表格文件（XLSX格式）", accept = ".xlsx")
+          })
         }
       })
       
