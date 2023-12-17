@@ -174,8 +174,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.2" data-path="enrich.html"><a href="enrich.html#enrich-gsea"><i class="fa fa-check"></i><b>3.2</b> GSEA分析</a>
 <ul>
 <li class="chapter" data-level="3.2.1" data-path="enrich.html"><a href="enrich.html#r-gsea-批量分析"><i class="fa fa-check"></i><b>3.2.1</b> R GSEA 批量分析</a></li>
-<li class="chapter" data-level="3.2.2" data-path="enrich.html"><a href="enrich.html#r-gsea-图形界面"><i class="fa fa-check"></i><b>3.2.2</b> R GSEA 图形界面</a></li>
-<li class="chapter" data-level="3.2.3" data-path="enrich.html"><a href="enrich.html#gsea官方软件"><i class="fa fa-check"></i><b>3.2.3</b> GSEA官方软件</a></li>
+<li class="chapter" data-level="3.2.2" data-path="enrich.html"><a href="enrich.html#enrich-gsea-r.gsea.gui"><i class="fa fa-check"></i><b>3.2.2</b> R GSEA 图形界面</a></li>
+<li class="chapter" data-level="3.2.3" data-path="enrich.html"><a href="enrich.html#一些进阶操作及技巧不会没有关系不做过多解释自行体会无r语言基础者慎入"><i class="fa fa-check"></i><b>3.2.3</b> 一些进阶操作及技巧(不会没有关系，不做过多解释，自行体会，无R语言基础者慎入)</a></li>
+<li class="chapter" data-level="3.2.4" data-path="enrich.html"><a href="enrich.html#gsea官方软件"><i class="fa fa-check"></i><b>3.2.4</b> GSEA官方软件</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="visual.html"><a href="visual.html"><i class="fa fa-check"></i><b>4</b> 差异及富集分析可视化专题</a></li>
@@ -325,7 +326,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">3.2</span> GSEA分析<a href="enrich.html#enrich-gsea" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="r-gsea-批量分析" class="section level3 hasAnchor" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> R GSEA 批量分析<a href="enrich.html#r-gsea-批量分析" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><a href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp" target="_blank">GSEA官网</a>提供了GSEA分析软件和MSigDB数据库中的所有通路下载，如果需要更多的通路集可以自行下载，本包内置了MSigDB的H,C1-8的所有大类集及C2,C5的部分重要子类集，还有整理好的最新版的KEGG官方的PATHWAY通路集合。</p>
+<ul>
+<li><p><a href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp" target="_blank">GSEA官网</a>提供了GSEA分析软件和MSigDB数据库中的所有通路下载，如果需要更多的通路集可以自行下载，本包内置了MSigDB的H,C1-8的所有大类集及C2,C5的部分重要子类集，还有整理好的最新版的KEGG官方的PATHWAY通路集合。</p></li>
+<li><p>本包构建了一个图形界面函数<code>runAPP_GSEA()</code>，可在安装完LZ包后直接通过运行<code>LZ::runAPP_GSEA()</code>启动图形界面，也可在浏览器中打开。详细见<a href="enrich.html#enrich-gsea-r.gsea.gui">R GSEA 图形界面</a></p></li>
+</ul>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="enrich.html#cb10-1" tabindex="-1"></a><span class="fu">library</span>(LZ)</span>
 <span id="cb10-2"><a href="enrich.html#cb10-2" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
 <span id="cb10-3"><a href="enrich.html#cb10-3" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span>
@@ -360,8 +364,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-32"><a href="enrich.html#cb10-32" tabindex="-1"></a>                           <span class="at">pic.save=</span>T, <span class="at">outdir =</span> <span class="st">&quot;./gsea.result2/&quot;</span>, </span>
 <span id="cb10-33"><a href="enrich.html#cb10-33" tabindex="-1"></a>                           <span class="at">filename =</span> <span class="st">&quot;ferr&quot;</span>)</span></code></pre></div>
 </div>
-<div id="r-gsea-图形界面" class="section level3 hasAnchor" number="3.2.2">
-<h3><span class="header-section-number">3.2.2</span> R GSEA 图形界面<a href="enrich.html#r-gsea-图形界面" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="enrich-gsea-r.gsea.gui" class="section level3 hasAnchor" number="3.2.2">
+<h3><span class="header-section-number">3.2.2</span> R GSEA 图形界面<a href="enrich.html#enrich-gsea-r.gsea.gui" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>图形界面可以用自己的表格数据上传来做GSEA分析，表格必须有且仅有两列，分别
 为Gene列和log2FC列，具体表格形式如下：</p>
 <table>
@@ -403,34 +407,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p>注意：虽然要求第二列名为log2FC,但第二列只要是表示变化倍数就可以，不一定要是log2后数据，没有排序也没关系。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="enrich.html#cb11-1" tabindex="-1"></a><span class="co"># 启动方法1，已经在R里载入了genelist的话，运行此句启动图形界面，这样就不需要</span></span>
-<span id="cb11-2"><a href="enrich.html#cb11-2" tabindex="-1"></a><span class="co">#   上传表格</span></span>
-<span id="cb11-3"><a href="enrich.html#cb11-3" tabindex="-1"></a><span class="fu">runAPP_GSEA</span>(<span class="at">genelist =</span> genelist)</span>
-<span id="cb11-4"><a href="enrich.html#cb11-4" tabindex="-1"></a><span class="co"># 启动方法2，如果想使用自己的表格，那么运行此句，这样情况不需要在R里写任何</span></span>
-<span id="cb11-5"><a href="enrich.html#cb11-5" tabindex="-1"></a><span class="co">#  代码，只要加载上述的R包，然后运行此句即可。</span></span>
-<span id="cb11-6"><a href="enrich.html#cb11-6" tabindex="-1"></a><span class="co">#  使用这种方法，则必须要上传表格后才能点击画图，否则会报错终端程序。中断后</span></span>
-<span id="cb11-7"><a href="enrich.html#cb11-7" tabindex="-1"></a><span class="co">#  重新运行此句再次打开即可。</span></span>
-<span id="cb11-8"><a href="enrich.html#cb11-8" tabindex="-1"></a><span class="fu">runAPP_GSEA</span>()</span></code></pre></div>
-<p>一些进阶操作及技巧(不会没有关系，不做过多解释，自行体会)</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="enrich.html#cb12-1" tabindex="-1"></a><span class="co"># 进阶操作 ---------------------------</span></span>
-<span id="cb12-2"><a href="enrich.html#cb12-2" tabindex="-1"></a><span class="co"># 1. 转换成宽型文件</span></span>
-<span id="cb12-3"><a href="enrich.html#cb12-3" tabindex="-1"></a>gmt.w2 <span class="ot">&lt;-</span> <span class="fu">gmt_longTowide2</span>(gmt) </span>
-<span id="cb12-4"><a href="enrich.html#cb12-4" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="enrich.html#cb12-5" tabindex="-1"></a><span class="co"># 2. 查找指定通路的图</span></span>
-<span id="cb12-6"><a href="enrich.html#cb12-6" tabindex="-1"></a><span class="co">#  如果自己知道通路的名字，可以通过查找来定位到通路的位置，然后单独画图</span></span>
-<span id="cb12-7"><a href="enrich.html#cb12-7" tabindex="-1"></a>pathway <span class="ot">=</span> <span class="st">&quot;^ABC&quot;</span></span>
-<span id="cb12-8"><a href="enrich.html#cb12-8" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">grep</span>(pathway, gsea[,<span class="st">&quot;ID&quot;</span>])</span>
-<span id="cb12-9"><a href="enrich.html#cb12-9" tabindex="-1"></a><span class="fu">grep</span>(pathway, gsea[,<span class="st">&quot;ID&quot;</span>], <span class="at">value =</span> T) <span class="co"># 查看找到的通路名称，必须时唯一值，否则请使用更加详细的查找条件再查找一次。</span></span>
-<span id="cb12-10"><a href="enrich.html#cb12-10" tabindex="-1"></a><span class="fu">DEGp_GSEA</span>(gsea, <span class="at">num =</span> n)</span>
-<span id="cb12-11"><a href="enrich.html#cb12-11" tabindex="-1"></a></span>
-<span id="cb12-12"><a href="enrich.html#cb12-12" tabindex="-1"></a><span class="co"># 3. 从当前的gmt文件中获取指定的Pathway Gene set(gmt对象名一定腰围gmt才行)</span></span>
-<span id="cb12-13"><a href="enrich.html#cb12-13" tabindex="-1"></a>gmtdf.find <span class="ot">&lt;-</span> <span class="fu">find_pathway</span>(<span class="st">&quot;^Ferr&quot;</span>)</span>
-<span id="cb12-14"><a href="enrich.html#cb12-14" tabindex="-1"></a>gsea.single <span class="ot">&lt;-</span> <span class="fu">DEG_runGSEA</span>(<span class="at">genelist =</span> genelist, <span class="at">gmt_set=</span>gmtdf.find, </span>
-<span id="cb12-15"><a href="enrich.html#cb12-15" tabindex="-1"></a>                           <span class="at">pic.save=</span>T, <span class="at">outdir =</span> <span class="st">&quot;./gsea.ytb3/&quot;</span>, </span>
-<span id="cb12-16"><a href="enrich.html#cb12-16" tabindex="-1"></a>                           <span class="at">filename =</span> <span class="st">&quot;fer_taget&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="enrich.html#cb11-1" tabindex="-1"></a><span class="co"># 启动方法1（不带参数启动），适合自己已经有了差异分析结果的表格的情况，</span></span>
+<span id="cb11-2"><a href="enrich.html#cb11-2" tabindex="-1"></a><span class="co">#  那么运行此句后，不需要在R里写任何代码，如果通过LZ::runAPP_GSEA()甚至</span></span>
+<span id="cb11-3"><a href="enrich.html#cb11-3" tabindex="-1"></a><span class="co">#  都不需要加载包。</span></span>
+<span id="cb11-4"><a href="enrich.html#cb11-4" tabindex="-1"></a><span class="co">#  使用这种方法，则必须要上传上述指定的表格形式的表格后才能点击画图。</span></span>
+<span id="cb11-5"><a href="enrich.html#cb11-5" tabindex="-1"></a><span class="fu">runAPP_GSEA</span>() <span class="co"># 或在安装成功LZ包后，直接通过LZ::runAPP_GSEA()来启动</span></span>
+<span id="cb11-6"><a href="enrich.html#cb11-6" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="enrich.html#cb11-7" tabindex="-1"></a><span class="co"># 启动方法2（带参数启动），适合在R中已经有genelist的情况。</span></span>
+<span id="cb11-8"><a href="enrich.html#cb11-8" tabindex="-1"></a><span class="co"># 已在R里有了genelist的话，运行此句启动图形界面，这样就不需要上传表格</span></span>
+<span id="cb11-9"><a href="enrich.html#cb11-9" tabindex="-1"></a><span class="fu">runAPP_GSEA</span>(<span class="at">genelist =</span> genelist)</span></code></pre></div>
 </div>
-<div id="gsea官方软件" class="section level3 hasAnchor" number="3.2.3">
-<h3><span class="header-section-number">3.2.3</span> GSEA官方软件<a href="enrich.html#gsea官方软件" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="一些进阶操作及技巧不会没有关系不做过多解释自行体会无r语言基础者慎入" class="section level3 hasAnchor" number="3.2.3">
+<h3><span class="header-section-number">3.2.3</span> 一些进阶操作及技巧(不会没有关系，不做过多解释，自行体会，无R语言基础者慎入)<a href="enrich.html#一些进阶操作及技巧不会没有关系不做过多解释自行体会无r语言基础者慎入" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="enrich.html#cb12-1" tabindex="-1"></a><span class="co"># 进阶操作 ---------------------------</span></span>
+<span id="cb12-2"><a href="enrich.html#cb12-2" tabindex="-1"></a><span class="co"># 1. 查找指定通路的图</span></span>
+<span id="cb12-3"><a href="enrich.html#cb12-3" tabindex="-1"></a><span class="co">#  如果自己知道通路的名字，可以通过查找来定位到通路的位置，然后单独画图</span></span>
+<span id="cb12-4"><a href="enrich.html#cb12-4" tabindex="-1"></a>pathway <span class="ot">=</span> <span class="st">&quot;^ABC&quot;</span></span>
+<span id="cb12-5"><a href="enrich.html#cb12-5" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">grep</span>(pathway, gsea[,<span class="st">&quot;ID&quot;</span>])</span>
+<span id="cb12-6"><a href="enrich.html#cb12-6" tabindex="-1"></a><span class="fu">grep</span>(pathway, gsea[,<span class="st">&quot;ID&quot;</span>], <span class="at">value =</span> T) <span class="co"># 查看找到的通路名称，必须时唯一值，否则请使用更加详细的查找条件再查找一次。</span></span>
+<span id="cb12-7"><a href="enrich.html#cb12-7" tabindex="-1"></a><span class="fu">DEGp_GSEA</span>(gsea, <span class="at">num =</span> n)</span>
+<span id="cb12-8"><a href="enrich.html#cb12-8" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="enrich.html#cb12-9" tabindex="-1"></a><span class="co"># 2. 从当前的gmt文件中获取指定的Pathway Gene set(gmt对象名一定腰围gmt才行)</span></span>
+<span id="cb12-10"><a href="enrich.html#cb12-10" tabindex="-1"></a>gmtdf.find <span class="ot">&lt;-</span> <span class="fu">find_pathway</span>(<span class="st">&quot;^Ferr&quot;</span>)</span>
+<span id="cb12-11"><a href="enrich.html#cb12-11" tabindex="-1"></a>gsea.single <span class="ot">&lt;-</span> <span class="fu">DEG_runGSEA</span>(<span class="at">genelist =</span> genelist, <span class="at">gmt_set=</span>gmtdf.find, </span>
+<span id="cb12-12"><a href="enrich.html#cb12-12" tabindex="-1"></a>                           <span class="at">pic.save=</span>T, <span class="at">outdir =</span> <span class="st">&quot;./gsea.ytb3/&quot;</span>, </span>
+<span id="cb12-13"><a href="enrich.html#cb12-13" tabindex="-1"></a>                           <span class="at">filename =</span> <span class="st">&quot;fer_taget&quot;</span>)</span>
+<span id="cb12-14"><a href="enrich.html#cb12-14" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="enrich.html#cb12-15" tabindex="-1"></a><span class="co"># 3. 如果自己的分析中想将自己的数据转化为GSEA要求的genelist数据，</span></span>
+<span id="cb12-16"><a href="enrich.html#cb12-16" tabindex="-1"></a><span class="co">#    例如自己的分析项目中有一个名为re的对象，该对象中有</span></span>
+<span id="cb12-17"><a href="enrich.html#cb12-17" tabindex="-1"></a><span class="co">#    基因名列XX 和 基因变化倍数列 YY</span></span>
+<span id="cb12-18"><a href="enrich.html#cb12-18" tabindex="-1"></a>genelist <span class="ot">&lt;-</span> re<span class="sc">$</span>YY</span>
+<span id="cb12-19"><a href="enrich.html#cb12-19" tabindex="-1"></a><span class="fu">names</span>(genelist) <span class="ot">&lt;-</span> re<span class="sc">$</span>XX</span>
+<span id="cb12-20"><a href="enrich.html#cb12-20" tabindex="-1"></a>genelist <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(<span class="fu">sort</span>(genelist, <span class="at">decreasing =</span> T))</span>
+<span id="cb12-21"><a href="enrich.html#cb12-21" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="enrich.html#cb12-22" tabindex="-1"></a><span class="co"># 4. GSEA图形界面中若使用结束按钮关闭程序，会将最后一次画图的数据保留在</span></span>
+<span id="cb12-23"><a href="enrich.html#cb12-23" tabindex="-1"></a><span class="co">#    R会话中，具体如下：</span></span>
+<span id="cb12-24"><a href="enrich.html#cb12-24" tabindex="-1"></a><span class="co"># 最后画的一幅图</span></span>
+<span id="cb12-25"><a href="enrich.html#cb12-25" tabindex="-1"></a>pic_gsea</span>
+<span id="cb12-26"><a href="enrich.html#cb12-26" tabindex="-1"></a><span class="co"># 保存图片</span></span>
+<span id="cb12-27"><a href="enrich.html#cb12-27" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">&#39;aaa.pdf&#39;</span>, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">5</span>)</span>
+<span id="cb12-28"><a href="enrich.html#cb12-28" tabindex="-1"></a>pic_gsea</span>
+<span id="cb12-29"><a href="enrich.html#cb12-29" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb12-30"><a href="enrich.html#cb12-30" tabindex="-1"></a><span class="co"># 最后一次选择的通路集详细</span></span>
+<span id="cb12-31"><a href="enrich.html#cb12-31" tabindex="-1"></a>sy_gmt_taget</span>
+<span id="cb12-32"><a href="enrich.html#cb12-32" tabindex="-1"></a><span class="co"># 最后一次选择的通路名称</span></span>
+<span id="cb12-33"><a href="enrich.html#cb12-33" tabindex="-1"></a>sy_pathway_name</span>
+<span id="cb12-34"><a href="enrich.html#cb12-34" tabindex="-1"></a><span class="co"># 最后一次选择的大类通路集详细的前六行</span></span>
+<span id="cb12-35"><a href="enrich.html#cb12-35" tabindex="-1"></a>sy_gmt <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span>
+<span id="cb12-36"><a href="enrich.html#cb12-36" tabindex="-1"></a></span>
+<span id="cb12-37"><a href="enrich.html#cb12-37" tabindex="-1"></a><span class="co"># 5. 转换成宽型文件</span></span>
+<span id="cb12-38"><a href="enrich.html#cb12-38" tabindex="-1"></a>gmt.w2 <span class="ot">&lt;-</span> <span class="fu">gmt_longTowide2</span>(gmt) </span></code></pre></div>
+</div>
+<div id="gsea官方软件" class="section level3 hasAnchor" number="3.2.4">
+<h3><span class="header-section-number">3.2.4</span> GSEA官方软件<a href="enrich.html#gsea官方软件" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>自行搜素方法，网络上有大量图文教程 …</p>
 
 </div>

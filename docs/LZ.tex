@@ -589,7 +589,12 @@ On the way \ldots{}
 
 \subsection{R GSEA 批量分析}\label{r-gsea-ux6279ux91cfux5206ux6790}
 
-GSEA官网提供了GSEA分析软件和MSigDB数据库中的所有通路下载，如果需要更多的通路集可以自行下载，本包内置了MSigDB的H,C1-8的所有大类集及C2,C5的部分重要子类集，还有整理好的最新版的KEGG官方的PATHWAY通路集合。
+\begin{itemize}
+\item
+  GSEA官网提供了GSEA分析软件和MSigDB数据库中的所有通路下载，如果需要更多的通路集可以自行下载，本包内置了MSigDB的H,C1-8的所有大类集及C2,C5的部分重要子类集，还有整理好的最新版的KEGG官方的PATHWAY通路集合。
+\item
+  本包构建了一个图形界面函数\texttt{runAPP\_GSEA()}，可在安装完LZ包后直接通过运行\texttt{LZ::runAPP\_GSEA()}启动图形界面，也可在浏览器中打开。详细见\hyperref[enrich-gsea-r.gsea.gui]{R GSEA 图形界面}
+\end{itemize}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -629,7 +634,7 @@ GSEA官网提供了GSEA分析软件和MSigDB数据库中的所有通路下载，
 \end{Highlighting}
 \end{Shaded}
 
-\subsection{R GSEA 图形界面}\label{r-gsea-ux56feux5f62ux754cux9762}
+\subsection{R GSEA 图形界面}\label{enrich-gsea-r.gsea.gui}
 
 图形界面可以用自己的表格数据上传来做GSEA分析，表格必须有且仅有两列，分别
 为Gene列和log2FC列，具体表格形式如下：
@@ -654,37 +659,60 @@ geneZ & -5.2 \\
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# 启动方法1，已经在R里载入了genelist的话，运行此句启动图形界面，这样就不需要}
-\CommentTok{\#   上传表格}
+\CommentTok{\# 启动方法1（不带参数启动），适合自己已经有了差异分析结果的表格的情况，}
+\CommentTok{\#  那么运行此句后，不需要在R里写任何代码，如果通过LZ::runAPP\_GSEA()甚至}
+\CommentTok{\#  都不需要加载包。}
+\CommentTok{\#  使用这种方法，则必须要上传上述指定的表格形式的表格后才能点击画图。}
+\FunctionTok{runAPP\_GSEA}\NormalTok{() }\CommentTok{\# 或在安装成功LZ包后，直接通过LZ::runAPP\_GSEA()来启动}
+
+\CommentTok{\# 启动方法2（带参数启动），适合在R中已经有genelist的情况。}
+\CommentTok{\# 已在R里有了genelist的话，运行此句启动图形界面，这样就不需要上传表格}
 \FunctionTok{runAPP\_GSEA}\NormalTok{(}\AttributeTok{genelist =}\NormalTok{ genelist)}
-\CommentTok{\# 启动方法2，如果想使用自己的表格，那么运行此句，这样情况不需要在R里写任何}
-\CommentTok{\#  代码，只要加载上述的R包，然后运行此句即可。}
-\CommentTok{\#  使用这种方法，则必须要上传表格后才能点击画图，否则会报错终端程序。中断后}
-\CommentTok{\#  重新运行此句再次打开即可。}
-\FunctionTok{runAPP\_GSEA}\NormalTok{()}
 \end{Highlighting}
 \end{Shaded}
 
-一些进阶操作及技巧(不会没有关系，不做过多解释，自行体会)
+\subsection{一些进阶操作及技巧(不会没有关系，不做过多解释，自行体会，无R语言基础者慎入)}\label{ux4e00ux4e9bux8fdbux9636ux64cdux4f5cux53caux6280ux5de7ux4e0dux4f1aux6ca1ux6709ux5173ux7cfbux4e0dux505aux8fc7ux591aux89e3ux91caux81eaux884cux4f53ux4f1aux65e0rux8bedux8a00ux57faux7840ux8005ux614eux5165}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# 进阶操作 {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
-\CommentTok{\# 1. 转换成宽型文件}
-\NormalTok{gmt.w2 }\OtherTok{\textless{}{-}} \FunctionTok{gmt\_longTowide2}\NormalTok{(gmt) }
-
-\CommentTok{\# 2. 查找指定通路的图}
+\CommentTok{\# 1. 查找指定通路的图}
 \CommentTok{\#  如果自己知道通路的名字，可以通过查找来定位到通路的位置，然后单独画图}
 \NormalTok{pathway }\OtherTok{=} \StringTok{"\^{}ABC"}
 \NormalTok{n }\OtherTok{=} \FunctionTok{grep}\NormalTok{(pathway, gsea[,}\StringTok{"ID"}\NormalTok{])}
 \FunctionTok{grep}\NormalTok{(pathway, gsea[,}\StringTok{"ID"}\NormalTok{], }\AttributeTok{value =}\NormalTok{ T) }\CommentTok{\# 查看找到的通路名称，必须时唯一值，否则请使用更加详细的查找条件再查找一次。}
 \FunctionTok{DEGp\_GSEA}\NormalTok{(gsea, }\AttributeTok{num =}\NormalTok{ n)}
 
-\CommentTok{\# 3. 从当前的gmt文件中获取指定的Pathway Gene set(gmt对象名一定腰围gmt才行)}
+\CommentTok{\# 2. 从当前的gmt文件中获取指定的Pathway Gene set(gmt对象名一定腰围gmt才行)}
 \NormalTok{gmtdf.find }\OtherTok{\textless{}{-}} \FunctionTok{find\_pathway}\NormalTok{(}\StringTok{"\^{}Ferr"}\NormalTok{)}
 \NormalTok{gsea.single }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_runGSEA}\NormalTok{(}\AttributeTok{genelist =}\NormalTok{ genelist, }\AttributeTok{gmt\_set=}\NormalTok{gmtdf.find, }
                            \AttributeTok{pic.save=}\NormalTok{T, }\AttributeTok{outdir =} \StringTok{"./gsea.ytb3/"}\NormalTok{, }
                            \AttributeTok{filename =} \StringTok{"fer\_taget"}\NormalTok{)}
+
+\CommentTok{\# 3. 如果自己的分析中想将自己的数据转化为GSEA要求的genelist数据，}
+\CommentTok{\#    例如自己的分析项目中有一个名为re的对象，该对象中有}
+\CommentTok{\#    基因名列XX 和 基因变化倍数列 YY}
+\NormalTok{genelist }\OtherTok{\textless{}{-}}\NormalTok{ re}\SpecialCharTok{$}\NormalTok{YY}
+\FunctionTok{names}\NormalTok{(genelist) }\OtherTok{\textless{}{-}}\NormalTok{ re}\SpecialCharTok{$}\NormalTok{XX}
+\NormalTok{genelist }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(}\FunctionTok{sort}\NormalTok{(genelist, }\AttributeTok{decreasing =}\NormalTok{ T))}
+
+\CommentTok{\# 4. GSEA图形界面中若使用结束按钮关闭程序，会将最后一次画图的数据保留在}
+\CommentTok{\#    R会话中，具体如下：}
+\CommentTok{\# 最后画的一幅图}
+\NormalTok{pic\_gsea}
+\CommentTok{\# 保存图片}
+\FunctionTok{pdf}\NormalTok{(}\StringTok{\textquotesingle{}aaa.pdf\textquotesingle{}}\NormalTok{, }\AttributeTok{width =} \DecValTok{6}\NormalTok{, }\AttributeTok{height =} \DecValTok{5}\NormalTok{)}
+\NormalTok{pic\_gsea}
+\FunctionTok{dev.off}\NormalTok{()}
+\CommentTok{\# 最后一次选择的通路集详细}
+\NormalTok{sy\_gmt\_taget}
+\CommentTok{\# 最后一次选择的通路名称}
+\NormalTok{sy\_pathway\_name}
+\CommentTok{\# 最后一次选择的大类通路集详细的前六行}
+\NormalTok{sy\_gmt }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{head}\NormalTok{()}
+
+\CommentTok{\# 5. 转换成宽型文件}
+\NormalTok{gmt.w2 }\OtherTok{\textless{}{-}} \FunctionTok{gmt\_longTowide2}\NormalTok{(gmt) }
 \end{Highlighting}
 \end{Shaded}
 
