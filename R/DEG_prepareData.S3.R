@@ -20,7 +20,7 @@
 #' #                           oop.group.endF = "Normal")
 #' #
 #' # read from local file, oop ============
-#' # test <- DEG_prepareData(eset_file="D:/Public_data/TCGA_XENA/LUAD/eset/TCGA-LUAD.htseq_counts.tsv.gz",
+#' # test <- DEG_prepareData(eset_file="D:/TCGA.counts.tsv.gz",
 #' #                         id_dot = T, col.by = "Ensembl_ID",
 #' #                         col.del=NULL, auto.del.character=T,
 #' #                         annot_trans=T, f_mark="diff",

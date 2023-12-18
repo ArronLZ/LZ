@@ -119,14 +119,12 @@ lz_isna <- function(lie) {
 #' @description show part info of a dataframe
 #' @param df dataframe data
 #' @param ncol number default is 4, the end colomn index
-#' @param nrow number default is 3, the end colomn index
-#' @param rowstart number default is 1, the start row index
 #' @param colstart number default is 1, the start colomn index
-#' 
 #' @return #
 #' @export
 #'
-#' @examples # df %>% lzhead
+#' @examples 
+#' # df %>% lzhead
 lzhead <- function(df, ncol = 4, colstart = 1) {
   cat('=== shape ===\n')
   cat(dim(df)[1], "rows", dim(df)[2], "columns\n")
@@ -153,10 +151,12 @@ fpkmToTpm <- function(fpkm) {
 }
 
 
-#' Annot Data -- gencode.v22.annot
-#' @description Annot Data -- gencode.v22.annot
+#' Get Data
+#' @description Get Data
+#'
 #' @param ... character, the alias of bulit-in dataset, ex. gencode.v22.annot
 #' keggpathway.gmt
+#' @param package character, package name
 #' 
 #' @return list Large list
 #' @export

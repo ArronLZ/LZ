@@ -196,11 +196,9 @@ DEGp_Dotplot2 <- function(df, head = 20, delete = NULL,
 
 #' Prepare data for DEGp_GOALL_barplot
 #' @description Prepare data for DEGp_GOALL_barplot. Take top n number of each type in the dataframe.
-#' 
 #' @param data dataframe, GO ALL dataframe
 #' @param n_type charater, a colname of data, the type of GO ALL dataframe, such as n_type='ONTOLOGY'
 #' @param n_qu character, a colname of data, sort by this param, such as n_qu='pvaule'
-#'
 #' @return #
 #' @export
 #'
@@ -219,16 +217,14 @@ DEGp_prepareGOALL <- function(data, n_type='ONTOLOGY', n_qu='pvaule') {
 
 #' GO all barplot
 #' @description GO all barplot
-#'
-#' @param GOlisit list, GO result
+#' @param GOlist.df dataframe, GO result
 #' @param resultdir character, the picture outdir
 #' @param filemark character, the picture filename mark
 #' @param pic.save logic, save picture or not
-#'
 #' @return #
 #' @export
 #'
-#' @examples #
+#' @author Jiang
 DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, pic.save = T) {
   # GOlist为jGO自定义函数返回对象，该对象为clusterProfiler::enrichGO返回对象的list集合
   # GOlist.df为GOlist$ALL@result, 为一个data.frame

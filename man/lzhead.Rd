@@ -12,10 +12,6 @@ lzhead(df, ncol = 4, colstart = 1)
 \item{ncol}{number default is 4, the end colomn index}
 
 \item{colstart}{number default is 1, the start colomn index}
-
-\item{nrow}{number default is 3, the end colomn index}
-
-\item{rowstart}{number default is 1, the start row index}
 }
 \value{
 #

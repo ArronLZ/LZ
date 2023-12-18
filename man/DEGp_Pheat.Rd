@@ -48,6 +48,10 @@ DEGp_Pheat(
 \item{f_z.col}{number, col font size}
 
 \item{angle}{character, col angle}
+
+\item{cluster_rows}{logical, default is T}
+
+\item{cluster_cols}{logical, default is F}
 }
 \value{
 #

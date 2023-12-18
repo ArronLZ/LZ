@@ -2,19 +2,21 @@
 % Please edit documentation in R/tool.R
 \name{getData}
 \alias{getData}
-\title{Annot Data -- gencode.v22.annot}
+\title{Get Data}
 \usage{
 getData(..., package = "LZ")
 }
 \arguments{
 \item{...}{character, the alias of bulit-in dataset, ex. gencode.v22.annot
 keggpathway.gmt}
+
+\item{package}{character, package name}
 }
 \value{
 list Large list
 }
 \description{
-Annot Data -- gencode.v22.annot
+Get Data
 }
 \examples{
 #  data(gencode.v22.annot, package = "LZ")

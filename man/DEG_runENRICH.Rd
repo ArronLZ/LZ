@@ -10,7 +10,10 @@ DEG_runENRICH(
   glist.save = T,
   rungo = T,
   runkegg = T,
-  rapid = T
+  rapid = T,
+  orgdb = "org.Hs.eg.db",
+  org_kegg = "hsa",
+  sigNodes = 20
 )
 }
 \arguments{
@@ -25,6 +28,12 @@ DEG_runENRICH(
 \item{runkegg}{logical default is TRUE, wether run kegg analysis}
 
 \item{rapid}{loggicla defaut is F, if set F, the function will plot go tree picture, which make cost much time.}
+
+\item{orgdb}{character default is "org.Hs.eg.db"}
+
+\item{org_kegg}{character default is 'hsa'}
+
+\item{sigNodes}{number default is 20}
 }
 \value{
 # GO object & write result to xlsx

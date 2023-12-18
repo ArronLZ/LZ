@@ -23,6 +23,8 @@ DEG_GO(
 \item{resultdir}{character, the output dir}
 
 \item{filemark}{character, special part of output filename}
+
+\item{rapid}{logical, default is T, meaning not plot tree plot}
 }
 \value{
 # list, GO analsis object go_list

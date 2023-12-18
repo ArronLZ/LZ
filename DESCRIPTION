@@ -7,7 +7,7 @@ Author: Farmer
 Maintainer: Turkey <yydslz@sina.com>
 Description: The package is mainly designed for analyzing RNAseq data.
     Including some other interesting functions.
-License: MIT
+License: Artistic-2.0
 VignetteBuilder: knitr
 Encoding: UTF-8
 RoxygenNote: 7.2.3

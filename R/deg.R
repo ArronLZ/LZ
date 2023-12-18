@@ -325,7 +325,7 @@ DEG_voom <- function(exprset.group, pval=0.05, fdr=0.1, logfc=1) {
   fit <- contrasts.fit(fit, contrast.matrix)
   fit <- eBayes(fit)
   #topTable(fit, coef=ncol(design))
-  tab <- topTable(fit, sort.by = "P", n = Inf)
+  tab <- topTable(fit, sort.by = "P", number = Inf)
   tab <- cbind(rownames(tab), tab)  # 将行名粘贴为数据框的第一列
   colnames(tab) <- c("Gene", "log2FC", "AveExp", "T", "PValue", "FDR", "B")
   tab <- merge(tab, cpm.tmm, by = 0)
@@ -367,8 +367,8 @@ limma.general <- function(eset, group) {
   rownames(design) <- colnames(eset)
   # ~三部曲
   fit <- lmFit(eset, design)
-  fit <- eBayes(fit, trend=TRUE)
-  tab <- topTable(fit, coef=2, n=Inf)
+  fit <- eBayes(fit, trend = TRUE)
+  tab <- topTable(fit, coef = 2, number = Inf)
   tab <- merge(tab, eset, by = 0)
   tab <- tab %>%
     dplyr::rename(ID=Row.names, log2FC=logFC, PValue=P.Value, FDR=adj.P.Val) %>%

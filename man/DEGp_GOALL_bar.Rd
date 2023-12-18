@@ -7,13 +7,13 @@
 DEGp_GOALL_bar(GOlist.df, resultdir, filemark, pic.save = T)
 }
 \arguments{
+\item{GOlist.df}{dataframe, GO result}
+
 \item{resultdir}{character, the picture outdir}
 
 \item{filemark}{character, the picture filename mark}
 
 \item{pic.save}{logic, save picture or not}
-
-\item{GOlisit}{list, GO result}
 }
 \value{
 #
@@ -21,6 +21,6 @@ DEGp_GOALL_bar(GOlist.df, resultdir, filemark, pic.save = T)
 \description{
 GO all barplot
 }
-\examples{
-#
+\author{
+Jiang
 }

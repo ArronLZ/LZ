@@ -212,7 +212,6 @@ DEGp_Volcano2 <- function(resdf, filterc = "both",
 
 #' Heatmap
 #' @description plot heatmap with selected gene
-#'
 #' @param df dataframe or matrix, the exprs data(rowname is gene name)
 #' @param gene character, the gene name that heatmap show
 #' @param pheno dataframe, the group info
@@ -226,7 +225,8 @@ DEGp_Volcano2 <- function(resdf, filterc = "both",
 #' @param f_z number, font size
 #' @param f_z.col number, col font size
 #' @param angle character, col angle
-#'
+#' @param cluster_rows logical, default is T
+#' @param cluster_cols logical, default is F
 #' @return #
 #' @export
 #' @importFrom pheatmap pheatmap

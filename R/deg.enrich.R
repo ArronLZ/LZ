@@ -6,6 +6,7 @@
 #' @param sigNodes number, the tree plot nodes
 #' @param resultdir character, the output dir
 #' @param filemark character, special part of output filename
+#' @param rapid logical, default is T, meaning not plot tree plot
 #'
 #' @return # list, GO analsis object go_list
 #' @export
@@ -35,6 +36,8 @@ DEG_GO <- function(genelist, orgdb="org.Hs.eg.db", sigNodes=20,
       go_list[[ont]] <- GO
       # plot关系图
       if (!rapid) {
+        resultdir <- dirclean(resultdir)
+        mkdir.p(resultdir)
         fname <- paste0(resultdir, '/', ont, '_', filemark, '.pdf')
         cat(fname)
         pdf(fname, height = 8, width = 12)
@@ -109,6 +112,9 @@ DEG_prepareGOglist <- function(resdf, logfc, p=0.05, fdr=0.1) {
 #' @param rungo logical default is TRUE, wether run go analysis
 #' @param runkegg logical default is TRUE, wether run kegg analysis
 #' @param rapid loggicla defaut is F, if set F, the function will plot go tree picture, which make cost much time.
+#' @param orgdb character default is "org.Hs.eg.db"
+#' @param org_kegg character default is 'hsa'
+#' @param sigNodes number default is 20
 #'
 #' @return # GO object & write result to xlsx
 #' @export
