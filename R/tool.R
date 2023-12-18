@@ -37,7 +37,9 @@ quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T) {
   }
   # names(eset)[col.by.num] <- "IDtemplz"
   eset$MEAN <- abs(rowMeans(eset[, sapply(eset, is.numeric)]))
+  eset <- dplyr::arrange(eset, MEAN)
   eset <- eset[!duplicated(eset[, col.by]), ]
+  eset <- eset[!is.na(eset[, col.by]), ]
   rownames(eset) <- NULL
   eset <- tibble::column_to_rownames(eset, var = col.by)
   if (!is.null(eset$MEAN)) { eset$MEAN <- NULL }

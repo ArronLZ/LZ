@@ -39,7 +39,8 @@ Imports:
     enrichplot,
     BiocParallel,
     shiny,
-    ggplot2
+    ggplot2,
+    utils
 Depends:
     stringr,
     readxl,
@@ -58,4 +59,5 @@ Collate:
     'deg.plot.R'
     'gsea.R'
     'setting.R'
+    'tool2.R'
     'xena_eset.R'
