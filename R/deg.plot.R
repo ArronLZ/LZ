@@ -253,8 +253,9 @@ DEGp_Pheat <- function(df, gene, pheno, outdir, f_mark='', nlevel=8,
 
   col <- colorRampPalette(brewer.pal(12,'Paired'))(24)
   #plot(1:24,rep(1,24),col= col,pch=16,cex=2)
-
-  fname <- paste0(outdir, '/heatmap.', f_mark, '.pdf')
+  
+  mkdir(dirclean(outdir))
+  fname <- paste0(dirclean(outdir), '/heatmap.', f_mark, '.pdf')
   pdf(fname, width = pic_w, height = pic_h)
   #p <- pheatmap(heat_matrix, scale = 'row',cluster_rows = T,
   #              border_color = NA, show_colnames = T,
@@ -270,8 +271,8 @@ DEGp_Pheat <- function(df, gene, pheno, outdir, f_mark='', nlevel=8,
                 show_colnames = T, show_rownames = T,
                 border_color = NA,
                 cellwidth = c_w, cellheight = c_h,
-                fontsize = f_z, fontsize_col = f_z.col, angle_col = angle, drop_levels = T
-  )
+                fontsize = f_z, fontsize_col = f_z.col, 
+                angle_col = angle, drop_levels = T)
   print(p)
   dev.off()
   #

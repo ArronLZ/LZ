@@ -118,7 +118,10 @@ DEG_prepareGOglist <- function(resdf, logfc, p=0.05, fdr=0.1) {
 #' @examples #
 #' @author Jiang
 DEG_runENRICH <- function(genelist, outdir, glist.save = T, 
-                          rungo=T, runkegg=T, rapid = T) {
+                          rungo=T, runkegg=T, rapid = T,
+                          orgdb = "org.Hs.eg.db", org_kegg='hsa',
+                          sigNodes=20
+                          ) {
   # 对logFC迭代，每次FC新建一个目录，下存upgene, downgene, allgene的KEGG结果
   kegg.list <- list()
   kegg.df.list <- list()
@@ -135,8 +138,9 @@ DEG_runENRICH <- function(genelist, outdir, glist.save = T,
     cat("  ", name_x, "...\n")
     cat("========\n")
     genedf.list <- sapply(genelist[[name_x]], function(x) {
-      bitr(x, fromType = 'SYMBOL', toType = c('UNIPROT', 'ENTREZID', 'ENSEMBL'),
-           OrgDb = GO_database) 
+      clusterProfiler::bitr(x, fromType = 'SYMBOL', 
+                            toType = c('UNIPROT', 'ENTREZID', 'ENSEMBL'),
+                            OrgDb = orgdb) 
     }, simplify = F)
     #
     outd <- paste0(dirclean(outdir), "/", name_x)
@@ -155,7 +159,9 @@ DEG_runENRICH <- function(genelist, outdir, glist.save = T,
     if (runkegg) {
       # part KEGG
       cat("  ... KEGG START...\n")
-      kegg.an <- sapply(genedf.list, function(x) DEG_KEGG(genelist = x), simplify = F)
+      # genelist, orgdb="org.Hs.eg.db", org_kegg='hsa'
+      kegg.an <- sapply(genedf.list, function(x) 
+        DEG_KEGG(genelist = x, orgdb=orgdb, org_kegg=org_kegg), simplify = F)
       # 向kegg.list保存kegg分析结果
       kegg.list[[name_x]] <- kegg.an
       # 获取kegg分析结果中的dataframe
@@ -171,7 +177,8 @@ DEG_runENRICH <- function(genelist, outdir, glist.save = T,
       cat("  ... GO START...\n")
       go.an <- mapply(function(x, xn) {
         cat("  ... ", xn, "...\n")
-        DEG_GO(genelist = x, resultdir = outd, filemark = paste0(name_x, "_", xn), 
+        DEG_GO(genelist = x, orgdb=orgdb, sigNodes=sigNodes, 
+               resultdir = outd, filemark = paste0(name_x, "_", xn), 
                rapid = rapid)
       }, genedf.list, names(genedf.list), SIMPLIFY = F)
       go.list[[name_x]] <- go.an
