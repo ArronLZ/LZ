@@ -6,6 +6,52 @@
 #' DEG_prepareData.XENA xena method
 #'
 #' @export
+#' @author Jiang
+#' @examples
+#' # read from XENABD object, oop  ============
+#' # DEeset <- DEG_prepareData(XENADB,
+#' #                           id_dot = T, col.by = "Ensembl_ID",
+#' #                           col.del=NULL, auto.del.character=T,
+#' #                           annot_trans=T, f_mark="diff",
+#' #                           oop = T,
+#' #                           oop.group.suffix1 = "01A",
+#' #                           oop.group.suffix2 = "11A",
+#' #                           oop.group.endT = "Tumor",
+#' #                           oop.group.endF = "Normal")
+#' #
+#' # read from local file, oop ============
+#' # test <- DEG_prepareData(eset_file="D:/Public_data/TCGA_XENA/LUAD/eset/TCGA-LUAD.htseq_counts.tsv.gz",
+#' #                         id_dot = T, col.by = "Ensembl_ID",
+#' #                         col.del=NULL, auto.del.character=T,
+#' #                         annot_trans=T, f_mark="diff",
+#' #                         oop = T,
+#' #                         oop.group.suffix1 = "01A",
+#' #                         oop.group.suffix2 = "11A",
+#' #                         oop.group.endT = "Tumor",
+#' #                         oop.group.endF = "Normal")
+#' #
+#' # read frome local file(eset, group), no oop ============
+#' # 仅当oop = F, 才会进入非oop流程, 此时需要指定group_flie参数才行。默认情况为F
+#' # glist <- DEG_prepareData(eset_file = "data/eset.csv", #表达数据的相对路径
+#' #                          group_file = "data/group.csv", #分组文件的相对路径
+#' #                          id_dot = F,  # ESEM是否有点，有点设为T
+#' #                          col.by = "ID",  # 基因名列的列名
+#' #                          annot_trans = F, # 是否要注释，如果是EsembleID就需要设置为T
+#' #                          f_mark = mark)
+#' #' #' # exprset.group = list(eset, group, f_mark)
+#' # ** 如果bacth=T，则group中第二列为batch列。
+#' # ** 矩阵数据格式(数值型，整型)
+#' # gene  | row1 | row2 | row3  | row4
+#' # gene1 |  34  |  23  |  56   |  23
+#' # gene2 |  35  |  23  |  12   |  23
+#' # gene3 |  12  |  78  |  78   |  78
+#' # ** 分组数据格式：需要组的行名 包含于 表达谱的列名 rownames(group) %in% colname(eset)
+#' # Sample   |   Type    | BATCH
+#' # rowname1 |   tumor   |  1
+#' # rowname2 |   tumor   |  1
+#' # rowname3 |   normal  |  2
+#' # rowname4 |   normal  |  2
+#' # if is.human = F, please set the orgDb and fromType correctly.
 DEG_prepareData <- function(...) {
   UseMethod("DEG_prepareData")
 }
@@ -36,21 +82,7 @@ DEG_prepareData <- function(...) {
 #' @importFrom data.table fread
 #' @importFrom clusterProfiler bitr
 #'
-#' @examples #
-#' #' # exprset.group = list(eset, group, f_mark)
-#' # ** 如果bacth=T，则group中第二列为batch列。
-#' # ** 矩阵数据格式(数值型，整型)
-#' # gene  | row1 | row2 | row3  | row4
-#' # gene1 |  34  |  23  |  56   |  23
-#' # gene2 |  35  |  23  |  12   |  23
-#' # gene3 |  12  |  78  |  78   |  78
-#' # ** 分组数据格式：需要组的行名 包含于 表达谱的列名 rownames(group) %in% colname(eset)
-#' # Sample   |   Type    | BATCH
-#' # rowname1 |   tumor   |  1
-#' # rowname2 |   tumor   |  1
-#' # rowname3 |   normal  |  2
-#' # rowname4 |   normal  |  2
-#' # if is.human = F, please set the orgDb and fromType correctly.
+#' @author Jiang
 DEG_prepareData.default <- function(eset_file="gene_count.csv",
                                     eset.islog = F,
                                     id_dot = F, col.by = "ID",
