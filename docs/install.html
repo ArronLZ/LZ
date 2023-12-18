@@ -251,11 +251,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ol start="2" style="list-style-type: decimal">
 <li>安装LZ包(此包会不定时更新，后续更新只需要重新运行这句即可，上面的包不需要重新安装)</li>
 </ol>
+<ul>
+<li>方式一：在线安装（推荐方式）</li>
+</ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="install.html#cb2-1" tabindex="-1"></a><span class="co"># 安装LZ包</span></span>
 <span id="cb2-2"><a href="install.html#cb2-2" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;ArronLZ/LZ&quot;</span>, <span class="at">upgrade =</span><span class="st">&quot;never&quot;</span>, <span class="at">force =</span> T, </span>
 <span id="cb2-3"><a href="install.html#cb2-3" tabindex="-1"></a>                         <span class="at">build_vignettes =</span> T)</span>
 <span id="cb2-4"><a href="install.html#cb2-4" tabindex="-1"></a><span class="co"># 查看文档（点击LZ Documents查看网页版）</span></span>
 <span id="cb2-5"><a href="install.html#cb2-5" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">&#39;LZ&#39;</span>)</span></code></pre></div>
+<ul>
+<li>方式二：本地安装（备选方式）</li>
+</ul>
+<p>当网络环境不顺畅时，由于github服务器在海外，此时可以通过下载安装包的方式本地安装，首先下载LZ包，<a href="https://github.com/ArronLZ/LZ/releases/download/v1.6.1/LZ_1.6.1.tar.gz">点我下载 LZ v1.6.1</a></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="install.html#cb3-1" tabindex="-1"></a><span class="co"># 安装LZ包</span></span>
+<span id="cb3-2"><a href="install.html#cb3-2" tabindex="-1"></a><span class="co"># 要修改&quot;D:/Downloads/LZ_1.6.1.tar.gz&quot;为你自己的对应的存放安装包的目录</span></span>
+<span id="cb3-3"><a href="install.html#cb3-3" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;D:/Downloads/LZ_1.6.1.tar.gz&quot;</span>, <span class="at">repos =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">&quot;source&quot;</span>)</span>
+<span id="cb3-4"><a href="install.html#cb3-4" tabindex="-1"></a><span class="co"># 查看文档（点击LZ Documents查看网页版）</span></span>
+<span id="cb3-5"><a href="install.html#cb3-5" tabindex="-1"></a><span class="fu">vignette</span>(<span class="st">&#39;LZ&#39;</span>)</span></code></pre></div>
 
 </div>
 </div>

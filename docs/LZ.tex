@@ -152,7 +152,7 @@
 
 \title{LZ 文档}
 \author{作者：荔枝 \href{mailto:earth_farmer@outlook.com}{\nolinkurl{earth\_farmer@outlook.com}}}
-\date{更新：2023-12-17}
+\date{更新：2023-12-18}
 
 \begin{document}
 \maketitle
@@ -242,11 +242,35 @@ email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
   安装LZ包(此包会不定时更新，后续更新只需要重新运行这句即可，上面的包不需要重新安装)
 \end{enumerate}
 
+\begin{itemize}
+\tightlist
+\item
+  方式一：在线安装（推荐方式）
+\end{itemize}
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# 安装LZ包}
 \NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"ArronLZ/LZ"}\NormalTok{, }\AttributeTok{upgrade =}\StringTok{"never"}\NormalTok{, }\AttributeTok{force =}\NormalTok{ T, }
                          \AttributeTok{build\_vignettes =}\NormalTok{ T)}
+\CommentTok{\# 查看文档（点击LZ Documents查看网页版）}
+\FunctionTok{vignette}\NormalTok{(}\StringTok{\textquotesingle{}LZ\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  方式二：本地安装（备选方式）
+\end{itemize}
+
+当网络环境不顺畅时，由于github服务器在海外，此时可以通过下载安装包的方式本地安装，首先下载LZ包，\href{https://github.com/ArronLZ/LZ/releases/download/v1.6.1/LZ_1.6.1.tar.gz}{点我下载 LZ v1.6.1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 安装LZ包}
+\CommentTok{\# 要修改"D:/Downloads/LZ\_1.6.1.tar.gz"为你自己的对应的存放安装包的目录}
+\FunctionTok{install.packages}\NormalTok{(}\StringTok{"D:/Downloads/LZ\_1.6.1.tar.gz"}\NormalTok{, }\AttributeTok{repos =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{type =} \StringTok{"source"}\NormalTok{)}
 \CommentTok{\# 查看文档（点击LZ Documents查看网页版）}
 \FunctionTok{vignette}\NormalTok{(}\StringTok{\textquotesingle{}LZ\textquotesingle{}}\NormalTok{)}
 \end{Highlighting}

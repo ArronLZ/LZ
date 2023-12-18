@@ -214,112 +214,112 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">3.1.1</span> 一键脚本(批量处理)<a href="enrich.html#一键脚本批量处理" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>这是一个一键脚本，请新建一个单独的文件写这段脚本，然后按这个脚本的顶部注释
 修改<code>resdf outd fc.list处即可</code>，运行即可批量出不同FC的富集分析结果。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="enrich.html#cb7-1" tabindex="-1"></a><span class="co"># 此脚本为GO、KEGG分析（需要一个输入文件即可，为差异分析流程后的resdf文件）</span></span>
-<span id="cb7-2"><a href="enrich.html#cb7-2" tabindex="-1"></a><span class="co"># 即为第一步(或1脚本)的结果的一个结果文件（DIFF_an_***.xlsx）</span></span>
-<span id="cb7-3"><a href="enrich.html#cb7-3" tabindex="-1"></a><span class="co"># 即为resdf文件，此文件是差异分析后的总表</span></span>
-<span id="cb7-4"><a href="enrich.html#cb7-4" tabindex="-1"></a><span class="co"># 注意如果采用了其他的分析方法得到差异分析后表，运行这个脚本时可能需要更改</span></span>
-<span id="cb7-5"><a href="enrich.html#cb7-5" tabindex="-1"></a><span class="co"># 列名即我们的resdf对象的列名为Gene, log2FC,PValue,FDR，需要与这些个列名保</span></span>
-<span id="cb7-6"><a href="enrich.html#cb7-6" tabindex="-1"></a><span class="co"># 持一致。</span></span>
-<span id="cb7-7"><a href="enrich.html#cb7-7" tabindex="-1"></a><span class="co"># 此脚本中的需要修改的位于 /// *** /// 行中，另外还有一个LZ::setproxy()行，</span></span>
-<span id="cb7-8"><a href="enrich.html#cb7-8" tabindex="-1"></a><span class="co">#   如果没有代理工具，或者代理工具不支持http代理，或者端口不通，请不要运行。</span></span>
-<span id="cb7-9"><a href="enrich.html#cb7-9" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>());<span class="fu">gc</span>() <span class="co"># 清空所有对象，慎用，必要时用</span></span>
-<span id="cb7-10"><a href="enrich.html#cb7-10" tabindex="-1"></a><span class="fu">suppressMessages</span>({ <span class="fu">suppressWarnings</span>({</span>
-<span id="cb7-11"><a href="enrich.html#cb7-11" tabindex="-1"></a>  <span class="fu">library</span>(LZ)</span>
-<span id="cb7-12"><a href="enrich.html#cb7-12" tabindex="-1"></a>  <span class="fu">library</span>(tidyverse);<span class="fu">library</span>(data.table)</span>
-<span id="cb7-13"><a href="enrich.html#cb7-13" tabindex="-1"></a>  <span class="fu">library</span>(clusterProfiler);<span class="fu">library</span>(enrichplot)</span>
-<span id="cb7-14"><a href="enrich.html#cb7-14" tabindex="-1"></a>  <span class="fu">library</span>(topGO);<span class="fu">library</span>(Rgraphviz)</span>
-<span id="cb7-15"><a href="enrich.html#cb7-15" tabindex="-1"></a>  <span class="fu">library</span>(RColorBrewer);<span class="fu">library</span>(ggsci);<span class="fu">library</span>(pheatmap)</span>
-<span id="cb7-16"><a href="enrich.html#cb7-16" tabindex="-1"></a>  <span class="fu">library</span>(readxl)</span>
-<span id="cb7-17"><a href="enrich.html#cb7-17" tabindex="-1"></a>}) })</span>
-<span id="cb7-18"><a href="enrich.html#cb7-18" tabindex="-1"></a><span class="co"># 若无代理工具，切勿运行 </span></span>
-<span id="cb7-19"><a href="enrich.html#cb7-19" tabindex="-1"></a><span class="co"># LZ::setproxy() # 高危！！！新手不要运行此行，会使当前窗口断网！！！</span></span>
-<span id="cb7-20"><a href="enrich.html#cb7-20" tabindex="-1"></a><span class="co"># Sys.getenv(&#39;http_proxy&#39;) Sys.setenv(&#39;http_proxy&#39;=&#39;&#39;) Sys.setenv(&#39;https_proxy&#39;=&#39;&#39;)</span></span>
-<span id="cb7-21"><a href="enrich.html#cb7-21" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="enrich.html#cb7-22" tabindex="-1"></a><span class="co"># 如果是自己提供的表格，要按需修改列名为标准的resdf格式的列名：</span></span>
-<span id="cb7-23"><a href="enrich.html#cb7-23" tabindex="-1"></a><span class="co"># 即: 表格必须含列名Gene, log2FC, PValue, FDR这四列，列名必须为这四个，</span></span>
-<span id="cb7-24"><a href="enrich.html#cb7-24" tabindex="-1"></a><span class="co"># 提前在xlsx中修改好，然后取消下面这句的注释符，运行</span></span>
-<span id="cb7-25"><a href="enrich.html#cb7-25" tabindex="-1"></a><span class="co"># resdf &lt;- readxl::read_xlsx(&quot;result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx&quot;,</span></span>
-<span id="cb7-26"><a href="enrich.html#cb7-26" tabindex="-1"></a><span class="co">#                  sheet = 1) %&gt;% as.data.frame()</span></span>
-<span id="cb7-27"><a href="enrich.html#cb7-27" tabindex="-1"></a></span>
-<span id="cb7-28"><a href="enrich.html#cb7-28" tabindex="-1"></a><span class="co"># 按流程跑下来是运行这句，注意这句和上面的注释掉的是二选一，不要重复运行</span></span>
-<span id="cb7-29"><a href="enrich.html#cb7-29" tabindex="-1"></a>resdf <span class="ot">&lt;-</span> all_father<span class="sc">$</span>DIFF.ALL</span>
-<span id="cb7-30"><a href="enrich.html#cb7-30" tabindex="-1"></a><span class="co"># 输出目录</span></span>
-<span id="cb7-31"><a href="enrich.html#cb7-31" tabindex="-1"></a>outd <span class="ot">=</span> <span class="st">&quot;result/xx/rich&quot;</span> </span>
-<span id="cb7-32"><a href="enrich.html#cb7-32" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值的话，</span></span>
-<span id="cb7-33"><a href="enrich.html#cb7-33" tabindex="-1"></a><span class="co">#   写成fc.list &lt;- list(&#39;1.2&#39; = log2(1.2), &#39;2&#39; = log2(2))</span></span>
-<span id="cb7-34"><a href="enrich.html#cb7-34" tabindex="-1"></a><span class="co"># 注意！！！！！！：括号里log2(2)的2，和引号里&#39;2&#39;的2都要需同步要改。！！！</span></span>
-<span id="cb7-35"><a href="enrich.html#cb7-35" tabindex="-1"></a><span class="co"># 否则可能会覆盖结果 </span></span>
-<span id="cb7-36"><a href="enrich.html#cb7-36" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值</span></span>
-<span id="cb7-37"><a href="enrich.html#cb7-37" tabindex="-1"></a>fc.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&#39;1.5&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="fl">1.5</span>), <span class="st">&#39;2&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="dv">2</span>), <span class="st">&#39;4&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="dv">4</span>))</span>
-<span id="cb7-38"><a href="enrich.html#cb7-38" tabindex="-1"></a><span class="co"># logFC阈值, 单个阈值运行这句，也是二选一，不要重复运行</span></span>
-<span id="cb7-39"><a href="enrich.html#cb7-39" tabindex="-1"></a><span class="co"># fc.list &lt;- list(&#39;2&#39;=log2(2))</span></span>
-<span id="cb7-40"><a href="enrich.html#cb7-40" tabindex="-1"></a><span class="co"># 设置物种为人类（如是人类则不需要更改）</span></span>
-<span id="cb7-41"><a href="enrich.html#cb7-41" tabindex="-1"></a>GO_database <span class="ot">&lt;-</span> <span class="st">&#39;org.Hs.eg.db&#39;</span> <span class="co"># keytypes(org.Hs.eg.db)</span></span>
-<span id="cb7-42"><a href="enrich.html#cb7-42" tabindex="-1"></a>KEGG_database <span class="ot">&lt;-</span> <span class="st">&#39;hsa&#39;</span> </span>
-<span id="cb7-43"><a href="enrich.html#cb7-43" tabindex="-1"></a></span>
-<span id="cb7-44"><a href="enrich.html#cb7-44" tabindex="-1"></a><span class="co"># 预处理数据符合GOKEGG分析的要求</span></span>
-<span id="cb7-45"><a href="enrich.html#cb7-45" tabindex="-1"></a><span class="co"># # 不同fc条件下的GOgenelist list(ALL, UP, DOWN)</span></span>
-<span id="cb7-46"><a href="enrich.html#cb7-46" tabindex="-1"></a>gogenelist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fc.list, <span class="cf">function</span>(x) {</span>
-<span id="cb7-47"><a href="enrich.html#cb7-47" tabindex="-1"></a>  <span class="fu">DEG_prepareGOglist</span>(resdf, <span class="at">logfc =</span> x, <span class="at">p =</span> <span class="fl">0.05</span>, <span class="at">fdr =</span> <span class="fl">0.1</span>)<span class="er">)</span> }</span>
-<span id="cb7-48"><a href="enrich.html#cb7-48" tabindex="-1"></a><span class="co"># gogenelist %&gt;% length()</span></span>
-<span id="cb7-49"><a href="enrich.html#cb7-49" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果</span></span>
-<span id="cb7-50"><a href="enrich.html#cb7-50" tabindex="-1"></a>enrich <span class="ot">&lt;-</span> <span class="fu">DEG_runENRICH</span>(<span class="at">genelist =</span> gogenelist, <span class="at">outdir =</span> outd, </span>
-<span id="cb7-51"><a href="enrich.html#cb7-51" tabindex="-1"></a>                        <span class="at">glist.save =</span> T, <span class="at">rungo =</span> T, <span class="at">runkegg =</span> T, <span class="at">rapid =</span> T)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="enrich.html#cb8-1" tabindex="-1"></a><span class="co"># 此脚本为GO、KEGG分析（需要一个输入文件即可，为差异分析流程后的resdf文件）</span></span>
+<span id="cb8-2"><a href="enrich.html#cb8-2" tabindex="-1"></a><span class="co"># 即为第一步(或1脚本)的结果的一个结果文件（DIFF_an_***.xlsx）</span></span>
+<span id="cb8-3"><a href="enrich.html#cb8-3" tabindex="-1"></a><span class="co"># 即为resdf文件，此文件是差异分析后的总表</span></span>
+<span id="cb8-4"><a href="enrich.html#cb8-4" tabindex="-1"></a><span class="co"># 注意如果采用了其他的分析方法得到差异分析后表，运行这个脚本时可能需要更改</span></span>
+<span id="cb8-5"><a href="enrich.html#cb8-5" tabindex="-1"></a><span class="co"># 列名即我们的resdf对象的列名为Gene, log2FC,PValue,FDR，需要与这些个列名保</span></span>
+<span id="cb8-6"><a href="enrich.html#cb8-6" tabindex="-1"></a><span class="co"># 持一致。</span></span>
+<span id="cb8-7"><a href="enrich.html#cb8-7" tabindex="-1"></a><span class="co"># 此脚本中的需要修改的位于 /// *** /// 行中，另外还有一个LZ::setproxy()行，</span></span>
+<span id="cb8-8"><a href="enrich.html#cb8-8" tabindex="-1"></a><span class="co">#   如果没有代理工具，或者代理工具不支持http代理，或者端口不通，请不要运行。</span></span>
+<span id="cb8-9"><a href="enrich.html#cb8-9" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>());<span class="fu">gc</span>() <span class="co"># 清空所有对象，慎用，必要时用</span></span>
+<span id="cb8-10"><a href="enrich.html#cb8-10" tabindex="-1"></a><span class="fu">suppressMessages</span>({ <span class="fu">suppressWarnings</span>({</span>
+<span id="cb8-11"><a href="enrich.html#cb8-11" tabindex="-1"></a>  <span class="fu">library</span>(LZ)</span>
+<span id="cb8-12"><a href="enrich.html#cb8-12" tabindex="-1"></a>  <span class="fu">library</span>(tidyverse);<span class="fu">library</span>(data.table)</span>
+<span id="cb8-13"><a href="enrich.html#cb8-13" tabindex="-1"></a>  <span class="fu">library</span>(clusterProfiler);<span class="fu">library</span>(enrichplot)</span>
+<span id="cb8-14"><a href="enrich.html#cb8-14" tabindex="-1"></a>  <span class="fu">library</span>(topGO);<span class="fu">library</span>(Rgraphviz)</span>
+<span id="cb8-15"><a href="enrich.html#cb8-15" tabindex="-1"></a>  <span class="fu">library</span>(RColorBrewer);<span class="fu">library</span>(ggsci);<span class="fu">library</span>(pheatmap)</span>
+<span id="cb8-16"><a href="enrich.html#cb8-16" tabindex="-1"></a>  <span class="fu">library</span>(readxl)</span>
+<span id="cb8-17"><a href="enrich.html#cb8-17" tabindex="-1"></a>}) })</span>
+<span id="cb8-18"><a href="enrich.html#cb8-18" tabindex="-1"></a><span class="co"># 若无代理工具，切勿运行 </span></span>
+<span id="cb8-19"><a href="enrich.html#cb8-19" tabindex="-1"></a><span class="co"># LZ::setproxy() # 高危！！！新手不要运行此行，会使当前窗口断网！！！</span></span>
+<span id="cb8-20"><a href="enrich.html#cb8-20" tabindex="-1"></a><span class="co"># Sys.getenv(&#39;http_proxy&#39;) Sys.setenv(&#39;http_proxy&#39;=&#39;&#39;) Sys.setenv(&#39;https_proxy&#39;=&#39;&#39;)</span></span>
+<span id="cb8-21"><a href="enrich.html#cb8-21" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="enrich.html#cb8-22" tabindex="-1"></a><span class="co"># 如果是自己提供的表格，要按需修改列名为标准的resdf格式的列名：</span></span>
+<span id="cb8-23"><a href="enrich.html#cb8-23" tabindex="-1"></a><span class="co"># 即: 表格必须含列名Gene, log2FC, PValue, FDR这四列，列名必须为这四个，</span></span>
+<span id="cb8-24"><a href="enrich.html#cb8-24" tabindex="-1"></a><span class="co"># 提前在xlsx中修改好，然后取消下面这句的注释符，运行</span></span>
+<span id="cb8-25"><a href="enrich.html#cb8-25" tabindex="-1"></a><span class="co"># resdf &lt;- readxl::read_xlsx(&quot;result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx&quot;,</span></span>
+<span id="cb8-26"><a href="enrich.html#cb8-26" tabindex="-1"></a><span class="co">#                  sheet = 1) %&gt;% as.data.frame()</span></span>
+<span id="cb8-27"><a href="enrich.html#cb8-27" tabindex="-1"></a></span>
+<span id="cb8-28"><a href="enrich.html#cb8-28" tabindex="-1"></a><span class="co"># 按流程跑下来是运行这句，注意这句和上面的注释掉的是二选一，不要重复运行</span></span>
+<span id="cb8-29"><a href="enrich.html#cb8-29" tabindex="-1"></a>resdf <span class="ot">&lt;-</span> all_father<span class="sc">$</span>DIFF.ALL</span>
+<span id="cb8-30"><a href="enrich.html#cb8-30" tabindex="-1"></a><span class="co"># 输出目录</span></span>
+<span id="cb8-31"><a href="enrich.html#cb8-31" tabindex="-1"></a>outd <span class="ot">=</span> <span class="st">&quot;result/xx/rich&quot;</span> </span>
+<span id="cb8-32"><a href="enrich.html#cb8-32" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值的话，</span></span>
+<span id="cb8-33"><a href="enrich.html#cb8-33" tabindex="-1"></a><span class="co">#   写成fc.list &lt;- list(&#39;1.2&#39; = log2(1.2), &#39;2&#39; = log2(2))</span></span>
+<span id="cb8-34"><a href="enrich.html#cb8-34" tabindex="-1"></a><span class="co"># 注意！！！！！！：括号里log2(2)的2，和引号里&#39;2&#39;的2都要需同步要改。！！！</span></span>
+<span id="cb8-35"><a href="enrich.html#cb8-35" tabindex="-1"></a><span class="co"># 否则可能会覆盖结果 </span></span>
+<span id="cb8-36"><a href="enrich.html#cb8-36" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值</span></span>
+<span id="cb8-37"><a href="enrich.html#cb8-37" tabindex="-1"></a>fc.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&#39;1.5&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="fl">1.5</span>), <span class="st">&#39;2&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="dv">2</span>), <span class="st">&#39;4&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="dv">4</span>))</span>
+<span id="cb8-38"><a href="enrich.html#cb8-38" tabindex="-1"></a><span class="co"># logFC阈值, 单个阈值运行这句，也是二选一，不要重复运行</span></span>
+<span id="cb8-39"><a href="enrich.html#cb8-39" tabindex="-1"></a><span class="co"># fc.list &lt;- list(&#39;2&#39;=log2(2))</span></span>
+<span id="cb8-40"><a href="enrich.html#cb8-40" tabindex="-1"></a><span class="co"># 设置物种为人类（如是人类则不需要更改）</span></span>
+<span id="cb8-41"><a href="enrich.html#cb8-41" tabindex="-1"></a>GO_database <span class="ot">&lt;-</span> <span class="st">&#39;org.Hs.eg.db&#39;</span> <span class="co"># keytypes(org.Hs.eg.db)</span></span>
+<span id="cb8-42"><a href="enrich.html#cb8-42" tabindex="-1"></a>KEGG_database <span class="ot">&lt;-</span> <span class="st">&#39;hsa&#39;</span> </span>
+<span id="cb8-43"><a href="enrich.html#cb8-43" tabindex="-1"></a></span>
+<span id="cb8-44"><a href="enrich.html#cb8-44" tabindex="-1"></a><span class="co"># 预处理数据符合GOKEGG分析的要求</span></span>
+<span id="cb8-45"><a href="enrich.html#cb8-45" tabindex="-1"></a><span class="co"># # 不同fc条件下的GOgenelist list(ALL, UP, DOWN)</span></span>
+<span id="cb8-46"><a href="enrich.html#cb8-46" tabindex="-1"></a>gogenelist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fc.list, <span class="cf">function</span>(x) {</span>
+<span id="cb8-47"><a href="enrich.html#cb8-47" tabindex="-1"></a>  <span class="fu">DEG_prepareGOglist</span>(resdf, <span class="at">logfc =</span> x, <span class="at">p =</span> <span class="fl">0.05</span>, <span class="at">fdr =</span> <span class="fl">0.1</span>)<span class="er">)</span> }</span>
+<span id="cb8-48"><a href="enrich.html#cb8-48" tabindex="-1"></a><span class="co"># gogenelist %&gt;% length()</span></span>
+<span id="cb8-49"><a href="enrich.html#cb8-49" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果</span></span>
+<span id="cb8-50"><a href="enrich.html#cb8-50" tabindex="-1"></a>enrich <span class="ot">&lt;-</span> <span class="fu">DEG_runENRICH</span>(<span class="at">genelist =</span> gogenelist, <span class="at">outdir =</span> outd, </span>
+<span id="cb8-51"><a href="enrich.html#cb8-51" tabindex="-1"></a>                        <span class="at">glist.save =</span> T, <span class="at">rungo =</span> T, <span class="at">runkegg =</span> T, <span class="at">rapid =</span> T)</span></code></pre></div>
 </div>
 <div id="enrich-simple" class="section level3 hasAnchor" number="3.1.2">
 <h3><span class="header-section-number">3.1.2</span> 简易GO,KEGG一次分析<a href="enrich.html#enrich-simple" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>如果已经得到了差异基因列表，且无需批量分析，可以进行这个简易分析。<br/>
 数据格式: <code>head(genelist.lh)</code> <br/>
 [1] “AARS1” “AATF” “ABCB7” “ABCE1” “ABHD11” “ABHD12”</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="enrich.html#cb8-1" tabindex="-1"></a><span class="co"># 简易GO,KEGG一次分析(即：已经得到了差异基因列表)</span></span>
-<span id="cb8-2"><a href="enrich.html#cb8-2" tabindex="-1"></a><span class="co"># LZ::setproxy() # 代理设置，新手别碰，会断网</span></span>
-<span id="cb8-3"><a href="enrich.html#cb8-3" tabindex="-1"></a><span class="co"># 差异基因列表</span></span>
-<span id="cb8-4"><a href="enrich.html#cb8-4" tabindex="-1"></a>genelist.lh <span class="ot">&lt;-</span> pic.list<span class="sc">$</span>sig.data<span class="sc">$</span>Gene </span>
-<span id="cb8-5"><a href="enrich.html#cb8-5" tabindex="-1"></a><span class="co"># 转换ID</span></span>
-<span id="cb8-6"><a href="enrich.html#cb8-6" tabindex="-1"></a>gene_df <span class="ot">&lt;-</span> <span class="fu">bitr</span>(genelist.lh, <span class="at">fromType =</span> <span class="st">&quot;SYMBOL&quot;</span>, <span class="at">toType =</span> <span class="fu">c</span>(<span class="st">&quot;ENTREZID&quot;</span>, <span class="st">&quot;UNIPROT&quot;</span>), </span>
-<span id="cb8-7"><a href="enrich.html#cb8-7" tabindex="-1"></a>                <span class="at">OrgDb =</span> <span class="st">&#39;org.Hs.eg.db&#39;</span>)</span>
-<span id="cb8-8"><a href="enrich.html#cb8-8" tabindex="-1"></a><span class="co"># GO分析</span></span>
-<span id="cb8-9"><a href="enrich.html#cb8-9" tabindex="-1"></a>go.lh <span class="ot">&lt;-</span> <span class="fu">DEG_GO</span>(gene_df, <span class="at">orgdb =</span> <span class="st">&quot;org.Hs.eg.db&quot;</span>, <span class="at">sigNodes =</span> <span class="dv">20</span>, </span>
-<span id="cb8-10"><a href="enrich.html#cb8-10" tabindex="-1"></a>                <span class="at">resultdir=</span><span class="st">&quot;./result/proteinOR-NC&quot;</span>, <span class="at">filemark =</span> <span class="st">&quot;p1.5_g_2&quot;</span>)</span>
-<span id="cb8-11"><a href="enrich.html#cb8-11" tabindex="-1"></a>go.lhdf <span class="ot">&lt;-</span> <span class="fu">sapply</span>(go.lh, <span class="cf">function</span>(x) x<span class="sc">@</span>result, <span class="at">simplify =</span> T)</span>
-<span id="cb8-12"><a href="enrich.html#cb8-12" tabindex="-1"></a><span class="fu">write_xlsx</span>(go.lhdf, <span class="at">path =</span> <span class="st">&quot;./result/xx/lh_go.all.xlsx&quot;</span>)</span>
-<span id="cb8-13"><a href="enrich.html#cb8-13" tabindex="-1"></a><span class="co"># KEGG分析</span></span>
-<span id="cb8-14"><a href="enrich.html#cb8-14" tabindex="-1"></a>kegg.lh <span class="ot">&lt;-</span> <span class="fu">DEG_KEGG</span>(gene_df)</span>
-<span id="cb8-15"><a href="enrich.html#cb8-15" tabindex="-1"></a><span class="fu">write_xlsx</span>(kegg.lh<span class="sc">$</span>pSigDF, <span class="at">path =</span> <span class="st">&quot;./result/xx/lh_kegg.all.xlsx&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="enrich.html#cb9-1" tabindex="-1"></a><span class="co"># 简易GO,KEGG一次分析(即：已经得到了差异基因列表)</span></span>
+<span id="cb9-2"><a href="enrich.html#cb9-2" tabindex="-1"></a><span class="co"># LZ::setproxy() # 代理设置，新手别碰，会断网</span></span>
+<span id="cb9-3"><a href="enrich.html#cb9-3" tabindex="-1"></a><span class="co"># 差异基因列表</span></span>
+<span id="cb9-4"><a href="enrich.html#cb9-4" tabindex="-1"></a>genelist.lh <span class="ot">&lt;-</span> pic.list<span class="sc">$</span>sig.data<span class="sc">$</span>Gene </span>
+<span id="cb9-5"><a href="enrich.html#cb9-5" tabindex="-1"></a><span class="co"># 转换ID</span></span>
+<span id="cb9-6"><a href="enrich.html#cb9-6" tabindex="-1"></a>gene_df <span class="ot">&lt;-</span> <span class="fu">bitr</span>(genelist.lh, <span class="at">fromType =</span> <span class="st">&quot;SYMBOL&quot;</span>, <span class="at">toType =</span> <span class="fu">c</span>(<span class="st">&quot;ENTREZID&quot;</span>, <span class="st">&quot;UNIPROT&quot;</span>), </span>
+<span id="cb9-7"><a href="enrich.html#cb9-7" tabindex="-1"></a>                <span class="at">OrgDb =</span> <span class="st">&#39;org.Hs.eg.db&#39;</span>)</span>
+<span id="cb9-8"><a href="enrich.html#cb9-8" tabindex="-1"></a><span class="co"># GO分析</span></span>
+<span id="cb9-9"><a href="enrich.html#cb9-9" tabindex="-1"></a>go.lh <span class="ot">&lt;-</span> <span class="fu">DEG_GO</span>(gene_df, <span class="at">orgdb =</span> <span class="st">&quot;org.Hs.eg.db&quot;</span>, <span class="at">sigNodes =</span> <span class="dv">20</span>, </span>
+<span id="cb9-10"><a href="enrich.html#cb9-10" tabindex="-1"></a>                <span class="at">resultdir=</span><span class="st">&quot;./result/proteinOR-NC&quot;</span>, <span class="at">filemark =</span> <span class="st">&quot;p1.5_g_2&quot;</span>)</span>
+<span id="cb9-11"><a href="enrich.html#cb9-11" tabindex="-1"></a>go.lhdf <span class="ot">&lt;-</span> <span class="fu">sapply</span>(go.lh, <span class="cf">function</span>(x) x<span class="sc">@</span>result, <span class="at">simplify =</span> T)</span>
+<span id="cb9-12"><a href="enrich.html#cb9-12" tabindex="-1"></a><span class="fu">write_xlsx</span>(go.lhdf, <span class="at">path =</span> <span class="st">&quot;./result/xx/lh_go.all.xlsx&quot;</span>)</span>
+<span id="cb9-13"><a href="enrich.html#cb9-13" tabindex="-1"></a><span class="co"># KEGG分析</span></span>
+<span id="cb9-14"><a href="enrich.html#cb9-14" tabindex="-1"></a>kegg.lh <span class="ot">&lt;-</span> <span class="fu">DEG_KEGG</span>(gene_df)</span>
+<span id="cb9-15"><a href="enrich.html#cb9-15" tabindex="-1"></a><span class="fu">write_xlsx</span>(kegg.lh<span class="sc">$</span>pSigDF, <span class="at">path =</span> <span class="st">&quot;./result/xx/lh_kegg.all.xlsx&quot;</span>)</span></code></pre></div>
 </div>
 <div id="dotplot" class="section level3 hasAnchor" number="3.1.3">
 <h3><span class="header-section-number">3.1.3</span> GO、KEGG分析结果可视化 {#enrich-visual}<a href="enrich.html#dotplot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="enrich.html#cb9-1" tabindex="-1"></a><span class="co"># dotplot go</span></span>
-<span id="cb9-2"><a href="enrich.html#cb9-2" tabindex="-1"></a><span class="co"># 读取go分析保存的表格</span></span>
-<span id="cb9-3"><a href="enrich.html#cb9-3" tabindex="-1"></a><span class="co">#dotData &lt;- go$GODF$&quot;倍数&quot;$变化趋势(BP)</span></span>
-<span id="cb9-4"><a href="enrich.html#cb9-4" tabindex="-1"></a><span class="co"># 自己提供表格读取</span></span>
-<span id="cb9-5"><a href="enrich.html#cb9-5" tabindex="-1"></a><span class="co">#dotData &lt;- readxl::read_xlsx(&quot;kegg.xlsx&quot;, sheet = 1) </span></span>
-<span id="cb9-6"><a href="enrich.html#cb9-6" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> enrich<span class="sc">$</span>GODF<span class="sc">$</span><span class="st">&quot;2&quot;</span><span class="sc">$</span>all</span>
-<span id="cb9-7"><a href="enrich.html#cb9-7" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
-<span id="cb9-8"><a href="enrich.html#cb9-8" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotData, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
-<span id="cb9-9"><a href="enrich.html#cb9-9" tabindex="-1"></a>pic.dot <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotData, <span class="at">title =</span> <span class="st">&#39;TOP of GO&#39;</span>, </span>
-<span id="cb9-10"><a href="enrich.html#cb9-10" tabindex="-1"></a>                        <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, </span>
-<span id="cb9-11"><a href="enrich.html#cb9-11" tabindex="-1"></a>                        <span class="at">filemark =</span> <span class="st">&#39;GO_top&#39;</span>, </span>
-<span id="cb9-12"><a href="enrich.html#cb9-12" tabindex="-1"></a>                        <span class="at">pic.save =</span> T)</span>
-<span id="cb9-13"><a href="enrich.html#cb9-13" tabindex="-1"></a><span class="co"># dotplot kegg</span></span>
-<span id="cb9-14"><a href="enrich.html#cb9-14" tabindex="-1"></a><span class="co"># 读取kegg分析保存的表格，格式要求</span></span>
-<span id="cb9-15"><a href="enrich.html#cb9-15" tabindex="-1"></a><span class="co"># 必须要有这四列Description, GeneRatio, pvalue, qvalue。Count列可有也可无。</span></span>
-<span id="cb9-16"><a href="enrich.html#cb9-16" tabindex="-1"></a><span class="co"># 读取表格</span></span>
-<span id="cb9-17"><a href="enrich.html#cb9-17" tabindex="-1"></a><span class="co"># dotDatak &lt;- readxl::read_xlsx(&quot;./result/proinOR/kegg.xlsx&quot;, sheet = 1)</span></span>
-<span id="cb9-18"><a href="enrich.html#cb9-18" tabindex="-1"></a></span>
-<span id="cb9-19"><a href="enrich.html#cb9-19" tabindex="-1"></a>dotDatak <span class="ot">&lt;-</span> enrich<span class="sc">$</span>KEGGDF<span class="sc">$</span><span class="st">&#39;2&#39;</span><span class="sc">$</span>up</span>
-<span id="cb9-20"><a href="enrich.html#cb9-20" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
-<span id="cb9-21"><a href="enrich.html#cb9-21" tabindex="-1"></a>dotDataK <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotDatak, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
-<span id="cb9-22"><a href="enrich.html#cb9-22" tabindex="-1"></a>pic.dotk <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotDataK, <span class="at">title =</span> <span class="st">&#39;TOP of KEGGpathway&#39;</span>, </span>
-<span id="cb9-23"><a href="enrich.html#cb9-23" tabindex="-1"></a>                         <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, </span>
-<span id="cb9-24"><a href="enrich.html#cb9-24" tabindex="-1"></a>                         <span class="at">filemark =</span> <span class="st">&#39;KEGG_top&#39;</span>, </span>
-<span id="cb9-25"><a href="enrich.html#cb9-25" tabindex="-1"></a>                         <span class="at">pic.save =</span> F)</span>
-<span id="cb9-26"><a href="enrich.html#cb9-26" tabindex="-1"></a></span>
-<span id="cb9-27"><a href="enrich.html#cb9-27" tabindex="-1"></a><span class="co"># 组合图(可选运行，比例不是很好调整，单独出图AI内调整更自由)</span></span>
-<span id="cb9-28"><a href="enrich.html#cb9-28" tabindex="-1"></a>gh <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dot)</span>
-<span id="cb9-29"><a href="enrich.html#cb9-29" tabindex="-1"></a>gd <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dotk)</span>
-<span id="cb9-30"><a href="enrich.html#cb9-30" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gh, gd, <span class="at">rel_widths =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.25</span>))</span>
-<span id="cb9-31"><a href="enrich.html#cb9-31" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">paste0</span>(dir_out, <span class="st">&quot;/GO_KEGG_top.pdf&quot;</span>), <span class="at">width =</span> <span class="dv">16</span>, <span class="at">height =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="enrich.html#cb10-1" tabindex="-1"></a><span class="co"># dotplot go</span></span>
+<span id="cb10-2"><a href="enrich.html#cb10-2" tabindex="-1"></a><span class="co"># 读取go分析保存的表格</span></span>
+<span id="cb10-3"><a href="enrich.html#cb10-3" tabindex="-1"></a><span class="co">#dotData &lt;- go$GODF$&quot;倍数&quot;$变化趋势(BP)</span></span>
+<span id="cb10-4"><a href="enrich.html#cb10-4" tabindex="-1"></a><span class="co"># 自己提供表格读取</span></span>
+<span id="cb10-5"><a href="enrich.html#cb10-5" tabindex="-1"></a><span class="co">#dotData &lt;- readxl::read_xlsx(&quot;kegg.xlsx&quot;, sheet = 1) </span></span>
+<span id="cb10-6"><a href="enrich.html#cb10-6" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> enrich<span class="sc">$</span>GODF<span class="sc">$</span><span class="st">&quot;2&quot;</span><span class="sc">$</span>all</span>
+<span id="cb10-7"><a href="enrich.html#cb10-7" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
+<span id="cb10-8"><a href="enrich.html#cb10-8" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotData, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
+<span id="cb10-9"><a href="enrich.html#cb10-9" tabindex="-1"></a>pic.dot <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotData, <span class="at">title =</span> <span class="st">&#39;TOP of GO&#39;</span>, </span>
+<span id="cb10-10"><a href="enrich.html#cb10-10" tabindex="-1"></a>                        <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, </span>
+<span id="cb10-11"><a href="enrich.html#cb10-11" tabindex="-1"></a>                        <span class="at">filemark =</span> <span class="st">&#39;GO_top&#39;</span>, </span>
+<span id="cb10-12"><a href="enrich.html#cb10-12" tabindex="-1"></a>                        <span class="at">pic.save =</span> T)</span>
+<span id="cb10-13"><a href="enrich.html#cb10-13" tabindex="-1"></a><span class="co"># dotplot kegg</span></span>
+<span id="cb10-14"><a href="enrich.html#cb10-14" tabindex="-1"></a><span class="co"># 读取kegg分析保存的表格，格式要求</span></span>
+<span id="cb10-15"><a href="enrich.html#cb10-15" tabindex="-1"></a><span class="co"># 必须要有这四列Description, GeneRatio, pvalue, qvalue。Count列可有也可无。</span></span>
+<span id="cb10-16"><a href="enrich.html#cb10-16" tabindex="-1"></a><span class="co"># 读取表格</span></span>
+<span id="cb10-17"><a href="enrich.html#cb10-17" tabindex="-1"></a><span class="co"># dotDatak &lt;- readxl::read_xlsx(&quot;./result/proinOR/kegg.xlsx&quot;, sheet = 1)</span></span>
+<span id="cb10-18"><a href="enrich.html#cb10-18" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="enrich.html#cb10-19" tabindex="-1"></a>dotDatak <span class="ot">&lt;-</span> enrich<span class="sc">$</span>KEGGDF<span class="sc">$</span><span class="st">&#39;2&#39;</span><span class="sc">$</span>up</span>
+<span id="cb10-20"><a href="enrich.html#cb10-20" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
+<span id="cb10-21"><a href="enrich.html#cb10-21" tabindex="-1"></a>dotDataK <span class="ot">&lt;-</span> <span class="fu">DEGp_prepareDotplot</span>(dotDatak, <span class="at">head =</span> <span class="dv">30</span>, <span class="at">delete =</span> <span class="cn">NULL</span>)</span>
+<span id="cb10-22"><a href="enrich.html#cb10-22" tabindex="-1"></a>pic.dotk <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot</span>(dotDataK, <span class="at">title =</span> <span class="st">&#39;TOP of KEGGpathway&#39;</span>, </span>
+<span id="cb10-23"><a href="enrich.html#cb10-23" tabindex="-1"></a>                         <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, </span>
+<span id="cb10-24"><a href="enrich.html#cb10-24" tabindex="-1"></a>                         <span class="at">filemark =</span> <span class="st">&#39;KEGG_top&#39;</span>, </span>
+<span id="cb10-25"><a href="enrich.html#cb10-25" tabindex="-1"></a>                         <span class="at">pic.save =</span> F)</span>
+<span id="cb10-26"><a href="enrich.html#cb10-26" tabindex="-1"></a></span>
+<span id="cb10-27"><a href="enrich.html#cb10-27" tabindex="-1"></a><span class="co"># 组合图(可选运行，比例不是很好调整，单独出图AI内调整更自由)</span></span>
+<span id="cb10-28"><a href="enrich.html#cb10-28" tabindex="-1"></a>gh <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dot)</span>
+<span id="cb10-29"><a href="enrich.html#cb10-29" tabindex="-1"></a>gd <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dotk)</span>
+<span id="cb10-30"><a href="enrich.html#cb10-30" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gh, gd, <span class="at">rel_widths =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.25</span>))</span>
+<span id="cb10-31"><a href="enrich.html#cb10-31" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">paste0</span>(dir_out, <span class="st">&quot;/GO_KEGG_top.pdf&quot;</span>), <span class="at">width =</span> <span class="dv">16</span>, <span class="at">height =</span> <span class="dv">10</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="enrich-gsea" class="section level2 hasAnchor" number="3.2">
@@ -330,39 +330,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p><a href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp" target="_blank">GSEA官网</a>提供了GSEA分析软件和MSigDB数据库中的所有通路下载，如果需要更多的通路集可以自行下载，本包内置了MSigDB的H,C1-8的所有大类集及C2,C5的部分重要子类集，还有整理好的最新版的KEGG官方的PATHWAY通路集合。</p></li>
 <li><p>本包构建了一个图形界面函数<code>runAPP_GSEA()</code>，可在安装完LZ包后直接通过运行<code>LZ::runAPP_GSEA()</code>启动图形界面，也可在浏览器中打开。详细见<a href="enrich.html#enrich-gsea-r.gsea.gui">R GSEA 图形界面</a></p></li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="enrich.html#cb10-1" tabindex="-1"></a><span class="fu">library</span>(LZ)</span>
-<span id="cb10-2"><a href="enrich.html#cb10-2" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
-<span id="cb10-3"><a href="enrich.html#cb10-3" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span>
-<span id="cb10-4"><a href="enrich.html#cb10-4" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
-<span id="cb10-5"><a href="enrich.html#cb10-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb10-6"><a href="enrich.html#cb10-6" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="enrich.html#cb10-7" tabindex="-1"></a><span class="co"># 1. Gene list 排序表</span></span>
-<span id="cb10-8"><a href="enrich.html#cb10-8" tabindex="-1"></a>genelist <span class="ot">&lt;-</span> all_father<span class="sc">$</span>gsealist</span>
-<span id="cb10-9"><a href="enrich.html#cb10-9" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="enrich.html#cb10-10" tabindex="-1"></a><span class="co"># 2. Pathway Gene Set 表</span></span>
-<span id="cb10-11"><a href="enrich.html#cb10-11" tabindex="-1"></a><span class="co"># 内置数据集 gmt.largelist.23.12.Hs.symbols</span></span>
-<span id="cb10-12"><a href="enrich.html#cb10-12" tabindex="-1"></a><span class="co">#   含1. msigDB数据库的全部通路大类 </span></span>
-<span id="cb10-13"><a href="enrich.html#cb10-13" tabindex="-1"></a><span class="co">#     2. msigDB的C2,C5的部分子集通路[这些子集是C2,C5的一部分] </span></span>
-<span id="cb10-14"><a href="enrich.html#cb10-14" tabindex="-1"></a><span class="co">#     3.最新版本的KEGG全部通路</span></span>
-<span id="cb10-15"><a href="enrich.html#cb10-15" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;gmt.largelist.23.12.Hs.symbols&quot;</span>)   </span>
-<span id="cb10-16"><a href="enrich.html#cb10-16" tabindex="-1"></a><span class="co"># 选择KEGG通路集合，把美元符号后面字符删掉，然后按tab键可以选择其他数据集</span></span>
-<span id="cb10-17"><a href="enrich.html#cb10-17" tabindex="-1"></a>gmt <span class="ot">&lt;-</span> gmt.largelist.<span class="dv">23</span>.<span class="fl">12.</span>Hs.symbols<span class="sc">$</span>kegg.all.<span class="dv">23</span>.<span class="fl">12.</span>Hs.symbols.gmt</span>
-<span id="cb10-18"><a href="enrich.html#cb10-18" tabindex="-1"></a></span>
-<span id="cb10-19"><a href="enrich.html#cb10-19" tabindex="-1"></a><span class="co"># 全部该GeneSet数据的通路GSEA分析  -----------</span></span>
-<span id="cb10-20"><a href="enrich.html#cb10-20" tabindex="-1"></a>gsea <span class="ot">&lt;-</span> <span class="fu">DEG_runGSEA</span>(<span class="at">genelist=</span>genelist, <span class="at">gmt_set=</span>gmt, <span class="at">pic.save=</span>F)</span>
-<span id="cb10-21"><a href="enrich.html#cb10-21" tabindex="-1"></a><span class="co"># 将所有的分析结果导出到本地[gsea.result]文件夹，统计总结表名为gsea_stat</span></span>
-<span id="cb10-22"><a href="enrich.html#cb10-22" tabindex="-1"></a><span class="co">#   导出文件夹名和文件名均可按需修改</span></span>
-<span id="cb10-23"><a href="enrich.html#cb10-23" tabindex="-1"></a><span class="fu">DEGp_GSEA_plotALL</span>(gsea, <span class="at">result_dir =</span> <span class="st">&quot;gsea.result&quot;</span>, </span>
-<span id="cb10-24"><a href="enrich.html#cb10-24" tabindex="-1"></a>                  <span class="at">xl_filename =</span> <span class="st">&quot;gsea_stat&quot;</span>)</span>
-<span id="cb10-25"><a href="enrich.html#cb10-25" tabindex="-1"></a></span>
-<span id="cb10-26"><a href="enrich.html#cb10-26" tabindex="-1"></a><span class="co"># 单个GeneSet数据的通路GSEA分析（且从自己准备的gmt文件开始），可从MSigDB网</span></span>
-<span id="cb10-27"><a href="enrich.html#cb10-27" tabindex="-1"></a><span class="co">#  站搜索下载</span></span>
-<span id="cb10-28"><a href="enrich.html#cb10-28" tabindex="-1"></a><span class="co"># 设定文件路径</span></span>
-<span id="cb10-29"><a href="enrich.html#cb10-29" tabindex="-1"></a>gmt_filename <span class="ot">&lt;-</span> <span class="st">&quot;D:/Team/RNAseq/data/geneset/WP_FERROPTOSIS.v2022.1.Hs.gmt&quot;</span></span>
-<span id="cb10-30"><a href="enrich.html#cb10-30" tabindex="-1"></a>gmt_single <span class="ot">&lt;-</span> clusterProfiler<span class="sc">::</span><span class="fu">read.gmt</span>(gmt_filename)</span>
-<span id="cb10-31"><a href="enrich.html#cb10-31" tabindex="-1"></a>gsea.single <span class="ot">&lt;-</span> <span class="fu">DEG_runGSEA</span>(<span class="at">genelist =</span> genelist, <span class="at">gmt_set =</span> gmt_single, </span>
-<span id="cb10-32"><a href="enrich.html#cb10-32" tabindex="-1"></a>                           <span class="at">pic.save=</span>T, <span class="at">outdir =</span> <span class="st">&quot;./gsea.result2/&quot;</span>, </span>
-<span id="cb10-33"><a href="enrich.html#cb10-33" tabindex="-1"></a>                           <span class="at">filename =</span> <span class="st">&quot;ferr&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="enrich.html#cb11-1" tabindex="-1"></a><span class="fu">library</span>(LZ)</span>
+<span id="cb11-2"><a href="enrich.html#cb11-2" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
+<span id="cb11-3"><a href="enrich.html#cb11-3" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span>
+<span id="cb11-4"><a href="enrich.html#cb11-4" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb11-5"><a href="enrich.html#cb11-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb11-6"><a href="enrich.html#cb11-6" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="enrich.html#cb11-7" tabindex="-1"></a><span class="co"># 1. Gene list 排序表</span></span>
+<span id="cb11-8"><a href="enrich.html#cb11-8" tabindex="-1"></a>genelist <span class="ot">&lt;-</span> all_father<span class="sc">$</span>gsealist</span>
+<span id="cb11-9"><a href="enrich.html#cb11-9" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="enrich.html#cb11-10" tabindex="-1"></a><span class="co"># 2. Pathway Gene Set 表</span></span>
+<span id="cb11-11"><a href="enrich.html#cb11-11" tabindex="-1"></a><span class="co"># 内置数据集 gmt.largelist.23.12.Hs.symbols</span></span>
+<span id="cb11-12"><a href="enrich.html#cb11-12" tabindex="-1"></a><span class="co">#   含1. msigDB数据库的全部通路大类 </span></span>
+<span id="cb11-13"><a href="enrich.html#cb11-13" tabindex="-1"></a><span class="co">#     2. msigDB的C2,C5的部分子集通路[这些子集是C2,C5的一部分] </span></span>
+<span id="cb11-14"><a href="enrich.html#cb11-14" tabindex="-1"></a><span class="co">#     3.最新版本的KEGG全部通路</span></span>
+<span id="cb11-15"><a href="enrich.html#cb11-15" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;gmt.largelist.23.12.Hs.symbols&quot;</span>)   </span>
+<span id="cb11-16"><a href="enrich.html#cb11-16" tabindex="-1"></a><span class="co"># 选择KEGG通路集合，把美元符号后面字符删掉，然后按tab键可以选择其他数据集</span></span>
+<span id="cb11-17"><a href="enrich.html#cb11-17" tabindex="-1"></a>gmt <span class="ot">&lt;-</span> gmt.largelist.<span class="dv">23</span>.<span class="fl">12.</span>Hs.symbols<span class="sc">$</span>kegg.all.<span class="dv">23</span>.<span class="fl">12.</span>Hs.symbols.gmt</span>
+<span id="cb11-18"><a href="enrich.html#cb11-18" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="enrich.html#cb11-19" tabindex="-1"></a><span class="co"># 全部该GeneSet数据的通路GSEA分析  -----------</span></span>
+<span id="cb11-20"><a href="enrich.html#cb11-20" tabindex="-1"></a>gsea <span class="ot">&lt;-</span> <span class="fu">DEG_runGSEA</span>(<span class="at">genelist=</span>genelist, <span class="at">gmt_set=</span>gmt, <span class="at">pic.save=</span>F)</span>
+<span id="cb11-21"><a href="enrich.html#cb11-21" tabindex="-1"></a><span class="co"># 将所有的分析结果导出到本地[gsea.result]文件夹，统计总结表名为gsea_stat</span></span>
+<span id="cb11-22"><a href="enrich.html#cb11-22" tabindex="-1"></a><span class="co">#   导出文件夹名和文件名均可按需修改</span></span>
+<span id="cb11-23"><a href="enrich.html#cb11-23" tabindex="-1"></a><span class="fu">DEGp_GSEA_plotALL</span>(gsea, <span class="at">result_dir =</span> <span class="st">&quot;gsea.result&quot;</span>, </span>
+<span id="cb11-24"><a href="enrich.html#cb11-24" tabindex="-1"></a>                  <span class="at">xl_filename =</span> <span class="st">&quot;gsea_stat&quot;</span>)</span>
+<span id="cb11-25"><a href="enrich.html#cb11-25" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="enrich.html#cb11-26" tabindex="-1"></a><span class="co"># 单个GeneSet数据的通路GSEA分析（且从自己准备的gmt文件开始），可从MSigDB网</span></span>
+<span id="cb11-27"><a href="enrich.html#cb11-27" tabindex="-1"></a><span class="co">#  站搜索下载</span></span>
+<span id="cb11-28"><a href="enrich.html#cb11-28" tabindex="-1"></a><span class="co"># 设定文件路径</span></span>
+<span id="cb11-29"><a href="enrich.html#cb11-29" tabindex="-1"></a>gmt_filename <span class="ot">&lt;-</span> <span class="st">&quot;D:/Team/RNAseq/data/geneset/WP_FERROPTOSIS.v2022.1.Hs.gmt&quot;</span></span>
+<span id="cb11-30"><a href="enrich.html#cb11-30" tabindex="-1"></a>gmt_single <span class="ot">&lt;-</span> clusterProfiler<span class="sc">::</span><span class="fu">read.gmt</span>(gmt_filename)</span>
+<span id="cb11-31"><a href="enrich.html#cb11-31" tabindex="-1"></a>gsea.single <span class="ot">&lt;-</span> <span class="fu">DEG_runGSEA</span>(<span class="at">genelist =</span> genelist, <span class="at">gmt_set =</span> gmt_single, </span>
+<span id="cb11-32"><a href="enrich.html#cb11-32" tabindex="-1"></a>                           <span class="at">pic.save=</span>T, <span class="at">outdir =</span> <span class="st">&quot;./gsea.result2/&quot;</span>, </span>
+<span id="cb11-33"><a href="enrich.html#cb11-33" tabindex="-1"></a>                           <span class="at">filename =</span> <span class="st">&quot;ferr&quot;</span>)</span></code></pre></div>
 </div>
 <div id="enrich-gsea-r.gsea.gui" class="section level3 hasAnchor" number="3.2.2">
 <h3><span class="header-section-number">3.2.2</span> R GSEA 图形界面<a href="enrich.html#enrich-gsea-r.gsea.gui" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -407,56 +407,56 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tbody>
 </table>
 <p>注意：虽然要求第二列名为log2FC,但第二列只要是表示变化倍数就可以，不一定要是log2后数据，没有排序也没关系。</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="enrich.html#cb11-1" tabindex="-1"></a><span class="co"># 启动方法1（不带参数启动），适合自己已经有了差异分析结果的表格的情况，</span></span>
-<span id="cb11-2"><a href="enrich.html#cb11-2" tabindex="-1"></a><span class="co">#  那么运行此句后，不需要在R里写任何代码，如果通过LZ::runAPP_GSEA()甚至</span></span>
-<span id="cb11-3"><a href="enrich.html#cb11-3" tabindex="-1"></a><span class="co">#  都不需要加载包。</span></span>
-<span id="cb11-4"><a href="enrich.html#cb11-4" tabindex="-1"></a><span class="co">#  使用这种方法，则必须要上传上述指定的表格形式的表格后才能点击画图。</span></span>
-<span id="cb11-5"><a href="enrich.html#cb11-5" tabindex="-1"></a><span class="fu">runAPP_GSEA</span>() <span class="co"># 或在安装成功LZ包后，直接通过LZ::runAPP_GSEA()来启动</span></span>
-<span id="cb11-6"><a href="enrich.html#cb11-6" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="enrich.html#cb11-7" tabindex="-1"></a><span class="co"># 启动方法2（带参数启动），适合在R中已经有genelist的情况。</span></span>
-<span id="cb11-8"><a href="enrich.html#cb11-8" tabindex="-1"></a><span class="co"># 已在R里有了genelist的话，运行此句启动图形界面，这样就不需要上传表格</span></span>
-<span id="cb11-9"><a href="enrich.html#cb11-9" tabindex="-1"></a><span class="fu">runAPP_GSEA</span>(<span class="at">genelist =</span> genelist)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="enrich.html#cb12-1" tabindex="-1"></a><span class="co"># 启动方法1（不带参数启动），适合自己已经有了差异分析结果的表格的情况，</span></span>
+<span id="cb12-2"><a href="enrich.html#cb12-2" tabindex="-1"></a><span class="co">#  那么运行此句后，不需要在R里写任何代码，如果通过LZ::runAPP_GSEA()甚至</span></span>
+<span id="cb12-3"><a href="enrich.html#cb12-3" tabindex="-1"></a><span class="co">#  都不需要加载包。</span></span>
+<span id="cb12-4"><a href="enrich.html#cb12-4" tabindex="-1"></a><span class="co">#  使用这种方法，则必须要上传上述指定的表格形式的表格后才能点击画图。</span></span>
+<span id="cb12-5"><a href="enrich.html#cb12-5" tabindex="-1"></a><span class="fu">runAPP_GSEA</span>() <span class="co"># 或在安装成功LZ包后，直接通过LZ::runAPP_GSEA()来启动</span></span>
+<span id="cb12-6"><a href="enrich.html#cb12-6" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="enrich.html#cb12-7" tabindex="-1"></a><span class="co"># 启动方法2（带参数启动），适合在R中已经有genelist的情况。</span></span>
+<span id="cb12-8"><a href="enrich.html#cb12-8" tabindex="-1"></a><span class="co"># 已在R里有了genelist的话，运行此句启动图形界面，这样就不需要上传表格</span></span>
+<span id="cb12-9"><a href="enrich.html#cb12-9" tabindex="-1"></a><span class="fu">runAPP_GSEA</span>(<span class="at">genelist =</span> genelist)</span></code></pre></div>
 </div>
 <div id="一些进阶操作及技巧不会没有关系不做过多解释自行体会无r语言基础者慎入" class="section level3 hasAnchor" number="3.2.3">
 <h3><span class="header-section-number">3.2.3</span> 一些进阶操作及技巧(不会没有关系，不做过多解释，自行体会，无R语言基础者慎入)<a href="enrich.html#一些进阶操作及技巧不会没有关系不做过多解释自行体会无r语言基础者慎入" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="enrich.html#cb12-1" tabindex="-1"></a><span class="co"># 进阶操作 ---------------------------</span></span>
-<span id="cb12-2"><a href="enrich.html#cb12-2" tabindex="-1"></a><span class="co"># 1. 查找指定通路的图</span></span>
-<span id="cb12-3"><a href="enrich.html#cb12-3" tabindex="-1"></a><span class="co">#  如果自己知道通路的名字，可以通过查找来定位到通路的位置，然后单独画图</span></span>
-<span id="cb12-4"><a href="enrich.html#cb12-4" tabindex="-1"></a>pathway <span class="ot">=</span> <span class="st">&quot;^ABC&quot;</span></span>
-<span id="cb12-5"><a href="enrich.html#cb12-5" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">grep</span>(pathway, gsea[,<span class="st">&quot;ID&quot;</span>])</span>
-<span id="cb12-6"><a href="enrich.html#cb12-6" tabindex="-1"></a><span class="fu">grep</span>(pathway, gsea[,<span class="st">&quot;ID&quot;</span>], <span class="at">value =</span> T) <span class="co"># 查看找到的通路名称，必须时唯一值，否则请使用更加详细的查找条件再查找一次。</span></span>
-<span id="cb12-7"><a href="enrich.html#cb12-7" tabindex="-1"></a><span class="fu">DEGp_GSEA</span>(gsea, <span class="at">num =</span> n)</span>
-<span id="cb12-8"><a href="enrich.html#cb12-8" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="enrich.html#cb12-9" tabindex="-1"></a><span class="co"># 2. 从当前的gmt文件中获取指定的Pathway Gene set(gmt对象名一定腰围gmt才行)</span></span>
-<span id="cb12-10"><a href="enrich.html#cb12-10" tabindex="-1"></a>gmtdf.find <span class="ot">&lt;-</span> <span class="fu">find_pathway</span>(<span class="st">&quot;^Ferr&quot;</span>)</span>
-<span id="cb12-11"><a href="enrich.html#cb12-11" tabindex="-1"></a>gsea.single <span class="ot">&lt;-</span> <span class="fu">DEG_runGSEA</span>(<span class="at">genelist =</span> genelist, <span class="at">gmt_set=</span>gmtdf.find, </span>
-<span id="cb12-12"><a href="enrich.html#cb12-12" tabindex="-1"></a>                           <span class="at">pic.save=</span>T, <span class="at">outdir =</span> <span class="st">&quot;./gsea.ytb3/&quot;</span>, </span>
-<span id="cb12-13"><a href="enrich.html#cb12-13" tabindex="-1"></a>                           <span class="at">filename =</span> <span class="st">&quot;fer_taget&quot;</span>)</span>
-<span id="cb12-14"><a href="enrich.html#cb12-14" tabindex="-1"></a></span>
-<span id="cb12-15"><a href="enrich.html#cb12-15" tabindex="-1"></a><span class="co"># 3. 如果自己的分析中想将自己的数据转化为GSEA要求的genelist数据，</span></span>
-<span id="cb12-16"><a href="enrich.html#cb12-16" tabindex="-1"></a><span class="co">#    例如自己的分析项目中有一个名为re的对象，该对象中有</span></span>
-<span id="cb12-17"><a href="enrich.html#cb12-17" tabindex="-1"></a><span class="co">#    基因名列XX 和 基因变化倍数列 YY</span></span>
-<span id="cb12-18"><a href="enrich.html#cb12-18" tabindex="-1"></a>genelist <span class="ot">&lt;-</span> re<span class="sc">$</span>YY</span>
-<span id="cb12-19"><a href="enrich.html#cb12-19" tabindex="-1"></a><span class="fu">names</span>(genelist) <span class="ot">&lt;-</span> re<span class="sc">$</span>XX</span>
-<span id="cb12-20"><a href="enrich.html#cb12-20" tabindex="-1"></a>genelist <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(<span class="fu">sort</span>(genelist, <span class="at">decreasing =</span> T))</span>
-<span id="cb12-21"><a href="enrich.html#cb12-21" tabindex="-1"></a></span>
-<span id="cb12-22"><a href="enrich.html#cb12-22" tabindex="-1"></a><span class="co"># 4. GSEA图形界面中若使用结束按钮关闭程序，会将最后一次画图的数据保留在</span></span>
-<span id="cb12-23"><a href="enrich.html#cb12-23" tabindex="-1"></a><span class="co">#    R会话中，具体如下：</span></span>
-<span id="cb12-24"><a href="enrich.html#cb12-24" tabindex="-1"></a><span class="co"># 最后画的一幅图</span></span>
-<span id="cb12-25"><a href="enrich.html#cb12-25" tabindex="-1"></a>pic_gsea</span>
-<span id="cb12-26"><a href="enrich.html#cb12-26" tabindex="-1"></a><span class="co"># 保存图片</span></span>
-<span id="cb12-27"><a href="enrich.html#cb12-27" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">&#39;aaa.pdf&#39;</span>, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">5</span>)</span>
-<span id="cb12-28"><a href="enrich.html#cb12-28" tabindex="-1"></a>pic_gsea</span>
-<span id="cb12-29"><a href="enrich.html#cb12-29" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
-<span id="cb12-30"><a href="enrich.html#cb12-30" tabindex="-1"></a><span class="co"># 最后一次选择的通路集详细</span></span>
-<span id="cb12-31"><a href="enrich.html#cb12-31" tabindex="-1"></a>sy_gmt_taget</span>
-<span id="cb12-32"><a href="enrich.html#cb12-32" tabindex="-1"></a><span class="co"># 最后一次选择的通路名称</span></span>
-<span id="cb12-33"><a href="enrich.html#cb12-33" tabindex="-1"></a>sy_pathway_name</span>
-<span id="cb12-34"><a href="enrich.html#cb12-34" tabindex="-1"></a><span class="co"># 最后一次选择的大类通路集详细的前六行</span></span>
-<span id="cb12-35"><a href="enrich.html#cb12-35" tabindex="-1"></a>sy_gmt <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span>
-<span id="cb12-36"><a href="enrich.html#cb12-36" tabindex="-1"></a></span>
-<span id="cb12-37"><a href="enrich.html#cb12-37" tabindex="-1"></a><span class="co"># 5. 转换成宽型文件</span></span>
-<span id="cb12-38"><a href="enrich.html#cb12-38" tabindex="-1"></a>gmt.w2 <span class="ot">&lt;-</span> <span class="fu">gmt_longTowide2</span>(gmt) </span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="enrich.html#cb13-1" tabindex="-1"></a><span class="co"># 进阶操作 ---------------------------</span></span>
+<span id="cb13-2"><a href="enrich.html#cb13-2" tabindex="-1"></a><span class="co"># 1. 查找指定通路的图</span></span>
+<span id="cb13-3"><a href="enrich.html#cb13-3" tabindex="-1"></a><span class="co">#  如果自己知道通路的名字，可以通过查找来定位到通路的位置，然后单独画图</span></span>
+<span id="cb13-4"><a href="enrich.html#cb13-4" tabindex="-1"></a>pathway <span class="ot">=</span> <span class="st">&quot;^ABC&quot;</span></span>
+<span id="cb13-5"><a href="enrich.html#cb13-5" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">grep</span>(pathway, gsea[,<span class="st">&quot;ID&quot;</span>])</span>
+<span id="cb13-6"><a href="enrich.html#cb13-6" tabindex="-1"></a><span class="fu">grep</span>(pathway, gsea[,<span class="st">&quot;ID&quot;</span>], <span class="at">value =</span> T) <span class="co"># 查看找到的通路名称，必须时唯一值，否则请使用更加详细的查找条件再查找一次。</span></span>
+<span id="cb13-7"><a href="enrich.html#cb13-7" tabindex="-1"></a><span class="fu">DEGp_GSEA</span>(gsea, <span class="at">num =</span> n)</span>
+<span id="cb13-8"><a href="enrich.html#cb13-8" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="enrich.html#cb13-9" tabindex="-1"></a><span class="co"># 2. 从当前的gmt文件中获取指定的Pathway Gene set(gmt对象名一定腰围gmt才行)</span></span>
+<span id="cb13-10"><a href="enrich.html#cb13-10" tabindex="-1"></a>gmtdf.find <span class="ot">&lt;-</span> <span class="fu">find_pathway</span>(<span class="st">&quot;^Ferr&quot;</span>)</span>
+<span id="cb13-11"><a href="enrich.html#cb13-11" tabindex="-1"></a>gsea.single <span class="ot">&lt;-</span> <span class="fu">DEG_runGSEA</span>(<span class="at">genelist =</span> genelist, <span class="at">gmt_set=</span>gmtdf.find, </span>
+<span id="cb13-12"><a href="enrich.html#cb13-12" tabindex="-1"></a>                           <span class="at">pic.save=</span>T, <span class="at">outdir =</span> <span class="st">&quot;./gsea.ytb3/&quot;</span>, </span>
+<span id="cb13-13"><a href="enrich.html#cb13-13" tabindex="-1"></a>                           <span class="at">filename =</span> <span class="st">&quot;fer_taget&quot;</span>)</span>
+<span id="cb13-14"><a href="enrich.html#cb13-14" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="enrich.html#cb13-15" tabindex="-1"></a><span class="co"># 3. 如果自己的分析中想将自己的数据转化为GSEA要求的genelist数据，</span></span>
+<span id="cb13-16"><a href="enrich.html#cb13-16" tabindex="-1"></a><span class="co">#    例如自己的分析项目中有一个名为re的对象，该对象中有</span></span>
+<span id="cb13-17"><a href="enrich.html#cb13-17" tabindex="-1"></a><span class="co">#    基因名列XX 和 基因变化倍数列 YY</span></span>
+<span id="cb13-18"><a href="enrich.html#cb13-18" tabindex="-1"></a>genelist <span class="ot">&lt;-</span> re<span class="sc">$</span>YY</span>
+<span id="cb13-19"><a href="enrich.html#cb13-19" tabindex="-1"></a><span class="fu">names</span>(genelist) <span class="ot">&lt;-</span> re<span class="sc">$</span>XX</span>
+<span id="cb13-20"><a href="enrich.html#cb13-20" tabindex="-1"></a>genelist <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(<span class="fu">sort</span>(genelist, <span class="at">decreasing =</span> T))</span>
+<span id="cb13-21"><a href="enrich.html#cb13-21" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="enrich.html#cb13-22" tabindex="-1"></a><span class="co"># 4. GSEA图形界面中若使用结束按钮关闭程序，会将最后一次画图的数据保留在</span></span>
+<span id="cb13-23"><a href="enrich.html#cb13-23" tabindex="-1"></a><span class="co">#    R会话中，具体如下：</span></span>
+<span id="cb13-24"><a href="enrich.html#cb13-24" tabindex="-1"></a><span class="co"># 最后画的一幅图</span></span>
+<span id="cb13-25"><a href="enrich.html#cb13-25" tabindex="-1"></a>pic_gsea</span>
+<span id="cb13-26"><a href="enrich.html#cb13-26" tabindex="-1"></a><span class="co"># 保存图片</span></span>
+<span id="cb13-27"><a href="enrich.html#cb13-27" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">&#39;aaa.pdf&#39;</span>, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">5</span>)</span>
+<span id="cb13-28"><a href="enrich.html#cb13-28" tabindex="-1"></a>pic_gsea</span>
+<span id="cb13-29"><a href="enrich.html#cb13-29" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb13-30"><a href="enrich.html#cb13-30" tabindex="-1"></a><span class="co"># 最后一次选择的通路集详细</span></span>
+<span id="cb13-31"><a href="enrich.html#cb13-31" tabindex="-1"></a>sy_gmt_taget</span>
+<span id="cb13-32"><a href="enrich.html#cb13-32" tabindex="-1"></a><span class="co"># 最后一次选择的通路名称</span></span>
+<span id="cb13-33"><a href="enrich.html#cb13-33" tabindex="-1"></a>sy_pathway_name</span>
+<span id="cb13-34"><a href="enrich.html#cb13-34" tabindex="-1"></a><span class="co"># 最后一次选择的大类通路集详细的前六行</span></span>
+<span id="cb13-35"><a href="enrich.html#cb13-35" tabindex="-1"></a>sy_gmt <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span>
+<span id="cb13-36"><a href="enrich.html#cb13-36" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="enrich.html#cb13-37" tabindex="-1"></a><span class="co"># 5. 转换成宽型文件</span></span>
+<span id="cb13-38"><a href="enrich.html#cb13-38" tabindex="-1"></a>gmt.w2 <span class="ot">&lt;-</span> <span class="fu">gmt_longTowide2</span>(gmt) </span></code></pre></div>
 </div>
 <div id="gsea官方软件" class="section level3 hasAnchor" number="3.2.4">
 <h3><span class="header-section-number">3.2.4</span> GSEA官方软件<a href="enrich.html#gsea官方软件" class="anchor-section" aria-label="Anchor link to header"></a></h3>
