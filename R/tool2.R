@@ -40,8 +40,8 @@ combn_sample <- function(col.1, col.2, sample1 = 2, sample2 =2, eset) {
   com_df <- cbind(stringr::str_split(com_df$Var1, ",", simplify = T),
                   stringr::str_split(com_df$Var2, ",", simplify = T))
   if (!missing(eset)) {
-    df <- apply(a, 1, function(x) {
-      com_df <- eset %>% dplyr::select(any_of(x))
+    com_df <- apply(com_df, 1, function(x) {
+      eset %>% dplyr::select(any_of(x))
     })
   }
   return(com_df)
