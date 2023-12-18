@@ -203,11 +203,44 @@ DEG_prepareData.XENA xena method</p>
 
 <p>list</p>
     </div>
+    <div class="section level2">
+    <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
+    <p>Jiang</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="co">#' # exprset.group = list(eset, group, f_mark)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># read from XENABD object, oop  ============</span></span></span>
+<span class="r-in"><span><span class="co"># DEeset &lt;- DEG_prepareData(XENADB,</span></span></span>
+<span class="r-in"><span><span class="co">#                           id_dot = T, col.by = "Ensembl_ID",</span></span></span>
+<span class="r-in"><span><span class="co">#                           col.del=NULL, auto.del.character=T,</span></span></span>
+<span class="r-in"><span><span class="co">#                           annot_trans=T, f_mark="diff",</span></span></span>
+<span class="r-in"><span><span class="co">#                           oop = T,</span></span></span>
+<span class="r-in"><span><span class="co">#                           oop.group.suffix1 = "01A",</span></span></span>
+<span class="r-in"><span><span class="co">#                           oop.group.suffix2 = "11A",</span></span></span>
+<span class="r-in"><span><span class="co">#                           oop.group.endT = "Tumor",</span></span></span>
+<span class="r-in"><span><span class="co">#                           oop.group.endF = "Normal")</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co"># read from local file, oop ============</span></span></span>
+<span class="r-in"><span><span class="co"># test &lt;- DEG_prepareData(eset_file="D:/Public_data/TCGA_XENA/LUAD/eset/TCGA-LUAD.htseq_counts.tsv.gz",</span></span></span>
+<span class="r-in"><span><span class="co">#                         id_dot = T, col.by = "Ensembl_ID",</span></span></span>
+<span class="r-in"><span><span class="co">#                         col.del=NULL, auto.del.character=T,</span></span></span>
+<span class="r-in"><span><span class="co">#                         annot_trans=T, f_mark="diff",</span></span></span>
+<span class="r-in"><span><span class="co">#                         oop = T,</span></span></span>
+<span class="r-in"><span><span class="co">#                         oop.group.suffix1 = "01A",</span></span></span>
+<span class="r-in"><span><span class="co">#                         oop.group.suffix2 = "11A",</span></span></span>
+<span class="r-in"><span><span class="co">#                         oop.group.endT = "Tumor",</span></span></span>
+<span class="r-in"><span><span class="co">#                         oop.group.endF = "Normal")</span></span></span>
+<span class="r-in"><span><span class="co">#</span></span></span>
+<span class="r-in"><span><span class="co"># read frome local file(eset, group), no oop ============</span></span></span>
+<span class="r-in"><span><span class="co"># 仅当oop = F, 才会进入非oop流程, 此时需要指定group_flie参数才行。默认情况为F</span></span></span>
+<span class="r-in"><span><span class="co"># glist &lt;- DEG_prepareData(eset_file = "data/eset.csv", #表达数据的相对路径</span></span></span>
+<span class="r-in"><span><span class="co">#                          group_file = "data/group.csv", #分组文件的相对路径</span></span></span>
+<span class="r-in"><span><span class="co">#                          id_dot = F,  # ESEM是否有点，有点设为T</span></span></span>
+<span class="r-in"><span><span class="co">#                          col.by = "ID",  # 基因名列的列名</span></span></span>
+<span class="r-in"><span><span class="co">#                          annot_trans = F, # 是否要注释，如果是EsembleID就需要设置为T</span></span></span>
+<span class="r-in"><span><span class="co">#                          f_mark = mark)</span></span></span>
+<span class="r-in"><span><span class="co">#' #' # exprset.group = list(eset, group, f_mark)</span></span></span>
 <span class="r-in"><span><span class="co"># ** 如果bacth=T，则group中第二列为batch列。</span></span></span>
 <span class="r-in"><span><span class="co"># ** 矩阵数据格式(数值型，整型)</span></span></span>
 <span class="r-in"><span><span class="co"># gene  | row1 | row2 | row3  | row4</span></span></span>
