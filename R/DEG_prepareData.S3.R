@@ -76,8 +76,6 @@ DEG_prepareData <- function(...) {
 #' @param oop.group.suffix2 character, default 01A, eset's name end with 11A will use as group Normal, DEeset$updateGroup() 
 #' @param oop.group.group1 character, default Tumor, eset's name end with 01A will use as group Tumor, DEeset$updateGroup() 
 #' @param oop.group.group2 character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup() 
-#' @param oop.group.method  number, default is 1, \cr
-#' if method is not 1 will use the existed self$group to make eset2
 #' 
 #' @return lists
 #' @export
@@ -99,14 +97,11 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
                                     oop.group.suffix1 = "01A",
                                     oop.group.suffix2 = "11A",
                                     oop.group.group1 = "Tumor",
-                                    oop.group.group2 = "Normal",
-                                    oop.group.method = 1
-) {
-  if (!missing(group_file) & oop.group.group1 == 1) {
-    stop("如果设置了group_file参数，则oop.group.group1参数不能设置为1")
-  }
-  if (!oop & missing(group_file)) {
-    stop("如果oop = F，则必须设置group_file参数")
+                                    oop.group.group2 = "Normal") {
+  if (!oop) {
+    if ( missing(group_file) ) {
+      stop("如果oop = F，则必须设置group_file参数")
+    }
   }
   eset <- data.table::fread(eset_file, data.table = F)
   if (eset.islog) { eset[, 2:ncol(eset)] <- round(2^eset[, 2:ncol(eset)] - 1) }
@@ -197,13 +192,20 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
         suffix2 = oop.group.suffix2,
         group1 = oop.group.group1,
         group2 = oop.group.group2,
-        method = oop.group.method
+        method = 1
       )
       return(DEeset)
     } else {
       group <- read.csv(group_file, row.names = 1)
       glist <- checkgroup(eset = eset, group = group)
       DEeset <- YZ::DEeset$new(mark = f_mark, eset = glist$eset, group = glist$group)
+      DEeset$updateGroup_Eset(
+        suffix1 = oop.group.suffix1,
+        suffix2 = oop.group.suffix2,
+        group1 = oop.group.group1,
+        group2 = oop.group.group2,
+        method = 2
+      )
       return(DEeset)
     }
   }
