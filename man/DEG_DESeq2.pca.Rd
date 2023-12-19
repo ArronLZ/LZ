@@ -17,6 +17,6 @@ no return, pca plot to disk
 \description{
 The function is designed to perform differential analysis by DESeq2<pca>.
 }
-\examples{
-#
+\author{
+Jiang
 }

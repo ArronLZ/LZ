@@ -20,6 +20,7 @@ Suggests:
     tidyverse,
     YZ
 Imports:
+    magrittr,
     data.table,
     readr,
     Hmisc,
@@ -42,13 +43,13 @@ Imports:
     shiny,
     ggplot2,
     utils,
-    cowplot
+    cowplot,
+    dplyr
 Depends:
     stringr,
     readxl,
     writexl,
-    tibble,
-    dplyr
+    tibble
 URL: https://github.com/ArronLZ/LZ
 Collate: 
     'DEG_prepareData.S3.R'

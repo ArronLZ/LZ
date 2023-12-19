@@ -44,3 +44,6 @@ The function is designed to perform differential analysis by DESeq2<dds>.
 # DEG_DESeq2.pca(dds, outdir = outdirsub)   # 画PCA图。 此处有warning信息，不用管。
 # dds_list <- DEG_DESeq2.ana(dds)           # 差异分析1：得到结果并进行初步筛选
 }
+\author{
+Jiang
+}

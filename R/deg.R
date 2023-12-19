@@ -5,9 +5,11 @@
 #'
 #' @return dds ( DESeq(dds, parallel = T) )
 #' @export
-#' @importFrom DESeq2 DESeqDataSetFromMatrix DESeq
+#' @importFrom DESeq2 DESeqDataSetFromMatrix
+#' @importFrom DESeq2 DESeq
 #' @import BiocParallel
-#'
+#' 
+#' @author Jiang
 #' @examples
 #' # Run: diffan <- DEG_DESeq2.dds(exprset.group) # batch = F
 #' # exprset.group 由下列三个数据打包而成，示例：list(eset=exprset, group=phen, f_mark="")
@@ -51,13 +53,13 @@ DEG_DESeq2.dds <- function(exprset.group, batch = F) {
     design_type <- as.formula(paste0('~ ', colnames(pheno)[1]))
   }
   # 1.2 dds
-  dds <- DESeqDataSetFromMatrix(countData = exprset,
+  dds <- DESeq2::DESeqDataSetFromMatrix(countData = exprset,
                                 colData = pheno,
                                 design = design_type)
   keep <- rowSums(counts(dds) >= 10) >= ncol(exprset)/3  #过滤低表达基因，至少有3个样品都满足10个以上的reads数
   dds <- dds[keep, ]
   # 1.3
-  dds <- DESeq(dds, parallel = T)
+  dds <- DESeq2::DESeq(dds, parallel = T)
   # ----------------------------------
   # DEG_DESeq2.pca(deseq2.dds=dds, outdir = outdir)
   # DEG_DESeq2.ana
@@ -72,12 +74,13 @@ DEG_DESeq2.dds <- function(exprset.group, batch = F) {
 #' @return no return, pca plot to disk
 #'
 #' @export
-#' @importFrom DESeq2 vst plotPCA
-#' @importFrom factoextra hcut fviz_dend
-#' @importFrom stats dist
+#' @importFrom DESeq2 vst
+#' @importFrom DESeq2 plotPCA
+#' @importFrom DESeq2 plotDispEsts
+#' @importFrom factoextra hcut
+#' @importFrom factoextra fviz_dend
 #'
-#' @examples
-#' #
+#' @author Jiang
 DEG_DESeq2.pca <- function(dds, outdir) {
   # if (!dir.exists(outdir)) {
   #   dir.create(outdir, recursive = T, showWarnings = T)
@@ -86,15 +89,16 @@ DEG_DESeq2.pca <- function(dds, outdir) {
   mkdir.p(outdir)
   ## 数据转换
   # library(factoextra)
-  vsd <- vst(dds, blind=FALSE)
-  plotpca <- plotPCA(vsd, intgroup="Type")
-  sampleDists <- dist(t(assay(vsd)))
-  h.data <- hcut(sampleDists, k = 2, stand = FALSE, hc_method = "average")
+  vsd <- DESeq2::vst(dds, blind=FALSE)
+  plotpca <- DESeq2::plotPCA(vsd, intgroup="Type")
+  sampleDists <- stats::dist(t(assay(vsd)))
+  h.data <- factoextra::hcut(sampleDists, k = 2, stand = FALSE, 
+                             hc_method = "average")
   ### plot
   pdf(paste0(outdir, '/pre_PCA&Dispersion.plot', '.pdf'), width = 8, height = 7)
   # 1. Dispersion plot
-  plotDispEsts(dds, main="Dispersion Plot")
-  pf <- fviz_dend(h.data, rect_fill = T, cex = 0.8, color_labels_by_k = T, horiz = T)
+  DESeq2::plotDispEsts(dds, main="Dispersion Plot")
+  pf <- factoextra::fviz_dend(h.data, rect_fill = T, cex = 0.8, color_labels_by_k = T, horiz = T)
   print(pf)
   # 2. PCA plot
   p <- ggplot(plotpca$data, aes(x=PC1, y=PC2, color=Type)) +
@@ -115,7 +119,7 @@ DEG_DESeq2.pca <- function(dds, outdir) {
   ##
   png(filename = paste0(outdir,  "/pre_disp", ".png"),
       height = 7, width = 8, units = "in", res = 1000)
-  plotDispEsts(dds, main="Dispersion Plot")
+  DESeq2::plotDispEsts(dds, main="Dispersion Plot")
   dev.off()
   png(filename = paste0(outdir,  "/pre_cluster_tree", ".png"),
       height = 7, width = 8, units = "in", res = 1000)
@@ -138,10 +142,12 @@ DEG_DESeq2.pca <- function(dds, outdir) {
 #'
 #' @export
 #' @importFrom DESeq2 results
-#' @import dplyr
-#'
-#' @examples
-#' #
+#' @importFrom magrittr `%>%`
+#' @importFrom dplyr rename
+#' @importFrom dplyr arrange
+#' @importFrom dplyr select
+#' 
+#' @author Jiang
 DEG_DESeq2.ana <- function(dds, pval=0.05, fdr=0.1, logfc=1) {
   # resultsNames(dds)                # 查看结果的名称。
   # dds$type                         # 默认后比前
@@ -149,7 +155,7 @@ DEG_DESeq2.ana <- function(dds, pval=0.05, fdr=0.1, logfc=1) {
   type2 <- levels(dds$Type)[2]
   # 如不指定contrast，默认第二因子比第一因子。建议将对照的因子水平放在第一个。
   # 也可以通过results(dds, contrast=c("type", type2, type1)): type2 比 type 1
-  res <- results(dds)
+  res <- DESeq2::results(dds)
   # summary(res)      #看一下结果的概要信息，p值默认小于0.1。
 
   ### 差异分析总表
@@ -182,11 +188,10 @@ DEG_DESeq2.ana <- function(dds, pval=0.05, fdr=0.1, logfc=1) {
 #' qlf: mid data of edgeR, et.norm: all result of DEG, sig result of DEG.
 #'
 #' @export
-#' @importFrom stats median model.matrix
 #' @importFrom tibble column_to_rownames
+#' @importFrom dplyr rename select arrange
 #' @import edgeR
-#' @import dplyr
-#'
+#' 
 #' @examples 
 #' # Run: diffan <- DEG_edgeR(exprset.group) # pval=0.05, fdr=0.1, logfc=1
 #' # exprset.group 由下列三个数据打包而成，示例：list(eset=exprset, group=phen, f_mark="")
@@ -218,26 +223,26 @@ DEG_edgeR <- function(exprset.group, pval=0.05, fdr=0.1, logfc=1, coef = 2) {
   exprset <- exprset[, rownames(pheno)]
 
   # 1.1 构建DEGList
-  y <- DGEList(counts = exprset, group = pheno[,1])
-  keep <- filterByExpr(y)
+  y <- edgeR::DGEList(counts = exprset, group = pheno[,1])
+  keep <- edgeR::filterByExpr(y)
   #keep <- filterByExpr(y, min.count = 10, min.total.count = 15,
   #                     large.n = 10, min.prop = 0.7)
   y <- y[keep, , keep.lib.sizes=FALSE]
   # 进行TMM标准化
-  y.norm <- calcNormFactors(y, method = "TMM")
+  y.norm <- edgeR::calcNormFactors(y, method = "TMM")
   # 获取cpm TMM值
-  cpm.tmm <- cpm(y.norm, log = F)
+  cpm.tmm <- edgeR::cpm(y.norm, log = F)
   cpm.tmm <- log2(cpm.tmm + 1)
 
   # 1.2 计算离散因子
-  y <- calcNormFactors(y)
+  y <- edgeR::calcNormFactors(y)
   # design.form <- as.formula(paste("~", "group"))
   # # y$samples$group <- relevel(y$samples$group, ref="C")
-  design <- model.matrix(~group, data =  y$samples)
-  y <- estimateDisp(y, design)
+  design <- stats::model.matrix(~group, data =  y$samples)
+  y <- edgeR::estimateDisp(y, design)
   #To perform quasi-likelihood F-tests:
-  fit <- glmQLFit(y, design)
-  qlf <- glmQLFTest(fit, coef = coef)
+  fit <- edgeR::glmQLFit(y, design)
+  qlf <- edgeR::glmQLFTest(fit, coef = coef)
 
   # 获取结果
   # 获取排名靠前的基因，这里设置n=80000是为了输出所以基因
@@ -346,7 +351,6 @@ DEG_voom <- function(exprset.group, pval=0.05, fdr=0.1, logfc=1) {
 #'
 #' @return # all deg dataframe(resdf)
 #' @export
-#' @importFrom stats model.matrix
 #' @importFrom limma lmFit eBayes topTable
 #' @import dplyr
 #'

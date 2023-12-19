@@ -21,6 +21,6 @@ list(list(groupdata = dds@colData, resdf=res_df, deg=etSig))
 \description{
 The function is designed to perform differential analysis by DESeq2<dds.filter_result>.
 }
-\examples{
-#
+\author{
+Jiang
 }
