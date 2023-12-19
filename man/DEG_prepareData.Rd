@@ -50,8 +50,7 @@ DEG_prepareData(...)
   oop.group.suffix1 = "01A",
   oop.group.suffix2 = "11A",
   oop.group.group1 = "Tumor",
-  oop.group.group2 = "Normal",
-  oop.group.method = 1
+  oop.group.group2 = "Normal"
 )
 }
 \arguments{
