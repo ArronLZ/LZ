@@ -15,8 +15,9 @@
 #' # }
 #' # or
 #' # LZ::install("ggrepel")
+#' @author Jiang
 install <- function(package) {
-  if (!require("BiocManager", quietly = TRUE)) {
+  if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
     BiocManager::install(version = "3.17", ask = F)
   }
@@ -43,7 +44,7 @@ install <- function(package) {
 #' @return # message in console
 #' @export
 #'
-#' @examples #
+#' @author Jiang
 require_pack <- function(packname) {
   if (!requireNamespace(packname, quietly = TRUE)) {
     cat(paste("Error: '", packname, "' package is required but not installed.\n", sep = ""))
@@ -54,13 +55,15 @@ require_pack <- function(packname) {
 
 #' set http proxy for R session
 #' @description set http proxy for R session
-#'
 #' @param ngate the proxy address, for example, if you use clash, the address is default "http://127.0.0.1:7890"
 #'
 #' @return no return，use unsetproxy to cancel the proxy
 #' @export
 #'
-#' @examples #
+#' @examples
+#' # setproxy()
+#' # setproxy("http://127.0.0.1:7890")
+#' @author Jiang
 setproxy <- function(ngate="http://127.0.0.1:7890") {
   Sys.setenv('http_proxy'=ngate)
   Sys.setenv('https_proxy'=ngate)

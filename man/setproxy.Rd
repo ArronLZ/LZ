@@ -16,5 +16,9 @@ no return，use unsetproxy to cancel the proxy
 set http proxy for R session
 }
 \examples{
-#
+# setproxy()
+# setproxy("http://127.0.0.1:7890")
+}
+\author{
+Jiang
 }

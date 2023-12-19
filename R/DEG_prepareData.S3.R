@@ -5,6 +5,7 @@
 #' DEG_prepareData.DEeset  DEeset method\cr
 #' DEG_prepareData.XENA xena method
 #'
+#' @param ... general funciton
 #' @export
 #' @author Jiang
 #' @examples
@@ -101,6 +102,12 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
                                     oop.group.group2 = "Normal",
                                     oop.group.method = 1
 ) {
+  if (!missing(group_file) & oop.group.group1 == 1) {
+    stop("如果设置了group_file参数，则oop.group.group1参数不能设置为1")
+  }
+  if (!oop & missing(group_file)) {
+    stop("如果oop = F，则必须设置group_file参数")
+  }
   eset <- data.table::fread(eset_file, data.table = F)
   if (eset.islog) { eset[, 2:ncol(eset)] <- round(2^eset[, 2:ncol(eset)] - 1) }
   eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 
@@ -234,6 +241,12 @@ DEG_prepareData.XENA <- function(obj, # eset_file="gene_count.csv"
                                  oop.group.group2 = "Normal",
                                  oop.group.method = 1
                                  ) {
+  if (!missing(group_file) & oop.group.group1 == 1) {
+    stop("如果设置了group_file参数，则oop.group.group1参数不能设置为1")
+  }
+  if (!oop & missing(group_file)) {
+    stop("如果oop = F，则必须设置group_file参数")
+  }
   eset <- obj$eset.count
   if (eset.islog) { eset[, 2:ncol(eset)] <- round(2^eset[, 2:ncol(eset)] - 1) }
   eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 

@@ -265,11 +265,10 @@ syGSEA <- function(gmt.largelist, genelist) {
 #'
 #' @author Jiang
 runAPP_GSEA <- function(genelist = NA) {
-  library(LZ)
-  library(clusterProfiler)
-  library(enrichplot)
-  library(ggplot2)
-  library(shiny)
+  requireNamespace(clusterProfiler)
+  requireNamespace(enrichplot)
+  requireNamespace(ggplot2)
+  requireNamespace(shiny)
   tmpenv <- new.env(parent = emptyenv())
   data(gmt.largelist.23.12.Hs.symbols, package = "LZ", envir = tmpenv)
   gmt.largelist <- tmpenv$gmt.largelist.23.12.Hs.symbols

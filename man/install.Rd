@@ -25,3 +25,6 @@ the CRAN, then the function will use bioconductor method to install the package.
 # or
 # LZ::install("ggrepel")
 }
+\author{
+Jiang
+}

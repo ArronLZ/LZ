@@ -15,6 +15,6 @@ require_pack(packname)
 \description{
 check if the package is been installed
 }
-\examples{
-#
+\author{
+Jiang
 }

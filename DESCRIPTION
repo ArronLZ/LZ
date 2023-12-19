@@ -15,13 +15,15 @@ Suggests:
     BiocStyle,
     knitr,
     rmarkdown,
-    prettydoc
+    prettydoc,
+    parallel,
+    tidyverse,
+    YZ
 Imports:
     data.table,
     readr,
     Hmisc,
     BiocManager,
-    parallel,
     factoextra,
     ggrepel,
     ggsci,
@@ -30,7 +32,6 @@ Imports:
     VennDiagram,
     scales,
     reshape2,
-    tidyverse,
     DESeq2,
     edgeR,
     limma,
@@ -40,7 +41,8 @@ Imports:
     BiocParallel,
     shiny,
     ggplot2,
-    utils
+    utils,
+    cowplot
 Depends:
     stringr,
     readxl,

@@ -56,6 +56,8 @@ DEG_prepareData(...)
 )
 }
 \arguments{
+\item{...}{general funciton}
+
 \item{eset_file}{character, the exps data file name, default: "gene_count.csv"}
 
 \item{eset.islog}{logical, if the eset have been log2, default is F, meaning the eset data is not log2}
