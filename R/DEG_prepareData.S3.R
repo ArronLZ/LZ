@@ -73,10 +73,12 @@ DEG_prepareData <- function(...) {
 #' @param oop logical, if use oop flow
 #' @param oop.group.suffix1 character, default 01A, eset's name end with 01A will use as group Tumor, DEeset$updateGroup() 
 #' @param oop.group.suffix2 character, default 01A, eset's name end with 11A will use as group Normal, DEeset$updateGroup() 
-#' @param oop.group.endT character, default Tumor, eset's name end with 01A will use as group Tumor, DEeset$updateGroup() 
-#' @param oop.group.endF character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup() 
-#'
-#' @return list
+#' @param oop.group.group1 character, default Tumor, eset's name end with 01A will use as group Tumor, DEeset$updateGroup() 
+#' @param oop.group.group2 character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup() 
+#' @param oop.group.method  number, default is 1, \cr
+#' if method is not 1 will use the existed self$group to make eset2
+#' 
+#' @return lists
 #' @export
 #' @rdname DEG_prepareData
 #' @importFrom data.table fread
@@ -95,8 +97,9 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
                                     oop = FALSE,
                                     oop.group.suffix1 = "01A",
                                     oop.group.suffix2 = "11A",
-                                    oop.group.endT = "Tumor",
-                                    oop.group.endF = "Normal"
+                                    oop.group.group1 = "Tumor",
+                                    oop.group.group2 = "Normal",
+                                    oop.group.method = 1
 ) {
   eset <- data.table::fread(eset_file, data.table = F)
   if (eset.islog) { eset[, 2:ncol(eset)] <- round(2^eset[, 2:ncol(eset)] - 1) }
@@ -182,11 +185,12 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
     if (missing(group_file)) {
       group <- NULL
       DEeset <- YZ::DEeset$new(mark = f_mark, eset = eset)
-      DEeset$updateGroup(
+      DEeset$updateGroup_Eset(
         suffix1 = oop.group.suffix1,
         suffix2 = oop.group.suffix2,
-        endT = oop.group.endT,
-        endF = oop.group.endF
+        group1 = oop.group.group1,
+        group2 = oop.group.group2,
+        method = oop.group.method
       )
       return(DEeset)
     } else {
@@ -226,8 +230,9 @@ DEG_prepareData.XENA <- function(obj, # eset_file="gene_count.csv"
                                  oop = T,
                                  oop.group.suffix1 = "01A",
                                  oop.group.suffix2 = "11A",
-                                 oop.group.endT = "Tumor",
-                                 oop.group.endF = "Normal"
+                                 oop.group.group1 = "Tumor",
+                                 oop.group.group2 = "Normal",
+                                 oop.group.method = 1
                                  ) {
   eset <- obj$eset.count
   if (eset.islog) { eset[, 2:ncol(eset)] <- round(2^eset[, 2:ncol(eset)] - 1) }
@@ -313,11 +318,12 @@ DEG_prepareData.XENA <- function(obj, # eset_file="gene_count.csv"
     if (missing(group_file)) {
       group <- NULL
       DEeset <- YZ::DEeset$new(mark = f_mark, eset = eset)
-      DEeset$updateGroup(
+      DEeset$updateGroup_Eset(
         suffix1 = oop.group.suffix1,
         suffix2 = oop.group.suffix2,
-        endT = oop.group.endT,
-        endF = oop.group.endF
+        group1 = oop.group.group1,
+        group2 = oop.group.group2,
+        method = oop.group.method
       )
       return(DEeset)
     } else {

@@ -26,8 +26,9 @@ DEG_prepareData(...)
   oop = FALSE,
   oop.group.suffix1 = "01A",
   oop.group.suffix2 = "11A",
-  oop.group.endT = "Tumor",
-  oop.group.endF = "Normal"
+  oop.group.group1 = "Tumor",
+  oop.group.group2 = "Normal",
+  oop.group.method = 1
 )
 
 \method{DEG_prepareData}{DEeset}(obj, f_mark = "DE")
@@ -49,8 +50,9 @@ DEG_prepareData(...)
   oop = T,
   oop.group.suffix1 = "01A",
   oop.group.suffix2 = "11A",
-  oop.group.endT = "Tumor",
-  oop.group.endF = "Normal"
+  oop.group.group1 = "Tumor",
+  oop.group.group2 = "Normal",
+  oop.group.method = 1
 )
 }
 \arguments{
@@ -86,14 +88,17 @@ DEG_prepareData(...)
 
 \item{oop.group.suffix2}{character, default 01A, eset's name end with 11A will use as group Normal, DEeset$updateGroup()}
 
-\item{oop.group.endT}{character, default Tumor, eset's name end with 01A will use as group Tumor, DEeset$updateGroup()}
+\item{oop.group.group1}{character, default Tumor, eset's name end with 01A will use as group Tumor, DEeset$updateGroup()}
 
-\item{oop.group.endF}{character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup()}
+\item{oop.group.group2}{character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup()}
+
+\item{oop.group.method}{number, default is 1, \cr
+if method is not 1 will use the existed self$group to make eset2}
 
 \item{obj}{obeject the object DEeset}
 }
 \value{
-list
+lists
 
 list
 
