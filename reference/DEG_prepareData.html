@@ -83,8 +83,9 @@ DEG_prepareData.XENA xena method</p>
 <span>  oop <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  oop.group.suffix1 <span class="op">=</span> <span class="st">"01A"</span>,</span>
 <span>  oop.group.suffix2 <span class="op">=</span> <span class="st">"11A"</span>,</span>
-<span>  oop.group.endT <span class="op">=</span> <span class="st">"Tumor"</span>,</span>
-<span>  oop.group.endF <span class="op">=</span> <span class="st">"Normal"</span></span>
+<span>  oop.group.group1 <span class="op">=</span> <span class="st">"Tumor"</span>,</span>
+<span>  oop.group.group2 <span class="op">=</span> <span class="st">"Normal"</span>,</span>
+<span>  oop.group.method <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for DEeset</span></span>
@@ -108,8 +109,9 @@ DEG_prepareData.XENA xena method</p>
 <span>  oop <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  oop.group.suffix1 <span class="op">=</span> <span class="st">"01A"</span>,</span>
 <span>  oop.group.suffix2 <span class="op">=</span> <span class="st">"11A"</span>,</span>
-<span>  oop.group.endT <span class="op">=</span> <span class="st">"Tumor"</span>,</span>
-<span>  oop.group.endF <span class="op">=</span> <span class="st">"Normal"</span></span>
+<span>  oop.group.group1 <span class="op">=</span> <span class="st">"Tumor"</span>,</span>
+<span>  oop.group.group2 <span class="op">=</span> <span class="st">"Normal"</span>,</span>
+<span>  oop.group.method <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -179,12 +181,17 @@ DEG_prepareData.XENA xena method</p>
 <dd><p>character, default 01A, eset's name end with 11A will use as group Normal, DEeset$updateGroup()</p></dd>
 
 
-<dt>oop.group.endT</dt>
+<dt>oop.group.group1</dt>
 <dd><p>character, default Tumor, eset's name end with 01A will use as group Tumor, DEeset$updateGroup()</p></dd>
 
 
-<dt>oop.group.endF</dt>
+<dt>oop.group.group2</dt>
 <dd><p>character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup()</p></dd>
+
+
+<dt>oop.group.method</dt>
+<dd><p>number, default is 1, <br>
+if method is not 1 will use the existed self$group to make eset2</p></dd>
 
 
 <dt>obj</dt>
@@ -195,7 +202,7 @@ DEG_prepareData.XENA xena method</p>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>list</p>
+<p>lists</p>
 
 
 <p>list</p>
