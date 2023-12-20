@@ -1,12 +1,31 @@
-#' S3 general function DEG_prepareData()
+#' Prepare data for DEG anlysis
 #' @description S3 general function DEG_prepareData(), prepare the data that LZ diff analysis need,\cr
-#' return a list(eset=xx, group=xx, f_mark="xx")\cr
-#' DEG_prepareData.default default method \cr
-#' DEG_prepareData.DEeset  DEeset method\cr
-#' DEG_prepareData.XENA xena method
+#' return a list(eset=xx, group=xx, f_mark="xx")
 #'
-#' @param ... general funciton
+#' @param object any R object
+#' @param eset_file character, the exps data file name, default: "gene_count.csv"
+#' @param eset.islog logical, if the eset have been log2, default is F, meaning the eset data is not log2
+#' @param id_dot logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3
+#' @param col.by character, delete the duplicate by this column
+#' @param col.del character, manually delete some column
+#' @param auto.del.character logical, if auto delete the column those class is character
+#' @param annot_trans logical, do the eset need be annot to symbol? if the datafame's first coloumn is not offical symbol, you can set to TRUE.
+#' @param group_file the group data file name, such as: "group.csv", if the param group_file is missing and oop = T this function will use DEeset$updateGroup() method
+#' @param f_mark file mark(optional), default: diff
+#' @param is.human logical, default is True, if it is True, the param orgDB,fromTyp and toType will be ignore
+#' @param orgDb character, annotation db, ex. "org.Mm.eg.db"
+#' @param fromType character, eset id column type
+#' @param toType character, the annot result
+#' @param oop logical, if use oop flow
+#' @param oop.group.suffix1 character, default 01A, eset's name end with 01A will use as group Tumor, DEeset$updateGroup()
+#' @param oop.group.suffix2 character, default 01A, eset's name end with 11A will use as group Normal, DEeset$updateGroup()
+#' @param oop.group.group1 character, default Tumor, eset's name end with 01A will use as group Tumor, DEeset$updateGroup()
+#' @param oop.group.group2 character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup()
+#' @param ... other param
+#'
 #' @export
+#' @importFrom data.table fread
+#' @importFrom clusterProfiler bitr
 #' @author Jiang
 #' @examples
 #' # read from XENABD object, oop  ============
@@ -53,45 +72,32 @@
 #' # rowname3 |   normal  |  2
 #' # rowname4 |   normal  |  2
 #' # if is.human = F, please set the orgDb and fromType correctly.
-DEG_prepareData <- function(...) {
+DEG_prepareData <- function(object, eset_file, eset.islog, id_dot, col.by,
+                            col.del=NULL, auto.del.character=T, annot_trans,
+                            group_file, f_mark="diff",
+                            is.human = T,
+                            orgDb = "org.Mm.eg.db", fromType = "ENSEMBL",
+                            toType = c("SYMBOL", "UNIPROT"),
+                            oop = FALSE,
+                            oop.group.suffix1, oop.group.suffix2,
+                            oop.group.group1, oop.group.group2, ...) {
   UseMethod("DEG_prepareData")
 }
 
 
-#' @param eset_file character, the exps data file name, default: "gene_count.csv"
-#' @param eset.islog logical, if the eset have been log2, default is F, meaning the eset data is not log2
-#' @param id_dot logical, if the id column is ensemble id with dot, ex.ESEMxxxx.3
-#' @param col.by character, delete the duplicate by this column
-#' @param col.del character, manually delete some column
-#' @param auto.del.character logical, if auto delete the column those class is character
-#' @param group_file the group data file name, such as: "group.csv", if the param group_file is missing and oop = T this function will use DEeset$updateGroup() method
-#' @param annot_trans logical, do the eset need be annot to symbol? if the datafame's first coloumn is not offical symbol, you can set to TRUE.
-#' @param f_mark file mark(optional), default: diff
-#' @param is.human logical, default is True, if it is True, the param orgDB,fromTyp and toType will be ignore
-#' @param orgDb character, annotation db, ex. "org.Mm.eg.db"
-#' @param fromType character, eset id column type
-#' @param toType character, the annot result
-#' @param oop logical, if use oop flow
-#' @param oop.group.suffix1 character, default 01A, eset's name end with 01A will use as group Tumor, DEeset$updateGroup() 
-#' @param oop.group.suffix2 character, default 01A, eset's name end with 11A will use as group Normal, DEeset$updateGroup() 
-#' @param oop.group.group1 character, default Tumor, eset's name end with 01A will use as group Tumor, DEeset$updateGroup() 
-#' @param oop.group.group2 character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup() 
-#' 
-#' @return lists
-#' @export
+#' @method DEG_prepareData default
 #' @rdname DEG_prepareData
-#' @importFrom data.table fread
-#' @importFrom clusterProfiler bitr
-#'
-#' @author Jiang
-DEG_prepareData.default <- function(eset_file="gene_count.csv",
+#' @export
+DEG_prepareData.default <- function(...,
+                                    eset_file="gene_count.csv",
                                     eset.islog = F,
                                     id_dot = F, col.by = "ID",
                                     col.del=NULL, auto.del.character=T,
+                                    annot_trans=T,
                                     group_file,
-                                    annot_trans=T, f_mark="diff",
+                                    f_mark="diff",
                                     is.human = T, orgDb = "org.Mm.eg.db",
-                                    fromType = "ENSEMBL", 
+                                    fromType = "ENSEMBL",
                                     toType = c("SYMBOL", "UNIPROT"),
                                     oop = FALSE,
                                     oop.group.suffix1 = "01A",
@@ -105,12 +111,12 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
   }
   eset <- data.table::fread(eset_file, data.table = F)
   if (eset.islog) { eset[, 2:ncol(eset)] <- round(2^eset[, 2:ncol(eset)] - 1) }
-  eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 
+  eset <- quchong(eset = eset, col.by = col.by, col.del = col.del,
                   auto.del.character = auto.del.character)
   
   # if the id contain ., only keep the part before .  ---------
   if (id_dot) {
-    eset$annot <- sapply(strsplit(rownames(eset), "\\."), 
+    eset$annot <- sapply(strsplit(rownames(eset), "\\."),
                          function(x) x[[1]])
     eset <- quchong(eset = eset, col.by = "annot")
   }
@@ -123,23 +129,23 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
     data(gencode.v22.annot, package = "LZ", envir = tmpenv)
     all_anot <- tmpenv$gencode.v22.annot
     if (annot_trans) {
-      eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$ensembl_gene_id, 
+      eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$ensembl_gene_id,
       ]
-      eset <- cbind(SYMBOL = all_anot$hugo_mRNA[match(rownames(eset), 
+      eset <- cbind(SYMBOL = all_anot$hugo_mRNA[match(rownames(eset),
                                                       all_anot$hugo_mRNA$ensembl_gene_id), 3], eset)
       eset <- quchong(eset, col.by = "SYMBOL")
     } else {
-      eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$symbol, 
+      eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$symbol,
       ]
     }
     rm(tmpenv)
   } else {
     # not human , default is mm
     if (annot_trans) {
-      annot.df.org <- bitr(rownames(eset), fromType = fromType, 
+      annot.df.org <- bitr(rownames(eset), fromType = fromType,
                            toType = toType, OrgDb = orgDb)
       eset <- eset[rownames(eset) %in% annot.df.org[, 1], ]
-      eset <- cbind(SYMBOL = annot.df.org[match(rownames(eset), 
+      eset <- cbind(SYMBOL = annot.df.org[match(rownames(eset),
                                                 annot.df.org[, 1]), "SYMBOL"], eset)
       eset <- quchong(eset, col.by = "SYMBOL")
     }
@@ -180,7 +186,7 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
     glist <- checkgroup(eset = eset, group = group)
     # check if the rowname of group is all from the colnames of eset /// -----
     return(glist)
-  } 
+  }
   
   # OOP ---------
   if (oop) {
@@ -209,50 +215,38 @@ DEG_prepareData.default <- function(eset_file="gene_count.csv",
   }
 }
 
-#' @param obj obeject the object DEeset
-#' @param f_mark character a analysis mark(optional), default: "DE"
-#'
-#' @return list
-#' @export
-#' @rdname DEG_prepareData
-#' @method DEG_prepareData DEeset
-DEG_prepareData.DEeset <- function(obj, f_mark = "DE") {
-  glist <- list(eset = obj$eset, group = obj$group, f_mark = f_mark)
-  return(glist)
-}
 
-
-#' @return list
-#' @export
+#' @method DEG_prepareData XENA
 #' @rdname DEG_prepareData
-DEG_prepareData.XENA <- function(obj, # eset_file="gene_count.csv"
-                                 eset.islog = T,
-                                 id_dot = T, col.by = "Ensembl_ID",
-                                 col.del=NULL, auto.del.character=T,
-                                 group_file, 
-                                 annot_trans=T, f_mark="diff",
-                                 is.human = T, orgDb = "org.Mm.eg.db",
-                                 fromType = "ENSEMBL", 
+#' @export
+DEG_prepareData.XENA <- function(object, ..., eset.islog = T, id_dot = T,
+                                 col.by = "Ensembl_ID", col.del=NULL,
+                                 auto.del.character=T, annot_trans=T,
+                                 group_file,
+                                 f_mark="diff",
+                                 is.human = T,
+                                 orgDb = "org.Mm.eg.db",
+                                 fromType = "ENSEMBL",
                                  toType = c("SYMBOL", "UNIPROT"),
                                  oop = T,
                                  oop.group.suffix1 = "01A",
                                  oop.group.suffix2 = "11A",
                                  oop.group.group1 = "Tumor",
                                  oop.group.group2 = "Normal"
-                                 ) {
+) {
   if (!oop) {
     if ( missing(group_file) ) {
       stop("如果oop = F，则必须设置group_file参数")
     }
   }
-  eset <- obj$eset.count
+  eset <- object$eset.count
   if (eset.islog) { eset[, 2:ncol(eset)] <- round(2^eset[, 2:ncol(eset)] - 1) }
-  eset <- quchong(eset = eset, col.by = col.by, col.del = col.del, 
+  eset <- quchong(eset = eset, col.by = col.by, col.del = col.del,
                   auto.del.character = auto.del.character)
   
   # if the id contain ., only keep the part before .  ---------
   if (id_dot) {
-    eset$annot <- sapply(strsplit(rownames(eset), "\\."), 
+    eset$annot <- sapply(strsplit(rownames(eset), "\\."),
                          function(x) x[[1]])
     eset <- quchong(eset = eset, col.by = "annot")
   }
@@ -265,23 +259,23 @@ DEG_prepareData.XENA <- function(obj, # eset_file="gene_count.csv"
     data(gencode.v22.annot, package = "LZ", envir = tmpenv)
     all_anot <- tmpenv$gencode.v22.annot
     if (annot_trans) {
-      eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$ensembl_gene_id, 
+      eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$ensembl_gene_id,
       ]
-      eset <- cbind(SYMBOL = all_anot$hugo_mRNA[match(rownames(eset), 
+      eset <- cbind(SYMBOL = all_anot$hugo_mRNA[match(rownames(eset),
                                                       all_anot$hugo_mRNA$ensembl_gene_id), 3], eset)
       eset <- quchong(eset, col.by = "SYMBOL")
     } else {
-      eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$symbol, 
+      eset <- eset[rownames(eset) %in% all_anot$hugo_mRNA$symbol,
       ]
     }
     rm(tmpenv)
   } else {
     # not human , default is mm
     if (annot_trans) {
-      annot.df.org <- bitr(rownames(eset), fromType = fromType, 
+      annot.df.org <- bitr(rownames(eset), fromType = fromType,
                            toType = toType, OrgDb = orgDb)
       eset <- eset[rownames(eset) %in% annot.df.org[, 1], ]
-      eset <- cbind(SYMBOL = annot.df.org[match(rownames(eset), 
+      eset <- cbind(SYMBOL = annot.df.org[match(rownames(eset),
                                                 annot.df.org[, 1]), "SYMBOL"], eset)
       eset <- quchong(eset, col.by = "SYMBOL")
     }
@@ -322,7 +316,7 @@ DEG_prepareData.XENA <- function(obj, # eset_file="gene_count.csv"
     glist <- checkgroup(eset = eset, group = group)
     # check if the rowname of group is all from the colnames of eset /// -----
     return(glist)
-  } 
+  }
   
   # OOP ---------
   if (oop) {
@@ -351,4 +345,10 @@ DEG_prepareData.XENA <- function(obj, # eset_file="gene_count.csv"
   }
 }
 
-
+#' @method DEG_prepareData DEeset
+#' @rdname DEG_prepareData
+#' @export
+DEG_prepareData.DEeset <- function(object, ..., f_mark = "DE") {
+  glist <- list(eset = object$eset, group = object$group, f_mark = f_mark)
+  return(glist)
+}

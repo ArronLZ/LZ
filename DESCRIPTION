@@ -44,10 +44,10 @@ Imports:
     ggplot2,
     utils,
     cowplot,
-    dplyr
+    dplyr,
+    readxl
 Depends:
     stringr,
-    readxl,
     writexl,
     tibble
 URL: https://github.com/ArronLZ/LZ

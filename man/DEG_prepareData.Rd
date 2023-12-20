@@ -3,21 +3,43 @@
 \name{DEG_prepareData}
 \alias{DEG_prepareData}
 \alias{DEG_prepareData.default}
-\alias{DEG_prepareData.DEeset}
 \alias{DEG_prepareData.XENA}
-\title{S3 general function DEG_prepareData()}
+\alias{DEG_prepareData.DEeset}
+\title{Prepare data for DEG anlysis}
 \usage{
-DEG_prepareData(...)
+DEG_prepareData(
+  object,
+  eset_file,
+  eset.islog,
+  id_dot,
+  col.by,
+  col.del = NULL,
+  auto.del.character = T,
+  annot_trans,
+  group_file,
+  f_mark = "diff",
+  is.human = T,
+  orgDb = "org.Mm.eg.db",
+  fromType = "ENSEMBL",
+  toType = c("SYMBOL", "UNIPROT"),
+  oop = FALSE,
+  oop.group.suffix1,
+  oop.group.suffix2,
+  oop.group.group1,
+  oop.group.group2,
+  ...
+)
 
 \method{DEG_prepareData}{default}(
+  ...,
   eset_file = "gene_count.csv",
   eset.islog = F,
   id_dot = F,
   col.by = "ID",
   col.del = NULL,
   auto.del.character = T,
-  group_file,
   annot_trans = T,
+  group_file,
   f_mark = "diff",
   is.human = T,
   orgDb = "org.Mm.eg.db",
@@ -30,17 +52,16 @@ DEG_prepareData(...)
   oop.group.group2 = "Normal"
 )
 
-\method{DEG_prepareData}{DEeset}(obj, f_mark = "DE")
-
 \method{DEG_prepareData}{XENA}(
-  obj,
+  object,
+  ...,
   eset.islog = T,
   id_dot = T,
   col.by = "Ensembl_ID",
   col.del = NULL,
   auto.del.character = T,
-  group_file,
   annot_trans = T,
+  group_file,
   f_mark = "diff",
   is.human = T,
   orgDb = "org.Mm.eg.db",
@@ -52,9 +73,11 @@ DEG_prepareData(...)
   oop.group.group1 = "Tumor",
   oop.group.group2 = "Normal"
 )
+
+\method{DEG_prepareData}{DEeset}(object, ..., f_mark = "DE")
 }
 \arguments{
-\item{...}{general funciton}
+\item{object}{any R object}
 
 \item{eset_file}{character, the exps data file name, default: "gene_count.csv"}
 
@@ -68,11 +91,11 @@ DEG_prepareData(...)
 
 \item{auto.del.character}{logical, if auto delete the column those class is character}
 
-\item{group_file}{the group data file name, such as: "group.csv", if the param group_file is missing and oop = T this function will use DEeset$updateGroup() method}
-
 \item{annot_trans}{logical, do the eset need be annot to symbol? if the datafame's first coloumn is not offical symbol, you can set to TRUE.}
 
-\item{f_mark}{character a analysis mark(optional), default: "DE"}
+\item{group_file}{the group data file name, such as: "group.csv", if the param group_file is missing and oop = T this function will use DEeset$updateGroup() method}
+
+\item{f_mark}{file mark(optional), default: diff}
 
 \item{is.human}{logical, default is True, if it is True, the param orgDB,fromTyp and toType will be ignore}
 
@@ -92,21 +115,11 @@ DEG_prepareData(...)
 
 \item{oop.group.group2}{character, default Normal, eset's name end with 01A will use as group Normal, DEeset$updateGroup()}
 
-\item{obj}{obeject the object DEeset}
-}
-\value{
-lists
-
-list
-
-list
+\item{...}{other param}
 }
 \description{
 S3 general function DEG_prepareData(), prepare the data that LZ diff analysis need,\cr
-return a list(eset=xx, group=xx, f_mark="xx")\cr
-DEG_prepareData.default default method \cr
-DEG_prepareData.DEeset  DEeset method\cr
-DEG_prepareData.XENA xena method
+return a list(eset=xx, group=xx, f_mark="xx")
 }
 \examples{
 # read from XENABD object, oop  ============

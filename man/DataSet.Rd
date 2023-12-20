@@ -4,7 +4,6 @@
 \name{DataSet}
 \alias{DataSet}
 \alias{gencode.v22.annot}
-\alias{keggpathway.gmt}
 \alias{KEGGPATHWAYdb}
 \alias{gmt.largelist.23.12.Hs.symbols}
 \title{Datasets
@@ -12,9 +11,6 @@ gencode.v22.annot contains gene annot info.}
 \description{
 Datasets
 gencode.v22.annot contains gene annot info.
-
-Datasets
-keggpathway.gmt contains kegg pathway information, old, aborted.
 
 Datasets
 KEGGPATHWAYdb contains kegg pathway information
