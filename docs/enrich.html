@@ -298,11 +298,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-7"><a href="enrich.html#cb9-7" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
 <span id="cb9-8"><a href="enrich.html#cb9-8" tabindex="-1"></a>pic.dot <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot2</span>(dotData, <span class="at">head =</span> <span class="dv">20</span>, <span class="at">title =</span> <span class="st">&#39;TOP of GO&#39;</span>, </span>
 <span id="cb9-9"><a href="enrich.html#cb9-9" tabindex="-1"></a>                         <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, </span>
-<span id="cb9-10"><a href="enrich.html#cb9-10" tabindex="-1"></a>                         <span class="at">filemark =</span> <span class="st">&#39;GO_top&#39;</span>, </span>
+<span id="cb9-10"><a href="enrich.html#cb9-10" tabindex="-1"></a>                         <span class="at">filemark =</span> <span class="st">&#39;GO_top&#39;</span>, <span class="at">pcompress =</span> <span class="dv">2</span>,</span>
 <span id="cb9-11"><a href="enrich.html#cb9-11" tabindex="-1"></a>                         <span class="at">pic.save =</span> T)</span>
 <span id="cb9-12"><a href="enrich.html#cb9-12" tabindex="-1"></a><span class="co"># dotplot kegg</span></span>
 <span id="cb9-13"><a href="enrich.html#cb9-13" tabindex="-1"></a><span class="co"># 读取kegg分析保存的表格，格式要求</span></span>
-<span id="cb9-14"><a href="enrich.html#cb9-14" tabindex="-1"></a><span class="co"># 必须要有这四列Description, GeneRatio, pvalue, qvalue。Count列可有也可无。</span></span>
+<span id="cb9-14"><a href="enrich.html#cb9-14" tabindex="-1"></a><span class="co"># 必须要有这5列Description, GeneRatio, pvalue, qvalue, Count列。</span></span>
 <span id="cb9-15"><a href="enrich.html#cb9-15" tabindex="-1"></a><span class="co"># 读取表格</span></span>
 <span id="cb9-16"><a href="enrich.html#cb9-16" tabindex="-1"></a><span class="co"># dotDatak &lt;- readxl::read_xlsx(&quot;./result/proinOR/kegg.xlsx&quot;, sheet = 1)</span></span>
 <span id="cb9-17"><a href="enrich.html#cb9-17" tabindex="-1"></a></span>
@@ -310,13 +310,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb9-19"><a href="enrich.html#cb9-19" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
 <span id="cb9-20"><a href="enrich.html#cb9-20" tabindex="-1"></a>pic.dotk <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot2</span>(dotDatak, <span class="at">head =</span> <span class="dv">20</span>, <span class="at">title =</span> <span class="st">&#39;TOP of KEGGpathway&#39;</span>, </span>
 <span id="cb9-21"><a href="enrich.html#cb9-21" tabindex="-1"></a>                          <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, </span>
-<span id="cb9-22"><a href="enrich.html#cb9-22" tabindex="-1"></a>                          <span class="at">filemark =</span> <span class="st">&#39;KEGG_top&#39;</span>, </span>
-<span id="cb9-23"><a href="enrich.html#cb9-23" tabindex="-1"></a>                          <span class="at">pic.save =</span> F)</span>
+<span id="cb9-22"><a href="enrich.html#cb9-22" tabindex="-1"></a>                          <span class="at">filemark =</span> <span class="st">&#39;KEGG_top&#39;</span>, <span class="at">pcompress =</span> <span class="dv">1</span>,</span>
+<span id="cb9-23"><a href="enrich.html#cb9-23" tabindex="-1"></a>                          <span class="at">pic.save =</span> T)</span>
 <span id="cb9-24"><a href="enrich.html#cb9-24" tabindex="-1"></a></span>
 <span id="cb9-25"><a href="enrich.html#cb9-25" tabindex="-1"></a><span class="co"># 组合图(可选运行，比例不是很好调整，单独出图AI内调整更自由)</span></span>
 <span id="cb9-26"><a href="enrich.html#cb9-26" tabindex="-1"></a>gh <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dot)</span>
 <span id="cb9-27"><a href="enrich.html#cb9-27" tabindex="-1"></a>gd <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dotk)</span>
-<span id="cb9-28"><a href="enrich.html#cb9-28" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gh, gd, <span class="at">rel_widths =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.25</span>))</span>
+<span id="cb9-28"><a href="enrich.html#cb9-28" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gh, gd, <span class="at">rel_widths =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.2</span>))</span>
 <span id="cb9-29"><a href="enrich.html#cb9-29" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">paste0</span>(dir_out, <span class="st">&quot;/GO_KEGG_top.pdf&quot;</span>), <span class="at">width =</span> <span class="dv">16</span>, <span class="at">height =</span> <span class="dv">10</span>)</span></code></pre></div>
 </div>
 </div>

@@ -568,11 +568,11 @@ On the way \ldots{}
 \CommentTok{\# 筛选数据（按需配合其他筛选）}
 \NormalTok{pic.dot }\OtherTok{\textless{}{-}} \FunctionTok{DEGp\_Dotplot2}\NormalTok{(dotData, }\AttributeTok{head =} \DecValTok{20}\NormalTok{, }\AttributeTok{title =} \StringTok{\textquotesingle{}TOP of GO\textquotesingle{}}\NormalTok{, }
                          \AttributeTok{resultdir =} \StringTok{"./result/proteinOR{-}NC"}\NormalTok{, }
-                         \AttributeTok{filemark =} \StringTok{\textquotesingle{}GO\_top\textquotesingle{}}\NormalTok{, }
+                         \AttributeTok{filemark =} \StringTok{\textquotesingle{}GO\_top\textquotesingle{}}\NormalTok{, }\AttributeTok{pcompress =} \DecValTok{2}\NormalTok{,}
                          \AttributeTok{pic.save =}\NormalTok{ T)}
 \CommentTok{\# dotplot kegg}
 \CommentTok{\# 读取kegg分析保存的表格，格式要求}
-\CommentTok{\# 必须要有这四列Description, GeneRatio, pvalue, qvalue。Count列可有也可无。}
+\CommentTok{\# 必须要有这5列Description, GeneRatio, pvalue, qvalue, Count列。}
 \CommentTok{\# 读取表格}
 \CommentTok{\# dotDatak \textless{}{-} readxl::read\_xlsx("./result/proinOR/kegg.xlsx", sheet = 1)}
 
@@ -580,13 +580,13 @@ On the way \ldots{}
 \CommentTok{\# 筛选数据（按需配合其他筛选）}
 \NormalTok{pic.dotk }\OtherTok{\textless{}{-}} \FunctionTok{DEGp\_Dotplot2}\NormalTok{(dotDatak, }\AttributeTok{head =} \DecValTok{20}\NormalTok{, }\AttributeTok{title =} \StringTok{\textquotesingle{}TOP of KEGGpathway\textquotesingle{}}\NormalTok{, }
                           \AttributeTok{resultdir =} \StringTok{"./result/proteinOR{-}NC"}\NormalTok{, }
-                          \AttributeTok{filemark =} \StringTok{\textquotesingle{}KEGG\_top\textquotesingle{}}\NormalTok{, }
-                          \AttributeTok{pic.save =}\NormalTok{ F)}
+                          \AttributeTok{filemark =} \StringTok{\textquotesingle{}KEGG\_top\textquotesingle{}}\NormalTok{, }\AttributeTok{pcompress =} \DecValTok{1}\NormalTok{,}
+                          \AttributeTok{pic.save =}\NormalTok{ T)}
 
 \CommentTok{\# 组合图(可选运行，比例不是很好调整，单独出图AI内调整更自由)}
 \NormalTok{gh }\OtherTok{\textless{}{-}} \FunctionTok{ggplotGrob}\NormalTok{(pic.dot)}
 \NormalTok{gd }\OtherTok{\textless{}{-}} \FunctionTok{ggplotGrob}\NormalTok{(pic.dotk)}
-\NormalTok{cowplot}\SpecialCharTok{::}\FunctionTok{plot\_grid}\NormalTok{(gh, gd, }\AttributeTok{rel\_widths =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FloatTok{1.25}\NormalTok{))}
+\NormalTok{cowplot}\SpecialCharTok{::}\FunctionTok{plot\_grid}\NormalTok{(gh, gd, }\AttributeTok{rel\_widths =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FloatTok{1.2}\NormalTok{))}
 \FunctionTok{ggsave}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(dir\_out, }\StringTok{"/GO\_KEGG\_top.pdf"}\NormalTok{), }\AttributeTok{width =} \DecValTok{16}\NormalTok{, }\AttributeTok{height =} \DecValTok{10}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
