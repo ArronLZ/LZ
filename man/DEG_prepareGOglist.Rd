@@ -22,9 +22,6 @@ DEG_prepareGOglist(resdf, logfc, p = 0.05, fdr = 0.1)
 Transform the DEG anlysis object(all_father$DIFF.ALL') to GO analsis
 Note: The go enrich result of the length of different deg genes is different!
 }
-\examples{
-#
-}
 \author{
 Jiang
 }

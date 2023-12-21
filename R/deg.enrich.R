@@ -92,12 +92,13 @@ DEG_KEGG <- function(genelist, orgdb="org.Hs.eg.db", org_kegg='hsa') {
 #'
 #' @return # list(all=all, up=up, down=down)
 #' @export
-#'
-#' @examples #
+#' @importFrom magrittr `%>%`
+#' @importFrom magrittr `%$%`
+#' 
 #' @author Jiang
 DEG_prepareGOglist <- function(resdf, logfc, p=0.05, fdr=0.1) {
-  up <- resdf %>% filter(log2FC > logfc & PValue < p & FDR < fdr) %>% .[,1]
-  down <- resdf %>% filter(log2FC < -logfc & PValue < p & FDR < fdr) %>% .[,1]
+  up <- resdf %>% filter(log2FC > logfc & PValue < p & FDR < fdr) %$% Gene
+  down <- resdf %>% filter(log2FC < -logfc & PValue < p & FDR < fdr) %$% Gene
   all <- c(up, down)
   return(list(all=all, up=up, down=down))
 }
