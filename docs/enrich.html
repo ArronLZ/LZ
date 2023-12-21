@@ -364,8 +364,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="enrich-gsea-r.gsea.gui" class="section level3 hasAnchor" number="3.2.2">
 <h3><span class="header-section-number">3.2.2</span> R GSEA 图形界面<a href="enrich.html#enrich-gsea-r.gsea.gui" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>图形界面可以用自己的表格数据上传来做GSEA分析，表格必须有且仅有两列，分别
-为Gene列和log2FC列，具体表格形式如下：</p>
+<p>图形界面可以用自己的表格数据(上传表格不是必须，方式二启动就不需要)上传来做GSEA分析，表格必须有且仅有两列，分别为Gene列和log2FC列，具体表格形式如下：</p>
 <table>
 <thead>
 <tr class="header">
@@ -484,25 +483,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
-"github": false,
+"github": true,
 "facebook": true,
 "twitter": true,
-"linkedin": false,
-"weibo": false,
+"linkedin": true,
+"weibo": true,
 "instapaper": false,
 "vk": false,
 "whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["instapaper", "whatsapp", "facebook", "vk"]
 },
 "fontsettings": {
 "theme": "white",
 "family": "sans",
 "size": 2
 },
-"edit": {
-"link": null,
-"text": null
-},
+"edit": null,
 "history": {
 "link": null,
 "text": null
@@ -517,8 +513,9 @@ gitbook.start({
 "options": null
 },
 "toc": {
-"collapse": "subsection"
-}
+"collapse": "none"
+},
+"split_by": "section"
 });
 });
 </script>

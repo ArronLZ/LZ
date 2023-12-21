@@ -209,7 +209,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">LZ 文档</h1>
 <p class="author"><em>作者：荔枝 <a href="mailto:earth_farmer@outlook.com" class="email">earth_farmer@outlook.com</a></em></p>
-<p class="date"><em>更新：2023-12-21</em></p>
+<p class="date"><em>更新：2023-12-22</em></p>
 </div>
 <div id="前言" class="section level1 unnumbered hasAnchor">
 <h1>前言<a href="index.html#前言" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -253,25 +253,22 @@ email至<code>earth_farmer@outlook.com</code>，尽量有答复但不予保证�
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
-"github": false,
+"github": true,
 "facebook": true,
 "twitter": true,
-"linkedin": false,
-"weibo": false,
+"linkedin": true,
+"weibo": true,
 "instapaper": false,
 "vk": false,
 "whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["instapaper", "whatsapp", "facebook", "vk"]
 },
 "fontsettings": {
 "theme": "white",
 "family": "sans",
 "size": 2
 },
-"edit": {
-"link": null,
-"text": null
-},
+"edit": null,
 "history": {
 "link": null,
 "text": null
@@ -286,8 +283,9 @@ gitbook.start({
 "options": null
 },
 "toc": {
-"collapse": "subsection"
-}
+"collapse": "none"
+},
+"split_by": "section"
 });
 });
 </script>
