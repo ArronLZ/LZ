@@ -203,7 +203,7 @@ syGSEA <- function(gmt.largelist, genelist) {
           xlsx_data$genelist <- genelist
         } else {
           output$upload_file_ui <- renderUI({
-            fileInput("upload_file", "上传表格文件（XLSX格式）", accept = ".xlsx")
+            fileInput("upload_file", "上传XLSX格式表格文件（非必须项）", accept = ".xlsx")
           })
         }
       })

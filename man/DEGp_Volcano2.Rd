@@ -28,7 +28,7 @@ DEGp_Volcano2(
 \arguments{
 \item{resdf}{dataframe the all data of DEG analysis}
 
-\item{filterc}{character the way of show picture}
+\item{filterc}{character the way of show picture, can be one of "both", "pvalue", "fdr"}
 
 \item{pvalue}{number pvalue, default 0.05}
 
