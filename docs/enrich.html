@@ -169,7 +169,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="3.1.1" data-path="enrich.html"><a href="enrich.html#一键脚本批量处理"><i class="fa fa-check"></i><b>3.1.1</b> 一键脚本(批量处理)</a></li>
 <li class="chapter" data-level="3.1.2" data-path="enrich.html"><a href="enrich.html#enrich-simple"><i class="fa fa-check"></i><b>3.1.2</b> 简易GO,KEGG一次分析</a></li>
-<li class="chapter" data-level="3.1.3" data-path="enrich.html"><a href="enrich.html#dotplot"><i class="fa fa-check"></i><b>3.1.3</b> GO、KEGG分析结果可视化 {#enrich-visual}</a></li>
+<li class="chapter" data-level="3.1.3" data-path="enrich.html"><a href="enrich.html#enrich-visual"><i class="fa fa-check"></i><b>3.1.3</b> GO、KEGG分析结果可视化</a></li>
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="enrich.html"><a href="enrich.html#enrich-gsea"><i class="fa fa-check"></i><b>3.2</b> GSEA分析</a>
 <ul>
@@ -287,8 +287,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb8-14"><a href="enrich.html#cb8-14" tabindex="-1"></a>kegg.lh <span class="ot">&lt;-</span> <span class="fu">DEG_KEGG</span>(gene_df)</span>
 <span id="cb8-15"><a href="enrich.html#cb8-15" tabindex="-1"></a><span class="fu">write_xlsx</span>(kegg.lh<span class="sc">$</span>pSigDF, <span class="at">path =</span> <span class="st">&quot;./result/xx/lh_kegg.all.xlsx&quot;</span>)</span></code></pre></div>
 </div>
-<div id="dotplot" class="section level3 hasAnchor" number="3.1.3">
-<h3><span class="header-section-number">3.1.3</span> GO、KEGG分析结果可视化 {#enrich-visual}<a href="enrich.html#dotplot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="enrich-visual" class="section level3 hasAnchor" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> GO、KEGG分析结果可视化<a href="enrich.html#enrich-visual" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="enrich.html#cb9-1" tabindex="-1"></a><span class="co"># dotplot go</span></span>
 <span id="cb9-2"><a href="enrich.html#cb9-2" tabindex="-1"></a><span class="co"># 读取go分析保存的表格</span></span>
 <span id="cb9-3"><a href="enrich.html#cb9-3" tabindex="-1"></a><span class="co">#dotData &lt;- go$GODF$&quot;倍数&quot;$变化趋势(BP)</span></span>

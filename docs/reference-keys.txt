@@ -14,7 +14,7 @@ enrich
 enrich-auto
 一键脚本批量处理
 enrich-simple
-dotplot
+enrich-visual
 enrich-gsea
 r-gsea-批量分析
 enrich-gsea-r.gsea.gui
