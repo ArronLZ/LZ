@@ -253,18 +253,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-37"><a href="enrich.html#cb7-37" tabindex="-1"></a>fc.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&#39;1.5&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="fl">1.5</span>), <span class="st">&#39;2&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="dv">2</span>), <span class="st">&#39;4&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="dv">4</span>))</span>
 <span id="cb7-38"><a href="enrich.html#cb7-38" tabindex="-1"></a><span class="co"># logFC阈值, 单个阈值运行这句，也是二选一，不要重复运行</span></span>
 <span id="cb7-39"><a href="enrich.html#cb7-39" tabindex="-1"></a><span class="co"># fc.list &lt;- list(&#39;2&#39;=log2(2))</span></span>
-<span id="cb7-40"><a href="enrich.html#cb7-40" tabindex="-1"></a><span class="co"># 设置物种为人类（如是人类则不需要更改）</span></span>
-<span id="cb7-41"><a href="enrich.html#cb7-41" tabindex="-1"></a>GO_database <span class="ot">&lt;-</span> <span class="st">&#39;org.Hs.eg.db&#39;</span> <span class="co"># keytypes(org.Hs.eg.db)</span></span>
-<span id="cb7-42"><a href="enrich.html#cb7-42" tabindex="-1"></a>KEGG_database <span class="ot">&lt;-</span> <span class="st">&#39;hsa&#39;</span> </span>
-<span id="cb7-43"><a href="enrich.html#cb7-43" tabindex="-1"></a></span>
-<span id="cb7-44"><a href="enrich.html#cb7-44" tabindex="-1"></a><span class="co"># 预处理数据符合GOKEGG分析的要求</span></span>
-<span id="cb7-45"><a href="enrich.html#cb7-45" tabindex="-1"></a><span class="co"># # 不同fc条件下的GOgenelist list(ALL, UP, DOWN)</span></span>
-<span id="cb7-46"><a href="enrich.html#cb7-46" tabindex="-1"></a>gogenelist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fc.list, <span class="cf">function</span>(x) {</span>
-<span id="cb7-47"><a href="enrich.html#cb7-47" tabindex="-1"></a>  <span class="fu">DEG_prepareGOglist</span>(resdf, <span class="at">logfc =</span> x, <span class="at">p =</span> <span class="fl">0.05</span>, <span class="at">fdr =</span> <span class="fl">0.1</span>) })</span>
-<span id="cb7-48"><a href="enrich.html#cb7-48" tabindex="-1"></a><span class="co"># gogenelist %&gt;% length()</span></span>
-<span id="cb7-49"><a href="enrich.html#cb7-49" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果</span></span>
-<span id="cb7-50"><a href="enrich.html#cb7-50" tabindex="-1"></a>enrich <span class="ot">&lt;-</span> <span class="fu">DEG_runENRICH</span>(<span class="at">genelist =</span> gogenelist, <span class="at">outdir =</span> outd, </span>
-<span id="cb7-51"><a href="enrich.html#cb7-51" tabindex="-1"></a>                        <span class="at">glist.save =</span> T, <span class="at">rungo =</span> T, <span class="at">runkegg =</span> T, <span class="at">rapid =</span> T)</span></code></pre></div>
+<span id="cb7-40"><a href="enrich.html#cb7-40" tabindex="-1"></a></span>
+<span id="cb7-41"><a href="enrich.html#cb7-41" tabindex="-1"></a><span class="co"># 预处理数据符合GOKEGG分析的要求</span></span>
+<span id="cb7-42"><a href="enrich.html#cb7-42" tabindex="-1"></a><span class="co"># # 不同fc条件下的GOgenelist list(ALL, UP, DOWN)</span></span>
+<span id="cb7-43"><a href="enrich.html#cb7-43" tabindex="-1"></a>gogenelist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fc.list, <span class="cf">function</span>(x) {</span>
+<span id="cb7-44"><a href="enrich.html#cb7-44" tabindex="-1"></a>  <span class="fu">DEG_prepareGOglist</span>(resdf, <span class="at">logfc =</span> x, <span class="at">p =</span> <span class="fl">0.05</span>, <span class="at">fdr =</span> <span class="fl">0.1</span>) })</span>
+<span id="cb7-45"><a href="enrich.html#cb7-45" tabindex="-1"></a><span class="co"># gogenelist %&gt;% length()</span></span>
+<span id="cb7-46"><a href="enrich.html#cb7-46" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果</span></span>
+<span id="cb7-47"><a href="enrich.html#cb7-47" tabindex="-1"></a>enrich <span class="ot">&lt;-</span> <span class="fu">DEG_runENRICH</span>(<span class="at">genelist =</span> gogenelist, <span class="at">outdir =</span> outd, </span>
+<span id="cb7-48"><a href="enrich.html#cb7-48" tabindex="-1"></a>                        <span class="at">glist.save =</span> T, <span class="at">rungo =</span> T, <span class="at">runkegg =</span> T, <span class="at">rapid =</span> T)</span></code></pre></div>
 </div>
 <div id="enrich-simple" class="section level3 hasAnchor" number="3.1.2">
 <h3><span class="header-section-number">3.1.2</span> 简易GO,KEGG一次分析<a href="enrich.html#enrich-simple" class="anchor-section" aria-label="Anchor link to header"></a></h3>

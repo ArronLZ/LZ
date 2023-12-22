@@ -514,9 +514,6 @@ On the way \ldots{}
 \NormalTok{fc.list }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}\StringTok{\textquotesingle{}1.5\textquotesingle{}} \OtherTok{=} \FunctionTok{log2}\NormalTok{(}\FloatTok{1.5}\NormalTok{), }\StringTok{\textquotesingle{}2\textquotesingle{}} \OtherTok{=} \FunctionTok{log2}\NormalTok{(}\DecValTok{2}\NormalTok{), }\StringTok{\textquotesingle{}4\textquotesingle{}} \OtherTok{=} \FunctionTok{log2}\NormalTok{(}\DecValTok{4}\NormalTok{))}
 \CommentTok{\# logFC阈值, 单个阈值运行这句，也是二选一，不要重复运行}
 \CommentTok{\# fc.list \textless{}{-} list(\textquotesingle{}2\textquotesingle{}=log2(2))}
-\CommentTok{\# 设置物种为人类（如是人类则不需要更改）}
-\NormalTok{GO\_database }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}org.Hs.eg.db\textquotesingle{}} \CommentTok{\# keytypes(org.Hs.eg.db)}
-\NormalTok{KEGG\_database }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}hsa\textquotesingle{}} 
 
 \CommentTok{\# 预处理数据符合GOKEGG分析的要求}
 \CommentTok{\# \# 不同fc条件下的GOgenelist list(ALL, UP, DOWN)}
