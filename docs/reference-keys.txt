@@ -10,6 +10,10 @@ deg-mian
 差异分析
 deg-valcano
 热图
+热图表格数据预处理
+热图分组数据预处理
+选定一种算法作图
+循环各种聚类算法作图
 enrich
 enrich-auto
 一键脚本批量处理

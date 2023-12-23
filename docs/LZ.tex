@@ -152,7 +152,7 @@
 
 \title{LZ 文档}
 \author{作者：荔枝 \href{mailto:earth_farmer@outlook.com}{\nolinkurl{earth\_farmer@outlook.com}}}
-\date{更新：2023-12-22}
+\date{更新：2023-12-23}
 
 \begin{document}
 \maketitle
@@ -462,7 +462,131 @@ label\_gene: 展示基因列表
 
 \section{热图}\label{ux70edux56fe}
 
-On the way \ldots{}
+\subsection{热图表格数据预处理}\label{ux70edux56feux8868ux683cux6570ux636eux9884ux5904ux7406}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(LZ)}
+\FunctionTok{library}\NormalTok{(RColorBrewer)}
+\FunctionTok{library}\NormalTok{(pheatmap)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+
+\NormalTok{resdf }\OtherTok{\textless{}{-}}\NormalTok{ readxl}\SpecialCharTok{::}\FunctionTok{read\_xlsx}\NormalTok{(}\StringTok{"D:/xx/DIFF.an\_p0.05q0.2fc1.xlsx"}\NormalTok{, }
+                           \AttributeTok{sheet =} \DecValTok{1}\NormalTok{)}
+\NormalTok{sig.df }\OtherTok{\textless{}{-}}\NormalTok{ resdf }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{filter}\NormalTok{(}\FunctionTok{abs}\NormalTok{(log2FC) }\SpecialCharTok{\textgreater{}} \DecValTok{1}\NormalTok{, PValue }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{, FDR }\SpecialCharTok{\textless{}} \FloatTok{0.1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  dplyr}\SpecialCharTok{::}\FunctionTok{arrange}\NormalTok{(log2FC) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{check.names =}\NormalTok{ F)}
+\FunctionTok{rownames}\NormalTok{(sig.df) }\OtherTok{\textless{}{-}}\NormalTok{ sig.df}\SpecialCharTok{$}\NormalTok{Gene}
+
+\CommentTok{\# 画图的表达数据}
+\NormalTok{sig.expr }\OtherTok{\textless{}{-}}\NormalTok{ sig.df[, }\DecValTok{8}\SpecialCharTok{:}\NormalTok{(}\FunctionTok{ncol}\NormalTok{(sig.df)}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{)]}
+\NormalTok{sig.expr }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{range}\NormalTok{()}
+\CommentTok{\# 画图的显示基因（这里表示最大差异前10和后10,}
+\CommentTok{\#   可以将括号里的两个10改为100，就是显示最大差异前100后100）}
+\NormalTok{show.gene }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{head}\NormalTok{(}\FunctionTok{rownames}\NormalTok{(sig.df), }\DecValTok{10}\NormalTok{), }\FunctionTok{tail}\NormalTok{(}\FunctionTok{rownames}\NormalTok{(sig.df), }\DecValTok{10}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{热图分组数据预处理}\label{ux70edux56feux5206ux7ec4ux6570ux636eux9884ux5904ux7406}
+
+R中为一个行名为样本名的一列dataframe, excel中表现为两列，第1列为样本名，第2列为分组。
+新手建议excel里操作然后保存为csv格式，然后使用\texttt{groupdf\ \textless{}-\ read.csv("your\ csv",\ row.names\ =\ 1)}读入。
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+rowname & Tpye \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+S1-11A & 11A \\
+S2-11A & 11A \\
+S3-11A & 11A \\
+R1-01A & 01A \\
+R2-01A & 01A \\
+R3-01A & 01A \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 方法一，新手不建议用这种方法}
+\NormalTok{groupdf }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{row.names =} \FunctionTok{colnames}\NormalTok{(sig.expr),}
+  \CommentTok{\# 要一一对应才行}
+  \AttributeTok{Type =} \FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\StringTok{"11A"}\NormalTok{, }\DecValTok{3}\NormalTok{), }\FunctionTok{rep}\NormalTok{(}\StringTok{"01A"}\NormalTok{, }\DecValTok{3}\NormalTok{)),}
+  \AttributeTok{check.names =}\NormalTok{ F)}
+\NormalTok{groupdf[,}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(groupdf[,}\DecValTok{1}\NormalTok{])}
+\CommentTok{\# 方法二，新手推荐这种方法，先在excel中处理好数据}
+\NormalTok{groupdf }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"your csv"}\NormalTok{, }\AttributeTok{row.names =} \DecValTok{1}\NormalTok{)}
+\NormalTok{groupdf[,}\DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(groupdf[,}\DecValTok{1}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{选定一种算法作图}\label{ux9009ux5b9aux4e00ux79cdux7b97ux6cd5ux4f5cux56fe}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 检查groupdf的行名是否全部与sig.expr的列名一一对应}
+\CommentTok{\# 这句如果输出为False，不可继续进行画图操作，要重新调整数据。}
+\FunctionTok{all}\NormalTok{(}\FunctionTok{rownames}\NormalTok{(groupdf) }\SpecialCharTok{==} \FunctionTok{colnames}\NormalTok{(sig.expr))}
+\CommentTok{\# 作图，默认算法}
+\FunctionTok{DEGp\_Pheat}\NormalTok{(}
+\NormalTok{  sig.expr,}
+  \AttributeTok{gene =}\NormalTok{ show.gene, }
+  \AttributeTok{pheno =}\NormalTok{ groupdf,}
+  \AttributeTok{outdir =} \StringTok{"D:/xx/yy"}\NormalTok{,}
+  \AttributeTok{f\_mark =} \StringTok{"heatmap"}\NormalTok{,}
+  \AttributeTok{nlevel =} \DecValTok{2}\NormalTok{,}
+  \AttributeTok{pic\_w =} \FloatTok{4.5}\NormalTok{,}
+  \AttributeTok{pic\_h =} \FloatTok{4.5}\NormalTok{,}
+  \AttributeTok{c\_w =} \DecValTok{16}\NormalTok{,}
+  \AttributeTok{c\_h =} \FloatTok{9.8}\NormalTok{, }\CommentTok{\#7.4 \# 9.9}
+  \AttributeTok{c\_colors =} \FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"\#FFFFCC"}\NormalTok{, }\StringTok{"red"}\NormalTok{),}
+  \AttributeTok{color.num =} \DecValTok{100}\NormalTok{,}
+  \AttributeTok{fontsize =} \DecValTok{10}\NormalTok{,}
+  \AttributeTok{fontsize.col =} \DecValTok{12}\NormalTok{,}
+  \AttributeTok{angle =} \StringTok{"90"}\NormalTok{,}
+  \AttributeTok{cluster\_rows =}\NormalTok{ T,}
+  \AttributeTok{cluster\_cols =}\NormalTok{ T}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{循环各种聚类算法作图}\label{ux5faaux73afux5404ux79cdux805aux7c7bux7b97ux6cd5ux4f5cux56fe}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"ward.D"}\NormalTok{, }\StringTok{"ward.D2"}\NormalTok{, }\StringTok{"single"}\NormalTok{, }\StringTok{"complete"}\NormalTok{, }
+\StringTok{"average"}\NormalTok{, }\StringTok{"mcquitty"}\NormalTok{, }
+\StringTok{"median"}\NormalTok{, }\StringTok{"centroid"}\NormalTok{)}
+\NormalTok{d }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"correlation"}\NormalTok{, }\StringTok{"euclidean"}\NormalTok{, }\StringTok{"maximum"}\NormalTok{, }\StringTok{"manhattan"}\NormalTok{,}
+       \StringTok{"canberra"}\NormalTok{, }\StringTok{"binary"}\NormalTok{, }\StringTok{"minkowski"}\NormalTok{)}
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in}\NormalTok{ m) \{}
+  \ControlFlowTok{for}\NormalTok{ (i.d }\ControlFlowTok{in}\NormalTok{ d) \{}
+    \FunctionTok{cat}\NormalTok{(i, i.d, }\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{)}
+    \FunctionTok{DEGp\_Pheat}\NormalTok{(}
+\NormalTok{      sig.expr,}
+      \AttributeTok{gene =}\NormalTok{ show.gene, }
+      \AttributeTok{pheno =}\NormalTok{ groupdf,}
+      \AttributeTok{outdir =} \StringTok{"D:/xx/yy"}\NormalTok{,}
+      \AttributeTok{f\_mark =} \FunctionTok{paste0}\NormalTok{(}\StringTok{"heatmap.m."}\NormalTok{, i, }\StringTok{"\_"}\NormalTok{, i.d),}
+      \AttributeTok{nlevel =} \DecValTok{2}\NormalTok{,}
+      \AttributeTok{pic\_w =} \DecValTok{5}\NormalTok{,}
+      \AttributeTok{pic\_h =} \DecValTok{8}\NormalTok{,}
+      \AttributeTok{c\_w =} \DecValTok{18}\NormalTok{,}
+      \AttributeTok{c\_h =} \DecValTok{10}\NormalTok{,}
+      \AttributeTok{f\_z =} \DecValTok{10}\NormalTok{,}
+      \AttributeTok{f\_z.col =} \DecValTok{14}\NormalTok{,}
+      \AttributeTok{angle =} \StringTok{"90"}\NormalTok{,}
+      \AttributeTok{cluster\_rows =}\NormalTok{ T,}
+      \AttributeTok{cluster\_cols =}\NormalTok{ T,}
+      \AttributeTok{clustering\_method =}\NormalTok{ i,}
+      \AttributeTok{clustering\_distance\_rows=}\NormalTok{i.d}
+\NormalTok{    )  }
+\NormalTok{  \}}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
 
 \chapter{富集分析}\label{enrich}
 

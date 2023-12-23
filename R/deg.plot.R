@@ -212,6 +212,7 @@ DEGp_Volcano2 <- function(resdf, filterc = "both",
 
 #' Heatmap
 #' @description plot heatmap with selected gene
+#'
 #' @param df dataframe or matrix, the exprs data(rowname is gene name)
 #' @param gene character, the gene name that heatmap show
 #' @param pheno dataframe, the group info
@@ -222,61 +223,94 @@ DEGp_Volcano2 <- function(resdf, filterc = "both",
 #' @param pic_h number,  picture height
 #' @param c_w number,  ceil width
 #' @param c_h number, ceil height
-#' @param f_z number, font size
-#' @param f_z.col number, col font size
 #' @param angle character, col angle
 #' @param cluster_rows logical, default is T
+#' @param c_colors character(n), default isc ("blue", "#FFFFCC", "red")
+#' @param color.num number, default is 100
+#' @param fontsize number, row(sample) annot font size
+#' @param fontsize.col number, col(gene) annot font size
+#' @param clustering_method character, one of c("ward.D", "ward.D2", "single", "complete", 
+#' "average", "mcquitty", "median", "centroid")
+#' @param clustering_distance_rows character, one of c("correlation", "euclidean", "maximum", 
+#' "manhattan", "canberra", "binary", "minkowski")
+#' @param clustering_distance_cols character, as the same to `clustering_distance_rows`
 #' @param cluster_cols logical, default is F
+#'
 #' @return #
 #' @export
 #' @importFrom pheatmap pheatmap
 #' @importFrom ggsci pal_d3
 #' @import RColorBrewer
 #'
-#' @examples #
-DEGp_Pheat <- function(df, gene, pheno, outdir, f_mark='', nlevel=8,
-                      pic_w = 6, pic_h = 8, c_w=1, c_h = 10, f_z = 12,
-                      f_z.col= 8, angle="90", cluster_rows= T,
-                      cluster_cols = F) {
-  ## 得到热图数据所需格式
-  #df = heat_matrix ; gene = sig_gene_100
-  heat_matrix <- df[rownames(df) %in% gene,]
-  # 设置分组顏色
+#' @examples
+#' \dontrun{
+#'   groupdf <- data.frame(row.names = colnames(sig.expr),
+#'                         Type = c(rep("11A", 3), rep("01A", 3)),
+#'                         check.names = F)
+#'   groupdf[,1] <- as.factor(groupdf[,1])
+#'   m <- c("ward.D", "ward.D2", "single", "complete", 
+#'           "average", "mcquitty", "median", "centroid")
+#'   d <- c("correlation", "euclidean", "maximum", "manhattan",
+#'          "canberra", "binary", "minkowski")
+#'   for (i in m) {
+#'     for (i.d in d) {
+#'       cat(i, i.d, "\n")
+#'       DEGp_Pheat(
+#'         sig.expr,
+#'         gene = show.gene, 
+#'         pheno = groupdf,
+#'         outdir = "D:/xxx/yyy",
+#'         f_mark = paste0("heatmap.", i, "_", i.d),
+#'         nlevel = 2,
+#'         pic_w = 5,
+#'         pic_h = 8,
+#'         c_w = 18,
+#'         c_h = 10,
+#'         f_z = 10,
+#'         f_z.col = 14,
+#'         angle = "90",
+#'         cluster_rows = T,
+#'         cluster_cols = T,
+#'         clustering_method = i,
+#'         clustering_distance_rows=i.d
+#'       )  
+#'     }
+#'   }
+#' }
+DEGp_Pheat <- function(df, gene, pheno, outdir, f_mark = "", nlevel = 8, pic_w = 6, 
+                       pic_h = 8, c_w = 6, c_h = 10, c_colors = c("blue", "#FFFFCC", "red"),
+                       color.num = 100, fontsize = 12, fontsize.col = 8, angle = "90", 
+                       cluster_rows = T, cluster_cols = F, clustering_method = "complete",
+                       clustering_distance_rows="euclidean", clustering_distance_cols="euclidean") {
+  heat_matrix <- df[rownames(df) %in% gene, ,]
   matdf <- pheno
   if (nlevel != 2) {
-    mat_colors <- list(ggsci::pal_d3()(nlevel))
-  } else {
-    mat_colors <- list(c("dimgrey","darkorange"))
+    mat_colors <- list((ggsci::pal_d3())(nlevel))
+  }
+  else {
+    mat_colors <- list(c("dimgrey", "darkorange"))
   }
   names(mat_colors)[1] <- names(matdf)[1]
   names(mat_colors[[1]]) <- levels(matdf[, 1])
-
-  col <- colorRampPalette(brewer.pal(12,'Paired'))(24)
-  #plot(1:24,rep(1,24),col= col,pch=16,cex=2)
-  
+  col <- colorRampPalette(brewer.pal(12, "Paired"))(24)
   mkdir(dirclean(outdir))
-  fname <- paste0(dirclean(outdir), '/heatmap.', f_mark, '.pdf')
+  fname <- paste0(dirclean(outdir), "/heatmap.", f_mark, ".pdf")
   pdf(fname, width = pic_w, height = pic_h)
-  #p <- pheatmap(heat_matrix, scale = 'row',cluster_rows = T,
-  #              border_color = NA, show_colnames = T,
-  #              show_rownames = T, fontsize = 11, fontsize_row = 7,
-  #              annotation_col = matdf, annotation_colors = mat_colors,
-  #              angle_col = "45",
-  #              drop_levels = T, color = colp, name = 'Color',
-  #              annotation_names_col = F)
-  p <- pheatmap(heat_matrix, scale = "row",
-                cluster_rows = cluster_rows, cluster_cols = cluster_cols,
-                color = colorRampPalette(colors = c("blue", "white", "red"))(100),
-                annotation_col = matdf,  annotation_colors = mat_colors,
-                show_colnames = T, show_rownames = T,
-                border_color = NA,
-                cellwidth = c_w, cellheight = c_h,
-                fontsize = f_z, fontsize_col = f_z.col, 
+  p <- pheatmap(heat_matrix, scale = "row", 
+                clustering_method = clustering_method,
+                clustering_distance_rows = clustering_distance_rows,
+                clustering_distance_cols = clustering_distance_cols,
+                cluster_rows = cluster_rows, 
+                cluster_cols = cluster_cols, 
+                color = colorRampPalette(colors = c_colors)(color.num), 
+                annotation_col = matdf, annotation_colors = mat_colors, 
+                show_colnames = T, show_rownames = T, border_color = NA, 
+                cellwidth = c_w, cellheight = c_h, fontsize = fontsize, 
+                fontsize_col = fontsize.col, 
                 angle_col = angle, drop_levels = T)
   print(p)
   dev.off()
-  #
-  png(filename = paste0(outdir, '/heatmap.', f_mark, '.png'),
+  png(filename = paste0(outdir, "/heatmap.", f_mark, ".png"), 
       height = pic_h, width = pic_w, units = "in", res = 1000)
   print(p)
   dev.off()

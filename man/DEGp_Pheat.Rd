@@ -13,13 +13,18 @@ DEGp_Pheat(
   nlevel = 8,
   pic_w = 6,
   pic_h = 8,
-  c_w = 1,
+  c_w = 6,
   c_h = 10,
-  f_z = 12,
-  f_z.col = 8,
+  c_colors = c("blue", "#FFFFCC", "red"),
+  color.num = 100,
+  fontsize = 12,
+  fontsize.col = 8,
   angle = "90",
   cluster_rows = T,
-  cluster_cols = F
+  cluster_cols = F,
+  clustering_method = "complete",
+  clustering_distance_rows = "euclidean",
+  clustering_distance_cols = "euclidean"
 )
 }
 \arguments{
@@ -43,15 +48,27 @@ DEGp_Pheat(
 
 \item{c_h}{number, ceil height}
 
-\item{f_z}{number, font size}
+\item{c_colors}{character(n), default isc ("blue", "#FFFFCC", "red")}
 
-\item{f_z.col}{number, col font size}
+\item{color.num}{number, default is 100}
+
+\item{fontsize}{number, row(sample) annot font size}
+
+\item{fontsize.col}{number, col(gene) annot font size}
 
 \item{angle}{character, col angle}
 
 \item{cluster_rows}{logical, default is T}
 
 \item{cluster_cols}{logical, default is F}
+
+\item{clustering_method}{character, one of c("ward.D", "ward.D2", "single", "complete", 
+"average", "mcquitty", "median", "centroid")}
+
+\item{clustering_distance_rows}{character, one of c("correlation", "euclidean", "maximum", 
+"manhattan", "canberra", "binary", "minkowski")}
+
+\item{clustering_distance_cols}{character, as the same to `clustering_distance_rows`}
 }
 \value{
 #
@@ -60,5 +77,38 @@ DEGp_Pheat(
 plot heatmap with selected gene
 }
 \examples{
-#
+\dontrun{
+  groupdf <- data.frame(row.names = colnames(sig.expr),
+                        Type = c(rep("11A", 3), rep("01A", 3)),
+                        check.names = F)
+  groupdf[,1] <- as.factor(groupdf[,1])
+  m <- c("ward.D", "ward.D2", "single", "complete", 
+          "average", "mcquitty", "median", "centroid")
+  d <- c("correlation", "euclidean", "maximum", "manhattan",
+         "canberra", "binary", "minkowski")
+  for (i in m) {
+    for (i.d in d) {
+      cat(i, i.d, "\n")
+      DEGp_Pheat(
+        sig.expr,
+        gene = show.gene, 
+        pheno = groupdf,
+        outdir = "D:/xxx/yyy",
+        f_mark = paste0("heatmap.", i, "_", i.d),
+        nlevel = 2,
+        pic_w = 5,
+        pic_h = 8,
+        c_w = 18,
+        c_h = 10,
+        f_z = 10,
+        f_z.col = 14,
+        angle = "90",
+        cluster_rows = T,
+        cluster_cols = T,
+        clustering_method = i,
+        clustering_distance_rows=i.d
+      )  
+    }
+  }
+}
 }

@@ -161,7 +161,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.1.5" data-path="deg.html"><a href="deg.html#差异分析"><i class="fa fa-check"></i><b>2.1.5</b> 差异分析</a></li>
 </ul></li>
 <li class="chapter" data-level="2.2" data-path="deg.html"><a href="deg.html#deg-valcano"><i class="fa fa-check"></i><b>2.2</b> 火山图</a></li>
-<li class="chapter" data-level="2.3" data-path="deg.html"><a href="deg.html#热图"><i class="fa fa-check"></i><b>2.3</b> 热图</a></li>
+<li class="chapter" data-level="2.3" data-path="deg.html"><a href="deg.html#热图"><i class="fa fa-check"></i><b>2.3</b> 热图</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="deg.html"><a href="deg.html#热图表格数据预处理"><i class="fa fa-check"></i><b>2.3.1</b> 热图表格数据预处理</a></li>
+<li class="chapter" data-level="2.3.2" data-path="deg.html"><a href="deg.html#热图分组数据预处理"><i class="fa fa-check"></i><b>2.3.2</b> 热图分组数据预处理</a></li>
+<li class="chapter" data-level="2.3.3" data-path="deg.html"><a href="deg.html#选定一种算法作图"><i class="fa fa-check"></i><b>2.3.3</b> 选定一种算法作图</a></li>
+<li class="chapter" data-level="2.3.4" data-path="deg.html"><a href="deg.html#循环各种聚类算法作图"><i class="fa fa-check"></i><b>2.3.4</b> 循环各种聚类算法作图</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="enrich.html"><a href="enrich.html"><i class="fa fa-check"></i><b>3</b> 富集分析</a>
 <ul>
@@ -421,8 +427,135 @@ label_gene: 展示基因列表<br/>
 </div>
 <div id="热图" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> 热图<a href="deg.html#热图" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>On the way …</p>
+<div id="热图表格数据预处理" class="section level3 hasAnchor" number="2.3.1">
+<h3><span class="header-section-number">2.3.1</span> 热图表格数据预处理<a href="deg.html#热图表格数据预处理" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="deg.html#cb7-1" tabindex="-1"></a><span class="fu">library</span>(LZ)</span>
+<span id="cb7-2"><a href="deg.html#cb7-2" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb7-3"><a href="deg.html#cb7-3" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
+<span id="cb7-4"><a href="deg.html#cb7-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-5"><a href="deg.html#cb7-5" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="deg.html#cb7-6" tabindex="-1"></a>resdf <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">&quot;D:/xx/DIFF.an_p0.05q0.2fc1.xlsx&quot;</span>, </span>
+<span id="cb7-7"><a href="deg.html#cb7-7" tabindex="-1"></a>                           <span class="at">sheet =</span> <span class="dv">1</span>)</span>
+<span id="cb7-8"><a href="deg.html#cb7-8" tabindex="-1"></a>sig.df <span class="ot">&lt;-</span> resdf <span class="sc">%&gt;%</span> </span>
+<span id="cb7-9"><a href="deg.html#cb7-9" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">abs</span>(log2FC) <span class="sc">&gt;</span> <span class="dv">1</span>, PValue <span class="sc">&lt;</span> <span class="fl">0.05</span>, FDR <span class="sc">&lt;</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-10"><a href="deg.html#cb7-10" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(log2FC) <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>(<span class="at">check.names =</span> F)</span>
+<span id="cb7-11"><a href="deg.html#cb7-11" tabindex="-1"></a><span class="fu">rownames</span>(sig.df) <span class="ot">&lt;-</span> sig.df<span class="sc">$</span>Gene</span>
+<span id="cb7-12"><a href="deg.html#cb7-12" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="deg.html#cb7-13" tabindex="-1"></a><span class="co"># 画图的表达数据</span></span>
+<span id="cb7-14"><a href="deg.html#cb7-14" tabindex="-1"></a>sig.expr <span class="ot">&lt;-</span> sig.df[, <span class="dv">8</span><span class="sc">:</span>(<span class="fu">ncol</span>(sig.df)<span class="sc">-</span><span class="dv">1</span>)]</span>
+<span id="cb7-15"><a href="deg.html#cb7-15" tabindex="-1"></a>sig.expr <span class="sc">%&gt;%</span> <span class="fu">range</span>()</span>
+<span id="cb7-16"><a href="deg.html#cb7-16" tabindex="-1"></a><span class="co"># 画图的显示基因（这里表示最大差异前10和后10,</span></span>
+<span id="cb7-17"><a href="deg.html#cb7-17" tabindex="-1"></a><span class="co">#   可以将括号里的两个10改为100，就是显示最大差异前100后100）</span></span>
+<span id="cb7-18"><a href="deg.html#cb7-18" tabindex="-1"></a>show.gene <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">head</span>(<span class="fu">rownames</span>(sig.df), <span class="dv">10</span>), <span class="fu">tail</span>(<span class="fu">rownames</span>(sig.df), <span class="dv">10</span>))</span></code></pre></div>
+</div>
+<div id="热图分组数据预处理" class="section level3 hasAnchor" number="2.3.2">
+<h3><span class="header-section-number">2.3.2</span> 热图分组数据预处理<a href="deg.html#热图分组数据预处理" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>R中为一个行名为样本名的一列dataframe, excel中表现为两列，第1列为样本名，第2列为分组。<br>
+新手建议excel里操作然后保存为csv格式，然后使用<code>groupdf &lt;- read.csv("your csv", row.names = 1)</code>读入。</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">rowname</th>
+<th align="left">Tpye</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">S1-11A</td>
+<td align="left">11A</td>
+</tr>
+<tr class="even">
+<td align="left">S2-11A</td>
+<td align="left">11A</td>
+</tr>
+<tr class="odd">
+<td align="left">S3-11A</td>
+<td align="left">11A</td>
+</tr>
+<tr class="even">
+<td align="left">R1-01A</td>
+<td align="left">01A</td>
+</tr>
+<tr class="odd">
+<td align="left">R2-01A</td>
+<td align="left">01A</td>
+</tr>
+<tr class="even">
+<td align="left">R3-01A</td>
+<td align="left">01A</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="deg.html#cb8-1" tabindex="-1"></a><span class="co"># 方法一，新手不建议用这种方法</span></span>
+<span id="cb8-2"><a href="deg.html#cb8-2" tabindex="-1"></a>groupdf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb8-3"><a href="deg.html#cb8-3" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">colnames</span>(sig.expr),</span>
+<span id="cb8-4"><a href="deg.html#cb8-4" tabindex="-1"></a>  <span class="co"># 要一一对应才行</span></span>
+<span id="cb8-5"><a href="deg.html#cb8-5" tabindex="-1"></a>  <span class="at">Type =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;11A&quot;</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">&quot;01A&quot;</span>, <span class="dv">3</span>)),</span>
+<span id="cb8-6"><a href="deg.html#cb8-6" tabindex="-1"></a>  <span class="at">check.names =</span> F)</span>
+<span id="cb8-7"><a href="deg.html#cb8-7" tabindex="-1"></a>groupdf[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(groupdf[,<span class="dv">1</span>])</span>
+<span id="cb8-8"><a href="deg.html#cb8-8" tabindex="-1"></a><span class="co"># 方法二，新手推荐这种方法，先在excel中处理好数据</span></span>
+<span id="cb8-9"><a href="deg.html#cb8-9" tabindex="-1"></a>groupdf <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;your csv&quot;</span>, <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb8-10"><a href="deg.html#cb8-10" tabindex="-1"></a>groupdf[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(groupdf[,<span class="dv">1</span>])</span></code></pre></div>
+</div>
+<div id="选定一种算法作图" class="section level3 hasAnchor" number="2.3.3">
+<h3><span class="header-section-number">2.3.3</span> 选定一种算法作图<a href="deg.html#选定一种算法作图" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="deg.html#cb9-1" tabindex="-1"></a><span class="co"># 检查groupdf的行名是否全部与sig.expr的列名一一对应</span></span>
+<span id="cb9-2"><a href="deg.html#cb9-2" tabindex="-1"></a><span class="co"># 这句如果输出为False，不可继续进行画图操作，要重新调整数据。</span></span>
+<span id="cb9-3"><a href="deg.html#cb9-3" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">rownames</span>(groupdf) <span class="sc">==</span> <span class="fu">colnames</span>(sig.expr))</span>
+<span id="cb9-4"><a href="deg.html#cb9-4" tabindex="-1"></a><span class="co"># 作图，默认算法</span></span>
+<span id="cb9-5"><a href="deg.html#cb9-5" tabindex="-1"></a><span class="fu">DEGp_Pheat</span>(</span>
+<span id="cb9-6"><a href="deg.html#cb9-6" tabindex="-1"></a>  sig.expr,</span>
+<span id="cb9-7"><a href="deg.html#cb9-7" tabindex="-1"></a>  <span class="at">gene =</span> show.gene, </span>
+<span id="cb9-8"><a href="deg.html#cb9-8" tabindex="-1"></a>  <span class="at">pheno =</span> groupdf,</span>
+<span id="cb9-9"><a href="deg.html#cb9-9" tabindex="-1"></a>  <span class="at">outdir =</span> <span class="st">&quot;D:/xx/yy&quot;</span>,</span>
+<span id="cb9-10"><a href="deg.html#cb9-10" tabindex="-1"></a>  <span class="at">f_mark =</span> <span class="st">&quot;heatmap&quot;</span>,</span>
+<span id="cb9-11"><a href="deg.html#cb9-11" tabindex="-1"></a>  <span class="at">nlevel =</span> <span class="dv">2</span>,</span>
+<span id="cb9-12"><a href="deg.html#cb9-12" tabindex="-1"></a>  <span class="at">pic_w =</span> <span class="fl">4.5</span>,</span>
+<span id="cb9-13"><a href="deg.html#cb9-13" tabindex="-1"></a>  <span class="at">pic_h =</span> <span class="fl">4.5</span>,</span>
+<span id="cb9-14"><a href="deg.html#cb9-14" tabindex="-1"></a>  <span class="at">c_w =</span> <span class="dv">16</span>,</span>
+<span id="cb9-15"><a href="deg.html#cb9-15" tabindex="-1"></a>  <span class="at">c_h =</span> <span class="fl">9.8</span>, <span class="co">#7.4 # 9.9</span></span>
+<span id="cb9-16"><a href="deg.html#cb9-16" tabindex="-1"></a>  <span class="at">c_colors =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;#FFFFCC&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
+<span id="cb9-17"><a href="deg.html#cb9-17" tabindex="-1"></a>  <span class="at">color.num =</span> <span class="dv">100</span>,</span>
+<span id="cb9-18"><a href="deg.html#cb9-18" tabindex="-1"></a>  <span class="at">fontsize =</span> <span class="dv">10</span>,</span>
+<span id="cb9-19"><a href="deg.html#cb9-19" tabindex="-1"></a>  <span class="at">fontsize.col =</span> <span class="dv">12</span>,</span>
+<span id="cb9-20"><a href="deg.html#cb9-20" tabindex="-1"></a>  <span class="at">angle =</span> <span class="st">&quot;90&quot;</span>,</span>
+<span id="cb9-21"><a href="deg.html#cb9-21" tabindex="-1"></a>  <span class="at">cluster_rows =</span> T,</span>
+<span id="cb9-22"><a href="deg.html#cb9-22" tabindex="-1"></a>  <span class="at">cluster_cols =</span> T</span>
+<span id="cb9-23"><a href="deg.html#cb9-23" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="循环各种聚类算法作图" class="section level3 hasAnchor" number="2.3.4">
+<h3><span class="header-section-number">2.3.4</span> 循环各种聚类算法作图<a href="deg.html#循环各种聚类算法作图" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="deg.html#cb10-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ward.D&quot;</span>, <span class="st">&quot;ward.D2&quot;</span>, <span class="st">&quot;single&quot;</span>, <span class="st">&quot;complete&quot;</span>, </span>
+<span id="cb10-2"><a href="deg.html#cb10-2" tabindex="-1"></a><span class="st">&quot;average&quot;</span>, <span class="st">&quot;mcquitty&quot;</span>, </span>
+<span id="cb10-3"><a href="deg.html#cb10-3" tabindex="-1"></a><span class="st">&quot;median&quot;</span>, <span class="st">&quot;centroid&quot;</span>)</span>
+<span id="cb10-4"><a href="deg.html#cb10-4" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;correlation&quot;</span>, <span class="st">&quot;euclidean&quot;</span>, <span class="st">&quot;maximum&quot;</span>, <span class="st">&quot;manhattan&quot;</span>,</span>
+<span id="cb10-5"><a href="deg.html#cb10-5" tabindex="-1"></a>       <span class="st">&quot;canberra&quot;</span>, <span class="st">&quot;binary&quot;</span>, <span class="st">&quot;minkowski&quot;</span>)</span>
+<span id="cb10-6"><a href="deg.html#cb10-6" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> m) {</span>
+<span id="cb10-7"><a href="deg.html#cb10-7" tabindex="-1"></a>  <span class="cf">for</span> (i.d <span class="cf">in</span> d) {</span>
+<span id="cb10-8"><a href="deg.html#cb10-8" tabindex="-1"></a>    <span class="fu">cat</span>(i, i.d, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb10-9"><a href="deg.html#cb10-9" tabindex="-1"></a>    <span class="fu">DEGp_Pheat</span>(</span>
+<span id="cb10-10"><a href="deg.html#cb10-10" tabindex="-1"></a>      sig.expr,</span>
+<span id="cb10-11"><a href="deg.html#cb10-11" tabindex="-1"></a>      <span class="at">gene =</span> show.gene, </span>
+<span id="cb10-12"><a href="deg.html#cb10-12" tabindex="-1"></a>      <span class="at">pheno =</span> groupdf,</span>
+<span id="cb10-13"><a href="deg.html#cb10-13" tabindex="-1"></a>      <span class="at">outdir =</span> <span class="st">&quot;D:/xx/yy&quot;</span>,</span>
+<span id="cb10-14"><a href="deg.html#cb10-14" tabindex="-1"></a>      <span class="at">f_mark =</span> <span class="fu">paste0</span>(<span class="st">&quot;heatmap.m.&quot;</span>, i, <span class="st">&quot;_&quot;</span>, i.d),</span>
+<span id="cb10-15"><a href="deg.html#cb10-15" tabindex="-1"></a>      <span class="at">nlevel =</span> <span class="dv">2</span>,</span>
+<span id="cb10-16"><a href="deg.html#cb10-16" tabindex="-1"></a>      <span class="at">pic_w =</span> <span class="dv">5</span>,</span>
+<span id="cb10-17"><a href="deg.html#cb10-17" tabindex="-1"></a>      <span class="at">pic_h =</span> <span class="dv">8</span>,</span>
+<span id="cb10-18"><a href="deg.html#cb10-18" tabindex="-1"></a>      <span class="at">c_w =</span> <span class="dv">18</span>,</span>
+<span id="cb10-19"><a href="deg.html#cb10-19" tabindex="-1"></a>      <span class="at">c_h =</span> <span class="dv">10</span>,</span>
+<span id="cb10-20"><a href="deg.html#cb10-20" tabindex="-1"></a>      <span class="at">f_z =</span> <span class="dv">10</span>,</span>
+<span id="cb10-21"><a href="deg.html#cb10-21" tabindex="-1"></a>      <span class="at">f_z.col =</span> <span class="dv">14</span>,</span>
+<span id="cb10-22"><a href="deg.html#cb10-22" tabindex="-1"></a>      <span class="at">angle =</span> <span class="st">&quot;90&quot;</span>,</span>
+<span id="cb10-23"><a href="deg.html#cb10-23" tabindex="-1"></a>      <span class="at">cluster_rows =</span> T,</span>
+<span id="cb10-24"><a href="deg.html#cb10-24" tabindex="-1"></a>      <span class="at">cluster_cols =</span> T,</span>
+<span id="cb10-25"><a href="deg.html#cb10-25" tabindex="-1"></a>      <span class="at">clustering_method =</span> i,</span>
+<span id="cb10-26"><a href="deg.html#cb10-26" tabindex="-1"></a>      <span class="at">clustering_distance_rows=</span>i.d</span>
+<span id="cb10-27"><a href="deg.html#cb10-27" tabindex="-1"></a>    )  </span>
+<span id="cb10-28"><a href="deg.html#cb10-28" tabindex="-1"></a>  }</span>
+<span id="cb10-29"><a href="deg.html#cb10-29" tabindex="-1"></a>}</span></code></pre></div>
 
+</div>
 </div>
 </div>
             </section>
