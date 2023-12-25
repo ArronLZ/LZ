@@ -409,7 +409,7 @@ label_gene: 展示基因列表<br/>
 <span id="cb6-21"><a href="deg.html#cb6-21" tabindex="-1"></a><span class="co">#   请将filterc 设置为pvalue可以解决这个现象</span></span>
 <span id="cb6-22"><a href="deg.html#cb6-22" tabindex="-1"></a></span>
 <span id="cb6-23"><a href="deg.html#cb6-23" tabindex="-1"></a><span class="co"># 火山图 无标记 （图片会自动保存）</span></span>
-<span id="cb6-24"><a href="deg.html#cb6-24" tabindex="-1"></a><span class="fu">DEGp_Volcano2</span>(<span class="at">result =</span> pic_data, <span class="at">filterc =</span> <span class="st">&quot;both&quot;</span>, </span>
+<span id="cb6-24"><a href="deg.html#cb6-24" tabindex="-1"></a><span class="fu">DEGp_Volcano2</span>(df_valcano, <span class="at">filterc =</span> <span class="st">&quot;both&quot;</span>, </span>
 <span id="cb6-25"><a href="deg.html#cb6-25" tabindex="-1"></a>              <span class="at">pvalue=</span><span class="fl">0.05</span>, <span class="at">fdr=</span><span class="fl">0.1</span>, <span class="at">logfc.p=</span><span class="dv">1</span>, <span class="at">logfc.n=</span><span class="sc">-</span><span class="dv">1</span>,</span>
 <span id="cb6-26"><a href="deg.html#cb6-26" tabindex="-1"></a>              <span class="at">outdir=</span><span class="st">&quot;result&quot;</span>, <span class="at">filename.base =</span> <span class="st">&quot;DEG_xx&quot;</span>)</span>
 <span id="cb6-27"><a href="deg.html#cb6-27" tabindex="-1"></a></span>
@@ -420,7 +420,7 @@ label_gene: 展示基因列表<br/>
 <span id="cb6-32"><a href="deg.html#cb6-32" tabindex="-1"></a><span class="co"># 查看想展示的基因在不在差异分析总表中</span></span>
 <span id="cb6-33"><a href="deg.html#cb6-33" tabindex="-1"></a><span class="co"># label_gene %in% df_valcano$Gene %&gt;% all</span></span>
 <span id="cb6-34"><a href="deg.html#cb6-34" tabindex="-1"></a><span class="co"># pic_data %&gt;% filter(Row.names %in% label_gene)</span></span>
-<span id="cb6-35"><a href="deg.html#cb6-35" tabindex="-1"></a><span class="fu">DEGp_Volcano2</span>(<span class="at">result =</span> pic_data, <span class="at">filterc =</span> <span class="st">&quot;both&quot;</span>, </span>
+<span id="cb6-35"><a href="deg.html#cb6-35" tabindex="-1"></a><span class="fu">DEGp_Volcano2</span>(df_valcano, <span class="at">filterc =</span> <span class="st">&quot;both&quot;</span>, </span>
 <span id="cb6-36"><a href="deg.html#cb6-36" tabindex="-1"></a>              <span class="at">pvalue=</span><span class="fl">0.05</span>, <span class="at">fdr=</span><span class="fl">0.1</span>, <span class="at">logfc.p=</span><span class="dv">1</span>, <span class="at">logfc.n=</span><span class="sc">-</span><span class="dv">1</span>,</span>
 <span id="cb6-37"><a href="deg.html#cb6-37" tabindex="-1"></a>              <span class="at">outdir=</span><span class="st">&quot;result&quot;</span>, <span class="at">filename.base =</span> <span class="st">&quot;DEG_xx&quot;</span>,</span>
 <span id="cb6-38"><a href="deg.html#cb6-38" tabindex="-1"></a>              <span class="at">label_geneset =</span> <span class="cn">NULL</span>)</span></code></pre></div>

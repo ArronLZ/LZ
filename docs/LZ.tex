@@ -152,7 +152,7 @@
 
 \title{LZ 文档}
 \author{作者：荔枝 \href{mailto:earth_farmer@outlook.com}{\nolinkurl{earth\_farmer@outlook.com}}}
-\date{更新：2023-12-23}
+\date{更新：2023-12-25}
 
 \begin{document}
 \maketitle
@@ -442,7 +442,7 @@ label\_gene: 展示基因列表
 \CommentTok{\#   请将filterc 设置为pvalue可以解决这个现象}
 
 \CommentTok{\# 火山图 无标记 （图片会自动保存）}
-\FunctionTok{DEGp\_Volcano2}\NormalTok{(}\AttributeTok{result =}\NormalTok{ pic\_data, }\AttributeTok{filterc =} \StringTok{"both"}\NormalTok{, }
+\FunctionTok{DEGp\_Volcano2}\NormalTok{(df\_valcano, }\AttributeTok{filterc =} \StringTok{"both"}\NormalTok{, }
               \AttributeTok{pvalue=}\FloatTok{0.05}\NormalTok{, }\AttributeTok{fdr=}\FloatTok{0.1}\NormalTok{, }\AttributeTok{logfc.p=}\DecValTok{1}\NormalTok{, }\AttributeTok{logfc.n=}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}
               \AttributeTok{outdir=}\StringTok{"result"}\NormalTok{, }\AttributeTok{filename.base =} \StringTok{"DEG\_xx"}\NormalTok{)}
 
@@ -453,7 +453,7 @@ label\_gene: 展示基因列表
 \CommentTok{\# 查看想展示的基因在不在差异分析总表中}
 \CommentTok{\# label\_gene \%in\% df\_valcano$Gene \%\textgreater{}\% all}
 \CommentTok{\# pic\_data \%\textgreater{}\% filter(Row.names \%in\% label\_gene)}
-\FunctionTok{DEGp\_Volcano2}\NormalTok{(}\AttributeTok{result =}\NormalTok{ pic\_data, }\AttributeTok{filterc =} \StringTok{"both"}\NormalTok{, }
+\FunctionTok{DEGp\_Volcano2}\NormalTok{(df\_valcano, }\AttributeTok{filterc =} \StringTok{"both"}\NormalTok{, }
               \AttributeTok{pvalue=}\FloatTok{0.05}\NormalTok{, }\AttributeTok{fdr=}\FloatTok{0.1}\NormalTok{, }\AttributeTok{logfc.p=}\DecValTok{1}\NormalTok{, }\AttributeTok{logfc.n=}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}
               \AttributeTok{outdir=}\StringTok{"result"}\NormalTok{, }\AttributeTok{filename.base =} \StringTok{"DEG\_xx"}\NormalTok{,}
               \AttributeTok{label\_geneset =} \ConstantTok{NULL}\NormalTok{)}
