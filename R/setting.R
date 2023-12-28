@@ -70,3 +70,17 @@ setproxy <- function(ngate="http://127.0.0.1:7890") {
 }
 
 
+#' install package by using CRAN or bioconductor
+#' @description install package by using CRAN or bioconductor, if the package is not in
+#' the CRAN, then the function will use bioconductor method to install the package.
+#' @param packs charater(n), the package name you want to install
+#'
+#' @return no
+#' @export
+#'
+#' @author Jiang
+p_install <- function(packs) {
+  for (p in packs) {
+    install(p)
+  }
+}

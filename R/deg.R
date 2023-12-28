@@ -161,6 +161,7 @@ DEG_DESeq2.ana <- function(dds, pval=0.05, fdr=0.1, logfc=1) {
   ### 差异分析总表
   res_df <- data.frame(res)
   eset_norma <- data.frame(counts(dds, normalized=TRUE), check.names = F)
+  eset_norma <- log2(eset_norma + 1)
   res_df <- merge(res_df, eset_norma, by="row.names", sort=FALSE)
   res_df <- res_df %>% dplyr::rename(Gene = 'Row.names',
                                      log2FC = log2FoldChange,

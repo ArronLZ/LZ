@@ -349,6 +349,6 @@ DEG_prepareData.XENA <- function(object, ..., eset.islog = T, id_dot = T,
 #' @rdname DEG_prepareData
 #' @export
 DEG_prepareData.DEeset <- function(object, ..., f_mark = "DE") {
-  glist <- list(eset = object$eset, group = object$group, f_mark = f_mark)
+  glist <- list(eset = object$eset2, group = object$group, f_mark = f_mark)
   return(glist)
 }
