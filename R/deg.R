@@ -336,7 +336,7 @@ DEG_voom <- function(exprset.group, pval=0.05, fdr=0.1, logfc=1) {
   colnames(tab) <- c("Gene", "log2FC", "AveExp", "T", "PValue", "FDR", "B")
   tab <- merge(tab, cpm.tmm, by = 0)
   tab <- tibble::column_to_rownames(tab, var = "Row.names")
-  tab <- tab %>% dplyr::select(Gene, log2FC, PValue, FDR, everything())
+  # tab <- tab %>% dplyr::select(Gene, log2FC, PValue, FDR, everything())
   tab <- tab %>% dplyr::arrange(desc(log2FC), PValue)
   
   deg <- tab[which(tab$PValue < pval & tab$FDR < fdr & abs(tab$log2FC) > logfc),]
@@ -376,11 +376,15 @@ limma.general <- function(eset, group) {
   tab <- topTable(fit, coef = 2, number = Inf)
   tab <- merge(tab, eset, by = 0)
   tab <- tab %>%
-    dplyr::rename(ID=Row.names, log2FC=logFC, PValue=P.Value, FDR=adj.P.Val) %>%
-    dplyr::select(ID, log2FC, PValue, FDR, names(eset), everything()) %>%
+    dplyr::rename(Gene=Row.names, log2FC=logFC, PValue=P.Value, FDR=adj.P.Val) %>%
+    # dplyr::select(Gene, log2FC, PValue, FDR, names(eset), everything()) %>%
     dplyr::arrange(desc(log2FC), PValue)
+  
+  deg <- tab[which(tab$PValue < pval & tab$FDR < fdr & abs(tab$log2FC) > logfc),]
+  return(list(groupdata = group, resdf=tab, deg=deg))
   return(tab)
 }
+
 
 
 #' Transformat DEG anlysis result obj to GSEA APP files

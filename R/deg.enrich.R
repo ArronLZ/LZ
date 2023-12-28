@@ -104,6 +104,26 @@ DEG_prepareGOglist <- function(resdf, logfc, p=0.05, fdr=0.1) {
 }
 
 
+#' Enrich analysis data prepare
+#' @description Transform the DEG anlysis object(all_father$DIFF.ALL') to GO analsis
+#' 
+#' @param resdf dataframe, the DEG anlysis object(all_father$DIFF.ALL')
+#' @param fc.list list, name list such as list('1.5' = log2(1.5), '2' = log2(2))
+#' @param p number, pvale
+#' @param fdr number, fdr
+#'
+#' @return list
+#' @export
+#'
+#' @author Jiang
+DEG_prepareENRICH <- function(resdf, fc.list, p = 0.05, fdr = 0.1) {
+  gogenelist <- lapply(fc.list, function(x) {
+    DEG_prepareGOglist(resdf, logfc = x, p = p, fdr = fdr) })
+  names(gogenelist) <- paste0("p", p, ";q", fdr, ";fc", names(gogenelist))
+  return(gogenelist)
+}
+
+
 #' run KEGG analysis inFCs(2, 1.5) in batches(upgene, downgene, allgene)
 #' @description run GO analysis in batches(upgene, downgene, allgene) and write result to xlsx
 #'
