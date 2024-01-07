@@ -168,7 +168,25 @@ DEG_prepareData.default <- function(...,
   }
   
   
-  # sekf function
+  # sekf function 1
+  read_group <- function() {
+    # group <- read.csv(group_file, row.names = 1)
+    if (is.data.frame(group_file) | is.character(group_file)) {
+      tryCatch({
+        if (is.data.frame(group_file)) {
+          group <- group_file
+        } else {
+          group <- read.csv(group_file, row.names = 1)
+        }
+      }, error = function(e) {
+        stop("eset_file must be data.frame or character(a valid file path)")
+      })
+    } else {
+      stop("eset_file must be data.frame or character")
+    }
+    return(group)
+  }
+  # sekf function 2
   checkgroup <- function(eset, group) {
     # check if the rowname of group is all from the colnames of eset -----
     if ( all(rownames(group) %in% names(eset)) ) {
@@ -198,7 +216,7 @@ DEG_prepareData.default <- function(...,
   
   if (!oop) {
     # id annot or not ///  ----------
-    group <- read.csv(group_file, row.names = 1)
+    group <- read_group()
     glist <- checkgroup(eset = eset, group = group)
     # check if the rowname of group is all from the colnames of eset /// -----
     return(glist)
@@ -217,14 +235,14 @@ DEG_prepareData.default <- function(...,
         method = 1)
       return(DEeset)
     } else {
-      group <- read.csv(group_file, row.names = 1)
+      group <- read_group()
       glist <- checkgroup(eset = eset, group = group)
       DEeset <- YZ::DEeset$new(mark = f_mark, eset = glist$eset, group = glist$group)
       DEeset$updateGroup_Eset(
-        suffix1 = oop.group.suffix1,
-        suffix2 = oop.group.suffix2,
-        group1 = oop.group.group1,
-        group2 = oop.group.group2,
+        #suffix1 = oop.group.suffix1,
+        #suffix2 = oop.group.suffix2,
+        #group1 = oop.group.group1,
+        #group2 = oop.group.group2,
         method = 2)
       return(DEeset)
     }
