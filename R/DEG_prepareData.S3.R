@@ -104,12 +104,28 @@ DEG_prepareData.default <- function(...,
                                     oop.group.suffix2 = "11A",
                                     oop.group.group1 = "Tumor",
                                     oop.group.group2 = "Normal") {
+  stopifnot(!missing(eset_file))
   if (!oop) {
     if ( missing(group_file) ) {
       stop("如果oop = F，则必须设置group_file参数")
     }
   }
-  eset <- data.table::fread(eset_file, data.table = F)
+  
+  # eset <- data.table::fread(eset_file, data.table = F)
+  if (is.data.frame(eset_file) | is.character(eset_file)) {
+    tryCatch({
+      if (is.data.frame(eset_file)) {
+        eset <- eset_file
+      } else {
+        eset <- data.table::fread(eset_file, data.table = F)
+      }
+    }, error = function(e) {
+      stop("eset_file must be data.frame or character(a valid file path)")
+    })
+  } else {
+    stop("eset_file must be data.frame or character")
+  }
+  
   if (eset.islog) { eset[, 2:ncol(eset)] <- round(2^eset[, 2:ncol(eset)] - 1) }
   eset <- quchong(eset = eset, col.by = col.by, col.del = col.del,
                   auto.del.character = auto.del.character)
