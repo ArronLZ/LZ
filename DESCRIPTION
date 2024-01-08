@@ -46,7 +46,8 @@ Imports:
     cowplot,
     dplyr,
     readxl,
-    KEGGREST
+    KEGGREST,
+    qvalue
 Depends:
     stringr,
     writexl,
