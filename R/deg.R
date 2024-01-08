@@ -370,6 +370,7 @@ DEG_voom <- function(exprset.group, pval=0.05, fdr=0.1, logfc=1) {
 #' diff <- limma.general(eset = df, group = group)
 #' }
 limma.general <- function(eset, group, pval = 0.05, fdr = 0.1, logfc = log2(2)) {
+  stopifnot(max(eset) < 50, all(colnames(eset) == rownames(group)))
   names(group)[1] <- "Type"
   group_list <- group$Type
   design <- model.matrix(~group_list) # ~法,截距法
