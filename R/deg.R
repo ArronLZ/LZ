@@ -387,7 +387,6 @@ limma.general <- function(eset, group, pval = 0.05, fdr = 0.1, logfc = log2(2)) 
   
   deg <- tab[which(tab$PValue < pval & tab$FDR < fdr & abs(tab$log2FC) > logfc),]
   return(list(groupdata = group, resdf=tab, deg=deg))
-  return(tab)
 }
 
 
