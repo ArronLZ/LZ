@@ -152,7 +152,7 @@
 
 \title{LZ 文档}
 \author{作者：荔枝 \href{mailto:earth_farmer@outlook.com}{\nolinkurl{earth\_farmer@outlook.com}}}
-\date{更新：2023-12-25}
+\date{更新：2024-01-08}
 
 \begin{document}
 \maketitle
@@ -262,6 +262,8 @@ email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
 \end{Shaded}
 
 \chapter{RNAseq差异分析}\label{deg}
+
+此版为基础版流程，如果未接触过这个版本，可以考虑直接跳过这个版本，直接学习新版流程。详细见\hyperref[rnaseq_new_pipeline]{RNAseq新版简化流程}。
 
 \section{差异分析}\label{deg-mian}
 
@@ -846,11 +848,128 @@ geneZ & -5.2 \\
 
 自行搜素方法，网络上有大量图文教程 \ldots{}
 
-\chapter{差异及富集分析可视化专题}\label{visual}
+\section{转录组其它可视化}\label{visual}
 
 On the way \ldots{}
 
-\chapter{RNAseq上游流程}\label{rnaseq-rsubread}
+\chapter{RNAseq新版简化流程}\label{rnaseq_new_pipeline}
+
+此版本流程为升级版简化一键流程，基于面向对象对一些分析步骤进行了封装。适合从头从counts数据进行的整套分析流程，包括差异分析，富集分析，GSEA分析，画图等。
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{rm}\NormalTok{(}\AttributeTok{list =} \FunctionTok{ls}\NormalTok{());}\FunctionTok{gc}\NormalTok{()}
+\FunctionTok{library}\NormalTok{(LZ)}
+\FunctionTok{library}\NormalTok{(YZ)}
+\FunctionTok{library}\NormalTok{(DESeq2)}
+\FunctionTok{library}\NormalTok{(parallel)}
+\FunctionTok{library}\NormalTok{(BiocParallel)}
+\FunctionTok{library}\NormalTok{(edgeR)}
+\FunctionTok{library}\NormalTok{(limma)}
+\FunctionTok{library}\NormalTok{(tibble)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(clusterProfiler)}
+
+\CommentTok{\# 0. 参数设置 {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 需要设置的部分}
+\NormalTok{n }\OtherTok{=} \DecValTok{6}
+\NormalTok{resultdir }\OtherTok{\textless{}{-}} \StringTok{"./05.diff.rna"}
+\NormalTok{mark }\OtherTok{\textless{}{-}} \StringTok{"RNA"}
+\NormalTok{pval }\OtherTok{=} \FloatTok{0.05}
+\NormalTok{fdr }\OtherTok{=} \FloatTok{0.1}
+\NormalTok{logfc }\OtherTok{=} \FunctionTok{log2}\NormalTok{(}\FloatTok{1.5}\NormalTok{)}
+\CommentTok{\# 无需修改部分，按默认即可}
+\FunctionTok{register}\NormalTok{(}\FunctionTok{SnowParam}\NormalTok{(n))}
+\NormalTok{resultdir.sub }\OtherTok{\textless{}{-}} \FunctionTok{paste0}\NormalTok{(}\FunctionTok{dirclean}\NormalTok{(resultdir), }\StringTok{"/"}\NormalTok{, mark)}
+
+\CommentTok{\# 1. 读入数据 {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{diff.subtype }\OtherTok{\textless{}{-}} \FunctionTok{DEG\_prepareData}\NormalTok{(}\AttributeTok{eset\_file=}\StringTok{"./data/RNA.csv"}\NormalTok{, }
+                                \AttributeTok{eset.islog =}\NormalTok{ F,}
+                                \AttributeTok{id\_dot =}\NormalTok{ F, }\AttributeTok{col.by =} \StringTok{"gene\_name"}\NormalTok{,}
+                                \AttributeTok{col.del=}\ConstantTok{NULL}\NormalTok{, }\AttributeTok{auto.del.character=}\NormalTok{T,}
+                                \AttributeTok{annot\_trans=}\NormalTok{F, }\AttributeTok{f\_mark=}\StringTok{"rna"}\NormalTok{,}
+                                \AttributeTok{oop =}\NormalTok{ T,}
+                                \AttributeTok{group\_file =} \StringTok{"./data/RNA\_group.csv"}\NormalTok{)}
+\CommentTok{\# 2. 差异分析 {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\NormalTok{diff.subtype.r }\OtherTok{\textless{}{-}}\NormalTok{ diff.subtype}\SpecialCharTok{$}\FunctionTok{runDEG}\NormalTok{(}\AttributeTok{f\_mark =}\NormalTok{ mark, }
+                                      \AttributeTok{outdir =}\NormalTok{ resultdir, }
+                                      \AttributeTok{pval =}\NormalTok{ pval, }\AttributeTok{fdr =}\NormalTok{ fdr, }\AttributeTok{logfc =}\NormalTok{ logfc)}
+\DocumentationTok{\#\#\# diff.e \textless{}{-} DEeset$runDEG(f\_mark = "pq0.01fc1e", outdir = "./01.diff/", }
+\DocumentationTok{\#\#\#                         pval = 0.01, fdr = 0.01, logfc = 1, method = "edger")}
+\DocumentationTok{\#\#\# diff.v \textless{}{-} DEeset$runDEG(f\_mark = "pq0.01fc1v", outdir = "./01.diff/", }
+\DocumentationTok{\#\#\#                         pval = 0.01, fdr = 0.01, logfc = 1, method = "voom")}
+\CommentTok{\# help("DEeset")}
+\CommentTok{\# help("DEres")}
+\CommentTok{\# 2.1 画差异基因分布火山图}
+\NormalTok{pic.valcano }\OtherTok{\textless{}{-}}\NormalTok{ diff.subtype.r}\SpecialCharTok{$}\FunctionTok{pic.valcano}\NormalTok{(}\AttributeTok{outdir =}\NormalTok{ resultdir.sub,}
+                                          \AttributeTok{filterc =} \StringTok{"pvalue"}\NormalTok{,}
+                                          \AttributeTok{pvalue =}\NormalTok{ pval,}
+                                          \AttributeTok{fdr =}\NormalTok{ fdr,}
+                                          \AttributeTok{logfc.p =} \FunctionTok{log2}\NormalTok{(}\FloatTok{1.5}\NormalTok{),}
+                                          \AttributeTok{logfc.n =} \SpecialCharTok{{-}}\FunctionTok{log2}\NormalTok{(}\FloatTok{1.5}\NormalTok{))}
+\DocumentationTok{\#\#\# pic.valcano.e \textless{}{-} diff.e$pic.valcano(outdir = "./01.diff/pq0.01fc1e")}
+\DocumentationTok{\#\#\# pic.valcano.v \textless{}{-} diff.v$pic.valcano(outdir = "./01.diff/pq0.01fc1v")}
+\DocumentationTok{\#\#\# deg.in \textless{}{-} Reduce(intersect, list(diff$glist.deg, diff.e$glist.deg, diff.v$glist.deg))}
+\DocumentationTok{\#\#\# grep("PHLDB2", deg.in)}
+
+\FunctionTok{grep}\NormalTok{(}\StringTok{"EGFR"}\NormalTok{, diff.subtype.r}\SpecialCharTok{$}\NormalTok{glist.deg)}
+\FunctionTok{grep}\NormalTok{(}\StringTok{"EGFR"}\NormalTok{, }\FunctionTok{rownames}\NormalTok{(diff.subtype}\SpecialCharTok{$}\NormalTok{eset2))}
+\NormalTok{diff.subtype.r}\SpecialCharTok{$}\NormalTok{resdf }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{filter}\NormalTok{(Gene }\SpecialCharTok{==} \StringTok{"EGFR"}\NormalTok{)}
+
+\CommentTok{\# 3. 富集分析  {-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}{-}}
+\CommentTok{\# 3.1 默认阈值下富集分析}
+\NormalTok{enrich }\OtherTok{\textless{}{-}}\NormalTok{ diff.subtype.r}\SpecialCharTok{$}\FunctionTok{runENRICH}\NormalTok{(}\AttributeTok{outdir =} \FunctionTok{paste0}\NormalTok{(resultdir.sub, }\StringTok{"/rich"}\NormalTok{))}
+\CommentTok{\# 3.2 不同阈值下富集分析  }
+\CommentTok{\# 3.2.1 阈值1}
+\NormalTok{diff.subtype.r}\SpecialCharTok{$}\NormalTok{glist.deg.multi }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{names}\NormalTok{()}
+\NormalTok{diff.subtype.r}\SpecialCharTok{$}\NormalTok{fc.list}
+\NormalTok{diff.subtype.r}\SpecialCharTok{$}\FunctionTok{update.glist.deg.multi}\NormalTok{(}
+  \AttributeTok{p =} \FloatTok{0.05}\NormalTok{,}
+  \AttributeTok{fdr =} \FloatTok{0.05}\NormalTok{,}
+  \AttributeTok{fc.list =} \FunctionTok{list}\NormalTok{(}\StringTok{\textquotesingle{}1.5\textquotesingle{}} \OtherTok{=} \FunctionTok{log2}\NormalTok{(}\FloatTok{1.5}\NormalTok{))}
+\NormalTok{  )}
+\NormalTok{diff.subtype.r}\SpecialCharTok{$}\NormalTok{glist.deg.multi }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{names}\NormalTok{()}
+\NormalTok{enrich2 }\OtherTok{\textless{}{-}}\NormalTok{ diff.subtype.r}\SpecialCharTok{$}\FunctionTok{runENRICH}\NormalTok{(}
+  \AttributeTok{genelist.filter =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{outdir =} \FunctionTok{paste0}\NormalTok{(resultdir.sub, }\StringTok{"/rich"}\NormalTok{)}
+\NormalTok{  )}
+\CommentTok{\# 3.2.2 阈值2}
+\NormalTok{diff.subtype.r}\SpecialCharTok{$}\NormalTok{glist.deg.multi }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{names}\NormalTok{()}
+\NormalTok{diff.subtype.r}\SpecialCharTok{$}\NormalTok{fc.list}
+\NormalTok{diff.subtype.r}\SpecialCharTok{$}\FunctionTok{update.glist.deg.multi}\NormalTok{(}
+  \AttributeTok{p =} \FloatTok{0.01}\NormalTok{,}
+  \AttributeTok{fdr =} \FloatTok{0.01}\NormalTok{,}
+  \AttributeTok{fc.list =} \FunctionTok{list}\NormalTok{(}\StringTok{\textquotesingle{}1.6\textquotesingle{}} \OtherTok{=} \FunctionTok{log2}\NormalTok{(}\FloatTok{1.6}\NormalTok{))}
+\NormalTok{  )}
+\NormalTok{diff.subtype.r}\SpecialCharTok{$}\NormalTok{glist.deg.multi }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{names}\NormalTok{()}
+\NormalTok{enrich2 }\OtherTok{\textless{}{-}}\NormalTok{ diff.subtype.r}\SpecialCharTok{$}\FunctionTok{runENRICH}\NormalTok{(}
+  \AttributeTok{genelist.filter =} \DecValTok{1}\NormalTok{,}
+  \AttributeTok{outdir =} \FunctionTok{paste0}\NormalTok{(resultdir.sub, }\StringTok{"/rich"}\NormalTok{)}
+\NormalTok{  )}
+\CommentTok{\# 3.2.3 阈值3 (批量分析)}
+\NormalTok{diff.subtype.r}\SpecialCharTok{$}\FunctionTok{update.glist.deg.multi}\NormalTok{()}
+\NormalTok{enrich3 }\OtherTok{\textless{}{-}}\NormalTok{ diff}\SpecialCharTok{$}\FunctionTok{runENRICH}\NormalTok{(}\AttributeTok{genelist.filter=}\FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{8}\NormalTok{), }
+                          \AttributeTok{outdir =} \FunctionTok{paste0}\NormalTok{(resultdir.sub, }\StringTok{"/rich"}\NormalTok{)}
+\NormalTok{                          )}
+\CommentTok{\# 3.3 画图  }
+\NormalTok{keggdf }\OtherTok{\textless{}{-}}\NormalTok{ enrich}\SpecialCharTok{$}\NormalTok{KEGGDF }
+\NormalTok{pdata }\OtherTok{\textless{}{-}}\NormalTok{ keggdf}\SpecialCharTok{$}\NormalTok{p0}\FloatTok{.05}\NormalTok{q0}\FloatTok{.05}\NormalTok{FC1}\FloatTok{.5}\SpecialCharTok{$}\NormalTok{all  }\CommentTok{\# 要酌情修改p0.05q0.05FC1.5}
+\FunctionTok{DEGp\_Dotplot2}\NormalTok{(}\AttributeTok{df=}\NormalTok{pdata, }
+              \AttributeTok{resultdir =} \FunctionTok{paste0}\NormalTok{(resultdir.sub, }\StringTok{"/rich/***"}\NormalTok{), }\CommentTok{\# 要酌情修改***}
+              \AttributeTok{filemark =} \StringTok{"heihei"}\NormalTok{, }\AttributeTok{pcompress =} \DecValTok{1}\NormalTok{)}
+
+\CommentTok{\# 4. GSEA分析}
+\CommentTok{\# 4.1 GSEA可视化分析}
+\NormalTok{diff.subtype.r}\SpecialCharTok{$}\NormalTok{glist.gsea }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{runAPP\_GSEA}\NormalTok{()}
+\CommentTok{\# 4.1 GSEA批量化分析}
+\CommentTok{\# On they way ...}
+
+\FunctionTok{save.image}\NormalTok{(}\FunctionTok{paste0}\NormalTok{(resultdir.sub, }\StringTok{"/1.diff.image.Rdata"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\chapter{RNAseq上游分析流程}\label{rnaseq-rsubread}
 
 On the way \ldots{}
 
