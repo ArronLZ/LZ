@@ -34,13 +34,13 @@ Title
 }
 \examples{
 \dontrun{
-pn_eset <- data.table::fread("./protein_count_pn.csv", data.table = F)
-pn_eset <- pn_eset \%>\% tibble::column_to_rownames(var = "Protein")
+eset <- data.table::fread("./protein_count_pn.csv", data.table = F)
+eset <- eset \%>\% tibble::column_to_rownames(var = "Protein")
 
 group <- read.csv("./group.csv", row.names = 1)
 group$Type <- as.factor(group$Type)
 
-diff <- DEG_tw.test(eset = df, group = group)
+diff <- DEG_tw.test(eset = eset, group = group)
 }
 }
 \author{

@@ -525,19 +525,23 @@ DEGres_ToRICH <- function(diffan.obj, p, q, f, mark, outdir) {
 #' 
 #' @examples
 #' \dontrun{
-#' pn_eset <- data.table::fread("./protein_count_pn.csv", data.table = F)
-#' pn_eset <- pn_eset %>% tibble::column_to_rownames(var = "Protein")
+#' eset <- data.table::fread("./protein_count_pn.csv", data.table = F)
+#' eset <- eset %>% tibble::column_to_rownames(var = "Protein")
 #' 
 #' group <- read.csv("./group.csv", row.names = 1)
 #' group$Type <- as.factor(group$Type)
 #' 
-#' diff <- DEG_tw.test(eset = df, group = group)
+#' diff <- DEG_tw.test(eset = eset, group = group)
 #' }
 #' @author Jiang
 DEG_tw.test <- function(eset, group, method = "wilcox.test",
                         pval = 0.05, fdr = 0.1, logfc = log2(2)) {
   stopifnot(all(colnames(eset) == rownames(group)))
   stopifnot(method == "wilcox.test" | method == "t.test")
+  if (names(group)[1] != "Type") {
+    warning("Just support the first coloumn and the first coloumn of group should be Type, the coloumn name will be changed to Type.")
+    names(group)[1] <- "Type"
+  }
   if (method == "wilcox.test") {
     res <- apply(eset, 1, function(x) 
       wilcox.test(as.numeric(x) ~ as.character(group$Type))$p.value)
@@ -549,8 +553,8 @@ DEG_tw.test <- function(eset, group, method = "wilcox.test",
   res <- cbind(PValue = res, eset)
   res$Gene <- rownames(res)
   duibi <- levels(group$Type)
-  res[, duibi[1]] <- rowMeans(pn_eset[, rownames(group)[group$Type == duibi[1]]])
-  res[, duibi[2]] <- rowMeans(pn_eset[, rownames(group)[group$Type == duibi[2]]])
+  res[, duibi[1]] <- rowMeans(eset[, rownames(group)[group$Type == duibi[1]]])
+  res[, duibi[2]] <- rowMeans(eset[, rownames(group)[group$Type == duibi[2]]])
   res[, duibi[1]] <- ifelse(res[, duibi[1]] == 0, 1, res[, duibi[1]])
   res[, duibi[2]] <- ifelse(res[, duibi[2]] == 0, 1, res[, duibi[2]])
   res$log2FC <- log2(res[, duibi[2]] / res[, duibi[1]])
