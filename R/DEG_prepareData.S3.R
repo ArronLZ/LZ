@@ -379,10 +379,28 @@ DEG_prepareData.XENA <- function(object, ..., eset.islog = T, id_dot = T,
   }
 }
 
+
 #' @method DEG_prepareData DEeset
 #' @rdname DEG_prepareData
 #' @export
 DEG_prepareData.DEeset <- function(object, ..., f_mark = "DE") {
   glist <- list(eset = object$eset2, group = object$group, f_mark = f_mark)
   return(glist)
+}
+
+
+#' Create a new XENA object
+#' @description Create a new XENA object
+#' 
+#' @param eset.count dataframe, the exprs dataframe, column is gene_id\cr
+#' the last column is the sample, row is the gene.
+#' @param info character, the information of eset.count
+#'
+#' @return a XENA object
+#' @export
+newXENA <- function(eset.count, info) {
+  # requireNamespace("YZ")
+  xenadb <- YZ::Class("XENA") #YZ package
+  xenadb$new(xenadb, "eset.count", eset.count, info = info)
+  return(xenadb)
 }
