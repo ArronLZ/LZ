@@ -4,7 +4,15 @@
 \alias{quchong}
 \title{delete the duplicate name of the first column of dataframe}
 \usage{
-quchong(eset, col.by, col.del = NULL, auto.del.character = T)
+quchong(
+  eset,
+  col.by,
+  col.del = NULL,
+  auto.del.character = T,
+  summarise = F,
+  summarise.fun = "mean",
+  keep.one.fun = "mean"
+)
 }
 \arguments{
 \item{eset}{dataframe, the first column must be gene, type: character}
@@ -14,6 +22,14 @@ quchong(eset, col.by, col.del = NULL, auto.del.character = T)
 \item{col.del}{character, manually delete some column}
 
 \item{auto.del.character}{logical, if auto delete the column those class is character}
+
+\item{summarise}{logical, if summarise the data by col.by, if the character column contrain \cr
+important information, meaning that you can't summarise some rows to one row, \cr
+you should set this param to FALSE and use keep.one.fun to keep one row with not summarise.}
+
+\item{summarise.fun}{character, the summarise function, default is mean, support mean, median, max}
+
+\item{keep.one.fun}{character, the keep one function, default is mean, support mean, median}
 }
 \value{
 dataframe

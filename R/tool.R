@@ -4,10 +4,15 @@
 #' @param col.by character, delete the duplicate by this column
 #' @param col.del character, manually delete some column
 #' @param auto.del.character logical, if auto delete the column those class is character
+#' @param summarise logical, if summarise the data by col.by, if the character column contrain \cr
+#' important information, meaning that you can't summarise some rows to one row, \cr
+#' you should set this param to FALSE and use keep.one.fun to keep one row with not summarise.
+#' @param summarise.fun character, the summarise function, default is mean, support mean, median, max
+#' @param keep.one.fun character, the keep one function, default is mean, support mean, median
 #'
 #' @return dataframe
 #' @export
-#' @import dplyr
+#' @importFrom dplyr `%>%` arrange group_by summarise_all
 #' @importFrom tibble column_to_rownames
 #' 
 #' @author Jiang
@@ -20,7 +25,9 @@
 #'   ENSG00000186891     63     50
 #'   ENSG00000160072   1218   1023
 #' }
-quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T) {
+quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T,
+                    summarise = F, summarise.fun = "mean",
+                    keep.one.fun = "mean") {
   if (!is.null(col.del)) {
     eset <- eset[, -col.del]
     cat("!!! 请注意 ", col.del, "列被删除\n")
@@ -32,22 +39,52 @@ quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T) {
     stop("eset数据整体格式不对，数据中没有一列是数值型变量，请正确载入数据")
   }
   # col.by.num <- match(col.by, names(eset))
-  if (is.numeric(eset[, col.by]) == T) {
+  if (is.numeric(eset[, col.by])) {
     stop("col.by列的变量类型必须为character, 请注意数据col.by列是否为gene")
   }
-  # names(eset)[col.by.num] <- "IDtemplz"
-  eset$MEAN <- abs(rowMeans(eset[, sapply(eset, is.numeric)]))
-  eset <- dplyr::arrange(eset, MEAN)
-  eset <- eset[!duplicated(eset[, col.by]), ]
-  eset <- eset[!is.na(eset[, col.by]), ]
-  rownames(eset) <- NULL
-  eset <- tibble::column_to_rownames(eset, var = col.by)
-  if (!is.null(eset$MEAN)) { eset$MEAN <- NULL }
-  if (auto.del.character & (sum(!sapply(eset, is.numeric)) > 0) ) {
-    eset <- eset[, !sapply(eset, is.numeric)]
-    cat("!!! 请注意 ", names(eset)[!sapply(eset, is.numeric)], "列被删除\n")
+  if (sum(duplicated(eset[, col.by])) == 0) {
+    cat(col.by, "列数据中没有重复值，无需去重，返回原始数据\n")
+    return(eset)
   }
-  return(eset)
+  #####
+  # method: summarise
+  if (summarise) {
+    if (summarise.fun %in% c("mean", "median", "max")) {
+      if (summarise.fun == "mean") {
+        eset <- eset %>% group_by(col.by) %>% summarise_all(mean)
+      } else if (summarise.fun == "median") {
+        eset <- eset %>% group_by(col.by) %>% summarise_all(median)
+      } else { # max  #  if (summarise.fun == "max") 
+        eset <- eset %>% group_by(col.by) %>% summarise_all(max)
+      }
+      return(eset)
+    } else {
+      stop("summarise.fun参数只能为mean, median, max中的一个")
+    }
+  }
+  # names(eset)[col.by.num] <- "IDtemplz"
+  # method: keep one
+  if (keep.one.fun %in% c("mean", "median")) {
+    if (keep.one.fun == "mean") {
+      eset$MEAN <- abs(rowMeans(eset[, sapply(eset, is.numeric)]))
+    } else {  # meidan
+      eset$MEAN <- abs(apply(eset[, sapply(eset, is.numeric)], 1, median))
+    }
+    ###
+    eset <- dplyr::arrange(eset, MEAN)
+    eset <- eset[!duplicated(eset[, col.by]), ]
+    eset <- eset[!is.na(eset[, col.by]), ]
+    rownames(eset) <- NULL
+    eset <- tibble::column_to_rownames(eset, var = col.by)
+    if (!is.null(eset$MEAN)) { eset$MEAN <- NULL }
+    if (auto.del.character & (sum(!sapply(eset, is.numeric)) > 0) ) {
+      eset <- eset[, !sapply(eset, is.numeric)]
+      cat("!!! 请注意 ", names(eset)[!sapply(eset, is.numeric)], "列被删除\n")
+    }
+    return(eset)
+  } else {
+    stop("keep.one.fun参数只能为mean, median中的一个")
+  }
 }
 
 
