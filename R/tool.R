@@ -49,41 +49,45 @@ quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T,
   #####
   # method: summarise
   if (summarise) {
+    eset <- eset %>% dplyr::rename(tIndex = col.by)
     if (summarise.fun %in% c("mean", "median", "max")) {
       if (summarise.fun == "mean") {
-        eset <- eset %>% group_by(col.by) %>% summarise_all(mean)
+        eset <- eset %>% group_by(tIndex) %>% summarise_all(mean)
       } else if (summarise.fun == "median") {
-        eset <- eset %>% group_by(col.by) %>% summarise_all(median)
+        eset <- eset %>% group_by(tIndex) %>% summarise_all(median)
       } else { # max  #  if (summarise.fun == "max") 
-        eset <- eset %>% group_by(col.by) %>% summarise_all(max)
+        eset <- eset %>% group_by(tIndex) %>% summarise_all(max)
       }
+      eset <- eset[!is.na(eset[, "tIndex"]), ]
+      eset <- tibble::column_to_rownames(eset, var = "tIndex")
       return(eset)
     } else {
       stop("summarise.fun参数只能为mean, median, max中的一个")
     }
-  }
-  # names(eset)[col.by.num] <- "IDtemplz"
-  # method: keep one
-  if (keep.one.fun %in% c("mean", "median")) {
-    if (keep.one.fun == "mean") {
-      eset$MEAN <- abs(rowMeans(eset[, sapply(eset, is.numeric)]))
-    } else {  # meidan
-      eset$MEAN <- abs(apply(eset[, sapply(eset, is.numeric)], 1, median))
-    }
-    ###
-    eset <- dplyr::arrange(eset, MEAN)
-    eset <- eset[!duplicated(eset[, col.by]), ]
-    eset <- eset[!is.na(eset[, col.by]), ]
-    rownames(eset) <- NULL
-    eset <- tibble::column_to_rownames(eset, var = col.by)
-    if (!is.null(eset$MEAN)) { eset$MEAN <- NULL }
-    if (auto.del.character & (sum(!sapply(eset, is.numeric)) > 0) ) {
-      eset <- eset[, !sapply(eset, is.numeric)]
-      cat("!!! 请注意 ", names(eset)[!sapply(eset, is.numeric)], "列被删除\n")
-    }
-    return(eset)
   } else {
-    stop("keep.one.fun参数只能为mean, median中的一个")
+    # names(eset)[col.by.num] <- "IDtemplz"
+    # method: keep one
+    if (keep.one.fun %in% c("mean", "median")) {
+      if (keep.one.fun == "mean") {
+        eset$MEAN <- abs(rowMeans(eset[, sapply(eset, is.numeric)]))
+      } else {  # meidan
+        eset$MEAN <- abs(apply(eset[, sapply(eset, is.numeric)], 1, median))
+      }
+      ###
+      eset <- dplyr::arrange(eset, MEAN)
+      eset <- eset[!duplicated(eset[, col.by]), ]
+      eset <- eset[!is.na(eset[, col.by]), ]
+      rownames(eset) <- NULL
+      eset <- tibble::column_to_rownames(eset, var = col.by)
+      if (!is.null(eset$MEAN)) { eset$MEAN <- NULL }
+      if (auto.del.character & (sum(!sapply(eset, is.numeric)) > 0) ) {
+        eset <- eset[, !sapply(eset, is.numeric)]
+        cat("!!! 请注意 ", names(eset)[!sapply(eset, is.numeric)], "列被删除\n")
+      }
+      return(eset)
+    } else {
+      stop("keep.one.fun参数只能为mean, median中的一个")
+    }
   }
 }
 
