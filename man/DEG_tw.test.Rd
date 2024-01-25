@@ -14,7 +14,7 @@ DEG_tw.test(
 )
 }
 \arguments{
-\item{eset}{data.frame, the exprs data, the data should not be log2 transformed}
+\item{eset}{data.frame, the exprs data, the data must not be log2 transformed}
 
 \item{group}{data.frame, the pheno information, the first coloumn is the type information and should be factor.}
 

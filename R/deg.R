@@ -347,8 +347,8 @@ DEG_voom <- function(exprset.group, pval=0.05, fdr=0.1, logfc=1) {
 #' General compare the differnt ID(Gene) between the group B vs A
 #' @description General compare the differnt ID(Gene) between the group B vs A
 #'
-#' @param eset data.frame, the exprs data
-#' @param group data.frame, the pheno information, the first coloumn is the type information and should be factor.
+#' @param eset data.frame, the exprs data, must be log2 transformed
+#' @param group data.frame, the pheno information, the first coloumn is the type information and must be factor.
 #' @param pval number, the pvalue cutoff
 #' @param fdr number, the fdr cutoff
 #' @param logfc number, the log2(fc) value cutoff
@@ -370,10 +370,12 @@ DEG_voom <- function(exprset.group, pval=0.05, fdr=0.1, logfc=1) {
 #' diff <- limma.general(eset = df, group = group)
 #' }
 limma.general <- function(eset, group, pval = 0.05, fdr = 0.1, logfc = log2(2)) {
-  stopifnot(max(eset) < 50, all(colnames(eset) == rownames(group)))
   names(group)[1] <- "Type"
+  stopifnot(max(eset) < 25, all(colnames(eset) == rownames(group)),
+            is.factor(group$Type))
   group_list <- group$Type
-  design <- model.matrix(~group_list) # ~法,截距法
+  # ~法,截距法
+  design <- model.matrix(~group_list) 
   colnames(design) <- levels(group_list)
   rownames(design) <- colnames(eset)
   # ~三部曲
@@ -510,7 +512,7 @@ DEGres_ToRICH <- function(diffan.obj, p, q, f, mark, outdir) {
 
 #' Title
 #'
-#' @param eset data.frame, the exprs data, the data should not be log2 transformed
+#' @param eset data.frame, the exprs data, the data must not be log2 transformed
 #' @param group data.frame, the pheno information, the first coloumn is the type information and should be factor.
 #' @param method character, the method of test, default is wilcox.test, alternative is t.test
 #' @param pval number, the pvalue cutoff
@@ -536,12 +538,13 @@ DEGres_ToRICH <- function(diffan.obj, p, q, f, mark, outdir) {
 #' @author Jiang
 DEG_tw.test <- function(eset, group, method = "wilcox.test",
                         pval = 0.05, fdr = 0.1, logfc = log2(2)) {
-  stopifnot(all(colnames(eset) == rownames(group)))
-  stopifnot(method == "wilcox.test" | method == "t.test")
   if (names(group)[1] != "Type") {
     warning("Just support the first coloumn and the first coloumn of group should be Type, the coloumn name will be changed to Type.")
     names(group)[1] <- "Type"
   }
+  stopifnot(all(colnames(eset) == rownames(group)), is.factor(group$Type))
+  stopifnot(method == "wilcox.test" | method == "t.test")
+
   if (method == "wilcox.test") {
     res <- apply(eset, 1, function(x) 
       wilcox.test(as.numeric(x) ~ as.character(group$Type))$p.value)
@@ -556,7 +559,8 @@ DEG_tw.test <- function(eset, group, method = "wilcox.test",
   res[, duibi[1]] <- rowMeans(eset[, rownames(group)[group$Type == duibi[1]]])
   res[, duibi[2]] <- rowMeans(eset[, rownames(group)[group$Type == duibi[2]]])
   res[, duibi[1]] <- ifelse(res[, duibi[1]] == 0, 1, res[, duibi[1]])
-  res[, duibi[2]] <- ifelse(res[, duibi[2]] == 0, 1, res[, duibi[2]])
+  res[, duibi[2]] <- ifelse(res[, duibi[2]] == 0, 0.1, res[, duibi[2]])
+  
   res$log2FC <- log2(res[, duibi[2]] / res[, duibi[1]])
   res$QValue <- qvalue::qvalue(res$PValue)$qvalues
   res <- res %>% dplyr::select(Gene, log2FC, PValue, QValue, 

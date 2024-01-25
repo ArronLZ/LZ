@@ -7,9 +7,9 @@
 limma.general(eset, group, pval = 0.05, fdr = 0.1, logfc = log2(2))
 }
 \arguments{
-\item{eset}{data.frame, the exprs data}
+\item{eset}{data.frame, the exprs data, must be log2 transformed}
 
-\item{group}{data.frame, the pheno information, the first coloumn is the type information and should be factor.}
+\item{group}{data.frame, the pheno information, the first coloumn is the type information and must be factor.}
 
 \item{pval}{number, the pvalue cutoff}
 
