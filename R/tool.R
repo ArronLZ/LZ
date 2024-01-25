@@ -179,6 +179,38 @@ lzhead <- function(df, ncol = 4, colstart = 1) {
 }
 
 
+#' Annotate expression data
+#' @description Annotate expression data
+#' 
+#' @param edata matrix or dataframe, expression data, suggest contrain only numeric columns \cr
+#' or dataframe that the first column is character vector(the column name is 'ID')
+#' @param annotdf dataframe, annotation data, suggest contrain only two columns: 'ID' and 'Symbol'
+#' @param row.names logical, default is TRUE, if T, all the column must be numeric, \cr
+#' if F, the first column must be character vector.
+#' @importFrom dplyr right_join select
+#' 
+#' @return dataframe, annotated expression data
+#' @export
+#' @author Jiang
+lz.annot <- function(edata, annotdf, row.names = T) {
+  if (is.matrix(edata)) { edata <- data.frame(edata, check.names = F) }
+  if (row.names) {
+    if ( sum(!sapply(edata, is.numeric)) > 0 ) {
+      stop("When row.names = T, the edata must be a matrix or dataframe with all numeric columns")
+    }
+    edata <- cbind(ID = rownames(edata), edata)
+    rownames(edata) <- NULL
+  } else {
+    if (is.numeric(edata[,1])) {
+      stop("When row.names = F, the first column of edata must be a character vector")
+    }
+    names(edata)[1] <- "ID"
+  }
+  edata <- annotdf %>% right_join(edata, by = "ID") %>% dplyr::select(-ID)
+  return(edata)
+}
+
+
 #' fpkm to tmp
 #' @description fpkm to tmp
 #' @param fpkm numeric the data should be no log data
