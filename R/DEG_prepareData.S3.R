@@ -404,3 +404,31 @@ newXENA <- function(eset.count, info) {
   xenadb$new(xenadb, "eset.count", eset.count, info = info)
   return(xenadb)
 }
+
+
+#' Create a new DEeset object
+#' @description Create a new DEeset object
+#' 
+#' @param eset dataframe, the cleaned exprs dataframe, rowname is gene_id
+#' @param group dataframe, the cleaned group dataframe, rowname is sample, \cr
+#' the first cloumn is the Type and must be factor
+#' @param f_mark character, the mark of this DEeset object, default is 'DE'
+#'
+#' @return
+#' @export
+#'
+#' @author Jiang
+newDEeset <- function(eset, group, f_mark = "DE") {
+  # requireNamespace("YZ")
+  stopifnot(all(colnames(eset) == rownames(group)),
+            if.factor(group[,1]),
+            names(group)[1] == "Type"
+            )
+  # group <- read.csv(group_file, row.names = 1)
+  # glist <- checkgroup(eset = eset, group = group)
+  DEeset <- YZ::DEeset$new(mark = f_mark, 
+                           eset = eset, 
+                           group = group)
+  return(DEeset)
+}
+
