@@ -421,7 +421,7 @@ newXENA <- function(eset.count, info) {
 newDEeset <- function(eset, group, f_mark = "DE") {
   # requireNamespace("YZ")
   stopifnot(all(colnames(eset) == rownames(group)),
-            if.factor(group[,1]),
+            is.factor(group[,1]),
             names(group)[1] == "Type"
             )
   # group <- read.csv(group_file, row.names = 1)
@@ -429,6 +429,7 @@ newDEeset <- function(eset, group, f_mark = "DE") {
   DEeset <- YZ::DEeset$new(mark = f_mark, 
                            eset = eset, 
                            group = group)
+  DEeset$eset2 <- eset
   return(DEeset)
 }
 
