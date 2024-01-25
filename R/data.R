@@ -24,3 +24,12 @@ NULL
 #' @docType data
 #' @keywords datasets
 NULL
+
+#' Datasets
+#' annot_hugo contains human gene annot and type information
+#'
+#' @name DataSet
+#' @aliases annot_hugo
+#' @docType data
+#' @keywords datasets
+NULL
