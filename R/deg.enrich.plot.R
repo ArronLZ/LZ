@@ -231,7 +231,7 @@ DEGp_prepareGOALL <- function(data, n_type='ONTOLOGY', n_qu='pvaule') {
 #' @export
 #'
 #' @author Jiang
-DDEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, title = "GO",
+DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, title = "GO",
                             x.which = "pvalue",
                             pic.save = F, width = 10, height = 10) {
   stopifnot(x.which %in% c("pvalue", "Count"))
