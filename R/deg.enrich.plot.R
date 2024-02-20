@@ -231,7 +231,7 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, pic.save = T) {
   # 或者可更改第一句，输入数据框含ONTOLOGY,pvalue,Description列
   # up_df <- GOlist$ALL@result
   up_df <- GOlist.df
-  up <- up_df %>% DEGp_preparGOALL(., 'ONTOLOGY', 'pvalue')
+  up <- up_df %>% DEGp_prepareGOALL(., 'ONTOLOGY', 'pvalue')
   up <- up %>% arrange(ONTOLOGY, desc(pvalue))
   dy_levels <- c(filter(up, ONTOLOGY=='MF')[,"Description"],
                  filter(up, ONTOLOGY=='CC')[,"Description"],

@@ -414,7 +414,7 @@ newXENA <- function(eset.count, info) {
 #' the first cloumn is the Type and must be factor
 #' @param f_mark character, the mark of this DEeset object, default is 'DE'
 #'
-#' @return
+#' @return a DEeset object
 #' @export
 #'
 #' @author Jiang
