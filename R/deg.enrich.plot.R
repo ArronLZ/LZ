@@ -217,27 +217,44 @@ DEGp_prepareGOALL <- function(data, n_type='ONTOLOGY', n_qu='pvaule') {
 
 #' GO all barplot
 #' @description GO all barplot
+#'
 #' @param GOlist.df dataframe, GO result
 #' @param resultdir character, the picture outdir
 #' @param filemark character, the picture filename mark
-#' @param pic.save logic, save picture or not
-#' @return #
+#' @param title character, the picture title
+#' @param x.which character, x axis which to use, "pvalue" or "Count"
+#' @param pic.save logical, save picture or not. if F, the param width and height will not work
+#' @param width number, picture width
+#' @param height number, picture height
+#'
+#' @return ggplot2 picture
 #' @export
 #'
 #' @author Jiang
-DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, pic.save = T) {
+DDEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, title = "GO",
+                            x.which = "pvalue",
+                            pic.save = F, width = 10, height = 10) {
+  stopifnot(x.which %in% c("pvalue", "Count"))
+  if (x.which == "pvalue") {
+    xtext = "-Log10 PValue"
+  } else {
+    xtext = "Count"
+  }
   # GOlist为jGO自定义函数返回对象，该对象为clusterProfiler::enrichGO返回对象的list集合
   # GOlist.df为GOlist$ALL@result, 为一个data.frame
-  # 或者可更改第一句，输入数据框含ONTOLOGY,pvalue,Description列
+  # 或者可更改第一句，输入数据框含ONTOLOGY,Description,pvalue,Count列
   # up_df <- GOlist$ALL@result
-  up_df <- GOlist.df
-  up <- up_df %>% DEGp_prepareGOALL(., 'ONTOLOGY', 'pvalue')
-  up <- up %>% arrange(ONTOLOGY, desc(pvalue))
-  dy_levels <- c(filter(up, ONTOLOGY=='MF')[,"Description"],
-                 filter(up, ONTOLOGY=='CC')[,"Description"],
-                 filter(up, ONTOLOGY=='BP')[,"Description"])
-  up$Description <- factor(up$Description, levels = dy_levels)
+  # up_df <- GOlist.df
+  # up_df <- df
+  # up <- up_df %>% DEGp_prepareGOALL(., 'ONTOLOGY', 'pvalue')
+  # up <- up %>% arrange(ONTOLOGY, desc(pvalue))
+  # dy_levels <- c(filter(up, ONTOLOGY=='MF')[,"Description"],
+  #                filter(up, ONTOLOGY=='CC')[,"Description"],
+  #                filter(up, ONTOLOGY=='BP')[,"Description"])
+  up <- GOlist.df
+  up$Description <- factor(up$Description, levels = up$Description)
   id_up <- levels(up$Description)
+  p.min.log <- ceiling(-log10(min(up$pvalue)))
   # GO
   #display.brewer.all(colorblindFriendly = T) #展示所有的色板
   #display.brewer.pal(12,'Paired')# 展示'Accent'色板中8个颜色
@@ -245,23 +262,48 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, pic.save = T) {
   #plot(1:24,rep(1,24),col= col,pch=16,cex=2)
   colp <- colorRampPalette(c(col[10],col[6],col[3]))(100)
   #plot(1:10,col=col[6], pch=16, cex=2)
-  p_up <- ggplot(up, aes(Description, -log(pvalue, 10), fill=ONTOLOGY)) +
-    geom_col(color = 'black', width = 0.6) +
-    theme(panel.grid = element_blank(), panel.background = element_rect(fill = 'transparent')) +
-    theme(axis.line.x = element_line(colour = 'black'), 
-          axis.line.y = element_line(colour = 'transparent'), 
-          axis.ticks.y = element_line(colour = 'transparent'),
-          axis.text = element_text(face = 'plain', size = 12)) +
-    theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
-    coord_flip() +
-    geom_hline(yintercept = 0) +
-    labs(x = '', y = '', title = 'UP') +
-    scale_y_continuous(expand = c(0, 0), breaks = c(-15, -10, -5, 0), 
-                       labels = as.character(c(-15, -10, -5, 0))) +     #这儿更改间距设置
-    scale_x_discrete(labels = id_up)
+  
+  # plot ---------------
+  if (x.which == "pvalue") {
+    p_up <- ggplot(up, aes(Description, -log(pvalue, 10), fill=ONTOLOGY)) +
+      geom_col(color = 'black', width = 0.6) +
+      facet_grid(ONTOLOGY~., scales = "free_y") +
+      theme(panel.grid = element_blank(), 
+            panel.background = element_rect(fill = 'transparent')) +
+      theme(axis.line.x = element_line(colour = 'black'), 
+            axis.line.y = element_line(colour = 'black'), # element_line(colour = 'transparent'), 
+            axis.ticks.y = element_line(colour = 'transparent'),
+            axis.text = element_text(face = 'plain', size = 12)) +
+      theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
+      coord_flip() +
+      scale_x_discrete(labels = id_up) +
+      scale_y_continuous(expand = c(0, 0), breaks = seq(0, p.min.log, 1), 
+                         labels = as.character(seq(0, p.min.log, 1))) +     #这儿更改间距设置
+      geom_hline(yintercept = 0) +
+      labs(x = '', y = xtext, title = title)
+  }
+  if (x.which == "Count") {
+    p_up <- ggplot(up, aes(Description, Count, fill = ONTOLOGY)) +
+      geom_col(color = 'black', width = 0.6) +
+      facet_grid(ONTOLOGY~., scales = "free_y") +
+      theme(panel.grid = element_blank(), 
+            panel.background = element_rect(fill = 'transparent')) +
+      theme(axis.line.x = element_line(colour = 'black'), 
+            axis.line.y = element_line(colour = 'black'),  #element_line(colour = 'transparent'), 
+            axis.ticks.y = element_line(colour = 'transparent'),
+            axis.text = element_text(face = 'plain', size = 12)) +
+      theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
+      coord_flip() +
+      scale_x_discrete(labels = id_up) +
+      scale_y_continuous(expand = c(0, 0)) +    #这儿更改间距设置
+      geom_hline(yintercept = 0) +
+      labs(x = '', y = xtext, title = title)
+  }
+  
+  # save ----------------
   if (pic.save == T) {
     fname=paste0(resultdir, '/', filemark,'.pdf')
-    ggsave(fname, width = 6, height = 10)
+    ggsave(fname, width = width, height = width)
   }
   return(p_up)
 }
