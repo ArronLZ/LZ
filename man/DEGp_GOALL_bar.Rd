@@ -9,6 +9,7 @@ DEGp_GOALL_bar(
   resultdir,
   filemark,
   title = "GO",
+  pcompress = 2,
   x.which = "pvalue",
   pic.save = F,
   width = 10,

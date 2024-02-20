@@ -231,14 +231,25 @@ DEGp_prepareGOALL <- function(data, n_type='ONTOLOGY', n_qu='pvaule') {
 #' @export
 #'
 #' @author Jiang
-DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, title = "GO",
-                            x.which = "pvalue",
-                            pic.save = F, width = 10, height = 10) {
+DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, 
+                           title = "GO", pcompress = 2,
+                           x.which = "pvalue",
+                           pic.save = F, width = 10, height = 10) {
   stopifnot(x.which %in% c("pvalue", "Count"))
+  title <- paste0(paste(rep("\n", pcompress), collapse = ""), title)
+  
   if (x.which == "pvalue") {
     xtext = "-Log10 PValue"
   } else {
     xtext = "Count"
+  }
+  
+  str_limit <- function(str, max = 50) {
+    if (nchar(str) > max) {
+      # str <- paste0(substr(str, 1, 50), "\n ", substr(str, 51, nchar(str)))
+      str <- paste0(substr(str, 1, 40), "...", substr(str, nchar(str) - 6, nchar(str)))
+    }
+    return(str)
   }
   # GOlist为jGO自定义函数返回对象，该对象为clusterProfiler::enrichGO返回对象的list集合
   # GOlist.df为GOlist$ALL@result, 为一个data.frame
@@ -252,6 +263,7 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, title = "GO",
   #                filter(up, ONTOLOGY=='CC')[,"Description"],
   #                filter(up, ONTOLOGY=='BP')[,"Description"])
   up <- GOlist.df
+  up$Description <- purrr::map_chr(up$Description, str_limit)
   up$Description <- factor(up$Description, levels = up$Description)
   id_up <- levels(up$Description)
   p.min.log <- ceiling(-log10(min(up$pvalue)))
@@ -260,13 +272,15 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, title = "GO",
   #display.brewer.pal(12,'Paired')# 展示'Accent'色板中8个颜色
   col <- colorRampPalette(brewer.pal(12,'Paired'))(24)
   #plot(1:24,rep(1,24),col= col,pch=16,cex=2)
-  colp <- colorRampPalette(c(col[10],col[6],col[3]))(100)
+  colp <- colorRampPalette(c(col[3], col[1]))(50)
   #plot(1:10,col=col[6], pch=16, cex=2)
   
   # plot ---------------
   if (x.which == "pvalue") {
-    p_up <- ggplot(up, aes(Description, -log(pvalue, 10), fill=ONTOLOGY)) +
+    p_up <- ggplot(up, aes(Description, -log(pvalue, 10), fill = ONTOLOGY)) +
       geom_col(color = 'black', width = 0.6) +
+      coord_flip() +
+      scale_fill_jco() +
       facet_grid(ONTOLOGY~., scales = "free_y") +
       theme(panel.grid = element_blank(), 
             panel.background = element_rect(fill = 'transparent')) +
@@ -275,7 +289,6 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, title = "GO",
             axis.ticks.y = element_line(colour = 'transparent'),
             axis.text = element_text(face = 'plain', size = 12)) +
       theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
-      coord_flip() +
       scale_x_discrete(labels = id_up) +
       scale_y_continuous(expand = c(0, 0), breaks = seq(0, p.min.log, 1), 
                          labels = as.character(seq(0, p.min.log, 1))) +     #这儿更改间距设置
@@ -283,9 +296,13 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, title = "GO",
       labs(x = '', y = xtext, title = title)
   }
   if (x.which == "Count") {
-    p_up <- ggplot(up, aes(Description, Count, fill = ONTOLOGY)) +
-      geom_col(color = 'black', width = 0.6) +
+    p_up <- ggplot(up, aes(Description, Count, fill = ONTOLOGY)) + # fill = "#247BB6"
+      geom_col(color = 'black', width = 0.6) + # , fill = "#247BB6"
       facet_grid(ONTOLOGY~., scales = "free_y") +
+      coord_flip() +
+      scale_fill_jco() +
+      # scale_fill_gradientn(colours = colp) +
+      # guides(fill = guide_colorbar(reverse = T)) +
       theme(panel.grid = element_blank(), 
             panel.background = element_rect(fill = 'transparent')) +
       theme(axis.line.x = element_line(colour = 'black'), 
@@ -293,7 +310,6 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark, title = "GO",
             axis.ticks.y = element_line(colour = 'transparent'),
             axis.text = element_text(face = 'plain', size = 12)) +
       theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
-      coord_flip() +
       scale_x_discrete(labels = id_up) +
       scale_y_continuous(expand = c(0, 0)) +    #这儿更改间距设置
       geom_hline(yintercept = 0) +
