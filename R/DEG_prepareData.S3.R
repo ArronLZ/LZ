@@ -407,7 +407,7 @@ newXENA <- function(eset.count, info) {
 
 
 #' Create a new DEeset object
-#' @description Create a new DEeset object
+#' @description Create a new DEeset object by exsited eset and group object
 #' 
 #' @param eset dataframe, the cleaned exprs dataframe, rowname is gene_id
 #' @param group dataframe, the cleaned group dataframe, rowname is sample, \cr
@@ -432,4 +432,3 @@ newDEeset <- function(eset, group, f_mark = "DE") {
   DEeset$eset2 <- eset
   return(DEeset)
 }
-

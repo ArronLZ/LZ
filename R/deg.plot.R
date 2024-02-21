@@ -103,7 +103,8 @@ DEGp_Volcano <- function(result, logFC = 1, adj_P = 0.2, label_geneset = NULL) {
 
 #' Valcano2 with mask gene
 #' @description plot valcano with mask gene
-#' @param resdf dataframe the all data of DEG analysis
+#' @param resdf dataframe, the all data of DEG analysis, \cr
+#' the dataframe must contain the following colomn, "Gene", "log2FC", "PValue", "FDR"
 #' @param filterc character the way of show picture, can be one of "both", "pvalue", "fdr"
 #' @param pvalue number pvalue, default 0.05
 #' @param fdr number fdr, default 0.1

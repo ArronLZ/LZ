@@ -26,7 +26,8 @@ DEGp_Volcano2(
 )
 }
 \arguments{
-\item{resdf}{dataframe the all data of DEG analysis}
+\item{resdf}{dataframe, the all data of DEG analysis, \cr
+the dataframe must contain the following colomn, "Gene", "log2FC", "PValue", "FDR"}
 
 \item{filterc}{character the way of show picture, can be one of "both", "pvalue", "fdr"}
 

@@ -18,7 +18,7 @@ the first cloumn is the Type and must be factor}
 a DEeset object
 }
 \description{
-Create a new DEeset object
+Create a new DEeset object by exsited eset and group object
 }
 \author{
 Jiang
