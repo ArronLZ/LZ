@@ -47,7 +47,8 @@ Imports:
     dplyr,
     readxl,
     KEGGREST,
-    qvalue
+    qvalue,
+    purrr
 Depends:
     stringr,
     writexl,

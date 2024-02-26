@@ -44,6 +44,7 @@ quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T,
   }
   if (sum(duplicated(eset[, col.by])) == 0) {
     cat(col.by, "列数据中没有重复值，无需去重，返回带行名的原始数据\n")
+    rownames(eset) <- NULL
     eset <- tibble::column_to_rownames(eset, var = col.by)
     return(eset)
   }
