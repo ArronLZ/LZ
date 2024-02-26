@@ -1,3 +1,10 @@
+# ========================================
+# DEGp_Dotplot()
+# DEGp_Dotplot2()
+# DEGp_GOALL_bar()
+# DEGp_GOone_bar()
+# ========================================
+
 #' Prepare Dotplot
 #' @description Prepare Dotplot
 #' 
@@ -218,7 +225,7 @@ DEGp_prepareGOALL <- function(data, n_type='ONTOLOGY', n_qu='pvaule') {
 #' GO all barplot
 #' @description GO all barplot
 #'
-#' @param GOlist.df dataframe, GO result
+#' @param GOlist.df dataframe, GO result, should contain column "ONTOLOGY", "Description", "pvalue", "Count"
 #' @param resultdir character, the picture outdir
 #' @param filemark character, the picture filename mark
 #' @param title character, the picture title
@@ -226,6 +233,7 @@ DEGp_prepareGOALL <- function(data, n_type='ONTOLOGY', n_qu='pvaule') {
 #' @param pic.save logical, save picture or not. if F, the param width and height will not work
 #' @param width number, picture width
 #' @param height number, picture height
+#' @param pcompress number, create a blank area at the top of the picture
 #'
 #' @return ggplot2 picture
 #' @export
@@ -301,6 +309,116 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark,
       facet_grid(ONTOLOGY~., scales = "free_y") +
       coord_flip() +
       scale_fill_jco() +
+      # scale_fill_gradientn(colours = colp) +
+      # guides(fill = guide_colorbar(reverse = T)) +
+      theme(panel.grid = element_blank(), 
+            panel.background = element_rect(fill = 'transparent')) +
+      theme(axis.line.x = element_line(colour = 'black'), 
+            axis.line.y = element_line(colour = 'black'),  #element_line(colour = 'transparent'), 
+            axis.ticks.y = element_line(colour = 'transparent'),
+            axis.text = element_text(face = 'plain', size = 12)) +
+      theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
+      scale_x_discrete(labels = id_up) +
+      scale_y_continuous(expand = c(0, 0)) +    #这儿更改间距设置
+      geom_hline(yintercept = 0) +
+      labs(x = '', y = xtext, title = title)
+  }
+  
+  # save ----------------
+  if (pic.save == T) {
+    fname=paste0(resultdir, '/', filemark,'.pdf')
+    ggsave(fname, width = width, height = width)
+  }
+  return(p_up)
+}
+
+#' GO one barplot
+#' @description GO one barplot
+#' @param GOlist.df dataframe, GO result, should contain colname: "Description", "pvalue", "Count"
+#' @param resultdir character, the picture outdir
+#' @param filemark character, the picture filename mark
+#' @param title character, the picture title
+#' @param x.which character, x axis which to use, "pvalue" or "Count"
+#' @param pic.save logical, save picture or not. if F, the param width and height will not work
+#' @param width number, picture width
+#' @param height number, picture height
+#' @param pcompress number, create a blank area at the top of the picture
+#' @param color character, color rgb
+#'
+#' @return ggplot2 picture
+#' @export
+#'
+#' @author Jiang
+DEGp_GOone_bar <- function(GOlist.df, resultdir, filemark, 
+                           title = "GO", pcompress = 2,
+                           x.which = "pvalue", color = "#247BB6",
+                           pic.save = F, width = 10, height = 10) {
+  stopifnot(x.which %in% c("pvalue", "Count"))
+  title <- paste0(paste(rep("\n", pcompress), collapse = ""), title)
+  
+  if (x.which == "pvalue") {
+    xtext = "-Log10 PValue"
+  } else {
+    xtext = "Count"
+  }
+  
+  str_limit <- function(str, max = 50) {
+    if (nchar(str) > max) {
+      # str <- paste0(substr(str, 1, 50), "\n ", substr(str, 51, nchar(str)))
+      str <- paste0(substr(str, 1, 40), "...", substr(str, nchar(str) - 6, nchar(str)))
+    }
+    return(str)
+  }
+  # GOlist为jGO自定义函数返回对象，该对象为clusterProfiler::enrichGO返回对象的list集合
+  # GOlist.df为GOlist$ALL@result, 为一个data.frame
+  # 或者可更改第一句，输入数据框含ONTOLOGY,Description,pvalue,Count列
+  # up_df <- GOlist$ALL@result
+  # up_df <- GOlist.df
+  # up_df <- df
+  # up <- up_df %>% DEGp_prepareGOALL(., 'ONTOLOGY', 'pvalue')
+  # up <- up %>% arrange(ONTOLOGY, desc(pvalue))
+  # dy_levels <- c(filter(up, ONTOLOGY=='MF')[,"Description"],
+  #                filter(up, ONTOLOGY=='CC')[,"Description"],
+  #                filter(up, ONTOLOGY=='BP')[,"Description"])
+  up <- GOlist.df
+  up$Description <- purrr::map_chr(up$Description, str_limit)
+  up$Description <- factor(up$Description, levels = up$Description)
+  id_up <- levels(up$Description)
+  p.min.log <- ceiling(-log10(min(up$pvalue)))
+  # GO
+  #display.brewer.all(colorblindFriendly = T) #展示所有的色板
+  #display.brewer.pal(12,'Paired')# 展示'Accent'色板中8个颜色
+  col <- colorRampPalette(brewer.pal(12,'Paired'))(24)
+  #plot(1:24,rep(1,24),col= col,pch=16,cex=2)
+  colp <- colorRampPalette(c(col[3], col[1]))(50)
+  #plot(1:10,col=col[6], pch=16, cex=2)
+  
+  # plot ---------------
+  if (x.which == "pvalue") {
+    p_up <- ggplot(up, aes(Description, -log(pvalue, 10))) + #, fill = ONTOLOGY
+      geom_col(color = 'black', width = 0.6, fill = "#247BB6") +
+      coord_flip() +
+      ## scale_fill_jco() +
+      ## facet_grid(ONTOLOGY~., scales = "free_y") +
+      theme(panel.grid = element_blank(), 
+            panel.background = element_rect(fill = 'transparent')) +
+      theme(axis.line.x = element_line(colour = 'black'), 
+            axis.line.y = element_line(colour = 'black'), # element_line(colour = 'transparent'), 
+            axis.ticks.y = element_line(colour = 'transparent'),
+            axis.text = element_text(face = 'plain', size = 12)) +
+      theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
+      scale_x_discrete(labels = id_up) +
+      scale_y_continuous(expand = c(0, 0), breaks = seq(0, p.min.log, 1), 
+                         labels = as.character(seq(0, p.min.log, 1))) +     #这儿更改间距设置
+      geom_hline(yintercept = 0) +
+      labs(x = '', y = xtext, title = title)
+  }
+  if (x.which == "Count") {
+    p_up <- ggplot(up, aes(Description, Count)) + # fill = "#247BB6" , fill = ONTOLOGY
+      geom_col(color = 'black', width = 0.6, fill = "#247BB6") + # 
+      ## facet_grid(ONTOLOGY~., scales = "free_y") +
+      coord_flip() +
+      ## scale_fill_jco() +
       # scale_fill_gradientn(colours = colp) +
       # guides(fill = guide_colorbar(reverse = T)) +
       theme(panel.grid = element_blank(), 

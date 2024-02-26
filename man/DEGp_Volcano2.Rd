@@ -6,7 +6,7 @@
 \usage{
 DEGp_Volcano2(
   resdf,
-  filterc = "both",
+  filterc = "pvalue",
   pvalue = 0.05,
   fdr = 0.1,
   logfc.p = 1,

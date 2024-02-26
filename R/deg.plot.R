@@ -130,7 +130,7 @@ DEGp_Volcano <- function(result, logFC = 1, adj_P = 0.2, label_geneset = NULL) {
 #' @import dplyr
 #' @include tool.R
 #' @author Jiang
-DEGp_Volcano2 <- function(resdf, filterc = "both", 
+DEGp_Volcano2 <- function(resdf, filterc = "pvalue", 
                           pvalue=0.05, fdr=0.1, logfc.p=1, logfc.n=-1, 
                           label_geneset = NULL, outdir="result", 
                           filename.base = "DEG_xx", pic.w = 7, pic.h =7,
@@ -172,39 +172,68 @@ DEGp_Volcano2 <- function(resdf, filterc = "both",
     df <- df[-log10(df$PValue) < ymax, ]
   }
   # valcano
-  p = ggplot(df, aes(x = log2FC, y = -log10(PValue))) + 
-    geom_point(data = df, aes(x = log2FC, 
-                              y = -log10(PValue), color = Category), 
-               shape = shape, alpha = alpha)
+  if (filterc == "pvalue") {
+    p = ggplot(df, aes(x = log2FC, y = -log10(PValue))) + 
+      geom_point(data = df, aes(x = log2FC, 
+                                y = -log10(PValue), color = Category), 
+                 shape = shape, alpha = alpha) +
+      geom_hline(yintercept = -log10(pvalue), lty = 2) +
+      coord_fixed(ratio = (2 * xlim)/(max(-log10(df$PValue[df$PValue != 0]), 
+                                          na.rm = T))) +
+      ylab("-Log10(P Value)")
+  } else {
+    p = ggplot(df, aes(x = log2FC, y = -log10(FDR))) + 
+      geom_point(data = df, aes(x = log2FC, 
+                                y = -log10(FDR), color = Category), 
+                 shape = shape, alpha = alpha) +
+      geom_hline(yintercept = -log10(fdr), lty = 2) +
+      coord_fixed(ratio = (2 * xlim)/(max(-log10(df$FDR[df$FDR != 0]), 
+                                          na.rm = T)))
+    ylab("-Log10(FDR)")
+    
+  }
+  
   # mark valcano
   if (!is.null(label_geneset)) {
     df_label <- df[which(df$Gene %in% label_geneset), ]
-    p <- p + 
-      geom_point(data = df_label, aes(x = log2FC, y = -log10(PValue)), 
-                 color = "black", size = 4) + 
-      geom_point(data = df_label, aes(x = log2FC, y = -log10(PValue)), 
-                 color = "white", size = 2.5) + 
-      geom_point(data = df_label, aes(x = log2FC, y = -log10(PValue), 
-                                      color = Category), 
-                 size = 1.5) + 
-      geom_text_repel(data = df_label, aes(x = log2FC, y = -log10(PValue), 
-                                           label = Gene), 
-                      fontface = "bold", max.overlaps = 30)
+    if (filterc == "pvalue") {
+      p <- p + 
+        geom_point(data = df_label, aes(x = log2FC, y = -log10(PValue)), 
+                   color = "black", size = 4) + 
+        geom_point(data = df_label, aes(x = log2FC, y = -log10(PValue)), 
+                   color = "white", size = 2.5) + 
+        geom_point(data = df_label, aes(x = log2FC, y = -log10(PValue), 
+                                        color = Category), 
+                   size = 1.5) + 
+        geom_text_repel(data = df_label, aes(x = log2FC, y = -log10(PValue), 
+                                             label = Gene), 
+                        fontface = "bold", max.overlaps = 30)
+    } else {
+      p <- p + 
+        geom_point(data = df_label, aes(x = log2FC, y = -log10(FDR)), 
+                   color = "black", size = 4) + 
+        geom_point(data = df_label, aes(x = log2FC, y = -log10(FDR)), 
+                   color = "white", size = 2.5) + 
+        geom_point(data = df_label, aes(x = log2FC, y = -log10(FDR), 
+                                        color = Category), 
+                   size = 1.5) + 
+        geom_text_repel(data = df_label, aes(x = log2FC, y = -log10(FDR), 
+                                             label = Gene), 
+                        fontface = "bold", max.overlaps = 30)
+    }
   }
+  
   # add theme
   p <- p + theme_bw() + 
     geom_vline(xintercept = c(logfc.n, logfc.p), lty = 2) + 
-    #geom_hline(yintercept = yhline, lty = 2) + 
-    geom_hline(yintercept = -log10(pvalue), lty = 2) + 
     scale_x_continuous(limits = c(-xlim, xlim)) + 
-    coord_fixed(ratio = (2 * xlim)/(max(-log10(df$PValue[df$PValue != 0]), 
-                                        na.rm = T))) + 
     theme(panel.grid = element_blank(), panel.grid.minor = element_blank(), 
           axis.text = element_text(color = "black")) + 
-    xlab("Log2(Fold Change)") + ylab("-Log10(P Value)") + 
+    xlab("Log2(Fold Change)") + 
     scale_color_manual(values = c(NOT = color.not, 
                                   UP = color.up, DOWN = color.down))
-  p
+  
+  
   outname <- paste0(dirclean(outdir), "/", filename.base, ".pdf")
   ggsave(outname, width = pic.w, height = pic.h)
   return(list(pic = p, data = df))
@@ -295,6 +324,7 @@ DEGp_Pheat <- function(df, gene, pheno, outdir, f_mark = "", nlevel = 8, pic_w =
   names(mat_colors[[1]]) <- levels(matdf[, 1])
   col <- colorRampPalette(brewer.pal(12, "Paired"))(24)
   mkdir(dirclean(outdir))
+  dev.off()
   fname <- paste0(dirclean(outdir), "/heatmap.", f_mark, ".pdf")
   pdf(fname, width = pic_w, height = pic_h)
   p <- pheatmap(heat_matrix, scale = "row", 

@@ -43,7 +43,8 @@ quchong <- function(eset, col.by, col.del=NULL, auto.del.character=T,
     stop("col.by列的变量类型必须为character, 请注意数据col.by列是否为gene")
   }
   if (sum(duplicated(eset[, col.by])) == 0) {
-    cat(col.by, "列数据中没有重复值，无需去重，返回原始数据\n")
+    cat(col.by, "列数据中没有重复值，无需去重，返回带行名的原始数据\n")
+    eset <- tibble::column_to_rownames(eset, var = col.by)
     return(eset)
   }
   #####
