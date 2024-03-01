@@ -297,7 +297,7 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark,
             axis.ticks.y = element_line(colour = 'transparent'),
             axis.text = element_text(face = 'plain', size = 12)) +
       theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
-      scale_x_discrete(labels = id_up) +
+      # scale_x_discrete(labels = id_up) +
       scale_y_continuous(expand = c(0, 0), breaks = seq(0, p.min.log, 1), 
                          labels = as.character(seq(0, p.min.log, 1))) +     #这儿更改间距设置
       geom_hline(yintercept = 0) +
@@ -306,9 +306,9 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark,
   if (x.which == "Count") {
     p_up <- ggplot(up, aes(Description, Count, fill = ONTOLOGY)) + # fill = "#247BB6"
       geom_col(color = 'black', width = 0.6) + # , fill = "#247BB6"
-      facet_grid(ONTOLOGY~., scales = "free_y") +
       coord_flip() +
       scale_fill_jco() +
+      facet_grid(ONTOLOGY~., scales = "free_y") +
       # scale_fill_gradientn(colours = colp) +
       # guides(fill = guide_colorbar(reverse = T)) +
       theme(panel.grid = element_blank(), 
@@ -318,7 +318,7 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark,
             axis.ticks.y = element_line(colour = 'transparent'),
             axis.text = element_text(face = 'plain', size = 12)) +
       theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
-      scale_x_discrete(labels = id_up) +
+      # scale_x_discrete(labels = id_up) +
       scale_y_continuous(expand = c(0, 0)) +    #这儿更改间距设置
       geom_hline(yintercept = 0) +
       labs(x = '', y = xtext, title = title)
@@ -331,6 +331,7 @@ DEGp_GOALL_bar <- function(GOlist.df, resultdir, filemark,
   }
   return(p_up)
 }
+
 
 #' GO one barplot
 #' @description GO one barplot
@@ -407,7 +408,7 @@ DEGp_GOone_bar <- function(GOlist.df, resultdir, filemark,
             axis.ticks.y = element_line(colour = 'transparent'),
             axis.text = element_text(face = 'plain', size = 12)) +
       theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
-      scale_x_discrete(labels = id_up) +
+      # scale_x_discrete(labels = id_up) +
       scale_y_continuous(expand = c(0, 0), breaks = seq(0, p.min.log, 1), 
                          labels = as.character(seq(0, p.min.log, 1))) +     #这儿更改间距设置
       geom_hline(yintercept = 0) +
@@ -428,7 +429,7 @@ DEGp_GOone_bar <- function(GOlist.df, resultdir, filemark,
             axis.ticks.y = element_line(colour = 'transparent'),
             axis.text = element_text(face = 'plain', size = 12)) +
       theme(plot.title = element_text(hjust = 0.5, face = 'bold')) +
-      scale_x_discrete(labels = id_up) +
+      # scale_x_discrete(labels = id_up) +
       scale_y_continuous(expand = c(0, 0)) +    #这儿更改间距设置
       geom_hline(yintercept = 0) +
       labs(x = '', y = xtext, title = title)
