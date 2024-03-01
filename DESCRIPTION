@@ -64,6 +64,7 @@ Collate:
     'deg.enrich.plot.R'
     'tool.R'
     'deg.plot.R'
+    'ggtheme.R'
     'gsea.R'
     'setting.R'
     'tool2.R'
