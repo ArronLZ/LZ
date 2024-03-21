@@ -1,5 +1,5 @@
 #' RNAseq differential analysis DESeq2 001<dds>
-#' @description The function is designed to perform differential analysis by DESeq2<dds>. FCJK
+#' @description The function is designed to perform differential analysis by DESeq2<dds>.
 #' @param exprset.group the list consisted of eset, group and mark.
 #' @param batch batch number
 #'
