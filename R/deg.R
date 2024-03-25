@@ -142,7 +142,7 @@ DEG_DESeq2.pca <- function(dds, outdir) {
 #'
 #' @export
 #' @importFrom DESeq2 results
-#' @importFrom magrittr `%>%`
+#' @importFrom magrittr %>%
 #' @importFrom dplyr rename
 #' @importFrom dplyr arrange
 #' @importFrom dplyr select
@@ -522,7 +522,7 @@ DEGres_ToRICH <- function(diffan.obj, p, q, f, mark, outdir) {
 #' @return list(resdf = res, deg = deg)
 #' @export
 #' @importFrom qvalue qvalue
-#' @importFrom dplyr filter arrange select `%>%`
+#' @importFrom dplyr filter arrange select %>%
 #' @importFrom stats wilcox.test t.test
 #' 
 #' @examples

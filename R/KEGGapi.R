@@ -38,7 +38,7 @@ getKEGGcpd <- function(id) {
 #' @importFrom stringr str_split
 #' @importFrom dplyr rename
 #' @importFrom dplyr select
-#' @importFrom dplyr `%>%`
+#' @importFrom dplyr %>%
 #' @author Jiang
 getKEGGcpd.loop <- function(pathway) {
   hsa_id <- names(pathway)
@@ -72,7 +72,7 @@ getKEGGcpd.loop <- function(pathway) {
 #' @return list
 #' @export
 #' @importFrom readr read_tsv
-#' @importFrom dplyr `%>%`
+#' @importFrom dplyr %>%
 #' @importFrom dplyr select
 #' @importFrom dplyr rename
 #' @importFrom dplyr group_by

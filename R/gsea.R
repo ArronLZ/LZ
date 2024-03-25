@@ -39,7 +39,7 @@ DEGp_GSEA <- function(GSEA.obj, num=1) {
 #'
 #' @return NULL
 #' @export
-#' @importFrom dplyr `%>%`
+#' @importFrom dplyr %>%
 #' @importFrom dplyr filter
 #'
 #' @author Jiang
@@ -83,7 +83,7 @@ DEGp_GSEA_plotALL <- function(GSEA.obj, result_dir, xl_filename) {
 #'
 #' @return gmt
 #' @export
-#' @importFrom dplyr `%>%`
+#' @importFrom dplyr %>%
 #' @importFrom dplyr filter
 #'
 #' @author Jiang
@@ -110,7 +110,7 @@ find_pathway <- function(your_pathway = "^Ferr") {
 #'
 #' @return gmtdf.w
 #' @export
-#' @importFrom dplyr `%>%`
+#' @importFrom dplyr %>%
 #' @importFrom dplyr group_by
 #' @importFrom dplyr summarise
 #'
@@ -141,7 +141,7 @@ gmt_longTowide2 <- function(gmtdf) {
 #'
 #' @return gmt.wide
 #' @importFrom reshape2 dcast
-#' @importFrom dplyr `%>%`
+#' @importFrom dplyr %>%
 #' @importFrom dplyr select
 #'
 #' @examples

@@ -10,7 +10,7 @@
 #' @return dataframe or matrix
 #' @export
 #' @importFrom dplyr select
-#' @importFrom dplyr `%>%`
+#' @importFrom dplyr %>%
 #' @importFrom utils combn
 #' @importFrom stringr str_split
 #'

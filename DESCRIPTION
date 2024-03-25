@@ -10,7 +10,7 @@ Description: The package is mainly designed for analyzing RNAseq data.
 License: Artistic-2.0
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.0
 Suggests: 
     BiocStyle,
     knitr,
@@ -62,10 +62,11 @@ Collate:
     'deg.R'
     'deg.enrich.R'
     'deg.enrich.plot.R'
-    'tool.R'
     'deg.plot.R'
     'ggtheme.R'
     'gsea.R'
+    'tool.R'
+    'plot_volcano.R'
     'setting.R'
     'tool2.R'
     'xena_eset.R'

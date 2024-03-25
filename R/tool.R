@@ -12,7 +12,7 @@
 #'
 #' @return dataframe
 #' @export
-#' @importFrom dplyr `%>%` arrange group_by summarise_all
+#' @importFrom dplyr %>% arrange group_by summarise_all
 #' @importFrom tibble column_to_rownames
 #' 
 #' @author Jiang

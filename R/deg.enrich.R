@@ -92,8 +92,8 @@ DEG_KEGG <- function(genelist, orgdb="org.Hs.eg.db", org_kegg='hsa') {
 #'
 #' @return # list(all=all, up=up, down=down)
 #' @export
-#' @importFrom magrittr `%>%`
-#' @importFrom magrittr `%$%`
+#' @importFrom magrittr %>%
+#' @importFrom magrittr %$%
 #' 
 #' @author Jiang
 DEG_prepareGOglist <- function(resdf, logfc, p=0.05, fdr=0.1) {
