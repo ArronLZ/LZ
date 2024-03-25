@@ -1,7 +1,7 @@
 Package: LZ
 Type: Package
 Title: RNAseq analysis pipeline & other skill
-Version: 1.6.6
+Version: 1.6.7
 Date: `Sys.Date()`
 Author: Farmer
 Maintainer: Turkey <yydslz@sina.com>
@@ -58,6 +58,7 @@ Collate:
     'DEG_prepareData.S3.R'
     'KEGGapi.R'
     'app_gsea.R'
+    'correlation.R'
     'data.R'
     'deg.R'
     'deg.enrich.R'
