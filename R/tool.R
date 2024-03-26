@@ -254,7 +254,7 @@ getData <- function(..., package = "LZ") {
 #' @export
 #' 
 #' @author Jiang
-min.max.scaler <- function(vec) {
+scale_minmax <- function(vec) {
   mm <- (vec - min(vec))/(max(vec) - min(vec))
   return(mm)
 }
