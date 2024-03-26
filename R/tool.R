@@ -247,10 +247,12 @@ getData <- function(..., package = "LZ") {
 
 #' Normalize the vector to 0-1
 #' @description Normalize the vector to 0-1
+#' 
 #' @param vec numeric(n), the vector need to be normalized
 #'
 #' @return numeric(n) the normalized vector
 #' @export
+#' 
 #' @author Jiang
 min.max.scaler <- function(vec) {
   mm <- (vec - min(vec))/(max(vec) - min(vec))
