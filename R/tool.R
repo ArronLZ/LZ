@@ -250,7 +250,7 @@ getData <- function(..., package = "LZ") {
 #' 
 #' @param vec numeric(n), the vector need to be normalized
 #'
-#' @return numeric(n) the normalized vector
+#' @return normalized vector
 #' @export
 #' 
 #' @author Jiang
