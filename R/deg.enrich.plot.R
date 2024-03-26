@@ -397,7 +397,7 @@ DEGp_GOone_bar <- function(GOlist.df, resultdir, filemark,
   # plot ---------------
   if (x.which == "pvalue") {
     p_up <- ggplot(up, aes(Description, -log(pvalue, 10))) + #, fill = ONTOLOGY
-      geom_col(color = 'black', width = 0.6, fill = "#247BB6") +
+      geom_col(color = 'black', width = 0.7, linewidth = 0.4, fill = color) +
       coord_flip() +
       ## scale_fill_jco() +
       ## facet_grid(ONTOLOGY~., scales = "free_y") +
@@ -416,7 +416,7 @@ DEGp_GOone_bar <- function(GOlist.df, resultdir, filemark,
   }
   if (x.which == "Count") {
     p_up <- ggplot(up, aes(Description, Count)) + # fill = "#247BB6" , fill = ONTOLOGY
-      geom_col(color = 'black', width = 0.6, fill = "#247BB6") + # 
+      geom_col(color = 'black', width = 0.7, linewidth = 0.4, fill = color) + # 
       ## facet_grid(ONTOLOGY~., scales = "free_y") +
       coord_flip() +
       ## scale_fill_jco() +
