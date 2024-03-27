@@ -12,9 +12,6 @@ immuneScore(
   QN = F,
   absolute = T,
   abs_method = "sig.score",
-  gsva_method = "ssgsea",
-  kcdf = "Gaussian",
-  abs.ranking = TRUE,
   gsva_sig_list
 )
 }
@@ -32,12 +29,6 @@ immuneScore(
 \item{absolute}{absolute logical, if T, return absolute score, only used for method = "cibersort"}
 
 \item{abs_method}{character, default 'sig.score', can be 'no.sumto1', only used for method = "cibersort"}
-
-\item{gsva_method}{character, default 'ssgsea', can be one of c("gsva", "ssgsea", "zscore", "plage"), only used for method = "ssGSEA"}
-
-\item{kcdf}{character, default 'Gaussian', can be one of c("Gaussian", "Poisson", "none"), only used for method = "ssGSEA"}
-
-\item{abs.ranking}{logical, default TRUE, only used for method = "ssGSEA"}
 
 \item{gsva_sig_list}{list, default NULL, only used for method = "ssGSEA"}
 }
@@ -62,10 +53,6 @@ recommend mcp_counter when comparing between samples
 EPIC, quanTIseq, CIBERSORT abs : **both**\cr
 CIBERSORT : **between-cell-type comparisons**\cr
 MCP-counter, xCell, TIMER, ConsensusTME, ESTIMATE, ABIS: **between-sample comparisons**
-=======================================\cr
-kcdf="Gaussian" is suitable for the expression values are **continuous**, \cr
-such as log-scale microarray data, RNA-seq log-CPMs, log-RPKMs, or log-TPMs.\cr
-kcdf="Poisson" is suitable for **integer counts**, such as the RNA-seq counts data.
 }
 \examples{
 \dontrun{

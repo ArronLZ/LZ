@@ -8,14 +8,11 @@
 #' @param QN logical, default F, RNAseq data: recommend QN = F, otherwise T, only used for method = "cibersort"
 #' @param absolute absolute logical, if T, return absolute score, only used for method = "cibersort"
 #' @param abs_method character, default 'sig.score', can be 'no.sumto1', only used for method = "cibersort"
-#' @param gsva_method character, default 'ssgsea', can be one of c("gsva", "ssgsea", "zscore", "plage"), only used for method = "ssGSEA"
-#' @param kcdf character, default 'Gaussian', can be one of c("Gaussian", "Poisson", "none"), only used for method = "ssGSEA"
-#' @param abs.ranking logical, default TRUE, only used for method = "ssGSEA"
 #' @param gsva_sig_list list, default NULL, only used for method = "ssGSEA"
 #'
 #' @importFrom immunedeconv deconvolute deconvolute_estimate
 #' @importFrom tibble column_to_rownames
-#' @importFrom GSVA gsva
+#' @importFrom GSVA gsva ssgseaParam
 #' @include CIBERSOFT.R
 #' 
 #' @return a data frame
@@ -36,10 +33,6 @@
 #' EPIC, quanTIseq, CIBERSORT abs : **both**\cr
 #' CIBERSORT : **between-cell-type comparisons**\cr
 #' MCP-counter, xCell, TIMER, ConsensusTME, ESTIMATE, ABIS: **between-sample comparisons**
-#' =======================================\cr
-#' kcdf="Gaussian" is suitable for the expression values are **continuous**, \cr
-#' such as log-scale microarray data, RNA-seq log-CPMs, log-RPKMs, or log-TPMs.\cr
-#' kcdf="Poisson" is suitable for **integer counts**, such as the RNA-seq counts data. 
 #' @examples
 #' \dontrun{
 #' exprs <- read.table("xx.txt", sep = "\t", row.names = 1, header = T, check.names = F)
@@ -51,7 +44,6 @@
 #'  }
 immuneScore <- function(exprs, method, tcga_abbr,
                         perm = 1000, QN = F, absolute = T, abs_method='sig.score',
-                        gsva_method='ssgsea', kcdf='Gaussian', abs.ranking=TRUE, 
                         gsva_sig_list) {
   if (!is.data.frame(exprs)) {
     stop("expr must be a data.frame")
@@ -94,14 +86,16 @@ immuneScore <- function(exprs, method, tcga_abbr,
     }
     if (missing(gsva_sig_list)) {
       cat("ssGSEA method needs gsva_sig_list, using default CELL28.\n")
-      res <- gsva(dat, CELL28, method=gsva_method, kcdf=kcdf, abs.ranking=abs.ranking)
+      ssgseaPar <- ssgseaParam(dat, CELL28)
+      res <- gsva(ssgseaPar)
     } else {
       # 否则请使用内置数据集
       # 翻译：否则请使用内置数据集
       #
       warning("ssGSEA method needs gsva_sig_list, using user-defined.\n")
       warning("Please make sure the gsva_sig_list is appropriate and formatted, otherwise please use the built-in dataset:CELL28\n")
-      res <- gsva(dat, gsva_sig_list, method=gsva_method, kcdf=kcdf, abs.ranking=abs.ranking)
+      ssgseaPar <- ssgseaParam(dat, gsva_sig_list)
+      res <- gsva(ssgseaPar)
     }
     res <- data.frame(res, check.names = F)
   }
