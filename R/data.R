@@ -35,10 +35,19 @@ NULL
 NULL
 
 #' Datasets
-#' LM22 contains 22 immune cell types gene signature
+#' LM22 contains 22 immune cell types gene signature for cibersoft
 #'
 #' @name DataSet
 #' @aliases LM22
+#' @docType data
+#' @keywords datasets
+NULL
+
+#' Datasets
+#' CELL28 contains 28 immune cell types gene signature for ssGSEA
+#'
+#' @name DataSet
+#' @aliases CELL28
 #' @docType data
 #' @keywords datasets
 NULL

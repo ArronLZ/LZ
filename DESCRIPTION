@@ -49,7 +49,10 @@ Imports:
     KEGGREST,
     qvalue,
     purrr,
-    immunedeconv
+    immunedeconv,
+    parallel,
+    e1071,
+    preprocessCore
 Depends:
     stringr,
     writexl,

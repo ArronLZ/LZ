@@ -8,6 +8,7 @@
 \alias{gmt.largelist.23.12.Hs.symbols}
 \alias{annot_hugo}
 \alias{LM22}
+\alias{CELL28}
 \title{Datasets
 gencode.v22.annot contains gene annot info.}
 \description{
@@ -24,6 +25,9 @@ Datasets
 annot_hugo contains human gene annot and type information
 
 Datasets
-LM22 contains 22 immune cell types gene signature
+LM22 contains 22 immune cell types gene signature for cibersoft
+
+Datasets
+CELL28 contains 28 immune cell types gene signature for ssGSEA
 }
 \keyword{datasets}
