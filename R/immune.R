@@ -94,14 +94,14 @@ immuneScore <- function(exprs, method, tcga_abbr,
     }
     if (missing(gsva_sig_list)) {
       cat("ssGSEA method needs gsva_sig_list, using default CELL28.\n")
-      res <- gsva(dat, CELL28, method=gsva_method, kcdf, abs.ranking)
+      res <- gsva(dat, CELL28, method=gsva_method, kcdf=kcdf, abs.ranking=abs.ranking)
     } else {
       # 否则请使用内置数据集
       # 翻译：否则请使用内置数据集
       #
       warning("ssGSEA method needs gsva_sig_list, using user-defined.\n")
       warning("Please make sure the gsva_sig_list is appropriate and formatted, otherwise please use the built-in dataset:CELL28\n")
-      res <- gsva(dat, gsva_sig_list, method=gsva_method, kcdf, abs.ranking)
+      res <- gsva(dat, gsva_sig_list, method=gsva_method, kcdf=kcdf, abs.ranking=abs.ranking)
     }
     res <- data.frame(res, check.names = F)
   }
