@@ -2,7 +2,7 @@
 #' @description Calculate immune score using RNAseq data or mcroarray data
 #' 
 #' @param exprs matrix, gene expression matrix, NOT log-transformed
-#' @param method character, one of "mcp_counter", "quantiseq", "epic", "xcell", "estimate", "timer", "cibersort".
+#' @param method character, one of "mcp_counter", "quantiseq", "epic", "xcell", "estimate", "timer", "cibersort", "ssGSEA".
 #' @param tcga_abbr character, TCGA abbreviation, only used for method = "timer"
 #' @param perm number, default 1000(recommend 1000), only used for method = "cibersort"
 #' @param QN logical, default F, RNAseq data: recommend QN = F, otherwise T, only used for method = "cibersort"
@@ -31,15 +31,15 @@
 #'  MCP-counter sums up the gene expression values.\cr
 #' Rownames are expected to be HGNC gene symbols. \cr
 #' Instead of a matrix, immunedeconv also supports ExpressionSets\cr
-#' # =======================================\cr
+#' =======================================\cr
 #' recommend mcp_counter when comparing between samples
-#' EPIC, quanTIseq, CIBERSORT abs : both\cr
-#' CIBERSORT : between-cell-type comparisons\cr
-#' MCP-counter, xCell, TIMER, ConsensusTME, ESTIMATE, ABIS: between-sample comparisons
-#' # =======================================\cr
-#' kcdf="Gaussian" is suitable for cases where the input expression values are continuous, \cr
-#' such as log-scale microarray fluorescence cells, RNA-seq log-CPMs, log-RPKMs, or log-TPMs.
-#' When the exprs value is an integer count, such as the RNA-seq counts data, please set kcdf="Poisson"
+#' EPIC, quanTIseq, CIBERSORT abs : **both**\cr
+#' CIBERSORT : **between-cell-type comparisons**\cr
+#' MCP-counter, xCell, TIMER, ConsensusTME, ESTIMATE, ABIS: **between-sample comparisons**
+#' =======================================\cr
+#' kcdf="Gaussian" is suitable for the expression values are **continuous**, \cr
+#' such as log-scale microarray data, RNA-seq log-CPMs, log-RPKMs, or log-TPMs.\cr
+#' kcdf="Poisson" is suitable for **integer counts**, such as the RNA-seq counts data. 
 #' @examples
 #' \dontrun{
 #' exprs <- read.table("xx.txt", sep = "\t", row.names = 1, header = T, check.names = F)
@@ -59,7 +59,8 @@ immuneScore <- function(exprs, method, tcga_abbr,
   if (!is.character(method)) {
     stop("method must be a character")
   }
-  deconvolution_methods <- c("mcp_counter", "quantiseq", "epic", "xcell", "estimate", "timer", "cibersort")
+  deconvolution_methods <- c("mcp_counter", "quantiseq", "epic", "xcell", 
+                             "estimate", "timer", "cibersort", "ssGSEA")
   if (!method %in% deconvolution_methods) {
     stop("method must be one of ", paste(deconvolution_methods, collapse = ", "))
   }

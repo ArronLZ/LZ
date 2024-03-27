@@ -21,7 +21,7 @@ immuneScore(
 \arguments{
 \item{exprs}{matrix, gene expression matrix, NOT log-transformed}
 
-\item{method}{character, one of "mcp_counter", "quantiseq", "epic", "xcell", "estimate", "timer", "cibersort".}
+\item{method}{character, one of "mcp_counter", "quantiseq", "epic", "xcell", "estimate", "timer", "cibersort", "ssGSEA".}
 
 \item{tcga_abbr}{character, TCGA abbreviation, only used for method = "timer"}
 
@@ -57,15 +57,15 @@ For xCell and MCP-counter this is not so important. \cr
  MCP-counter sums up the gene expression values.\cr
 Rownames are expected to be HGNC gene symbols. \cr
 Instead of a matrix, immunedeconv also supports ExpressionSets\cr
-# =======================================\cr
+=======================================\cr
 recommend mcp_counter when comparing between samples
-EPIC, quanTIseq, CIBERSORT abs : both\cr
-CIBERSORT : between-cell-type comparisons\cr
-MCP-counter, xCell, TIMER, ConsensusTME, ESTIMATE, ABIS: between-sample comparisons
-# =======================================\cr
-kcdf="Gaussian" is suitable for cases where the input expression values are continuous, \cr
-such as log-scale microarray fluorescence cells, RNA-seq log-CPMs, log-RPKMs, or log-TPMs.
-When the exprs value is an integer count, such as the RNA-seq counts data, please set kcdf="Poisson"
+EPIC, quanTIseq, CIBERSORT abs : **both**\cr
+CIBERSORT : **between-cell-type comparisons**\cr
+MCP-counter, xCell, TIMER, ConsensusTME, ESTIMATE, ABIS: **between-sample comparisons**
+=======================================\cr
+kcdf="Gaussian" is suitable for the expression values are **continuous**, \cr
+such as log-scale microarray data, RNA-seq log-CPMs, log-RPKMs, or log-TPMs.\cr
+kcdf="Poisson" is suitable for **integer counts**, such as the RNA-seq counts data.
 }
 \examples{
 \dontrun{
