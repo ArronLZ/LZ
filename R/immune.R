@@ -87,9 +87,10 @@ immuneScore <- function(exprs, method, tcga_abbr,
     tmpenv <- new.env()
     data(CELL28, package = "LZ", envir = tmpenv)
     CELL28 <- tmpenv$CELL28
-    if(max(na.omit(exprs)) > 50) {
+    dat <- as.matrix(exprs)
+    if(max(na.omit(dat)) > 50) {
       warning("The input data is not log-transformed, the program will log2-transform it.")
-      dat <- log2(exprs + 1)
+      dat <- log2(dat + 1)
     }
     if (missing(gsva_sig_list)) {
       cat("ssGSEA method needs gsva_sig_list, using default CELL28.\n")
