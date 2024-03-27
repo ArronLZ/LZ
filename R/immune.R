@@ -68,7 +68,7 @@ immuneScore <- function(exprs, method, tcga_abbr,
     tmpenv <- new.env()
     data(LM22, package = "LZ", envir = tmpenv)
     LM22 <- tmpenv$LM22
-    res <- CIBERSORT(sig_matrix_file = LM22, mixture_obj = exprs, 
+    res <- CIBERSORT(sig_matrix = LM22, mixture_obj = exprs, 
                      perm, QN, absolute, abs_method)
   }
   return(res)
