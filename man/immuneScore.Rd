@@ -11,23 +11,35 @@ immuneScore(
   perm = 1000,
   QN = F,
   absolute = T,
-  abs_method = "sig.score"
+  abs_method = "sig.score",
+  gsva_method = "ssgsea",
+  kcdf = "Gaussian",
+  abs.ranking = TRUE,
+  gsva_sig_list
 )
 }
 \arguments{
-\item{exprs}{matrix, gene expression matrix}
+\item{exprs}{matrix, gene expression matrix, NOT log-transformed}
 
 \item{method}{character, one of "mcp_counter", "quantiseq", "epic", "xcell", "estimate", "timer", "cibersort".}
 
-\item{tcga_abbr}{character, TCGA abbreviation, only used for "timer"}
+\item{tcga_abbr}{character, TCGA abbreviation, only used for method = "timer"}
 
-\item{perm}{number, default 1000(recommend 1000), only used for "cibersort"}
+\item{perm}{number, default 1000(recommend 1000), only used for method = "cibersort"}
 
-\item{QN}{logical, default F, RNAseq data: recommend QN = F, otherwise T, only used for "cibersort"}
+\item{QN}{logical, default F, RNAseq data: recommend QN = F, otherwise T, only used for method = "cibersort"}
 
-\item{absolute}{absolute logical, if T, return absolute score, only used for "cibersort"}
+\item{absolute}{absolute logical, if T, return absolute score, only used for method = "cibersort"}
 
-\item{abs_method}{character, default 'sig.score', can be 'no.sumto1', only used for "cibersort"}
+\item{abs_method}{character, default 'sig.score', can be 'no.sumto1', only used for method = "cibersort"}
+
+\item{gsva_method}{character, default 'ssgsea', can be one of c("gsva", "ssgsea", "zscore", "plage"), only used for method = "ssGSEA"}
+
+\item{kcdf}{character, default 'Gaussian', can be one of c("Gaussian", "Poisson", "none"), only used for method = "ssGSEA"}
+
+\item{abs.ranking}{logical, default TRUE, only used for method = "ssGSEA"}
+
+\item{gsva_sig_list}{list, default NULL, only used for method = "ssGSEA"}
 }
 \value{
 a data frame
@@ -45,10 +57,15 @@ For xCell and MCP-counter this is not so important. \cr
  MCP-counter sums up the gene expression values.\cr
 Rownames are expected to be HGNC gene symbols. \cr
 Instead of a matrix, immunedeconv also supports ExpressionSets\cr
+# =======================================\cr
 recommend mcp_counter when comparing between samples
 EPIC, quanTIseq, CIBERSORT abs : both\cr
 CIBERSORT : between-cell-type comparisons\cr
 MCP-counter, xCell, TIMER, ConsensusTME, ESTIMATE, ABIS: between-sample comparisons
+# =======================================\cr
+kcdf="Gaussian" is suitable for cases where the input expression values are continuous, \cr
+such as log-scale microarray fluorescence cells, RNA-seq log-CPMs, log-RPKMs, or log-TPMs.
+When the exprs value is an integer count, such as the RNA-seq counts data, please set kcdf="Poisson"
 }
 \examples{
 \dontrun{

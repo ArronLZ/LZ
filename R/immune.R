@@ -1,16 +1,21 @@
 #' @title immuneScore
 #' @description Calculate immune score using RNAseq data or mcroarray data
 #' 
-#' @param exprs matrix, gene expression matrix
+#' @param exprs matrix, gene expression matrix, NOT log-transformed
 #' @param method character, one of "mcp_counter", "quantiseq", "epic", "xcell", "estimate", "timer", "cibersort".
-#' @param tcga_abbr character, TCGA abbreviation, only used for "timer"
-#' @param perm number, default 1000(recommend 1000), only used for "cibersort"
-#' @param QN logical, default F, RNAseq data: recommend QN = F, otherwise T, only used for "cibersort"
-#' @param absolute absolute logical, if T, return absolute score, only used for "cibersort"
-#' @param abs_method character, default 'sig.score', can be 'no.sumto1', only used for "cibersort"
+#' @param tcga_abbr character, TCGA abbreviation, only used for method = "timer"
+#' @param perm number, default 1000(recommend 1000), only used for method = "cibersort"
+#' @param QN logical, default F, RNAseq data: recommend QN = F, otherwise T, only used for method = "cibersort"
+#' @param absolute absolute logical, if T, return absolute score, only used for method = "cibersort"
+#' @param abs_method character, default 'sig.score', can be 'no.sumto1', only used for method = "cibersort"
+#' @param gsva_method character, default 'ssgsea', can be one of c("gsva", "ssgsea", "zscore", "plage"), only used for method = "ssGSEA"
+#' @param kcdf character, default 'Gaussian', can be one of c("Gaussian", "Poisson", "none"), only used for method = "ssGSEA"
+#' @param abs.ranking logical, default TRUE, only used for method = "ssGSEA"
+#' @param gsva_sig_list list, default NULL, only used for method = "ssGSEA"
 #'
 #' @importFrom immunedeconv deconvolute deconvolute_estimate
 #' @importFrom tibble column_to_rownames
+#' @importFrom GSVA gsva
 #' @include CIBERSOFT.R
 #' 
 #' @return a data frame
@@ -26,10 +31,15 @@
 #'  MCP-counter sums up the gene expression values.\cr
 #' Rownames are expected to be HGNC gene symbols. \cr
 #' Instead of a matrix, immunedeconv also supports ExpressionSets\cr
+#' # =======================================\cr
 #' recommend mcp_counter when comparing between samples
 #' EPIC, quanTIseq, CIBERSORT abs : both\cr
 #' CIBERSORT : between-cell-type comparisons\cr
 #' MCP-counter, xCell, TIMER, ConsensusTME, ESTIMATE, ABIS: between-sample comparisons
+#' # =======================================\cr
+#' kcdf="Gaussian" is suitable for cases where the input expression values are continuous, \cr
+#' such as log-scale microarray fluorescence cells, RNA-seq log-CPMs, log-RPKMs, or log-TPMs.
+#' When the exprs value is an integer count, such as the RNA-seq counts data, please set kcdf="Poisson"
 #' @examples
 #' \dontrun{
 #' exprs <- read.table("xx.txt", sep = "\t", row.names = 1, header = T, check.names = F)
@@ -40,7 +50,9 @@
 #'  # SERPINA4        1.2873647       3021.55644        0.0000000
 #'  }
 immuneScore <- function(exprs, method, tcga_abbr,
-                         perm = 1000, QN = F, absolute = T, abs_method='sig.score') {
+                        perm = 1000, QN = F, absolute = T, abs_method='sig.score',
+                        gsva_method='ssgsea', kcdf='Gaussian', abs.ranking=TRUE, 
+                        gsva_sig_list) {
   if (!is.data.frame(exprs)) {
     stop("expr must be a data.frame")
   }
@@ -70,6 +82,26 @@ immuneScore <- function(exprs, method, tcga_abbr,
     LM22 <- tmpenv$LM22
     res <- CIBERSORT(sig_matrix = LM22, mixture_obj = exprs, 
                      perm, QN, absolute, abs_method)
+  } else if (method == "ssGSEA") {
+    tmpenv <- new.env()
+    data(CELL28, package = "LZ", envir = tmpenv)
+    CELL28 <- tmpenv$CELL28
+    if(max(na.omit(as.numeric(exprs))) > 50) {
+      warning("The input data is not log-transformed, the program will log2-transform it.")
+      dat <- log2(exprs + 1)
+    }
+    if (missing(gsva_sig_list)) {
+      cat("ssGSEA method needs gsva_sig_list, using default CELL28.\n")
+      res <- gsva(dat, CELL28, method=gsva_method, kcdf, abs.ranking)
+    } else {
+      # 否则请使用内置数据集
+      # 翻译：否则请使用内置数据集
+      #
+      warning("ssGSEA method needs gsva_sig_list, using user-defined.\n")
+      warning("Please make sure the gsva_sig_list is appropriate and formatted, otherwise please use the built-in dataset:CELL28\n")
+      res <- gsva(dat, gsva_sig_list, method=gsva_method, kcdf, abs.ranking)
+    }
+    res <- data.frame(res, check.names = F)
   }
   return(res)
 }

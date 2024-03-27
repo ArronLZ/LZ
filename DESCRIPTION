@@ -1,7 +1,7 @@
 Package: LZ
 Type: Package
 Title: RNAseq analysis pipeline & other skill
-Version: 1.6.8
+Version: 1.6.9
 Date: `Sys.Date()`
 Author: Farmer
 Maintainer: Turkey <yydslz@sina.com>
@@ -52,7 +52,8 @@ Imports:
     immunedeconv,
     parallel,
     e1071,
-    preprocessCore
+    preprocessCore,
+    GSVA
 Depends:
     stringr,
     writexl,
