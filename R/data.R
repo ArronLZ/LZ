@@ -33,3 +33,12 @@ NULL
 #' @docType data
 #' @keywords datasets
 NULL
+
+#' Datasets
+#' LM22 contains 22 immune cell types gene signature
+#'
+#' @name DataSet
+#' @aliases LM22
+#' @docType data
+#' @keywords datasets
+NULL

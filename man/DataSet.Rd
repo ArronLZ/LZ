@@ -7,6 +7,7 @@
 \alias{KEGGPATHWAYdb}
 \alias{gmt.largelist.23.12.Hs.symbols}
 \alias{annot_hugo}
+\alias{LM22}
 \title{Datasets
 gencode.v22.annot contains gene annot info.}
 \description{
@@ -21,5 +22,8 @@ gmt.largelist.23.12.Hs.symbols contains human msigdb pathway and kegg pathway sy
 
 Datasets
 annot_hugo contains human gene annot and type information
+
+Datasets
+LM22 contains 22 immune cell types gene signature
 }
 \keyword{datasets}
