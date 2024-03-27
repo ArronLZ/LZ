@@ -147,7 +147,6 @@ doPerm <- function(perm, X, Y, absolute, abs_method){
 #' @param abs_method character, default 'sig.score', can be 'no.sumto1'
 #'
 #' @return a matrix
-#' @export
 #'
 #' @examples
 #' \dontrun{
