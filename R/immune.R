@@ -87,7 +87,7 @@ immuneScore <- function(exprs, method, tcga_abbr,
     tmpenv <- new.env()
     data(CELL28, package = "LZ", envir = tmpenv)
     CELL28 <- tmpenv$CELL28
-    if(max(na.omit(as.numeric(exprs))) > 50) {
+    if(max(na.omit(exprs)) > 50) {
       warning("The input data is not log-transformed, the program will log2-transform it.")
       dat <- log2(exprs + 1)
     }
