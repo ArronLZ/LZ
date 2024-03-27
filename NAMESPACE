@@ -3,7 +3,6 @@
 S3method(DEG_prepareData,DEeset)
 S3method(DEG_prepareData,XENA)
 S3method(DEG_prepareData,default)
-export(CIBERSORT)
 export(DEG_DESeq2.ana)
 export(DEG_DESeq2.dds)
 export(DEG_DESeq2.pca)
