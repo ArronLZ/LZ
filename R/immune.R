@@ -41,8 +41,8 @@
 #'  }
 immuneScore <- function(exprs, method, tcga_abbr,
                          perm = 1000, QN = F, absolute = T, abs_method='sig.score') {
-  if (!is.matrix(exprs)) {
-    stop("expr must be a matrix")
+  if (!is.data.frame(exprs)) {
+    stop("expr must be a data.frame")
   }
   if (!is.character(method)) {
     stop("method must be a character")
