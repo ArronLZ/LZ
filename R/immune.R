@@ -169,13 +169,8 @@ immuneScore_onestep <- function(exprs, tcga_abbr = "brca", value = T,
     res_cibersort <- immuneScore(exprs = exprs, method = "cibersort", 
                                  perm = 1000, QN = QN, absolute = F, 
                                  abs_method = "sig.score")
+  } else {
     res_suffix <- res_suffix[1:7]
-  }
-  # assign variables to global environment
-  if (value) {
-    for (x in res_suffix) {
-      assign(paste0("res_", x), get(paste0("res_", x)), envir = .GlobalEnv)
-    }
   }
   # integrate
   res_list <- map(res_suffix, ~immuneScore_clean(get(paste0("res_", .x)), .x))
@@ -185,5 +180,57 @@ immuneScore_onestep <- function(exprs, tcga_abbr = "brca", value = T,
     colnames(.x) <- paste0(.y, "_", colnames(.x))
     return(.x)
   })
+  # assign variables to global environment
+  if (value) {
+    for (x in res_suffix) {
+      assign(paste0("res_", x), get(paste0("res_", x)), envir = .GlobalEnv)
+    }
+  }
   return(res_df)
+}
+
+
+#' @title immuneScore_test
+#' @description Test the difference of immune score between two groups
+#' 
+#' @param immuneScore_df data.frame, the result of immuneScore() or immuneScore_onestep()
+#' @param group_df data.frame, the group information, must be 2-coloum-data.frame, the first column is the ID, the second column is the group
+#' @param test_method character, default "wilcox", one of "wilcox", "t-test".
+#' @importFrom tibble rownames_to_column
+#' @importFrom dplyr left_join filter mutate
+#' @importFrom purrr map map_dbl
+#' @importFrom tidyr pivot_longer
+#' 
+#' @return a list
+#' @export
+#'
+#' @examples #
+immuneScore_test <- function(immuneScore_df, group_df, test_method="wilcox") {
+  stopifnot(is.data.frame(group_df), ncol(group_df) == 2)
+  names(group_df) <- c("ID", "Group")
+  stopifnot((length(intersect(rownames(immuneScore_df), group_df$ID)) > 0))
+  
+  # 转换数据格式
+  # pdata <- merge(immuneScore_df, group_df, by.x = 0, by.y = "ID")
+  pdata <- immuneScore_df %>% 
+    tibble::rownames_to_column(var = "ID") %>% 
+    dplyr::left_join(group_df, by = "ID")
+  
+  pdata_long <- pdata %>% 
+    pivot_longer(cols = 2:(ncol(pdata)-1), 
+                 names_to = "cell", values_to = "score") %>% 
+    mutate(cell = factor(cell, levels = unique(cell)))
+  # 检验
+  cell_type <- pdata_long$cell %>% unique()
+  if (test_method == "wilcox") {
+    cell_diff <- map(cell_type, ~wilcox.test(score ~ Group, data = pdata_long %>% filter(cell == .x))) %>% 
+      map_dbl("p.value")
+  } else if (test_method == "t-test") {
+    cell_diff <- map(cell_type, ~t.test(score ~ Group, data = pdata_long %>% filter(cell == .x))) %>% 
+      map_dbl("p.value")
+  }
+  names(cell_diff) <- cell_type
+  cell_sig <- cell_diff[cell_diff < 0.05] %>% na.omit() %>% c()
+  cell_sig
+  return(list(pdata_long = pdata_long, all = cell_diff, sig = cell_sig))
 }
