@@ -1,7 +1,7 @@
 Package: LZ
 Type: Package
 Title: RNAseq analysis pipeline & other skill
-Version: 1.6.9
+Version: 1.7.0
 Date: `Sys.Date()`
 Author: Farmer
 Maintainer: Turkey <yydslz@sina.com>
@@ -48,7 +48,6 @@ Imports:
     readxl,
     KEGGREST,
     qvalue,
-    purrr,
     immunedeconv,
     parallel,
     e1071,
@@ -57,7 +56,8 @@ Imports:
 Depends:
     stringr,
     writexl,
-    tibble
+    tibble,
+    purrr
 URL: https://github.com/ArronLZ/LZ
 Collate: 
     'CIBERSOFT.R'

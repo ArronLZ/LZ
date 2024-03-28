@@ -108,7 +108,8 @@ immuneScore <- function(exprs, method, tcga_abbr,
 #' 
 #' @param immuneScore_df data frame, the result of immuneScore()
 #' @param method character, one of "mcp_counter", "quantiseq", "epic", "xcell", "estimate", "timer", "cibersort", "ssGSEA"
-#'
+#' @importFrom tibble column_to_rownames
+#' 
 #' @return a data frame
 #' @export
 #'
@@ -139,6 +140,7 @@ immuneScore_clean <- function(immuneScore_df, method) {
 #' @param value logical, default T, if T, assign variables to global environment
 #' @param rapid logical, default F, if T, only run mcp_counter, quantiseq, epic, estimate, ssGSEA, xcell, timer\cr
 #' otherwise, also run cibersort and cibersort_abs(will take a long time)
+#' @importFrom purrr map map2_dfc
 #'
 #' @return a data frame
 #' @export
