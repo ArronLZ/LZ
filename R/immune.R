@@ -101,3 +101,87 @@ immuneScore <- function(exprs, method, tcga_abbr,
   }
   return(res)
 }
+
+
+#' @title immuneScore_clean
+#' @description Clean the immuneScore() result
+#' 
+#' @param immuneScore_df data frame, the result of immuneScore()
+#' @param method character, one of "mcp_counter", "quantiseq", "epic", "xcell", "estimate", "timer", "cibersort", "ssGSEA"
+#'
+#' @return a data frame
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' res <- immuneScore(res_mcp_counter, method = "mcp_counter")
+#' }
+immuneScore_clean <- function(immuneScore_df, method) {
+  if (method %in% c("mcp_counter", "quantiseq", "epic", "xcell")) {
+    df <- immuneScore_df %>% 
+      tibble::column_to_rownames(var = names(immuneScore_df)[1]) %>% 
+      t() %>% data.frame(check.names = F)
+  } else if (method %in% c("estimate", "ssGSEA", "timer")) {
+    df <- immuneScore_df %>% t() %>% data.frame(check.names = F)
+  } else if (method %in% c("cibersort", "cibersort_abs")) {
+    df <- immuneScore_df[, 1:22] %>% data.frame(check.names = F)
+  }
+  return(df)
+}
+
+
+#' @title immuneScore_onestep
+#' @description Calculate immune score using RNAseq data or mcroarray data using multiple methods in one step
+#'
+#' @param exprs matrix, gene expression matrix, NOT log-transformed
+#' @param tcga_abbr character, TCGA abbreviation, only used for method = "timer"
+#' @param QN logical, default F, RNAseq data: recommend QN = F, otherwise T, only used for method = "cibersort"
+#' @param value logical, default T, if T, assign variables to global environment
+#' @param rapid logical, default F, if T, only run mcp_counter, quantiseq, epic, estimate, ssGSEA, xcell, timer\cr
+#' otherwise, also run cibersort and cibersort_abs(will take a long time)
+#'
+#' @return a data frame
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' res_df <- immuneScore_onestep(exprs, tcga_abbr = "brca")
+#' }
+immuneScore_onestep <- function(exprs, tcga_abbr = "brca", value = T,
+                                QN = F, rapid = F) {
+  res_suffix <- c("mcp_counter", "quantiseq", "epic", "estimate", "ssGSEA", 
+                  "xcell", "timer", "cibersort_abs", "cibersort")
+  res_mcp_counter <- immuneScore(exprs = exprs, method = "mcp_counter")
+  res_quantiseq <- immuneScore(exprs = exprs, method = "quantiseq")
+  res_epic <- immuneScore(exprs = exprs, method = "epic")  #ww
+  res_estimate <- immuneScore(exprs = exprs, method = "estimate")
+  res_ssGSEA <- immuneScore(exprs = exprs, method = "ssGSEA")
+  res_xcell <- immuneScore(exprs = exprs, method = "xcell") #w
+  # tcga_abbr为tcga缩写，如brca, coad, luad ...
+  res_timer <- immuneScore(exprs = exprs, method = "timer", tcga_abbr = tcga_abbr)
+  # 时间长
+  if (!rapid) {
+    res_cibersort_abs <- immuneScore(exprs = exprs, method = "cibersort", 
+                                     perm = 1000, QN = QN, absolute = T, 
+                                     abs_method = "sig.score")
+    res_cibersort <- immuneScore(exprs = exprs, method = "cibersort", 
+                                 perm = 1000, QN = QN, absolute = F, 
+                                 abs_method = "sig.score")
+    res_suffix <- res_suffix[1:7]
+  }
+  # assign variables to global environment
+  if (value) {
+    for (x in res_suffix) {
+      assign(paste0("res_", x), get(paste0("res_", x)), envir = .GlobalEnv)
+    }
+  }
+  # integrate
+  res_list <- map(res_suffix, ~immuneScore_clean(get(paste0("res_", .x)), .x))
+  names(res_list) <- res_suffix
+  # 将res.list的每个表格的列名+_他们各自的list的名字
+  res_df <- map2_dfc(res_list, names(res_list), ~{
+    colnames(.x) <- paste0(.y, "_", colnames(.x))
+    return(.x)
+  })
+  return(res_df)
+}
