@@ -65,6 +65,8 @@ URL: https://github.com/ArronLZ/LZ
 Collate: 
     'CIBERSOFT.R'
     'DEG_prepareData.S3.R'
+    'ggtheme.R'
+    'Gene_search_expr.R'
     'KEGGapi.R'
     'app_gsea.R'
     'correlation.R'
@@ -73,7 +75,6 @@ Collate:
     'deg.enrich.R'
     'deg.enrich.plot.R'
     'deg.plot.R'
-    'ggtheme.R'
     'gsea.R'
     'immune.R'
     'tool.R'

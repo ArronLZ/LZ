@@ -35,3 +35,20 @@ ggtheme.update.text.legend <- function(size = 8, color = "black", family = "seri
     )
   )
 }
+
+
+#' Update ggplot theme
+#' @description Update ggplot theme
+#' 
+#' @return ggtheme
+#'
+#' @author Jiang
+mytheme_prism <- function() {
+  # max, by=5 # breaks = seq(0, max, by = by) ##limits = c(0, 40),
+  list(
+    scale_y_continuous(expand = c(0,0)),
+    scale_x_continuous(expand = c(0,0)),
+    #ggprism::theme_prism()
+    theme_classic()
+  )
+}
