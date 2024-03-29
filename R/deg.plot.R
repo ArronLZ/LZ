@@ -171,19 +171,24 @@ DEGp_Pheat <- function(df, gene, pheno, outdir, f_mark = "", nlevel = 8, pic_w =
 #' Venn Plot
 #' @description Plot Venn 2-5 group data
 #'
-#' @param datalist list, list(diffan$deg$symbol, diffagek)
-#' @param transparency number, transparency
-#'
-#' @return #
-#' @export
+#' @param datalist list, such as list(diffan$deg$symbol, diffagek, ...), no more than 5-dimensional-list
+#' @param transparency number, transparency, 0-1, also can be NULL, transparency = NULL means no fill color
 #' @importFrom ggsci pal_jco
 #' @importFrom scales alpha
 #' @importFrom VennDiagram venn.diagram
+#' 
+#' @return plot
+#' @export
 #'
-#' @examples #
+#' @examples
+#' \dontrun{
+#' lzpv <- list(a=1:10, b=5:16, c=15:23, d=c(1,2,4,8,8,16:19,30:34))
+#' p <- lzplot_veen(datalist = lzpv, transparency = 0.6)
+#' }
+#' @author Jiang
 DEGp_venn <- function(datalist, transparency = 0.6) {
   # datalist为list,见例子 。 注意本函数返回结果必须使用grid.draw()函数打印
-  # transparency 为 0-1，表示透明度，或设置为NULL，表示不至于区域颜色
+  # transparency 为 0-1，表示透明度，或设置为NULL，表示不绘制区域颜色
   # 例子：
   # lzpv <- list(a=1:10, b=5:16, c=15:23, d=c(1,2,4,8,8,16:19,30:34))
   # p <- lzplot_veen(datalist = lzpv)
