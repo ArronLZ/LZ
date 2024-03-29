@@ -1,7 +1,7 @@
 Package: LZ
 Type: Package
 Title: RNAseq analysis pipeline & other skill
-Version: 1.7.0
+Version: 1.7.1
 Date: `Sys.Date()`
 Author: Farmer
 Maintainer: Turkey <yydslz@sina.com>
@@ -20,43 +20,45 @@ Suggests:
     tidyverse,
     YZ
 Imports:
-    magrittr,
-    data.table,
-    readr,
-    Hmisc,
     BiocManager,
-    factoextra,
-    ggrepel,
-    ggsci,
-    RColorBrewer,
-    pheatmap,
-    VennDiagram,
-    scales,
-    reshape2,
-    DESeq2,
-    edgeR,
-    limma,
-    DOSE,
-    clusterProfiler,
-    enrichplot,
     BiocParallel,
-    shiny,
-    ggplot2,
-    utils,
+    clusterProfiler,
     cowplot,
     dplyr,
-    readxl,
-    KEGGREST,
-    qvalue,
-    immunedeconv,
-    parallel,
+    DESeq2,
+    data.table,
+    DOSE,
+    edgeR,
     e1071,
-    preprocessCore,
+    enrichplot,
+    factoextra,
+    ggrepel,
+    ggplot2,    
+    ggsci,
     GSVA,
-    tidyr
+    Hmisc,
+    immunedeconv,
+    KEGGREST,
+    limma,
+    magrittr,
+    pheatmap,
+    parallel,
+    preprocessCore,
+    qvalue,
+    readr,
+    readxl,
+    reshape2,
+    RColorBrewer,
+    scales,
+    survminer,
+    survival,
+    shiny,
+    tidyr,
+    utils,
+    VennDiagram,
+    writexl
 Depends:
     stringr,
-    writexl,
     tibble,
     purrr
 URL: https://github.com/ArronLZ/LZ
@@ -77,5 +79,6 @@ Collate:
     'tool.R'
     'plot_volcano.R'
     'setting.R'
+    'surv_km.R'
     'tool2.R'
     'xena_eset.R'
