@@ -1,5 +1,5 @@
 #' @title immuneScore
-#' @description Calculate immune score using RNAseq data or mcroarray data
+#' @description Calculate immune score using RNAseq data or mcroarray data.
 #' 
 #' @param exprs matrix, gene expression matrix, NOT log-transformed
 #' @param method character, one of "mcp_counter", "quantiseq", "epic", "xcell", "estimate", "timer", "cibersort", "ssGSEA".

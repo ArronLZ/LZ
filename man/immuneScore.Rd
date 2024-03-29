@@ -36,7 +36,7 @@ immuneScore(
 a data frame
 }
 \description{
-Calculate immune score using RNAseq data or mcroarray data
+Calculate immune score using RNAseq data or mcroarray data.
 }
 \details{
 The input data is a gene × sample gene expression matrix. \cr
