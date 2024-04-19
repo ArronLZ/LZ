@@ -42,7 +42,6 @@ Imports:
     limma,
     magrittr,
     pheatmap,
-    parallel,
     preprocessCore,
     qvalue,
     readr,
