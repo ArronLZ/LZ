@@ -168,9 +168,9 @@ Surv_diffG <- function(df, col_name, num.tran=365, break.x=2.5, main.text,
 Surv_diffONE <- function(eset_os, tagetGene, method = "median",
                            num.tran=365, break.x=2.5, col_name="Group",
                            color=c("#eaa8a8", "#729fc9")) {
-  eset_os.cut <- surv_ostime_cut(eset_os.df = eset_os, tagetGene = tagetGene, 
+  eset_os.cut <- Surv_ostime_cut(eset_os.df = eset_os, tagetGene = tagetGene, 
                                  method = method)
-  ps <- surv_diff(eset_os.cut$eset_clin_p, main.text = tagetGene, col_name,
+  ps <- Surv_diffG(eset_os.cut$eset_clin_p, main.text = tagetGene, col_name,
                   num.tran, break.x, color)
   return(list(eset_os.cut = eset_os.cut, pic = ps))
 }

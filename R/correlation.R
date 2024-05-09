@@ -23,8 +23,9 @@
 #' res_cor <- gene_co_expression(expr, "PHLDB2")
 #' }
 gene_co_expression <- function(expr, taget_gene = "PHLDB2") {
+  taget_expr <- as.numeric(expr[taget_gene,])
   res <- apply(expr, 1, function(x) {
-    cor.res <- cor.test(x, as.numeric(expr[taget_gene,]))
+    cor.res <- cor.test(x, taget_expr)
     c(cor.res$p.value, cor.res$estimate)
   }) %>% t() %>% data.frame() %>% 
     setNames(c("PValue", "Cor")) %>% 
