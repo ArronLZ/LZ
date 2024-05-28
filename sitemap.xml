@@ -16,6 +16,12 @@
     <loc>https://github.com/ArronLZ/LZ/index.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/CIBERSORT.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/CoreAlg.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ArronLZ/LZ/reference/DEG_DESeq2.ana.html</loc>
   </url>
   <url>
@@ -37,6 +43,9 @@
     <loc>https://github.com/ArronLZ/LZ/reference/DEG_prepareData.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_prepareENRICH.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ArronLZ/LZ/reference/DEG_prepareGOglist.html</loc>
   </url>
   <url>
@@ -44,6 +53,9 @@
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/DEG_runGSEA.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEG_tw.test.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/DEG_voom.html</loc>
@@ -56,6 +68,9 @@
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/DEGp_GOALL_bar.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_GOone_bar.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/DEGp_GSEA.html</loc>
@@ -71,6 +86,9 @@
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/DEGp_Volcano2.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/DEGp_Volcano_cor.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/DEGp_prepareDotplot.html</loc>
@@ -94,6 +112,18 @@
     <loc>https://github.com/ArronLZ/LZ/reference/DataSet.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/Gene_dens.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/Surv_diffG.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/Surv_diffONE.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/Surv_ostime_cut.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ArronLZ/LZ/reference/XENApre_annot.html</loc>
   </url>
   <url>
@@ -103,19 +133,52 @@
     <loc>https://github.com/ArronLZ/LZ/reference/dirclean.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/doPerm.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ArronLZ/LZ/reference/find_pathway.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/fpkmToTpm.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/gene_co_expression.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ArronLZ/LZ/reference/getData.html</loc>
   </url>
   <url>
-    <loc>https://github.com/ArronLZ/LZ/reference/gmt_longTOwide2.html</loc>
+    <loc>https://github.com/ArronLZ/LZ/reference/getKEGG.metabolism.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/getKEGGcpd.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/getKEGGcpd.loop.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/ggtheme.update.text.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/ggtheme.update.text.legend.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/gmt_longTOwide3.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/gmt_longTowide2.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/immuneScore.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/immuneScore_clean.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/immuneScore_onestep.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/immuneScore_test.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/index.html</loc>
@@ -125,6 +188,9 @@
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/limma.general.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/lz.annot.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/lz_isna.html</loc>
@@ -139,6 +205,18 @@
     <loc>https://github.com/ArronLZ/LZ/reference/mkdir.p.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/mytheme_prism.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/newDEeset.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/newXENA.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/p_install.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ArronLZ/LZ/reference/quchong.html</loc>
   </url>
   <url>
@@ -146,6 +224,9 @@
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/runAPP_GSEA.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ArronLZ/LZ/reference/scale_minmax.html</loc>
   </url>
   <url>
     <loc>https://github.com/ArronLZ/LZ/reference/setproxy.html</loc>
