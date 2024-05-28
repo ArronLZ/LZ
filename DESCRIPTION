@@ -17,8 +17,7 @@ Suggests:
     rmarkdown,
     prettydoc,
     parallel,
-    tidyverse,
-    YZ
+    tidyverse
 Imports:
     BiocManager,
     BiocParallel,
@@ -60,6 +59,10 @@ Depends:
     stringr,
     tibble,
     purrr
+Remotes:
+    github::r-lib/devtools,
+    github::ArronLZ/YZ,
+    github::ArronLZ/immunedeconv
 URL: https://github.com/ArronLZ/LZ
 Collate: 
     'CIBERSOFT.R'
