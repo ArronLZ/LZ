@@ -62,7 +62,7 @@ Depends:
 Remotes:
     github::r-lib/devtools,
     github::ArronLZ/YZ,
-    github::ArronLZ/immunedeconv
+    github::omnideconv/immunedeconv
 URL: https://github.com/ArronLZ/LZ
 Collate: 
     'CIBERSOFT.R'
