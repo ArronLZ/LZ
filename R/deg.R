@@ -421,10 +421,12 @@ DEGres_ToGSEA <- function(diffan.obj, outdir, startcol = 8, txt.del=T) {
                         resdf[, startcol:ncol(resdf)],
                         check.names = F)
   g.h <- c("#1.2" , paste(nrow(df.gsea), ncol(df.gsea)-2, sep = "\t"))
+  suppressWarnings({
   readr::write_lines(g.h, file = paste0(outdir, "/gesa_eset", ".txt"),
               append = T)
   write.table(df.gsea, file = paste0(outdir, "/gesa_eset", ".txt"),
               sep = "\t", row.names = F, append = T)
+  })
   ### group
   group <- diffan.obj$groupdata[, 1, drop=F]
   g.g <- c(
@@ -510,8 +512,8 @@ DEGres_ToRICH <- function(diffan.obj, p, q, f, mark, outdir) {
 }
 
 
-#' Title
-#'
+#' Eeset t.test or wilcox.test
+#' 
 #' @param eset data.frame, the exprs data, the data must not be log2 transformed
 #' @param group data.frame, the pheno information, the first coloumn is the type information and should be factor.
 #' @param method character, the method of test, default is wilcox.test, alternative is t.test
@@ -569,5 +571,3 @@ DEG_tw.test <- function(eset, group, method = "wilcox.test",
   deg <- res %>% dplyr::filter(PValue < pval & QValue < fdr & abs(log2FC) > logfc)
   return(list(resdf = res, deg = deg))
 }
-
-

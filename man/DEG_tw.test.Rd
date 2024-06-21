@@ -2,7 +2,7 @@
 % Please edit documentation in R/deg.R
 \name{DEG_tw.test}
 \alias{DEG_tw.test}
-\title{Title}
+\title{Eeset t.test or wilcox.test}
 \usage{
 DEG_tw.test(
   eset,
@@ -30,7 +30,7 @@ DEG_tw.test(
 list(resdf = res, deg = deg)
 }
 \description{
-Title
+Eeset t.test or wilcox.test
 }
 \examples{
 \dontrun{
