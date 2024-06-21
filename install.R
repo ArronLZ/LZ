@@ -5,7 +5,6 @@ install_dependencies <- function() {
     if (!requireNamespace(p, quietly = T)) install.packages(p) 
   }
   
-  # 安装bioconductor包
   bioc_pack <- c("DOSE", "GSVA", "biomaRt", "sva", "quantiseqr",
                  "singscore", "preprocessCore", 'DESeq2', 'edgeR', 
                  'limma', "topGO", 'Rgraphviz', 'org.Hs.eg.db', 
