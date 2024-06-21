@@ -152,7 +152,7 @@
 
 \title{LZ 文档}
 \author{作者：荔枝 \href{mailto:earth_farmer@outlook.com}{\nolinkurl{earth\_farmer@outlook.com}}}
-\date{更新：2024-01-08}
+\date{更新：2024-06-21}
 
 \begin{document}
 \maketitle
@@ -164,7 +164,7 @@
 \chapter*{前言}\label{ux524dux8a00}
 \addcontentsline{toc}{chapter}{前言}
 
-本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会加入多组学联合
+本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会加入其他
 分析流程。
 
 \section*{为何阅读本书}\label{ux4e3aux4f55ux9605ux8bfbux672cux4e66}
@@ -172,28 +172,30 @@
 
 本书是为LZ R package写的使用文档。旨在让完全没有编程基础或R基础的人学会使用LZ包来进
 行一些生信分析。LZ包致力于简化生信分析流程和批量分析。
-目前LZ包已经完成了RNAseq下游分析流程的大部分，后期完善后还有加入更多的功能。例如
-RNAseq的上有分析流程，多组学联合分析流程，单细胞分析流程。
+目前LZ包已经完成了RNAseq下游分析流程的大部分，后期完善后还有加入更多的功能。
 通过学习完本书，您将会在不需要系统学习R语言的情况下快速分析测序数据，如有疑问请发
 email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
-
-\section*{本书结构}\label{ux672cux4e66ux7ed3ux6784}
-\addcontentsline{toc}{section}{本书结构}
-
-\section*{致谢}\label{ux81f4ux8c22}
-\addcontentsline{toc}{section}{致谢}
 
 \chapter{安装}\label{install}
 
 \section{安装R及Rsudio环境}\label{ux5b89ux88c5rux53carsudioux73afux5883}
 
-\textbf{LZ} R包可以从Github上安装。
 先安装R及Rstudio, 前者是核心，后者是编辑器(写代码的地方)。
-1. 安装\href{https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/}{R最新版}，根据系统自行选择
-版本，win用户可以直接点\href{https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/windows/base/R-4.3.2-win.exe}{R-4.3.2}下载。
-2. 安装\href{https://posit.co/download/rstudio-desktop/}{Rstudio最新版}，win用户可直接点\href{https://download1.rstudio.org/electron/windows/RStudio-2023.09.1-494.exe}{Rstudio Desktop}下载
-3. Win电脑可以考虑安装R版本对应的\href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} (可选项，新手可以不安装)
-4. \textbf{重要提示：请卸载或者至少退出一切杀毒软件(微软自带的不用退出)，否则安装包时可能会出现难以解决的奇怪bug。}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  安装R，Win用户可点击R最新版下载，其他系统点击其它系统版本根据系统自行选择版本，如macbook, 请点击页面中的Download R for macOS。
+\item
+  \textbf{安装时系统语言一定要选择英语}，后续按默认即可。
+\item
+  安装RStudio Desktop，点击Rstudio Desktop下载对应系统版本的安装包。
+\item
+  Win电脑可以考虑安装R版本对应的Rtools (可选项，新手可以不安装)。
+\item
+  \textbf{重要提示：请卸载或者至少退出一切杀毒软件(微软自带的不用退出)，否则安装包时可能会出现难以解决的奇怪bug。建议全部安装英语版本！}
+\end{enumerate}
 
 \section{安装LZ包}\label{ux5b89ux88c5lzux5305}
 
@@ -206,31 +208,16 @@ email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# 安装biocondutor}
-\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) \{}
-  \FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{)}
-\NormalTok{  BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(}\AttributeTok{version =} \StringTok{"3.18"}\NormalTok{) }\CommentTok{\# 4.3 == 3.18}
-\NormalTok{\}}
-
 \CommentTok{\# 设置镜像(可选)}
 \FunctionTok{options}\NormalTok{(}\StringTok{"repos"} \OtherTok{=} \FunctionTok{c}\NormalTok{(}\AttributeTok{CRAN =} \StringTok{"https://mirrors.tuna.tsinghua.edu.cn/CRAN/"}\NormalTok{)) }
 \FunctionTok{options}\NormalTok{(}\AttributeTok{BioC\_mirror=}\StringTok{"https://mirrors.tuna.tsinghua.edu.cn/bioconductor"}\NormalTok{)}
 
-\CommentTok{\# 安装LZ依赖包}
-\CommentTok{\# 安装cran包}
-\NormalTok{cran\_pack }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}devtools\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}prettydoc\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Hmisc\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}markdown\textquotesingle{}}\NormalTok{, }
-               \StringTok{\textquotesingle{}Hmisc\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}tidyverse\textquotesingle{}}\NormalTok{)}
-\ControlFlowTok{for}\NormalTok{ (p }\ControlFlowTok{in}\NormalTok{ cran\_pack) \{ }
-  \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(p, }\AttributeTok{quietly =}\NormalTok{ T)) }\FunctionTok{install.packages}\NormalTok{(p) }
-\NormalTok{\}}
-\CommentTok{\# 安装bioconductor包}
-\NormalTok{bioc\_pack }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"DOSE"}\NormalTok{, }\StringTok{"clusterProfiler"}\NormalTok{, }\StringTok{\textquotesingle{}DESeq2\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}edgeR\textquotesingle{}}\NormalTok{, }
-               \StringTok{\textquotesingle{}limma\textquotesingle{}}\NormalTok{, }\StringTok{"topGO"}\NormalTok{, }\StringTok{\textquotesingle{}Rgraphviz\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}org.Hs.eg.db\textquotesingle{}}\NormalTok{)}
-\ControlFlowTok{for}\NormalTok{ (p }\ControlFlowTok{in}\NormalTok{ bioc\_pack) \{ }
-  \FunctionTok{cat}\NormalTok{(p, }\StringTok{\textquotesingle{}=========}\SpecialCharTok{\textbackslash{}n}\StringTok{\textquotesingle{}}\NormalTok{) }
-  \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{requireNamespace}\NormalTok{(p, }\AttributeTok{quietly =}\NormalTok{ T)) }
-\NormalTok{    BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{(p, }\AttributeTok{update =}\NormalTok{ F, }\AttributeTok{ask =}\NormalTok{F) }
-\NormalTok{\}}
+\ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{require}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{, }\AttributeTok{quietly =} \ConstantTok{TRUE}\NormalTok{)) \{}
+  \FunctionTok{install.packages}\NormalTok{(}\StringTok{"BiocManager"}\NormalTok{) \}}
+\NormalTok{BiocManager}\SpecialCharTok{::}\FunctionTok{install}\NormalTok{() }\CommentTok{\# BiocManager::install(version = "3.19")}
+
+\CommentTok{\# 安装依赖包(网络不好时需使用代理)}
+\FunctionTok{source}\NormalTok{(}\StringTok{"https://arronlz.github.io/LZ/install\_package.R"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 
@@ -242,22 +229,12 @@ email至\texttt{earth\_farmer@outlook.com}，尽量有答复但不予保证。
   安装LZ, YZ包(后续更新只需要重新运行这句即可，上面的包不需要重新安装)
 \end{enumerate}
 
-\begin{itemize}
-\tightlist
-\item
-  在线安装
-\end{itemize}
-
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# 安装LZ包}
-\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"ArronLZ/LZ"}\NormalTok{, }\AttributeTok{upgrade =}\StringTok{"never"}\NormalTok{, }\AttributeTok{force =}\NormalTok{ T, }
-                         \AttributeTok{build\_vignettes =}\NormalTok{ T)}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"ArronLZ/LZ"}\NormalTok{, }\AttributeTok{upgrade =} \StringTok{"never"}\NormalTok{, }\AttributeTok{force =}\NormalTok{ T)}
 \CommentTok{\# 安装YZ包}
-\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"ArronLZ/YZ"}\NormalTok{, }\AttributeTok{upgrade =}\StringTok{"never"}\NormalTok{, }\AttributeTok{force =}\NormalTok{ T, }
-                         \AttributeTok{build\_vignettes =}\NormalTok{ T)}
-\CommentTok{\# 查看文档（点击LZ Documents查看网页版）}
-\FunctionTok{vignette}\NormalTok{(}\StringTok{\textquotesingle{}LZ\textquotesingle{}}\NormalTok{)}
+\NormalTok{devtools}\SpecialCharTok{::}\FunctionTok{install\_github}\NormalTok{(}\StringTok{"ArronLZ/YZ"}\NormalTok{, }\AttributeTok{upgrade =}\StringTok{"never"}\NormalTok{, }\AttributeTok{force =}\NormalTok{ T)}
 \end{Highlighting}
 \end{Shaded}
 
