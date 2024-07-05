@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>2 RNAseq差异分析 | LZ 文档</title>
+  <title>3 RNAseq差异分析 | LZ 文档</title>
   <meta name="description" content="本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会加入其他 分析流程。" />
   <meta name="generator" content="bookdown 0.37 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="2 RNAseq差异分析 | LZ 文档" />
+  <meta property="og:title" content="3 RNAseq差异分析 | LZ 文档" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会加入其他 分析流程。" />
   <meta name="github-repo" content="ArronLZ/LZ" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 RNAseq差异分析 | LZ 文档" />
+  <meta name="twitter:title" content="3 RNAseq差异分析 | LZ 文档" />
   
   <meta name="twitter:description" content="本包致力于简化生信分析流程和批量分析。目前主要为RNAseq分析流程，后期会加入其他 分析流程。" />
   
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="install.html"/>
-<link rel="next" href="enrich.html"/>
+<link rel="prev" href="rnaseq_new_pipeline.html"/>
+<link rel="next" href="rnaseq-rsubread.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -148,48 +148,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.1" data-path="install.html"><a href="install.html#安装r及rsudio环境"><i class="fa fa-check"></i><b>1.1</b> 安装R及Rsudio环境</a></li>
 <li class="chapter" data-level="1.2" data-path="install.html"><a href="install.html#安装lz包"><i class="fa fa-check"></i><b>1.2</b> 安装LZ包</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="deg.html"><a href="deg.html"><i class="fa fa-check"></i><b>2</b> RNAseq差异分析</a>
+<li class="chapter" data-level="2" data-path="rnaseq_new_pipeline.html"><a href="rnaseq_new_pipeline.html"><i class="fa fa-check"></i><b>2</b> RNAseq新版简化流程</a></li>
+<li class="chapter" data-level="3" data-path="deg.html"><a href="deg.html"><i class="fa fa-check"></i><b>3</b> RNAseq差异分析</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="deg.html"><a href="deg.html#deg-mian"><i class="fa fa-check"></i><b>2.1</b> 差异分析</a>
+<li class="chapter" data-level="3.1" data-path="deg.html"><a href="deg.html#deg-mian"><i class="fa fa-check"></i><b>3.1</b> 差异分析</a>
 <ul>
-<li class="chapter" data-level="2.1.1" data-path="deg.html"><a href="deg.html#加载包"><i class="fa fa-check"></i><b>2.1.1</b> 加载包</a></li>
-<li class="chapter" data-level="2.1.2" data-path="deg.html"><a href="deg.html#数据准备"><i class="fa fa-check"></i><b>2.1.2</b> 数据准备</a></li>
-<li class="chapter" data-level="2.1.3" data-path="deg.html"><a href="deg.html#文件夹准备"><i class="fa fa-check"></i><b>2.1.3</b> 文件夹准备</a></li>
-<li class="chapter" data-level="2.1.4" data-path="deg.html"><a href="deg.html#差异分析预设置"><i class="fa fa-check"></i><b>2.1.4</b> 差异分析预设置</a></li>
-<li class="chapter" data-level="2.1.5" data-path="deg.html"><a href="deg.html#差异分析"><i class="fa fa-check"></i><b>2.1.5</b> 差异分析</a></li>
+<li class="chapter" data-level="3.1.1" data-path="deg.html"><a href="deg.html#加载包"><i class="fa fa-check"></i><b>3.1.1</b> 加载包</a></li>
+<li class="chapter" data-level="3.1.2" data-path="deg.html"><a href="deg.html#数据准备"><i class="fa fa-check"></i><b>3.1.2</b> 数据准备</a></li>
+<li class="chapter" data-level="3.1.3" data-path="deg.html"><a href="deg.html#文件夹准备"><i class="fa fa-check"></i><b>3.1.3</b> 文件夹准备</a></li>
+<li class="chapter" data-level="3.1.4" data-path="deg.html"><a href="deg.html#差异分析预设置"><i class="fa fa-check"></i><b>3.1.4</b> 差异分析预设置</a></li>
+<li class="chapter" data-level="3.1.5" data-path="deg.html"><a href="deg.html#差异分析"><i class="fa fa-check"></i><b>3.1.5</b> 差异分析</a></li>
 </ul></li>
-<li class="chapter" data-level="2.2" data-path="deg.html"><a href="deg.html#deg-valcano"><i class="fa fa-check"></i><b>2.2</b> 火山图</a></li>
-<li class="chapter" data-level="2.3" data-path="deg.html"><a href="deg.html#热图"><i class="fa fa-check"></i><b>2.3</b> 热图</a>
+<li class="chapter" data-level="3.2" data-path="deg.html"><a href="deg.html#deg-valcano"><i class="fa fa-check"></i><b>3.2</b> 火山图</a></li>
+<li class="chapter" data-level="3.3" data-path="deg.html"><a href="deg.html#热图"><i class="fa fa-check"></i><b>3.3</b> 热图</a>
 <ul>
-<li class="chapter" data-level="2.3.1" data-path="deg.html"><a href="deg.html#热图表格数据预处理"><i class="fa fa-check"></i><b>2.3.1</b> 热图表格数据预处理</a></li>
-<li class="chapter" data-level="2.3.2" data-path="deg.html"><a href="deg.html#热图分组数据预处理"><i class="fa fa-check"></i><b>2.3.2</b> 热图分组数据预处理</a></li>
-<li class="chapter" data-level="2.3.3" data-path="deg.html"><a href="deg.html#选定一种算法作图"><i class="fa fa-check"></i><b>2.3.3</b> 选定一种算法作图</a></li>
-<li class="chapter" data-level="2.3.4" data-path="deg.html"><a href="deg.html#循环各种聚类算法作图"><i class="fa fa-check"></i><b>2.3.4</b> 循环各种聚类算法作图</a></li>
+<li class="chapter" data-level="3.3.1" data-path="deg.html"><a href="deg.html#热图表格数据预处理"><i class="fa fa-check"></i><b>3.3.1</b> 热图表格数据预处理</a></li>
+<li class="chapter" data-level="3.3.2" data-path="deg.html"><a href="deg.html#热图分组数据预处理"><i class="fa fa-check"></i><b>3.3.2</b> 热图分组数据预处理</a></li>
+<li class="chapter" data-level="3.3.3" data-path="deg.html"><a href="deg.html#选定一种算法作图"><i class="fa fa-check"></i><b>3.3.3</b> 选定一种算法作图</a></li>
+<li class="chapter" data-level="3.3.4" data-path="deg.html"><a href="deg.html#循环各种聚类算法作图"><i class="fa fa-check"></i><b>3.3.4</b> 循环各种聚类算法作图</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="enrich.html"><a href="enrich.html"><i class="fa fa-check"></i><b>3</b> 富集分析</a>
+<li class="chapter" data-level="3.4" data-path="deg.html"><a href="deg.html#enrich"><i class="fa fa-check"></i><b>3.4</b> 富集分析</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="enrich.html"><a href="enrich.html#enrich-auto"><i class="fa fa-check"></i><b>3.1</b> GO &amp; KEGG 富集分析</a>
-<ul>
-<li class="chapter" data-level="3.1.1" data-path="enrich.html"><a href="enrich.html#一键脚本批量处理"><i class="fa fa-check"></i><b>3.1.1</b> 一键脚本(批量处理)</a></li>
-<li class="chapter" data-level="3.1.2" data-path="enrich.html"><a href="enrich.html#enrich-simple"><i class="fa fa-check"></i><b>3.1.2</b> 简易GO,KEGG一次分析</a></li>
-<li class="chapter" data-level="3.1.3" data-path="enrich.html"><a href="enrich.html#enrich-visual"><i class="fa fa-check"></i><b>3.1.3</b> GO、KEGG分析结果可视化</a></li>
+<li class="chapter" data-level="3.4.1" data-path="deg.html"><a href="deg.html#enrich-auto"><i class="fa fa-check"></i><b>3.4.1</b> GO &amp; KEGG 富集分析</a></li>
+<li class="chapter" data-level="3.4.2" data-path="deg.html"><a href="deg.html#enrich-gsea"><i class="fa fa-check"></i><b>3.4.2</b> GSEA分析</a></li>
+<li class="chapter" data-level="3.4.3" data-path="deg.html"><a href="deg.html#visual"><i class="fa fa-check"></i><b>3.4.3</b> 转录组其它可视化</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="enrich.html"><a href="enrich.html#enrich-gsea"><i class="fa fa-check"></i><b>3.2</b> GSEA分析</a>
-<ul>
-<li class="chapter" data-level="3.2.1" data-path="enrich.html"><a href="enrich.html#r-gsea-批量分析"><i class="fa fa-check"></i><b>3.2.1</b> R GSEA 批量分析</a></li>
-<li class="chapter" data-level="3.2.2" data-path="enrich.html"><a href="enrich.html#enrich-gsea-r.gsea.gui"><i class="fa fa-check"></i><b>3.2.2</b> R GSEA 图形界面</a></li>
-<li class="chapter" data-level="3.2.3" data-path="enrich.html"><a href="enrich.html#一些进阶操作及技巧不会没有关系不做过多解释自行体会无r语言基础者慎入"><i class="fa fa-check"></i><b>3.2.3</b> 一些进阶操作及技巧(不会没有关系，不做过多解释，自行体会，无R语言基础者慎入)</a></li>
-<li class="chapter" data-level="3.2.4" data-path="enrich.html"><a href="enrich.html#gsea官方软件"><i class="fa fa-check"></i><b>3.2.4</b> GSEA官方软件</a></li>
 </ul></li>
-<li class="chapter" data-level="3.3" data-path="enrich.html"><a href="enrich.html#visual"><i class="fa fa-check"></i><b>3.3</b> 转录组其它可视化</a></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="rnaseq_new_pipeline.html"><a href="rnaseq_new_pipeline.html"><i class="fa fa-check"></i><b>4</b> RNAseq新版简化流程</a></li>
-<li class="chapter" data-level="5" data-path="rnaseq-rsubread.html"><a href="rnaseq-rsubread.html"><i class="fa fa-check"></i><b>5</b> RNAseq上游分析流程</a></li>
-<li class="chapter" data-level="6" data-path="multi-omics.html"><a href="multi-omics.html"><i class="fa fa-check"></i><b>6</b> 多组学</a></li>
-<li class="chapter" data-level="7" data-path="cuttag.html"><a href="cuttag.html"><i class="fa fa-check"></i><b>7</b> CUT&amp;TAG</a></li>
-<li class="chapter" data-level="8" data-path="scRNA.html"><a href="scRNA.html"><i class="fa fa-check"></i><b>8</b> 单细胞分析</a></li>
-<li class="chapter" data-level="9" data-path="spatial.html"><a href="spatial.html"><i class="fa fa-check"></i><b>9</b> 空间转录组</a></li>
+<li class="chapter" data-level="4" data-path="rnaseq-rsubread.html"><a href="rnaseq-rsubread.html"><i class="fa fa-check"></i><b>4</b> RNAseq上游分析流程</a></li>
+<li class="chapter" data-level="5" data-path="cuttag.html"><a href="cuttag.html"><i class="fa fa-check"></i><b>5</b> ATAC分析流程</a></li>
+<li class="chapter" data-level="6" data-path="scRNA.html"><a href="scRNA.html"><i class="fa fa-check"></i><b>6</b> 单细胞分析</a></li>
+<li class="chapter" data-level="7" data-path="spatial.html"><a href="spatial.html"><i class="fa fa-check"></i><b>7</b> 空间转录组</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/ArronLZ/LZ" target="blank">编著：荔枝</a></li>
@@ -211,32 +199,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="deg" class="section level1 hasAnchor" number="2">
-<h1><span class="header-section-number">2</span> RNAseq差异分析<a href="deg.html#deg" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="deg" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> RNAseq差异分析<a href="deg.html#deg" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>此版为基础版流程，如果未接触过这个版本，可以考虑直接跳过这个版本，直接学习新版流程。详细见<a href="rnaseq_new_pipeline.html#rnaseq_new_pipeline">RNAseq新版简化流程</a>。</p>
-<div id="deg-mian" class="section level2 hasAnchor" number="2.1">
-<h2><span class="header-section-number">2.1</span> 差异分析<a href="deg.html#deg-mian" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="加载包" class="section level3 hasAnchor" number="2.1.1">
-<h3><span class="header-section-number">2.1.1</span> 加载包<a href="deg.html#加载包" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="deg.html#cb3-1" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>());<span class="fu">gc</span>()</span>
-<span id="cb3-2"><a href="deg.html#cb3-2" tabindex="-1"></a><span class="fu">library</span>(LZ)</span>
-<span id="cb3-3"><a href="deg.html#cb3-3" tabindex="-1"></a><span class="fu">library</span>(YZ)</span>
-<span id="cb3-4"><a href="deg.html#cb3-4" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
-<span id="cb3-5"><a href="deg.html#cb3-5" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb3-6"><a href="deg.html#cb3-6" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
-<span id="cb3-7"><a href="deg.html#cb3-7" tabindex="-1"></a><span class="fu">library</span>(parallel)</span>
-<span id="cb3-8"><a href="deg.html#cb3-8" tabindex="-1"></a><span class="fu">library</span>(BiocParallel)</span>
-<span id="cb3-9"><a href="deg.html#cb3-9" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-10"><a href="deg.html#cb3-10" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot; 您电脑线程为:&quot;</span>, <span class="fu">detectCores</span>())</span>
-<span id="cb3-11"><a href="deg.html#cb3-11" tabindex="-1"></a><span class="co"># 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，</span></span>
-<span id="cb3-12"><a href="deg.html#cb3-12" tabindex="-1"></a><span class="co">#  但不能大于线程总数。</span></span>
-<span id="cb3-13"><a href="deg.html#cb3-13" tabindex="-1"></a><span class="co"># 此处如果电脑性能一般，建议直接使用n=4或者2。</span></span>
-<span id="cb3-14"><a href="deg.html#cb3-14" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">4</span></span>
-<span id="cb3-15"><a href="deg.html#cb3-15" tabindex="-1"></a><span class="co"># register(MulticoreParam(n)) 苹果和linux电脑使用这句替代下句</span></span>
-<span id="cb3-16"><a href="deg.html#cb3-16" tabindex="-1"></a><span class="fu">register</span>(<span class="fu">SnowParam</span>(n))</span></code></pre></div>
+<div id="deg-mian" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> 差异分析<a href="deg.html#deg-mian" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="加载包" class="section level3 hasAnchor" number="3.1.1">
+<h3><span class="header-section-number">3.1.1</span> 加载包<a href="deg.html#加载包" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="deg.html#cb4-1" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>());<span class="fu">gc</span>()</span>
+<span id="cb4-2"><a href="deg.html#cb4-2" tabindex="-1"></a><span class="fu">library</span>(LZ)</span>
+<span id="cb4-3"><a href="deg.html#cb4-3" tabindex="-1"></a><span class="fu">library</span>(YZ)</span>
+<span id="cb4-4"><a href="deg.html#cb4-4" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb4-5"><a href="deg.html#cb4-5" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb4-6"><a href="deg.html#cb4-6" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
+<span id="cb4-7"><a href="deg.html#cb4-7" tabindex="-1"></a><span class="fu">library</span>(parallel)</span>
+<span id="cb4-8"><a href="deg.html#cb4-8" tabindex="-1"></a><span class="fu">library</span>(BiocParallel)</span>
+<span id="cb4-9"><a href="deg.html#cb4-9" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-10"><a href="deg.html#cb4-10" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot; 您电脑线程为:&quot;</span>, <span class="fu">detectCores</span>())</span>
+<span id="cb4-11"><a href="deg.html#cb4-11" tabindex="-1"></a><span class="co"># 如果是12代以后的interCPU,建议最高不超过6或8。服务器可加大设置，</span></span>
+<span id="cb4-12"><a href="deg.html#cb4-12" tabindex="-1"></a><span class="co">#  但不能大于线程总数。</span></span>
+<span id="cb4-13"><a href="deg.html#cb4-13" tabindex="-1"></a><span class="co"># 此处如果电脑性能一般，建议直接使用n=4或者2。</span></span>
+<span id="cb4-14"><a href="deg.html#cb4-14" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">4</span></span>
+<span id="cb4-15"><a href="deg.html#cb4-15" tabindex="-1"></a><span class="co"># register(MulticoreParam(n)) 苹果和linux电脑使用这句替代下句</span></span>
+<span id="cb4-16"><a href="deg.html#cb4-16" tabindex="-1"></a><span class="fu">register</span>(<span class="fu">SnowParam</span>(n))</span></code></pre></div>
 </div>
-<div id="数据准备" class="section level3 hasAnchor" number="2.1.2">
-<h3><span class="header-section-number">2.1.2</span> 数据准备<a href="deg.html#数据准备" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="数据准备" class="section level3 hasAnchor" number="3.1.2">
+<h3><span class="header-section-number">3.1.2</span> 数据准备<a href="deg.html#数据准备" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>RNAseq下游分析必须准备两个文件：表达矩阵表格文件，分组表格文件<br>
 将gene_count.csv，group.csv放在工作目录下<br></p>
 <ul>
@@ -317,8 +305,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 还有记住基因名这列的列名，建议统一设置为ID。<br></li>
 </ul>
 </div>
-<div id="文件夹准备" class="section level3 hasAnchor" number="2.1.3">
-<h3><span class="header-section-number">2.1.3</span> 文件夹准备<a href="deg.html#文件夹准备" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="文件夹准备" class="section level3 hasAnchor" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> 文件夹准备<a href="deg.html#文件夹准备" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>本文中有时也将文件夹称为目录，这两者等价。建议每个项目新建一个文件夹，例如本项目新建了一个名为
 LZexample的文件夹，然后再在这个文件夹下建了一个data文件夹，以后data目录专门用来存原始文件，例
 如RNAseq分析所需的eset.csv, group.csv或者更加原始的文件。<br></p>
@@ -326,130 +314,130 @@ LZexample的文件夹，然后再在这个文件夹下建了一个data文件夹�
 件夹名建议改成有意义的名称，一眼便能看出这个项目是什么数据或者什么目的，而data文件夹名不建议更改。
 图片</p>
 </div>
-<div id="差异分析预设置" class="section level3 hasAnchor" number="2.1.4">
-<h3><span class="header-section-number">2.1.4</span> 差异分析预设置<a href="deg.html#差异分析预设置" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="deg.html#cb4-1" tabindex="-1"></a><span class="co"># 设置工作目录，即之后所有的操作如果不指定文件夹，都将会在这个文件夹下进行</span></span>
-<span id="cb4-2"><a href="deg.html#cb4-2" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;C:/data/LZexample&quot;</span>)  <span class="co"># 按需更改成你的项目文件夹</span></span>
-<span id="cb4-3"><a href="deg.html#cb4-3" tabindex="-1"></a><span class="fu">getwd</span>() <span class="co"># 检查是否更改工作目录成功了？</span></span>
-<span id="cb4-4"><a href="deg.html#cb4-4" tabindex="-1"></a><span class="co"># Windows系统下默认的文件夹路径是 &quot;C:/data/LZexample&quot; 这中斜杆分隔文件夹，</span></span>
-<span id="cb4-5"><a href="deg.html#cb4-5" tabindex="-1"></a><span class="co"># 如果是直接从win复制而来的，请将斜杠\改成反斜杠/, 就如下面设置的这样。（改成\\也行）</span></span>
-<span id="cb4-6"><a href="deg.html#cb4-6" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="deg.html#cb4-7" tabindex="-1"></a><span class="co"># 设置此次分析的标记</span></span>
-<span id="cb4-8"><a href="deg.html#cb4-8" tabindex="-1"></a>mark <span class="ot">&lt;-</span> <span class="st">&quot;T_C&quot;</span>  <span class="co"># 此次分析的标记(记录谁比谁或和筛选阈值，建议设置的有意义)</span></span>
-<span id="cb4-9"><a href="deg.html#cb4-9" tabindex="-1"></a><span class="co"># 设置结果输出的文件夹，按需设定，可保持默认。</span></span>
-<span id="cb4-10"><a href="deg.html#cb4-10" tabindex="-1"></a><span class="co">#  第一次分析可以不用改，但如是第二分析，必须至少修改mark,outdir其中一个，</span></span>
-<span id="cb4-11"><a href="deg.html#cb4-11" tabindex="-1"></a><span class="co">#  否则会覆盖第一次的结果。</span></span>
-<span id="cb4-12"><a href="deg.html#cb4-12" tabindex="-1"></a>outdir <span class="ot">&lt;-</span> <span class="st">&quot;result&quot;</span>  </span>
-<span id="cb4-13"><a href="deg.html#cb4-13" tabindex="-1"></a>outdirsub <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdir, <span class="st">&quot;/&quot;</span>,mark)</span>
-<span id="cb4-14"><a href="deg.html#cb4-14" tabindex="-1"></a>outdirsub.gsea <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdirsub, <span class="st">&quot;/gsea&quot;</span>)</span>
-<span id="cb4-15"><a href="deg.html#cb4-15" tabindex="-1"></a>outdirsub.rich <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdirsub, <span class="st">&quot;/rich&quot;</span>)</span>
-<span id="cb4-16"><a href="deg.html#cb4-16" tabindex="-1"></a><span class="co"># 按以上设置，结果将会保存在当前工作目录下的result/T_C文件夹下</span></span>
-<span id="cb4-17"><a href="deg.html#cb4-17" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="deg.html#cb4-18" tabindex="-1"></a><span class="co"># 差异分析阈值设定</span></span>
-<span id="cb4-19"><a href="deg.html#cb4-19" tabindex="-1"></a>ffdr <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
-<span id="cb4-20"><a href="deg.html#cb4-20" tabindex="-1"></a>fpval <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb4-21"><a href="deg.html#cb4-21" tabindex="-1"></a>flogfc <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div>
+<div id="差异分析预设置" class="section level3 hasAnchor" number="3.1.4">
+<h3><span class="header-section-number">3.1.4</span> 差异分析预设置<a href="deg.html#差异分析预设置" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="deg.html#cb5-1" tabindex="-1"></a><span class="co"># 设置工作目录，即之后所有的操作如果不指定文件夹，都将会在这个文件夹下进行</span></span>
+<span id="cb5-2"><a href="deg.html#cb5-2" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;C:/data/LZexample&quot;</span>)  <span class="co"># 按需更改成你的项目文件夹</span></span>
+<span id="cb5-3"><a href="deg.html#cb5-3" tabindex="-1"></a><span class="fu">getwd</span>() <span class="co"># 检查是否更改工作目录成功了？</span></span>
+<span id="cb5-4"><a href="deg.html#cb5-4" tabindex="-1"></a><span class="co"># Windows系统下默认的文件夹路径是 &quot;C:/data/LZexample&quot; 这中斜杆分隔文件夹，</span></span>
+<span id="cb5-5"><a href="deg.html#cb5-5" tabindex="-1"></a><span class="co"># 如果是直接从win复制而来的，请将斜杠\改成反斜杠/, 就如下面设置的这样。（改成\\也行）</span></span>
+<span id="cb5-6"><a href="deg.html#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="deg.html#cb5-7" tabindex="-1"></a><span class="co"># 设置此次分析的标记</span></span>
+<span id="cb5-8"><a href="deg.html#cb5-8" tabindex="-1"></a>mark <span class="ot">&lt;-</span> <span class="st">&quot;T_C&quot;</span>  <span class="co"># 此次分析的标记(记录谁比谁或和筛选阈值，建议设置的有意义)</span></span>
+<span id="cb5-9"><a href="deg.html#cb5-9" tabindex="-1"></a><span class="co"># 设置结果输出的文件夹，按需设定，可保持默认。</span></span>
+<span id="cb5-10"><a href="deg.html#cb5-10" tabindex="-1"></a><span class="co">#  第一次分析可以不用改，但如是第二分析，必须至少修改mark,outdir其中一个，</span></span>
+<span id="cb5-11"><a href="deg.html#cb5-11" tabindex="-1"></a><span class="co">#  否则会覆盖第一次的结果。</span></span>
+<span id="cb5-12"><a href="deg.html#cb5-12" tabindex="-1"></a>outdir <span class="ot">&lt;-</span> <span class="st">&quot;result&quot;</span>  </span>
+<span id="cb5-13"><a href="deg.html#cb5-13" tabindex="-1"></a>outdirsub <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdir, <span class="st">&quot;/&quot;</span>,mark)</span>
+<span id="cb5-14"><a href="deg.html#cb5-14" tabindex="-1"></a>outdirsub.gsea <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdirsub, <span class="st">&quot;/gsea&quot;</span>)</span>
+<span id="cb5-15"><a href="deg.html#cb5-15" tabindex="-1"></a>outdirsub.rich <span class="ot">&lt;-</span> <span class="fu">paste0</span>(outdirsub, <span class="st">&quot;/rich&quot;</span>)</span>
+<span id="cb5-16"><a href="deg.html#cb5-16" tabindex="-1"></a><span class="co"># 按以上设置，结果将会保存在当前工作目录下的result/T_C文件夹下</span></span>
+<span id="cb5-17"><a href="deg.html#cb5-17" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="deg.html#cb5-18" tabindex="-1"></a><span class="co"># 差异分析阈值设定</span></span>
+<span id="cb5-19"><a href="deg.html#cb5-19" tabindex="-1"></a>ffdr <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
+<span id="cb5-20"><a href="deg.html#cb5-20" tabindex="-1"></a>fpval <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb5-21"><a href="deg.html#cb5-21" tabindex="-1"></a>flogfc <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div>
 </div>
-<div id="差异分析" class="section level3 hasAnchor" number="2.1.5">
-<h3><span class="header-section-number">2.1.5</span> 差异分析<a href="deg.html#差异分析" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="deg.html#cb5-1" tabindex="-1"></a><span class="co"># 读取并整理数据（如果都是按照上面的要求来的，不需要改这里的参数）</span></span>
-<span id="cb5-2"><a href="deg.html#cb5-2" tabindex="-1"></a>glist <span class="ot">&lt;-</span> <span class="fu">DEG_prepareData</span>(<span class="at">eset_file =</span> <span class="st">&quot;data/eset.csv&quot;</span>, <span class="co">#表达数据的相对路径</span></span>
-<span id="cb5-3"><a href="deg.html#cb5-3" tabindex="-1"></a>                         <span class="at">group_file =</span> <span class="st">&quot;data/group.csv&quot;</span>, <span class="co">#分组文件的相对路径</span></span>
-<span id="cb5-4"><a href="deg.html#cb5-4" tabindex="-1"></a>                         <span class="at">id_dot =</span> F,  <span class="co"># ESEM是否有点，有点设为T</span></span>
-<span id="cb5-5"><a href="deg.html#cb5-5" tabindex="-1"></a>                         <span class="at">col.by =</span> <span class="st">&quot;ID&quot;</span>,  <span class="co"># 基因名列的列名</span></span>
-<span id="cb5-6"><a href="deg.html#cb5-6" tabindex="-1"></a>                         <span class="at">annot_trans =</span> F, <span class="co"># 是否要注释，如果是EsembleID就需要设置为T</span></span>
-<span id="cb5-7"><a href="deg.html#cb5-7" tabindex="-1"></a>                         <span class="at">f_mark =</span> mark)</span>
-<span id="cb5-8"><a href="deg.html#cb5-8" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="deg.html#cb5-9" tabindex="-1"></a><span class="co"># 差异分析 deseq2三部曲</span></span>
-<span id="cb5-10"><a href="deg.html#cb5-10" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DEG_DESeq2.dds</span>(<span class="at">exprset.group=</span>glist, <span class="at">batch =</span> F)</span>
-<span id="cb5-11"><a href="deg.html#cb5-11" tabindex="-1"></a><span class="fu">DEG_DESeq2.pca</span>(dds, <span class="at">outdir =</span> outdirsub) <span class="co"># 此处有warning信息，不用管。</span></span>
-<span id="cb5-12"><a href="deg.html#cb5-12" tabindex="-1"></a>dds_list <span class="ot">&lt;-</span> <span class="fu">DEG_DESeq2.ana</span>(dds)</span>
-<span id="cb5-13"><a href="deg.html#cb5-13" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="deg.html#cb5-14" tabindex="-1"></a><span class="co"># 差异后分析</span></span>
-<span id="cb5-15"><a href="deg.html#cb5-15" tabindex="-1"></a><span class="co"># 构建GSEA官网软件分析所需格式文件 #此处会有warning,不用管</span></span>
-<span id="cb5-16"><a href="deg.html#cb5-16" tabindex="-1"></a><span class="fu">DEGres_ToGSEA</span>(<span class="at">diffan.obj =</span> dds_list, <span class="at">outdir =</span> outdirsub.gsea) </span>
-<span id="cb5-17"><a href="deg.html#cb5-17" tabindex="-1"></a><span class="co"># all_father中记录了</span></span>
-<span id="cb5-18"><a href="deg.html#cb5-18" tabindex="-1"></a><span class="co">#             差异分析的总表，默认阈值的差异基因表，</span></span>
-<span id="cb5-19"><a href="deg.html#cb5-19" tabindex="-1"></a><span class="co">#             上调基因列表，下调基因列表</span></span>
-<span id="cb5-20"><a href="deg.html#cb5-20" tabindex="-1"></a><span class="co">#             以及R-GSEA分析所需要的所有mRNA的表达排序列表。</span></span>
-<span id="cb5-21"><a href="deg.html#cb5-21" tabindex="-1"></a><span class="co">#  是我们后续各种分析的万恶之源（因此命名all_father）</span></span>
-<span id="cb5-22"><a href="deg.html#cb5-22" tabindex="-1"></a><span class="co">#  上述数据同时保存于当前工作目录/outdirsub.rich，</span></span>
-<span id="cb5-23"><a href="deg.html#cb5-23" tabindex="-1"></a><span class="co">#  文件是一个多sheet的xlsx表</span></span>
-<span id="cb5-24"><a href="deg.html#cb5-24" tabindex="-1"></a>all_father <span class="ot">&lt;-</span> <span class="fu">DEGres_ToRICH</span>(<span class="at">diffan.obj =</span> dds_list, <span class="at">p=</span>fpval, <span class="at">q=</span>ffdr, </span>
-<span id="cb5-25"><a href="deg.html#cb5-25" tabindex="-1"></a>                            <span class="at">f=</span>flogfc, <span class="at">mark=</span>mark, <span class="at">outdir =</span> outdirsub.rich)</span>
-<span id="cb5-26"><a href="deg.html#cb5-26" tabindex="-1"></a><span class="fu">save.image</span>(<span class="at">file =</span> <span class="fu">paste0</span>(outdirsub, <span class="st">&quot;/1.diff.img.RDATA&quot;</span>)) <span class="co"># 保存中间数据</span></span></code></pre></div>
+<div id="差异分析" class="section level3 hasAnchor" number="3.1.5">
+<h3><span class="header-section-number">3.1.5</span> 差异分析<a href="deg.html#差异分析" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="deg.html#cb6-1" tabindex="-1"></a><span class="co"># 读取并整理数据（如果都是按照上面的要求来的，不需要改这里的参数）</span></span>
+<span id="cb6-2"><a href="deg.html#cb6-2" tabindex="-1"></a>glist <span class="ot">&lt;-</span> <span class="fu">DEG_prepareData</span>(<span class="at">eset_file =</span> <span class="st">&quot;data/eset.csv&quot;</span>, <span class="co">#表达数据的相对路径</span></span>
+<span id="cb6-3"><a href="deg.html#cb6-3" tabindex="-1"></a>                         <span class="at">group_file =</span> <span class="st">&quot;data/group.csv&quot;</span>, <span class="co">#分组文件的相对路径</span></span>
+<span id="cb6-4"><a href="deg.html#cb6-4" tabindex="-1"></a>                         <span class="at">id_dot =</span> F,  <span class="co"># ESEM是否有点，有点设为T</span></span>
+<span id="cb6-5"><a href="deg.html#cb6-5" tabindex="-1"></a>                         <span class="at">col.by =</span> <span class="st">&quot;ID&quot;</span>,  <span class="co"># 基因名列的列名</span></span>
+<span id="cb6-6"><a href="deg.html#cb6-6" tabindex="-1"></a>                         <span class="at">annot_trans =</span> F, <span class="co"># 是否要注释，如果是EsembleID就需要设置为T</span></span>
+<span id="cb6-7"><a href="deg.html#cb6-7" tabindex="-1"></a>                         <span class="at">f_mark =</span> mark)</span>
+<span id="cb6-8"><a href="deg.html#cb6-8" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="deg.html#cb6-9" tabindex="-1"></a><span class="co"># 差异分析 deseq2三部曲</span></span>
+<span id="cb6-10"><a href="deg.html#cb6-10" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DEG_DESeq2.dds</span>(<span class="at">exprset.group=</span>glist, <span class="at">batch =</span> F)</span>
+<span id="cb6-11"><a href="deg.html#cb6-11" tabindex="-1"></a><span class="fu">DEG_DESeq2.pca</span>(dds, <span class="at">outdir =</span> outdirsub) <span class="co"># 此处有warning信息，不用管。</span></span>
+<span id="cb6-12"><a href="deg.html#cb6-12" tabindex="-1"></a>dds_list <span class="ot">&lt;-</span> <span class="fu">DEG_DESeq2.ana</span>(dds)</span>
+<span id="cb6-13"><a href="deg.html#cb6-13" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="deg.html#cb6-14" tabindex="-1"></a><span class="co"># 差异后分析</span></span>
+<span id="cb6-15"><a href="deg.html#cb6-15" tabindex="-1"></a><span class="co"># 构建GSEA官网软件分析所需格式文件 #此处会有warning,不用管</span></span>
+<span id="cb6-16"><a href="deg.html#cb6-16" tabindex="-1"></a><span class="fu">DEGres_ToGSEA</span>(<span class="at">diffan.obj =</span> dds_list, <span class="at">outdir =</span> outdirsub.gsea) </span>
+<span id="cb6-17"><a href="deg.html#cb6-17" tabindex="-1"></a><span class="co"># all_father中记录了</span></span>
+<span id="cb6-18"><a href="deg.html#cb6-18" tabindex="-1"></a><span class="co">#             差异分析的总表，默认阈值的差异基因表，</span></span>
+<span id="cb6-19"><a href="deg.html#cb6-19" tabindex="-1"></a><span class="co">#             上调基因列表，下调基因列表</span></span>
+<span id="cb6-20"><a href="deg.html#cb6-20" tabindex="-1"></a><span class="co">#             以及R-GSEA分析所需要的所有mRNA的表达排序列表。</span></span>
+<span id="cb6-21"><a href="deg.html#cb6-21" tabindex="-1"></a><span class="co">#  是我们后续各种分析的万恶之源（因此命名all_father）</span></span>
+<span id="cb6-22"><a href="deg.html#cb6-22" tabindex="-1"></a><span class="co">#  上述数据同时保存于当前工作目录/outdirsub.rich，</span></span>
+<span id="cb6-23"><a href="deg.html#cb6-23" tabindex="-1"></a><span class="co">#  文件是一个多sheet的xlsx表</span></span>
+<span id="cb6-24"><a href="deg.html#cb6-24" tabindex="-1"></a>all_father <span class="ot">&lt;-</span> <span class="fu">DEGres_ToRICH</span>(<span class="at">diffan.obj =</span> dds_list, <span class="at">p=</span>fpval, <span class="at">q=</span>ffdr, </span>
+<span id="cb6-25"><a href="deg.html#cb6-25" tabindex="-1"></a>                            <span class="at">f=</span>flogfc, <span class="at">mark=</span>mark, <span class="at">outdir =</span> outdirsub.rich)</span>
+<span id="cb6-26"><a href="deg.html#cb6-26" tabindex="-1"></a><span class="fu">save.image</span>(<span class="at">file =</span> <span class="fu">paste0</span>(outdirsub, <span class="st">&quot;/1.diff.img.RDATA&quot;</span>)) <span class="co"># 保存中间数据</span></span></code></pre></div>
 </div>
 </div>
-<div id="deg-valcano" class="section level2 hasAnchor" number="2.2">
-<h2><span class="header-section-number">2.2</span> 火山图<a href="deg.html#deg-valcano" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="deg-valcano" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> 火山图<a href="deg.html#deg-valcano" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>需要修改的是以下几个值：<br/>
 df_valcano：文件读取时的文件路径<br/>
 label_gene: 展示基因列表<br/>
 不清楚的话按默认设置即可。仅修改<code>label_gene: 展示基因列表</code>即可。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="deg.html#cb6-1" tabindex="-1"></a><span class="co"># 本流程中不需要运行，后续想再次分析时可从此步开始</span></span>
-<span id="cb6-2"><a href="deg.html#cb6-2" tabindex="-1"></a><span class="co"># load(&quot;./result/T_C/1.diff.img.RDATA&quot;) </span></span>
-<span id="cb6-3"><a href="deg.html#cb6-3" tabindex="-1"></a><span class="co"># library(LZ)</span></span>
-<span id="cb6-4"><a href="deg.html#cb6-4" tabindex="-1"></a><span class="fu">library</span>(ggpubr);<span class="fu">library</span>(ggrepel);<span class="fu">library</span>(ggsci);<span class="fu">library</span>(scales)</span>
-<span id="cb6-5"><a href="deg.html#cb6-5" tabindex="-1"></a><span class="fu">library</span>(tidyverse);<span class="fu">library</span>(dplyr);<span class="fu">library</span>(pheatmap);<span class="fu">library</span>(RColorBrewer)</span>
-<span id="cb6-6"><a href="deg.html#cb6-6" tabindex="-1"></a><span class="co"># 导入火山图需要的数据，即差异分析后的未筛选表格(我们也称这个对象为resdf,</span></span>
-<span id="cb6-7"><a href="deg.html#cb6-7" tabindex="-1"></a><span class="co">#  resdf文件涵盖差异分析的所有结果信息，可以做后续所有基于差异分析或者基因</span></span>
-<span id="cb6-8"><a href="deg.html#cb6-8" tabindex="-1"></a><span class="co">#  列表的所有分析，如果后续分析时使用其它数据，请按这个resdf的格式改数据，</span></span>
-<span id="cb6-9"><a href="deg.html#cb6-9" tabindex="-1"></a><span class="co">#  主要就是把数据的列名改成和resdf的列名相同，即可用此包的函数分析画图)</span></span>
-<span id="cb6-10"><a href="deg.html#cb6-10" tabindex="-1"></a><span class="co">#  即df_valcano &lt;- readxl::read_xlsx(&quot;xxx.xlsx&quot;, sheet = 1)</span></span>
-<span id="cb6-11"><a href="deg.html#cb6-11" tabindex="-1"></a>df_valcano <span class="ot">&lt;-</span> all_father<span class="sc">$</span>DIFF.ALL</span>
-<span id="cb6-12"><a href="deg.html#cb6-12" tabindex="-1"></a><span class="fu">names</span>(df_valcano) <span class="co"># 对应的列名必须为Gene, log2FC, PValue, FDR</span></span>
-<span id="cb6-13"><a href="deg.html#cb6-13" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="deg.html#cb6-14" tabindex="-1"></a><span class="co"># 模式设定 </span></span>
-<span id="cb6-15"><a href="deg.html#cb6-15" tabindex="-1"></a><span class="co"># filterc参数设置</span></span>
-<span id="cb6-16"><a href="deg.html#cb6-16" tabindex="-1"></a><span class="co"># &quot;both&quot;: pvalue, padj均考虑模式</span></span>
-<span id="cb6-17"><a href="deg.html#cb6-17" tabindex="-1"></a><span class="co"># &quot;fdr&quot;:仅考虑fdr值模式, </span></span>
-<span id="cb6-18"><a href="deg.html#cb6-18" tabindex="-1"></a><span class="co"># &quot;pvalue&quot;: 仅考虑p值模式</span></span>
-<span id="cb6-19"><a href="deg.html#cb6-19" tabindex="-1"></a><span class="co"># 如果火山图出现横线位置“不对”时，</span></span>
-<span id="cb6-20"><a href="deg.html#cb6-20" tabindex="-1"></a><span class="co">#   意味着fdr的考虑导致大量横线上基因被判定为非差异基因</span></span>
-<span id="cb6-21"><a href="deg.html#cb6-21" tabindex="-1"></a><span class="co">#   请将filterc 设置为pvalue可以解决这个现象</span></span>
-<span id="cb6-22"><a href="deg.html#cb6-22" tabindex="-1"></a></span>
-<span id="cb6-23"><a href="deg.html#cb6-23" tabindex="-1"></a><span class="co"># 火山图 无标记 （图片会自动保存）</span></span>
-<span id="cb6-24"><a href="deg.html#cb6-24" tabindex="-1"></a><span class="fu">DEGp_Volcano2</span>(df_valcano, <span class="at">filterc =</span> <span class="st">&quot;both&quot;</span>, </span>
-<span id="cb6-25"><a href="deg.html#cb6-25" tabindex="-1"></a>              <span class="at">pvalue=</span><span class="fl">0.05</span>, <span class="at">fdr=</span><span class="fl">0.1</span>, <span class="at">logfc.p=</span><span class="dv">1</span>, <span class="at">logfc.n=</span><span class="sc">-</span><span class="dv">1</span>,</span>
-<span id="cb6-26"><a href="deg.html#cb6-26" tabindex="-1"></a>              <span class="at">outdir=</span><span class="st">&quot;result&quot;</span>, <span class="at">filename.base =</span> <span class="st">&quot;DEG_xx&quot;</span>)</span>
-<span id="cb6-27"><a href="deg.html#cb6-27" tabindex="-1"></a></span>
-<span id="cb6-28"><a href="deg.html#cb6-28" tabindex="-1"></a><span class="co"># 火山图 有标记 （图片会自动保存）</span></span>
-<span id="cb6-29"><a href="deg.html#cb6-29" tabindex="-1"></a><span class="co"># 设定需要标记的marker gene</span></span>
-<span id="cb6-30"><a href="deg.html#cb6-30" tabindex="-1"></a>label_gene <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;TFRC&#39;</span>, <span class="st">&#39;ACSL1&#39;</span>, <span class="st">&#39;LPCAT3&#39;</span>, <span class="st">&#39;PCBP1&#39;</span>, <span class="st">&#39;FTH1&#39;</span>, <span class="st">&#39;SLC11A2&#39;</span>,</span>
-<span id="cb6-31"><a href="deg.html#cb6-31" tabindex="-1"></a>                <span class="st">&#39;SLC39A8&#39;</span>, <span class="st">&#39;SAT1&#39;</span>, <span class="st">&#39;FTL&#39;</span>, <span class="st">&#39;GSS&#39;</span>)</span>
-<span id="cb6-32"><a href="deg.html#cb6-32" tabindex="-1"></a><span class="co"># 查看想展示的基因在不在差异分析总表中</span></span>
-<span id="cb6-33"><a href="deg.html#cb6-33" tabindex="-1"></a><span class="co"># label_gene %in% df_valcano$Gene %&gt;% all</span></span>
-<span id="cb6-34"><a href="deg.html#cb6-34" tabindex="-1"></a><span class="co"># pic_data %&gt;% filter(Row.names %in% label_gene)</span></span>
-<span id="cb6-35"><a href="deg.html#cb6-35" tabindex="-1"></a><span class="fu">DEGp_Volcano2</span>(df_valcano, <span class="at">filterc =</span> <span class="st">&quot;both&quot;</span>, </span>
-<span id="cb6-36"><a href="deg.html#cb6-36" tabindex="-1"></a>              <span class="at">pvalue=</span><span class="fl">0.05</span>, <span class="at">fdr=</span><span class="fl">0.1</span>, <span class="at">logfc.p=</span><span class="dv">1</span>, <span class="at">logfc.n=</span><span class="sc">-</span><span class="dv">1</span>,</span>
-<span id="cb6-37"><a href="deg.html#cb6-37" tabindex="-1"></a>              <span class="at">outdir=</span><span class="st">&quot;result&quot;</span>, <span class="at">filename.base =</span> <span class="st">&quot;DEG_xx&quot;</span>,</span>
-<span id="cb6-38"><a href="deg.html#cb6-38" tabindex="-1"></a>              <span class="at">label_geneset =</span> <span class="cn">NULL</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="deg.html#cb7-1" tabindex="-1"></a><span class="co"># 本流程中不需要运行，后续想再次分析时可从此步开始</span></span>
+<span id="cb7-2"><a href="deg.html#cb7-2" tabindex="-1"></a><span class="co"># load(&quot;./result/T_C/1.diff.img.RDATA&quot;) </span></span>
+<span id="cb7-3"><a href="deg.html#cb7-3" tabindex="-1"></a><span class="co"># library(LZ)</span></span>
+<span id="cb7-4"><a href="deg.html#cb7-4" tabindex="-1"></a><span class="fu">library</span>(ggpubr);<span class="fu">library</span>(ggrepel);<span class="fu">library</span>(ggsci);<span class="fu">library</span>(scales)</span>
+<span id="cb7-5"><a href="deg.html#cb7-5" tabindex="-1"></a><span class="fu">library</span>(tidyverse);<span class="fu">library</span>(dplyr);<span class="fu">library</span>(pheatmap);<span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb7-6"><a href="deg.html#cb7-6" tabindex="-1"></a><span class="co"># 导入火山图需要的数据，即差异分析后的未筛选表格(我们也称这个对象为resdf,</span></span>
+<span id="cb7-7"><a href="deg.html#cb7-7" tabindex="-1"></a><span class="co">#  resdf文件涵盖差异分析的所有结果信息，可以做后续所有基于差异分析或者基因</span></span>
+<span id="cb7-8"><a href="deg.html#cb7-8" tabindex="-1"></a><span class="co">#  列表的所有分析，如果后续分析时使用其它数据，请按这个resdf的格式改数据，</span></span>
+<span id="cb7-9"><a href="deg.html#cb7-9" tabindex="-1"></a><span class="co">#  主要就是把数据的列名改成和resdf的列名相同，即可用此包的函数分析画图)</span></span>
+<span id="cb7-10"><a href="deg.html#cb7-10" tabindex="-1"></a><span class="co">#  即df_valcano &lt;- readxl::read_xlsx(&quot;xxx.xlsx&quot;, sheet = 1)</span></span>
+<span id="cb7-11"><a href="deg.html#cb7-11" tabindex="-1"></a>df_valcano <span class="ot">&lt;-</span> all_father<span class="sc">$</span>DIFF.ALL</span>
+<span id="cb7-12"><a href="deg.html#cb7-12" tabindex="-1"></a><span class="fu">names</span>(df_valcano) <span class="co"># 对应的列名必须为Gene, log2FC, PValue, FDR</span></span>
+<span id="cb7-13"><a href="deg.html#cb7-13" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="deg.html#cb7-14" tabindex="-1"></a><span class="co"># 模式设定 </span></span>
+<span id="cb7-15"><a href="deg.html#cb7-15" tabindex="-1"></a><span class="co"># filterc参数设置</span></span>
+<span id="cb7-16"><a href="deg.html#cb7-16" tabindex="-1"></a><span class="co"># &quot;both&quot;: pvalue, padj均考虑模式</span></span>
+<span id="cb7-17"><a href="deg.html#cb7-17" tabindex="-1"></a><span class="co"># &quot;fdr&quot;:仅考虑fdr值模式, </span></span>
+<span id="cb7-18"><a href="deg.html#cb7-18" tabindex="-1"></a><span class="co"># &quot;pvalue&quot;: 仅考虑p值模式</span></span>
+<span id="cb7-19"><a href="deg.html#cb7-19" tabindex="-1"></a><span class="co"># 如果火山图出现横线位置“不对”时，</span></span>
+<span id="cb7-20"><a href="deg.html#cb7-20" tabindex="-1"></a><span class="co">#   意味着fdr的考虑导致大量横线上基因被判定为非差异基因</span></span>
+<span id="cb7-21"><a href="deg.html#cb7-21" tabindex="-1"></a><span class="co">#   请将filterc 设置为pvalue可以解决这个现象</span></span>
+<span id="cb7-22"><a href="deg.html#cb7-22" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="deg.html#cb7-23" tabindex="-1"></a><span class="co"># 火山图 无标记 （图片会自动保存）</span></span>
+<span id="cb7-24"><a href="deg.html#cb7-24" tabindex="-1"></a><span class="fu">DEGp_Volcano2</span>(df_valcano, <span class="at">filterc =</span> <span class="st">&quot;both&quot;</span>, </span>
+<span id="cb7-25"><a href="deg.html#cb7-25" tabindex="-1"></a>              <span class="at">pvalue=</span><span class="fl">0.05</span>, <span class="at">fdr=</span><span class="fl">0.1</span>, <span class="at">logfc.p=</span><span class="dv">1</span>, <span class="at">logfc.n=</span><span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb7-26"><a href="deg.html#cb7-26" tabindex="-1"></a>              <span class="at">outdir=</span><span class="st">&quot;result&quot;</span>, <span class="at">filename.base =</span> <span class="st">&quot;DEG_xx&quot;</span>)</span>
+<span id="cb7-27"><a href="deg.html#cb7-27" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="deg.html#cb7-28" tabindex="-1"></a><span class="co"># 火山图 有标记 （图片会自动保存）</span></span>
+<span id="cb7-29"><a href="deg.html#cb7-29" tabindex="-1"></a><span class="co"># 设定需要标记的marker gene</span></span>
+<span id="cb7-30"><a href="deg.html#cb7-30" tabindex="-1"></a>label_gene <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;TFRC&#39;</span>, <span class="st">&#39;ACSL1&#39;</span>, <span class="st">&#39;LPCAT3&#39;</span>, <span class="st">&#39;PCBP1&#39;</span>, <span class="st">&#39;FTH1&#39;</span>, <span class="st">&#39;SLC11A2&#39;</span>,</span>
+<span id="cb7-31"><a href="deg.html#cb7-31" tabindex="-1"></a>                <span class="st">&#39;SLC39A8&#39;</span>, <span class="st">&#39;SAT1&#39;</span>, <span class="st">&#39;FTL&#39;</span>, <span class="st">&#39;GSS&#39;</span>)</span>
+<span id="cb7-32"><a href="deg.html#cb7-32" tabindex="-1"></a><span class="co"># 查看想展示的基因在不在差异分析总表中</span></span>
+<span id="cb7-33"><a href="deg.html#cb7-33" tabindex="-1"></a><span class="co"># label_gene %in% df_valcano$Gene %&gt;% all</span></span>
+<span id="cb7-34"><a href="deg.html#cb7-34" tabindex="-1"></a><span class="co"># pic_data %&gt;% filter(Row.names %in% label_gene)</span></span>
+<span id="cb7-35"><a href="deg.html#cb7-35" tabindex="-1"></a><span class="fu">DEGp_Volcano2</span>(df_valcano, <span class="at">filterc =</span> <span class="st">&quot;both&quot;</span>, </span>
+<span id="cb7-36"><a href="deg.html#cb7-36" tabindex="-1"></a>              <span class="at">pvalue=</span><span class="fl">0.05</span>, <span class="at">fdr=</span><span class="fl">0.1</span>, <span class="at">logfc.p=</span><span class="dv">1</span>, <span class="at">logfc.n=</span><span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb7-37"><a href="deg.html#cb7-37" tabindex="-1"></a>              <span class="at">outdir=</span><span class="st">&quot;result&quot;</span>, <span class="at">filename.base =</span> <span class="st">&quot;DEG_xx&quot;</span>,</span>
+<span id="cb7-38"><a href="deg.html#cb7-38" tabindex="-1"></a>              <span class="at">label_geneset =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 </div>
-<div id="热图" class="section level2 hasAnchor" number="2.3">
-<h2><span class="header-section-number">2.3</span> 热图<a href="deg.html#热图" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="热图表格数据预处理" class="section level3 hasAnchor" number="2.3.1">
-<h3><span class="header-section-number">2.3.1</span> 热图表格数据预处理<a href="deg.html#热图表格数据预处理" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="deg.html#cb7-1" tabindex="-1"></a><span class="fu">library</span>(LZ)</span>
-<span id="cb7-2"><a href="deg.html#cb7-2" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
-<span id="cb7-3"><a href="deg.html#cb7-3" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
-<span id="cb7-4"><a href="deg.html#cb7-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb7-5"><a href="deg.html#cb7-5" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="deg.html#cb7-6" tabindex="-1"></a>resdf <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">&quot;D:/xx/DIFF.an_p0.05q0.2fc1.xlsx&quot;</span>, </span>
-<span id="cb7-7"><a href="deg.html#cb7-7" tabindex="-1"></a>                           <span class="at">sheet =</span> <span class="dv">1</span>)</span>
-<span id="cb7-8"><a href="deg.html#cb7-8" tabindex="-1"></a>sig.df <span class="ot">&lt;-</span> resdf <span class="sc">%&gt;%</span> </span>
-<span id="cb7-9"><a href="deg.html#cb7-9" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">abs</span>(log2FC) <span class="sc">&gt;</span> <span class="dv">1</span>, PValue <span class="sc">&lt;</span> <span class="fl">0.05</span>, FDR <span class="sc">&lt;</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-10"><a href="deg.html#cb7-10" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(log2FC) <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>(<span class="at">check.names =</span> F)</span>
-<span id="cb7-11"><a href="deg.html#cb7-11" tabindex="-1"></a><span class="fu">rownames</span>(sig.df) <span class="ot">&lt;-</span> sig.df<span class="sc">$</span>Gene</span>
-<span id="cb7-12"><a href="deg.html#cb7-12" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="deg.html#cb7-13" tabindex="-1"></a><span class="co"># 画图的表达数据</span></span>
-<span id="cb7-14"><a href="deg.html#cb7-14" tabindex="-1"></a>sig.expr <span class="ot">&lt;-</span> sig.df[, <span class="dv">8</span><span class="sc">:</span>(<span class="fu">ncol</span>(sig.df)<span class="sc">-</span><span class="dv">1</span>)]</span>
-<span id="cb7-15"><a href="deg.html#cb7-15" tabindex="-1"></a>sig.expr <span class="sc">%&gt;%</span> <span class="fu">range</span>()</span>
-<span id="cb7-16"><a href="deg.html#cb7-16" tabindex="-1"></a><span class="co"># 画图的显示基因（这里表示最大差异前10和后10,</span></span>
-<span id="cb7-17"><a href="deg.html#cb7-17" tabindex="-1"></a><span class="co">#   可以将括号里的两个10改为100，就是显示最大差异前100后100）</span></span>
-<span id="cb7-18"><a href="deg.html#cb7-18" tabindex="-1"></a>show.gene <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">head</span>(<span class="fu">rownames</span>(sig.df), <span class="dv">10</span>), <span class="fu">tail</span>(<span class="fu">rownames</span>(sig.df), <span class="dv">10</span>))</span></code></pre></div>
+<div id="热图" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> 热图<a href="deg.html#热图" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="热图表格数据预处理" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> 热图表格数据预处理<a href="deg.html#热图表格数据预处理" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="deg.html#cb8-1" tabindex="-1"></a><span class="fu">library</span>(LZ)</span>
+<span id="cb8-2"><a href="deg.html#cb8-2" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb8-3"><a href="deg.html#cb8-3" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
+<span id="cb8-4"><a href="deg.html#cb8-4" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-5"><a href="deg.html#cb8-5" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="deg.html#cb8-6" tabindex="-1"></a>resdf <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">&quot;D:/xx/DIFF.an_p0.05q0.2fc1.xlsx&quot;</span>, </span>
+<span id="cb8-7"><a href="deg.html#cb8-7" tabindex="-1"></a>                           <span class="at">sheet =</span> <span class="dv">1</span>)</span>
+<span id="cb8-8"><a href="deg.html#cb8-8" tabindex="-1"></a>sig.df <span class="ot">&lt;-</span> resdf <span class="sc">%&gt;%</span> </span>
+<span id="cb8-9"><a href="deg.html#cb8-9" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">abs</span>(log2FC) <span class="sc">&gt;</span> <span class="dv">1</span>, PValue <span class="sc">&lt;</span> <span class="fl">0.05</span>, FDR <span class="sc">&lt;</span> <span class="fl">0.1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-10"><a href="deg.html#cb8-10" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(log2FC) <span class="sc">%&gt;%</span> <span class="fu">data.frame</span>(<span class="at">check.names =</span> F)</span>
+<span id="cb8-11"><a href="deg.html#cb8-11" tabindex="-1"></a><span class="fu">rownames</span>(sig.df) <span class="ot">&lt;-</span> sig.df<span class="sc">$</span>Gene</span>
+<span id="cb8-12"><a href="deg.html#cb8-12" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="deg.html#cb8-13" tabindex="-1"></a><span class="co"># 画图的表达数据</span></span>
+<span id="cb8-14"><a href="deg.html#cb8-14" tabindex="-1"></a>sig.expr <span class="ot">&lt;-</span> sig.df[, <span class="dv">8</span><span class="sc">:</span>(<span class="fu">ncol</span>(sig.df)<span class="sc">-</span><span class="dv">1</span>)]</span>
+<span id="cb8-15"><a href="deg.html#cb8-15" tabindex="-1"></a>sig.expr <span class="sc">%&gt;%</span> <span class="fu">range</span>()</span>
+<span id="cb8-16"><a href="deg.html#cb8-16" tabindex="-1"></a><span class="co"># 画图的显示基因（这里表示最大差异前10和后10,</span></span>
+<span id="cb8-17"><a href="deg.html#cb8-17" tabindex="-1"></a><span class="co">#   可以将括号里的两个10改为100，就是显示最大差异前100后100）</span></span>
+<span id="cb8-18"><a href="deg.html#cb8-18" tabindex="-1"></a>show.gene <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">head</span>(<span class="fu">rownames</span>(sig.df), <span class="dv">10</span>), <span class="fu">tail</span>(<span class="fu">rownames</span>(sig.df), <span class="dv">10</span>))</span></code></pre></div>
 </div>
-<div id="热图分组数据预处理" class="section level3 hasAnchor" number="2.3.2">
-<h3><span class="header-section-number">2.3.2</span> 热图分组数据预处理<a href="deg.html#热图分组数据预处理" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="热图分组数据预处理" class="section level3 hasAnchor" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> 热图分组数据预处理<a href="deg.html#热图分组数据预处理" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>R中为一个行名为样本名的一列dataframe, excel中表现为两列，第1列为样本名，第2列为分组。<br>
 新手建议excel里操作然后保存为csv格式，然后使用<code>groupdf &lt;- read.csv("your csv", row.names = 1)</code>读入。</p>
 <table>
@@ -486,74 +474,330 @@ label_gene: 展示基因列表<br/>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="deg.html#cb8-1" tabindex="-1"></a><span class="co"># 方法一，新手不建议用这种方法</span></span>
-<span id="cb8-2"><a href="deg.html#cb8-2" tabindex="-1"></a>groupdf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb8-3"><a href="deg.html#cb8-3" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">colnames</span>(sig.expr),</span>
-<span id="cb8-4"><a href="deg.html#cb8-4" tabindex="-1"></a>  <span class="co"># 要一一对应才行</span></span>
-<span id="cb8-5"><a href="deg.html#cb8-5" tabindex="-1"></a>  <span class="at">Type =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;11A&quot;</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">&quot;01A&quot;</span>, <span class="dv">3</span>)),</span>
-<span id="cb8-6"><a href="deg.html#cb8-6" tabindex="-1"></a>  <span class="at">check.names =</span> F)</span>
-<span id="cb8-7"><a href="deg.html#cb8-7" tabindex="-1"></a>groupdf[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(groupdf[,<span class="dv">1</span>])</span>
-<span id="cb8-8"><a href="deg.html#cb8-8" tabindex="-1"></a><span class="co"># 方法二，新手推荐这种方法，先在excel中处理好数据</span></span>
-<span id="cb8-9"><a href="deg.html#cb8-9" tabindex="-1"></a>groupdf <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;your csv&quot;</span>, <span class="at">row.names =</span> <span class="dv">1</span>)</span>
-<span id="cb8-10"><a href="deg.html#cb8-10" tabindex="-1"></a>groupdf[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(groupdf[,<span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="deg.html#cb9-1" tabindex="-1"></a><span class="co"># 方法一，新手不建议用这种方法</span></span>
+<span id="cb9-2"><a href="deg.html#cb9-2" tabindex="-1"></a>groupdf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-3"><a href="deg.html#cb9-3" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">colnames</span>(sig.expr),</span>
+<span id="cb9-4"><a href="deg.html#cb9-4" tabindex="-1"></a>  <span class="co"># 要一一对应才行</span></span>
+<span id="cb9-5"><a href="deg.html#cb9-5" tabindex="-1"></a>  <span class="at">Type =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">&quot;11A&quot;</span>, <span class="dv">3</span>), <span class="fu">rep</span>(<span class="st">&quot;01A&quot;</span>, <span class="dv">3</span>)),</span>
+<span id="cb9-6"><a href="deg.html#cb9-6" tabindex="-1"></a>  <span class="at">check.names =</span> F)</span>
+<span id="cb9-7"><a href="deg.html#cb9-7" tabindex="-1"></a>groupdf[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(groupdf[,<span class="dv">1</span>])</span>
+<span id="cb9-8"><a href="deg.html#cb9-8" tabindex="-1"></a><span class="co"># 方法二，新手推荐这种方法，先在excel中处理好数据</span></span>
+<span id="cb9-9"><a href="deg.html#cb9-9" tabindex="-1"></a>groupdf <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;your csv&quot;</span>, <span class="at">row.names =</span> <span class="dv">1</span>)</span>
+<span id="cb9-10"><a href="deg.html#cb9-10" tabindex="-1"></a>groupdf[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(groupdf[,<span class="dv">1</span>])</span></code></pre></div>
 </div>
-<div id="选定一种算法作图" class="section level3 hasAnchor" number="2.3.3">
-<h3><span class="header-section-number">2.3.3</span> 选定一种算法作图<a href="deg.html#选定一种算法作图" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="deg.html#cb9-1" tabindex="-1"></a><span class="co"># 检查groupdf的行名是否全部与sig.expr的列名一一对应</span></span>
-<span id="cb9-2"><a href="deg.html#cb9-2" tabindex="-1"></a><span class="co"># 这句如果输出为False，不可继续进行画图操作，要重新调整数据。</span></span>
-<span id="cb9-3"><a href="deg.html#cb9-3" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">rownames</span>(groupdf) <span class="sc">==</span> <span class="fu">colnames</span>(sig.expr))</span>
-<span id="cb9-4"><a href="deg.html#cb9-4" tabindex="-1"></a><span class="co"># 作图，默认算法</span></span>
-<span id="cb9-5"><a href="deg.html#cb9-5" tabindex="-1"></a><span class="fu">DEGp_Pheat</span>(</span>
-<span id="cb9-6"><a href="deg.html#cb9-6" tabindex="-1"></a>  sig.expr,</span>
-<span id="cb9-7"><a href="deg.html#cb9-7" tabindex="-1"></a>  <span class="at">gene =</span> show.gene, </span>
-<span id="cb9-8"><a href="deg.html#cb9-8" tabindex="-1"></a>  <span class="at">pheno =</span> groupdf,</span>
-<span id="cb9-9"><a href="deg.html#cb9-9" tabindex="-1"></a>  <span class="at">outdir =</span> <span class="st">&quot;D:/xx/yy&quot;</span>,</span>
-<span id="cb9-10"><a href="deg.html#cb9-10" tabindex="-1"></a>  <span class="at">f_mark =</span> <span class="st">&quot;heatmap&quot;</span>,</span>
-<span id="cb9-11"><a href="deg.html#cb9-11" tabindex="-1"></a>  <span class="at">nlevel =</span> <span class="dv">2</span>,</span>
-<span id="cb9-12"><a href="deg.html#cb9-12" tabindex="-1"></a>  <span class="at">pic_w =</span> <span class="fl">4.5</span>,</span>
-<span id="cb9-13"><a href="deg.html#cb9-13" tabindex="-1"></a>  <span class="at">pic_h =</span> <span class="fl">4.5</span>,</span>
-<span id="cb9-14"><a href="deg.html#cb9-14" tabindex="-1"></a>  <span class="at">c_w =</span> <span class="dv">16</span>,</span>
-<span id="cb9-15"><a href="deg.html#cb9-15" tabindex="-1"></a>  <span class="at">c_h =</span> <span class="fl">9.8</span>, <span class="co">#7.4 # 9.9</span></span>
-<span id="cb9-16"><a href="deg.html#cb9-16" tabindex="-1"></a>  <span class="at">c_colors =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;#FFFFCC&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
-<span id="cb9-17"><a href="deg.html#cb9-17" tabindex="-1"></a>  <span class="at">color.num =</span> <span class="dv">100</span>,</span>
-<span id="cb9-18"><a href="deg.html#cb9-18" tabindex="-1"></a>  <span class="at">fontsize =</span> <span class="dv">10</span>,</span>
-<span id="cb9-19"><a href="deg.html#cb9-19" tabindex="-1"></a>  <span class="at">fontsize.col =</span> <span class="dv">12</span>,</span>
-<span id="cb9-20"><a href="deg.html#cb9-20" tabindex="-1"></a>  <span class="at">angle =</span> <span class="st">&quot;90&quot;</span>,</span>
-<span id="cb9-21"><a href="deg.html#cb9-21" tabindex="-1"></a>  <span class="at">cluster_rows =</span> T,</span>
-<span id="cb9-22"><a href="deg.html#cb9-22" tabindex="-1"></a>  <span class="at">cluster_cols =</span> T</span>
-<span id="cb9-23"><a href="deg.html#cb9-23" tabindex="-1"></a>)</span></code></pre></div>
+<div id="选定一种算法作图" class="section level3 hasAnchor" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> 选定一种算法作图<a href="deg.html#选定一种算法作图" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="deg.html#cb10-1" tabindex="-1"></a><span class="co"># 检查groupdf的行名是否全部与sig.expr的列名一一对应</span></span>
+<span id="cb10-2"><a href="deg.html#cb10-2" tabindex="-1"></a><span class="co"># 这句如果输出为False，不可继续进行画图操作，要重新调整数据。</span></span>
+<span id="cb10-3"><a href="deg.html#cb10-3" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">rownames</span>(groupdf) <span class="sc">==</span> <span class="fu">colnames</span>(sig.expr))</span>
+<span id="cb10-4"><a href="deg.html#cb10-4" tabindex="-1"></a><span class="co"># 作图，默认算法</span></span>
+<span id="cb10-5"><a href="deg.html#cb10-5" tabindex="-1"></a><span class="fu">DEGp_Pheat</span>(</span>
+<span id="cb10-6"><a href="deg.html#cb10-6" tabindex="-1"></a>  sig.expr,</span>
+<span id="cb10-7"><a href="deg.html#cb10-7" tabindex="-1"></a>  <span class="at">gene =</span> show.gene, </span>
+<span id="cb10-8"><a href="deg.html#cb10-8" tabindex="-1"></a>  <span class="at">pheno =</span> groupdf,</span>
+<span id="cb10-9"><a href="deg.html#cb10-9" tabindex="-1"></a>  <span class="at">outdir =</span> <span class="st">&quot;D:/xx/yy&quot;</span>,</span>
+<span id="cb10-10"><a href="deg.html#cb10-10" tabindex="-1"></a>  <span class="at">f_mark =</span> <span class="st">&quot;heatmap&quot;</span>,</span>
+<span id="cb10-11"><a href="deg.html#cb10-11" tabindex="-1"></a>  <span class="at">nlevel =</span> <span class="dv">2</span>,</span>
+<span id="cb10-12"><a href="deg.html#cb10-12" tabindex="-1"></a>  <span class="at">pic_w =</span> <span class="fl">4.5</span>,</span>
+<span id="cb10-13"><a href="deg.html#cb10-13" tabindex="-1"></a>  <span class="at">pic_h =</span> <span class="fl">4.5</span>,</span>
+<span id="cb10-14"><a href="deg.html#cb10-14" tabindex="-1"></a>  <span class="at">c_w =</span> <span class="dv">16</span>,</span>
+<span id="cb10-15"><a href="deg.html#cb10-15" tabindex="-1"></a>  <span class="at">c_h =</span> <span class="fl">9.8</span>, <span class="co">#7.4 # 9.9</span></span>
+<span id="cb10-16"><a href="deg.html#cb10-16" tabindex="-1"></a>  <span class="at">c_colors =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;#FFFFCC&quot;</span>, <span class="st">&quot;red&quot;</span>),</span>
+<span id="cb10-17"><a href="deg.html#cb10-17" tabindex="-1"></a>  <span class="at">color.num =</span> <span class="dv">100</span>,</span>
+<span id="cb10-18"><a href="deg.html#cb10-18" tabindex="-1"></a>  <span class="at">fontsize =</span> <span class="dv">10</span>,</span>
+<span id="cb10-19"><a href="deg.html#cb10-19" tabindex="-1"></a>  <span class="at">fontsize.col =</span> <span class="dv">12</span>,</span>
+<span id="cb10-20"><a href="deg.html#cb10-20" tabindex="-1"></a>  <span class="at">angle =</span> <span class="st">&quot;90&quot;</span>,</span>
+<span id="cb10-21"><a href="deg.html#cb10-21" tabindex="-1"></a>  <span class="at">cluster_rows =</span> T,</span>
+<span id="cb10-22"><a href="deg.html#cb10-22" tabindex="-1"></a>  <span class="at">cluster_cols =</span> T</span>
+<span id="cb10-23"><a href="deg.html#cb10-23" tabindex="-1"></a>)</span></code></pre></div>
 </div>
-<div id="循环各种聚类算法作图" class="section level3 hasAnchor" number="2.3.4">
-<h3><span class="header-section-number">2.3.4</span> 循环各种聚类算法作图<a href="deg.html#循环各种聚类算法作图" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="deg.html#cb10-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ward.D&quot;</span>, <span class="st">&quot;ward.D2&quot;</span>, <span class="st">&quot;single&quot;</span>, <span class="st">&quot;complete&quot;</span>, </span>
-<span id="cb10-2"><a href="deg.html#cb10-2" tabindex="-1"></a><span class="st">&quot;average&quot;</span>, <span class="st">&quot;mcquitty&quot;</span>, </span>
-<span id="cb10-3"><a href="deg.html#cb10-3" tabindex="-1"></a><span class="st">&quot;median&quot;</span>, <span class="st">&quot;centroid&quot;</span>)</span>
-<span id="cb10-4"><a href="deg.html#cb10-4" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;correlation&quot;</span>, <span class="st">&quot;euclidean&quot;</span>, <span class="st">&quot;maximum&quot;</span>, <span class="st">&quot;manhattan&quot;</span>,</span>
-<span id="cb10-5"><a href="deg.html#cb10-5" tabindex="-1"></a>       <span class="st">&quot;canberra&quot;</span>, <span class="st">&quot;binary&quot;</span>, <span class="st">&quot;minkowski&quot;</span>)</span>
-<span id="cb10-6"><a href="deg.html#cb10-6" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> m) {</span>
-<span id="cb10-7"><a href="deg.html#cb10-7" tabindex="-1"></a>  <span class="cf">for</span> (i.d <span class="cf">in</span> d) {</span>
-<span id="cb10-8"><a href="deg.html#cb10-8" tabindex="-1"></a>    <span class="fu">cat</span>(i, i.d, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
-<span id="cb10-9"><a href="deg.html#cb10-9" tabindex="-1"></a>    <span class="fu">DEGp_Pheat</span>(</span>
-<span id="cb10-10"><a href="deg.html#cb10-10" tabindex="-1"></a>      sig.expr,</span>
-<span id="cb10-11"><a href="deg.html#cb10-11" tabindex="-1"></a>      <span class="at">gene =</span> show.gene, </span>
-<span id="cb10-12"><a href="deg.html#cb10-12" tabindex="-1"></a>      <span class="at">pheno =</span> groupdf,</span>
-<span id="cb10-13"><a href="deg.html#cb10-13" tabindex="-1"></a>      <span class="at">outdir =</span> <span class="st">&quot;D:/xx/yy&quot;</span>,</span>
-<span id="cb10-14"><a href="deg.html#cb10-14" tabindex="-1"></a>      <span class="at">f_mark =</span> <span class="fu">paste0</span>(<span class="st">&quot;heatmap.m.&quot;</span>, i, <span class="st">&quot;_&quot;</span>, i.d),</span>
-<span id="cb10-15"><a href="deg.html#cb10-15" tabindex="-1"></a>      <span class="at">nlevel =</span> <span class="dv">2</span>,</span>
-<span id="cb10-16"><a href="deg.html#cb10-16" tabindex="-1"></a>      <span class="at">pic_w =</span> <span class="dv">5</span>,</span>
-<span id="cb10-17"><a href="deg.html#cb10-17" tabindex="-1"></a>      <span class="at">pic_h =</span> <span class="dv">8</span>,</span>
-<span id="cb10-18"><a href="deg.html#cb10-18" tabindex="-1"></a>      <span class="at">c_w =</span> <span class="dv">18</span>,</span>
-<span id="cb10-19"><a href="deg.html#cb10-19" tabindex="-1"></a>      <span class="at">c_h =</span> <span class="dv">10</span>,</span>
-<span id="cb10-20"><a href="deg.html#cb10-20" tabindex="-1"></a>      <span class="at">f_z =</span> <span class="dv">10</span>,</span>
-<span id="cb10-21"><a href="deg.html#cb10-21" tabindex="-1"></a>      <span class="at">f_z.col =</span> <span class="dv">14</span>,</span>
-<span id="cb10-22"><a href="deg.html#cb10-22" tabindex="-1"></a>      <span class="at">angle =</span> <span class="st">&quot;90&quot;</span>,</span>
-<span id="cb10-23"><a href="deg.html#cb10-23" tabindex="-1"></a>      <span class="at">cluster_rows =</span> T,</span>
-<span id="cb10-24"><a href="deg.html#cb10-24" tabindex="-1"></a>      <span class="at">cluster_cols =</span> T,</span>
-<span id="cb10-25"><a href="deg.html#cb10-25" tabindex="-1"></a>      <span class="at">clustering_method =</span> i,</span>
-<span id="cb10-26"><a href="deg.html#cb10-26" tabindex="-1"></a>      <span class="at">clustering_distance_rows=</span>i.d</span>
-<span id="cb10-27"><a href="deg.html#cb10-27" tabindex="-1"></a>    )  </span>
-<span id="cb10-28"><a href="deg.html#cb10-28" tabindex="-1"></a>  }</span>
-<span id="cb10-29"><a href="deg.html#cb10-29" tabindex="-1"></a>}</span></code></pre></div>
+<div id="循环各种聚类算法作图" class="section level3 hasAnchor" number="3.3.4">
+<h3><span class="header-section-number">3.3.4</span> 循环各种聚类算法作图<a href="deg.html#循环各种聚类算法作图" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="deg.html#cb11-1" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;ward.D&quot;</span>, <span class="st">&quot;ward.D2&quot;</span>, <span class="st">&quot;single&quot;</span>, <span class="st">&quot;complete&quot;</span>, </span>
+<span id="cb11-2"><a href="deg.html#cb11-2" tabindex="-1"></a><span class="st">&quot;average&quot;</span>, <span class="st">&quot;mcquitty&quot;</span>, </span>
+<span id="cb11-3"><a href="deg.html#cb11-3" tabindex="-1"></a><span class="st">&quot;median&quot;</span>, <span class="st">&quot;centroid&quot;</span>)</span>
+<span id="cb11-4"><a href="deg.html#cb11-4" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;correlation&quot;</span>, <span class="st">&quot;euclidean&quot;</span>, <span class="st">&quot;maximum&quot;</span>, <span class="st">&quot;manhattan&quot;</span>,</span>
+<span id="cb11-5"><a href="deg.html#cb11-5" tabindex="-1"></a>       <span class="st">&quot;canberra&quot;</span>, <span class="st">&quot;binary&quot;</span>, <span class="st">&quot;minkowski&quot;</span>)</span>
+<span id="cb11-6"><a href="deg.html#cb11-6" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> m) {</span>
+<span id="cb11-7"><a href="deg.html#cb11-7" tabindex="-1"></a>  <span class="cf">for</span> (i.d <span class="cf">in</span> d) {</span>
+<span id="cb11-8"><a href="deg.html#cb11-8" tabindex="-1"></a>    <span class="fu">cat</span>(i, i.d, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb11-9"><a href="deg.html#cb11-9" tabindex="-1"></a>    <span class="fu">DEGp_Pheat</span>(</span>
+<span id="cb11-10"><a href="deg.html#cb11-10" tabindex="-1"></a>      sig.expr,</span>
+<span id="cb11-11"><a href="deg.html#cb11-11" tabindex="-1"></a>      <span class="at">gene =</span> show.gene, </span>
+<span id="cb11-12"><a href="deg.html#cb11-12" tabindex="-1"></a>      <span class="at">pheno =</span> groupdf,</span>
+<span id="cb11-13"><a href="deg.html#cb11-13" tabindex="-1"></a>      <span class="at">outdir =</span> <span class="st">&quot;D:/xx/yy&quot;</span>,</span>
+<span id="cb11-14"><a href="deg.html#cb11-14" tabindex="-1"></a>      <span class="at">f_mark =</span> <span class="fu">paste0</span>(<span class="st">&quot;heatmap.m.&quot;</span>, i, <span class="st">&quot;_&quot;</span>, i.d),</span>
+<span id="cb11-15"><a href="deg.html#cb11-15" tabindex="-1"></a>      <span class="at">nlevel =</span> <span class="dv">2</span>,</span>
+<span id="cb11-16"><a href="deg.html#cb11-16" tabindex="-1"></a>      <span class="at">pic_w =</span> <span class="dv">5</span>,</span>
+<span id="cb11-17"><a href="deg.html#cb11-17" tabindex="-1"></a>      <span class="at">pic_h =</span> <span class="dv">8</span>,</span>
+<span id="cb11-18"><a href="deg.html#cb11-18" tabindex="-1"></a>      <span class="at">c_w =</span> <span class="dv">18</span>,</span>
+<span id="cb11-19"><a href="deg.html#cb11-19" tabindex="-1"></a>      <span class="at">c_h =</span> <span class="dv">10</span>,</span>
+<span id="cb11-20"><a href="deg.html#cb11-20" tabindex="-1"></a>      <span class="at">f_z =</span> <span class="dv">10</span>,</span>
+<span id="cb11-21"><a href="deg.html#cb11-21" tabindex="-1"></a>      <span class="at">f_z.col =</span> <span class="dv">14</span>,</span>
+<span id="cb11-22"><a href="deg.html#cb11-22" tabindex="-1"></a>      <span class="at">angle =</span> <span class="st">&quot;90&quot;</span>,</span>
+<span id="cb11-23"><a href="deg.html#cb11-23" tabindex="-1"></a>      <span class="at">cluster_rows =</span> T,</span>
+<span id="cb11-24"><a href="deg.html#cb11-24" tabindex="-1"></a>      <span class="at">cluster_cols =</span> T,</span>
+<span id="cb11-25"><a href="deg.html#cb11-25" tabindex="-1"></a>      <span class="at">clustering_method =</span> i,</span>
+<span id="cb11-26"><a href="deg.html#cb11-26" tabindex="-1"></a>      <span class="at">clustering_distance_rows=</span>i.d</span>
+<span id="cb11-27"><a href="deg.html#cb11-27" tabindex="-1"></a>    )  </span>
+<span id="cb11-28"><a href="deg.html#cb11-28" tabindex="-1"></a>  }</span>
+<span id="cb11-29"><a href="deg.html#cb11-29" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+</div>
+<div id="enrich" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> 富集分析<a href="deg.html#enrich" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="enrich-auto" class="section level3 hasAnchor" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> GO &amp; KEGG 富集分析<a href="deg.html#enrich-auto" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="一键脚本批量处理" class="section level4 hasAnchor" number="3.4.1.1">
+<h4><span class="header-section-number">3.4.1.1</span> 一键脚本(批量处理)<a href="deg.html#一键脚本批量处理" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>这是一个一键脚本，请新建一个单独的文件写这段脚本，然后按这个脚本的顶部注释
+修改<code>resdf outd fc.list处即可</code>，运行即可批量出不同FC的富集分析结果。</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="deg.html#cb12-1" tabindex="-1"></a><span class="co"># 此脚本为GO、KEGG分析（需要一个输入文件即可，为差异分析流程后的resdf文件）</span></span>
+<span id="cb12-2"><a href="deg.html#cb12-2" tabindex="-1"></a><span class="co"># 即为第一步(或1脚本)的结果的一个结果文件（DIFF_an_***.xlsx）</span></span>
+<span id="cb12-3"><a href="deg.html#cb12-3" tabindex="-1"></a><span class="co"># 即为resdf文件，此文件是差异分析后的总表</span></span>
+<span id="cb12-4"><a href="deg.html#cb12-4" tabindex="-1"></a><span class="co"># 注意如果采用了其他的分析方法得到差异分析后表，运行这个脚本时可能需要更改</span></span>
+<span id="cb12-5"><a href="deg.html#cb12-5" tabindex="-1"></a><span class="co"># 列名即我们的resdf对象的列名为Gene, log2FC,PValue,FDR，需要与这些个列名保</span></span>
+<span id="cb12-6"><a href="deg.html#cb12-6" tabindex="-1"></a><span class="co"># 持一致。</span></span>
+<span id="cb12-7"><a href="deg.html#cb12-7" tabindex="-1"></a><span class="co"># 此脚本中的需要修改的位于 /// *** /// 行中，另外还有一个LZ::setproxy()行，</span></span>
+<span id="cb12-8"><a href="deg.html#cb12-8" tabindex="-1"></a><span class="co">#   如果没有代理工具，或者代理工具不支持http代理，或者端口不通，请不要运行。</span></span>
+<span id="cb12-9"><a href="deg.html#cb12-9" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>());<span class="fu">gc</span>() <span class="co"># 清空所有对象，慎用，必要时用</span></span>
+<span id="cb12-10"><a href="deg.html#cb12-10" tabindex="-1"></a><span class="fu">suppressMessages</span>({ <span class="fu">suppressWarnings</span>({</span>
+<span id="cb12-11"><a href="deg.html#cb12-11" tabindex="-1"></a>  <span class="fu">library</span>(LZ);<span class="fu">library</span>(YZ)</span>
+<span id="cb12-12"><a href="deg.html#cb12-12" tabindex="-1"></a>  <span class="fu">library</span>(tidyverse);<span class="fu">library</span>(data.table)</span>
+<span id="cb12-13"><a href="deg.html#cb12-13" tabindex="-1"></a>  <span class="fu">library</span>(clusterProfiler);<span class="fu">library</span>(enrichplot)</span>
+<span id="cb12-14"><a href="deg.html#cb12-14" tabindex="-1"></a>  <span class="fu">library</span>(topGO);<span class="fu">library</span>(Rgraphviz)</span>
+<span id="cb12-15"><a href="deg.html#cb12-15" tabindex="-1"></a>  <span class="fu">library</span>(RColorBrewer);<span class="fu">library</span>(ggsci);<span class="fu">library</span>(pheatmap)</span>
+<span id="cb12-16"><a href="deg.html#cb12-16" tabindex="-1"></a>  <span class="fu">library</span>(readxl)</span>
+<span id="cb12-17"><a href="deg.html#cb12-17" tabindex="-1"></a>}) })</span>
+<span id="cb12-18"><a href="deg.html#cb12-18" tabindex="-1"></a><span class="co"># 若无代理工具，切勿运行 </span></span>
+<span id="cb12-19"><a href="deg.html#cb12-19" tabindex="-1"></a><span class="co"># LZ::setproxy() # 高危！！！新手不要运行此行，会使当前窗口断网！！！</span></span>
+<span id="cb12-20"><a href="deg.html#cb12-20" tabindex="-1"></a><span class="co"># Sys.getenv(&#39;http_proxy&#39;) Sys.setenv(&#39;http_proxy&#39;=&#39;&#39;) Sys.setenv(&#39;https_proxy&#39;=&#39;&#39;)</span></span>
+<span id="cb12-21"><a href="deg.html#cb12-21" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="deg.html#cb12-22" tabindex="-1"></a><span class="co"># 如果是自己提供的表格，要按需修改列名为标准的resdf格式的列名：</span></span>
+<span id="cb12-23"><a href="deg.html#cb12-23" tabindex="-1"></a><span class="co"># 即: 表格必须含列名Gene, log2FC, PValue, FDR这四列，列名必须为这四个，</span></span>
+<span id="cb12-24"><a href="deg.html#cb12-24" tabindex="-1"></a><span class="co"># 提前在xlsx中修改好，然后取消下面这句的注释符，运行</span></span>
+<span id="cb12-25"><a href="deg.html#cb12-25" tabindex="-1"></a><span class="co"># resdf &lt;- readxl::read_xlsx(&quot;result/rnaseqOR-NC/rich/DIFF.an_OR-NC.xlsx&quot;,</span></span>
+<span id="cb12-26"><a href="deg.html#cb12-26" tabindex="-1"></a><span class="co">#                  sheet = 1) %&gt;% as.data.frame()</span></span>
+<span id="cb12-27"><a href="deg.html#cb12-27" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="deg.html#cb12-28" tabindex="-1"></a><span class="co"># 按流程跑下来是运行这句，注意这句和上面的注释掉的是二选一，不要重复运行</span></span>
+<span id="cb12-29"><a href="deg.html#cb12-29" tabindex="-1"></a>resdf <span class="ot">&lt;-</span> all_father<span class="sc">$</span>DIFF.ALL</span>
+<span id="cb12-30"><a href="deg.html#cb12-30" tabindex="-1"></a><span class="co"># 输出目录</span></span>
+<span id="cb12-31"><a href="deg.html#cb12-31" tabindex="-1"></a>outd <span class="ot">=</span> <span class="st">&quot;result/xx/rich&quot;</span> </span>
+<span id="cb12-32"><a href="deg.html#cb12-32" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值的话，</span></span>
+<span id="cb12-33"><a href="deg.html#cb12-33" tabindex="-1"></a><span class="co">#   写成fc.list &lt;- list(&#39;1.2&#39; = log2(1.2), &#39;2&#39; = log2(2))</span></span>
+<span id="cb12-34"><a href="deg.html#cb12-34" tabindex="-1"></a><span class="co"># 注意！！！！！！：括号里log2(2)的2，和引号里&#39;2&#39;的2都要需同步要改。！！！</span></span>
+<span id="cb12-35"><a href="deg.html#cb12-35" tabindex="-1"></a><span class="co"># 否则可能会覆盖结果 </span></span>
+<span id="cb12-36"><a href="deg.html#cb12-36" tabindex="-1"></a><span class="co"># logFC阈值, 多个阈值</span></span>
+<span id="cb12-37"><a href="deg.html#cb12-37" tabindex="-1"></a>fc.list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">&#39;1.5&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="fl">1.5</span>), <span class="st">&#39;2&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="dv">2</span>), <span class="st">&#39;4&#39;</span> <span class="ot">=</span> <span class="fu">log2</span>(<span class="dv">4</span>))</span>
+<span id="cb12-38"><a href="deg.html#cb12-38" tabindex="-1"></a><span class="co"># logFC阈值, 单个阈值运行这句，也是二选一，不要重复运行</span></span>
+<span id="cb12-39"><a href="deg.html#cb12-39" tabindex="-1"></a><span class="co"># fc.list &lt;- list(&#39;2&#39;=log2(2))</span></span>
+<span id="cb12-40"><a href="deg.html#cb12-40" tabindex="-1"></a></span>
+<span id="cb12-41"><a href="deg.html#cb12-41" tabindex="-1"></a><span class="co"># 预处理数据符合GOKEGG分析的要求</span></span>
+<span id="cb12-42"><a href="deg.html#cb12-42" tabindex="-1"></a><span class="co"># # 不同fc条件下的GOgenelist list(ALL, UP, DOWN)</span></span>
+<span id="cb12-43"><a href="deg.html#cb12-43" tabindex="-1"></a>gogenelist <span class="ot">&lt;-</span> <span class="fu">lapply</span>(fc.list, <span class="cf">function</span>(x) {</span>
+<span id="cb12-44"><a href="deg.html#cb12-44" tabindex="-1"></a>  <span class="fu">DEG_prepareGOglist</span>(resdf, <span class="at">logfc =</span> x, <span class="at">p =</span> <span class="fl">0.05</span>, <span class="at">fdr =</span> <span class="fl">0.1</span>) })</span>
+<span id="cb12-45"><a href="deg.html#cb12-45" tabindex="-1"></a><span class="co"># gogenelist %&gt;% length()</span></span>
+<span id="cb12-46"><a href="deg.html#cb12-46" tabindex="-1"></a><span class="co"># 对logFC迭代，每个FC新建一个目录，用来存upgene, downgene, allgene的GO结果</span></span>
+<span id="cb12-47"><a href="deg.html#cb12-47" tabindex="-1"></a>enrich <span class="ot">&lt;-</span> <span class="fu">DEG_runENRICH</span>(<span class="at">genelist =</span> gogenelist, <span class="at">outdir =</span> outd, </span>
+<span id="cb12-48"><a href="deg.html#cb12-48" tabindex="-1"></a>                        <span class="at">glist.save =</span> T, <span class="at">rungo =</span> T, <span class="at">runkegg =</span> T, <span class="at">rapid =</span> T)</span></code></pre></div>
+</div>
+<div id="enrich-simple" class="section level4 hasAnchor" number="3.4.1.2">
+<h4><span class="header-section-number">3.4.1.2</span> 简易GO,KEGG一次分析<a href="deg.html#enrich-simple" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>如果已经得到了差异基因列表，且无需批量分析，可以进行这个简易分析。<br/>
+数据格式: <code>head(genelist.lh)</code> <br/>
+[1] “AARS1” “AATF” “ABCB7” “ABCE1” “ABHD11” “ABHD12”</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="deg.html#cb13-1" tabindex="-1"></a><span class="co"># 简易GO,KEGG一次分析(即：已经得到了差异基因列表)</span></span>
+<span id="cb13-2"><a href="deg.html#cb13-2" tabindex="-1"></a><span class="co"># LZ::setproxy() # 代理设置，新手别碰，会断网</span></span>
+<span id="cb13-3"><a href="deg.html#cb13-3" tabindex="-1"></a><span class="co"># 差异基因列表</span></span>
+<span id="cb13-4"><a href="deg.html#cb13-4" tabindex="-1"></a>genelist.lh <span class="ot">&lt;-</span> pic.list<span class="sc">$</span>sig.data<span class="sc">$</span>Gene </span>
+<span id="cb13-5"><a href="deg.html#cb13-5" tabindex="-1"></a><span class="co"># 转换ID</span></span>
+<span id="cb13-6"><a href="deg.html#cb13-6" tabindex="-1"></a>gene_df <span class="ot">&lt;-</span> <span class="fu">bitr</span>(genelist.lh, <span class="at">fromType =</span> <span class="st">&quot;SYMBOL&quot;</span>, <span class="at">toType =</span> <span class="fu">c</span>(<span class="st">&quot;ENTREZID&quot;</span>, <span class="st">&quot;UNIPROT&quot;</span>), </span>
+<span id="cb13-7"><a href="deg.html#cb13-7" tabindex="-1"></a>                <span class="at">OrgDb =</span> <span class="st">&#39;org.Hs.eg.db&#39;</span>)</span>
+<span id="cb13-8"><a href="deg.html#cb13-8" tabindex="-1"></a><span class="co"># GO分析</span></span>
+<span id="cb13-9"><a href="deg.html#cb13-9" tabindex="-1"></a>go.lh <span class="ot">&lt;-</span> <span class="fu">DEG_GO</span>(gene_df, <span class="at">orgdb =</span> <span class="st">&quot;org.Hs.eg.db&quot;</span>, <span class="at">sigNodes =</span> <span class="dv">20</span>, </span>
+<span id="cb13-10"><a href="deg.html#cb13-10" tabindex="-1"></a>                <span class="at">resultdir=</span><span class="st">&quot;./result/proteinOR-NC&quot;</span>, <span class="at">filemark =</span> <span class="st">&quot;p1.5_g_2&quot;</span>)</span>
+<span id="cb13-11"><a href="deg.html#cb13-11" tabindex="-1"></a>go.lhdf <span class="ot">&lt;-</span> <span class="fu">sapply</span>(go.lh, <span class="cf">function</span>(x) x<span class="sc">@</span>result, <span class="at">simplify =</span> T)</span>
+<span id="cb13-12"><a href="deg.html#cb13-12" tabindex="-1"></a><span class="fu">write_xlsx</span>(go.lhdf, <span class="at">path =</span> <span class="st">&quot;./result/xx/lh_go.all.xlsx&quot;</span>)</span>
+<span id="cb13-13"><a href="deg.html#cb13-13" tabindex="-1"></a><span class="co"># KEGG分析</span></span>
+<span id="cb13-14"><a href="deg.html#cb13-14" tabindex="-1"></a>kegg.lh <span class="ot">&lt;-</span> <span class="fu">DEG_KEGG</span>(gene_df)</span>
+<span id="cb13-15"><a href="deg.html#cb13-15" tabindex="-1"></a><span class="fu">write_xlsx</span>(kegg.lh<span class="sc">$</span>pSigDF, <span class="at">path =</span> <span class="st">&quot;./result/xx/lh_kegg.all.xlsx&quot;</span>)</span></code></pre></div>
+</div>
+<div id="enrich-visual" class="section level4 hasAnchor" number="3.4.1.3">
+<h4><span class="header-section-number">3.4.1.3</span> GO、KEGG分析结果可视化<a href="deg.html#enrich-visual" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="deg.html#cb14-1" tabindex="-1"></a><span class="co"># dotplot go</span></span>
+<span id="cb14-2"><a href="deg.html#cb14-2" tabindex="-1"></a><span class="co"># 读取go分析保存的表格</span></span>
+<span id="cb14-3"><a href="deg.html#cb14-3" tabindex="-1"></a><span class="co">#dotData &lt;- go$GODF$&quot;倍数&quot;$变化趋势(BP)</span></span>
+<span id="cb14-4"><a href="deg.html#cb14-4" tabindex="-1"></a><span class="co"># 自己提供表格读取</span></span>
+<span id="cb14-5"><a href="deg.html#cb14-5" tabindex="-1"></a><span class="co">#dotData &lt;- readxl::read_xlsx(&quot;kegg.xlsx&quot;, sheet = 1) </span></span>
+<span id="cb14-6"><a href="deg.html#cb14-6" tabindex="-1"></a>dotData <span class="ot">&lt;-</span> enrich<span class="sc">$</span>GODF<span class="sc">$</span><span class="st">&quot;2&quot;</span><span class="sc">$</span>all</span>
+<span id="cb14-7"><a href="deg.html#cb14-7" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
+<span id="cb14-8"><a href="deg.html#cb14-8" tabindex="-1"></a>pic.dot <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot2</span>(dotData, <span class="at">head =</span> <span class="dv">20</span>, <span class="at">title =</span> <span class="st">&#39;TOP of GO&#39;</span>, </span>
+<span id="cb14-9"><a href="deg.html#cb14-9" tabindex="-1"></a>                         <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, </span>
+<span id="cb14-10"><a href="deg.html#cb14-10" tabindex="-1"></a>                         <span class="at">filemark =</span> <span class="st">&#39;GO_top&#39;</span>, <span class="at">pcompress =</span> <span class="dv">2</span>,</span>
+<span id="cb14-11"><a href="deg.html#cb14-11" tabindex="-1"></a>                         <span class="at">pic.save =</span> T)</span>
+<span id="cb14-12"><a href="deg.html#cb14-12" tabindex="-1"></a><span class="co"># dotplot kegg</span></span>
+<span id="cb14-13"><a href="deg.html#cb14-13" tabindex="-1"></a><span class="co"># 读取kegg分析保存的表格，格式要求</span></span>
+<span id="cb14-14"><a href="deg.html#cb14-14" tabindex="-1"></a><span class="co"># 必须要有这5列Description, GeneRatio, pvalue, qvalue, Count列。</span></span>
+<span id="cb14-15"><a href="deg.html#cb14-15" tabindex="-1"></a><span class="co"># 读取表格</span></span>
+<span id="cb14-16"><a href="deg.html#cb14-16" tabindex="-1"></a><span class="co"># dotDatak &lt;- readxl::read_xlsx(&quot;./result/proinOR/kegg.xlsx&quot;, sheet = 1)</span></span>
+<span id="cb14-17"><a href="deg.html#cb14-17" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="deg.html#cb14-18" tabindex="-1"></a>dotDatak <span class="ot">&lt;-</span> enrich<span class="sc">$</span>KEGGDF<span class="sc">$</span><span class="st">&#39;2&#39;</span><span class="sc">$</span>up</span>
+<span id="cb14-19"><a href="deg.html#cb14-19" tabindex="-1"></a><span class="co"># 筛选数据（按需配合其他筛选）</span></span>
+<span id="cb14-20"><a href="deg.html#cb14-20" tabindex="-1"></a>pic.dotk <span class="ot">&lt;-</span> <span class="fu">DEGp_Dotplot2</span>(dotDatak, <span class="at">head =</span> <span class="dv">20</span>, <span class="at">title =</span> <span class="st">&#39;TOP of KEGGpathway&#39;</span>, </span>
+<span id="cb14-21"><a href="deg.html#cb14-21" tabindex="-1"></a>                          <span class="at">resultdir =</span> <span class="st">&quot;./result/proteinOR-NC&quot;</span>, </span>
+<span id="cb14-22"><a href="deg.html#cb14-22" tabindex="-1"></a>                          <span class="at">filemark =</span> <span class="st">&#39;KEGG_top&#39;</span>, <span class="at">pcompress =</span> <span class="dv">1</span>,</span>
+<span id="cb14-23"><a href="deg.html#cb14-23" tabindex="-1"></a>                          <span class="at">pic.save =</span> T)</span>
+<span id="cb14-24"><a href="deg.html#cb14-24" tabindex="-1"></a></span>
+<span id="cb14-25"><a href="deg.html#cb14-25" tabindex="-1"></a><span class="co"># 组合图(可选运行，比例不是很好调整，单独出图AI内调整更自由)</span></span>
+<span id="cb14-26"><a href="deg.html#cb14-26" tabindex="-1"></a>gh <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dot)</span>
+<span id="cb14-27"><a href="deg.html#cb14-27" tabindex="-1"></a>gd <span class="ot">&lt;-</span> <span class="fu">ggplotGrob</span>(pic.dotk)</span>
+<span id="cb14-28"><a href="deg.html#cb14-28" tabindex="-1"></a>cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(gh, gd, <span class="at">rel_widths =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">1.2</span>))</span>
+<span id="cb14-29"><a href="deg.html#cb14-29" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="fu">paste0</span>(dir_out, <span class="st">&quot;/GO_KEGG_top.pdf&quot;</span>), <span class="at">width =</span> <span class="dv">16</span>, <span class="at">height =</span> <span class="dv">10</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="enrich-gsea" class="section level3 hasAnchor" number="3.4.2">
+<h3><span class="header-section-number">3.4.2</span> GSEA分析<a href="deg.html#enrich-gsea" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="r-gsea-批量分析" class="section level4 hasAnchor" number="3.4.2.1">
+<h4><span class="header-section-number">3.4.2.1</span> R GSEA 批量分析<a href="deg.html#r-gsea-批量分析" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p><a href="https://www.gsea-msigdb.org/gsea/msigdb/index.jsp" target="_blank">GSEA官网</a>提供了GSEA分析软件和MSigDB数据库中的所有通路下载，如果需要更多的通路集可以自行下载，本包内置了MSigDB的H,C1-8的所有大类集及C2,C5的部分重要子类集，还有整理好的最新版的KEGG官方的PATHWAY通路集合。</p></li>
+<li><p>本包构建了一个图形界面函数<code>runAPP_GSEA()</code>，可在安装完LZ包后直接通过运行<code>LZ::runAPP_GSEA()</code>启动图形界面，也可在浏览器中打开。详细见<a href="deg.html#enrich-gsea-r.gsea.gui">R GSEA 图形界面</a></p></li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="deg.html#cb15-1" tabindex="-1"></a><span class="fu">library</span>(LZ)</span>
+<span id="cb15-2"><a href="deg.html#cb15-2" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
+<span id="cb15-3"><a href="deg.html#cb15-3" tabindex="-1"></a><span class="fu">library</span>(enrichplot)</span>
+<span id="cb15-4"><a href="deg.html#cb15-4" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
+<span id="cb15-5"><a href="deg.html#cb15-5" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb15-6"><a href="deg.html#cb15-6" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="deg.html#cb15-7" tabindex="-1"></a><span class="co"># 1. Gene list 排序表</span></span>
+<span id="cb15-8"><a href="deg.html#cb15-8" tabindex="-1"></a>genelist <span class="ot">&lt;-</span> all_father<span class="sc">$</span>gsealist</span>
+<span id="cb15-9"><a href="deg.html#cb15-9" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="deg.html#cb15-10" tabindex="-1"></a><span class="co"># 2. Pathway Gene Set 表</span></span>
+<span id="cb15-11"><a href="deg.html#cb15-11" tabindex="-1"></a><span class="co"># 内置数据集 gmt.largelist.23.12.Hs.symbols</span></span>
+<span id="cb15-12"><a href="deg.html#cb15-12" tabindex="-1"></a><span class="co">#   含1. msigDB数据库的全部通路大类 </span></span>
+<span id="cb15-13"><a href="deg.html#cb15-13" tabindex="-1"></a><span class="co">#     2. msigDB的C2,C5的部分子集通路[这些子集是C2,C5的一部分] </span></span>
+<span id="cb15-14"><a href="deg.html#cb15-14" tabindex="-1"></a><span class="co">#     3.最新版本的KEGG全部通路</span></span>
+<span id="cb15-15"><a href="deg.html#cb15-15" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;gmt.largelist.23.12.Hs.symbols&quot;</span>)   </span>
+<span id="cb15-16"><a href="deg.html#cb15-16" tabindex="-1"></a><span class="co"># 选择KEGG通路集合，把美元符号后面字符删掉，然后按tab键可以选择其他数据集</span></span>
+<span id="cb15-17"><a href="deg.html#cb15-17" tabindex="-1"></a>gmt <span class="ot">&lt;-</span> gmt.largelist.<span class="dv">23</span>.<span class="fl">12.</span>Hs.symbols<span class="sc">$</span>kegg.all.<span class="dv">23</span>.<span class="fl">12.</span>Hs.symbols.gmt</span>
+<span id="cb15-18"><a href="deg.html#cb15-18" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="deg.html#cb15-19" tabindex="-1"></a><span class="co"># 全部该GeneSet数据的通路GSEA分析  -----------</span></span>
+<span id="cb15-20"><a href="deg.html#cb15-20" tabindex="-1"></a>gsea <span class="ot">&lt;-</span> <span class="fu">DEG_runGSEA</span>(<span class="at">genelist=</span>genelist, <span class="at">gmt_set=</span>gmt, <span class="at">pic.save=</span>F)</span>
+<span id="cb15-21"><a href="deg.html#cb15-21" tabindex="-1"></a><span class="co"># 将所有的分析结果导出到本地[gsea.result]文件夹，统计总结表名为gsea_stat</span></span>
+<span id="cb15-22"><a href="deg.html#cb15-22" tabindex="-1"></a><span class="co">#   导出文件夹名和文件名均可按需修改</span></span>
+<span id="cb15-23"><a href="deg.html#cb15-23" tabindex="-1"></a><span class="fu">DEGp_GSEA_plotALL</span>(gsea, <span class="at">result_dir =</span> <span class="st">&quot;gsea.result&quot;</span>, </span>
+<span id="cb15-24"><a href="deg.html#cb15-24" tabindex="-1"></a>                  <span class="at">xl_filename =</span> <span class="st">&quot;gsea_stat&quot;</span>)</span>
+<span id="cb15-25"><a href="deg.html#cb15-25" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="deg.html#cb15-26" tabindex="-1"></a><span class="co"># 单个GeneSet数据的通路GSEA分析（且从自己准备的gmt文件开始），可从MSigDB网</span></span>
+<span id="cb15-27"><a href="deg.html#cb15-27" tabindex="-1"></a><span class="co">#  站搜索下载</span></span>
+<span id="cb15-28"><a href="deg.html#cb15-28" tabindex="-1"></a><span class="co"># 设定文件路径</span></span>
+<span id="cb15-29"><a href="deg.html#cb15-29" tabindex="-1"></a>gmt_filename <span class="ot">&lt;-</span> <span class="st">&quot;D:/Team/RNAseq/data/geneset/WP_FERROPTOSIS.v2022.1.Hs.gmt&quot;</span></span>
+<span id="cb15-30"><a href="deg.html#cb15-30" tabindex="-1"></a>gmt_single <span class="ot">&lt;-</span> clusterProfiler<span class="sc">::</span><span class="fu">read.gmt</span>(gmt_filename)</span>
+<span id="cb15-31"><a href="deg.html#cb15-31" tabindex="-1"></a>gsea.single <span class="ot">&lt;-</span> <span class="fu">DEG_runGSEA</span>(<span class="at">genelist =</span> genelist, <span class="at">gmt_set =</span> gmt_single, </span>
+<span id="cb15-32"><a href="deg.html#cb15-32" tabindex="-1"></a>                           <span class="at">pic.save=</span>T, <span class="at">outdir =</span> <span class="st">&quot;./gsea.result2/&quot;</span>, </span>
+<span id="cb15-33"><a href="deg.html#cb15-33" tabindex="-1"></a>                           <span class="at">filename =</span> <span class="st">&quot;ferr&quot;</span>)</span></code></pre></div>
+</div>
+<div id="enrich-gsea-r.gsea.gui" class="section level4 hasAnchor" number="3.4.2.2">
+<h4><span class="header-section-number">3.4.2.2</span> R GSEA 图形界面<a href="deg.html#enrich-gsea-r.gsea.gui" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>图形界面可以用自己的表格数据(上传表格不是必须，方式二启动就不需要)上传来做GSEA分析，表格必须有且仅有两列，分别为Gene列和log2FC列，具体表格形式如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Gene</th>
+<th align="left">log2FC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">geneA</td>
+<td align="left">9.8</td>
+</tr>
+<tr class="even">
+<td align="left">geneX</td>
+<td align="left">4.3</td>
+</tr>
+<tr class="odd">
+<td align="left">geneY</td>
+<td align="left">1.2</td>
+</tr>
+<tr class="even">
+<td align="left">…</td>
+<td align="left">…</td>
+</tr>
+<tr class="odd">
+<td align="left">geneZ</td>
+<td align="left">0.3</td>
+</tr>
+<tr class="even">
+<td align="left">geneB</td>
+<td align="left">-0.8</td>
+</tr>
+<tr class="odd">
+<td align="left">geneZ</td>
+<td align="left">-5.2</td>
+</tr>
+</tbody>
+</table>
+<p>注意：虽然要求第二列名为log2FC,但第二列只要是表示变化倍数就可以，不一定要是log2后数据，没有排序也没关系。</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="deg.html#cb16-1" tabindex="-1"></a><span class="co"># 启动方法1（不带参数启动），适合自己已经有了差异分析结果的表格的情况，</span></span>
+<span id="cb16-2"><a href="deg.html#cb16-2" tabindex="-1"></a><span class="co">#  那么运行此句后，不需要在R里写任何代码，如果通过LZ::runAPP_GSEA()甚至</span></span>
+<span id="cb16-3"><a href="deg.html#cb16-3" tabindex="-1"></a><span class="co">#  都不需要加载包。</span></span>
+<span id="cb16-4"><a href="deg.html#cb16-4" tabindex="-1"></a><span class="co">#  使用这种方法，则必须要上传上述指定的表格形式的表格后才能点击画图。</span></span>
+<span id="cb16-5"><a href="deg.html#cb16-5" tabindex="-1"></a><span class="fu">runAPP_GSEA</span>() <span class="co"># 或在安装成功LZ包后，直接通过LZ::runAPP_GSEA()来启动</span></span>
+<span id="cb16-6"><a href="deg.html#cb16-6" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="deg.html#cb16-7" tabindex="-1"></a><span class="co"># 启动方法2（带参数启动），适合在R中已经有genelist的情况。</span></span>
+<span id="cb16-8"><a href="deg.html#cb16-8" tabindex="-1"></a><span class="co"># 已在R里有了genelist的话，运行此句启动图形界面，这样就不需要上传表格</span></span>
+<span id="cb16-9"><a href="deg.html#cb16-9" tabindex="-1"></a><span class="fu">runAPP_GSEA</span>(<span class="at">genelist =</span> genelist)</span></code></pre></div>
+</div>
+<div id="一些进阶操作及技巧不会没有关系不做过多解释自行体会无r语言基础者慎入" class="section level4 hasAnchor" number="3.4.2.3">
+<h4><span class="header-section-number">3.4.2.3</span> 一些进阶操作及技巧(不会没有关系，不做过多解释，自行体会，无R语言基础者慎入)<a href="deg.html#一些进阶操作及技巧不会没有关系不做过多解释自行体会无r语言基础者慎入" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="deg.html#cb17-1" tabindex="-1"></a><span class="co"># 进阶操作 ---------------------------</span></span>
+<span id="cb17-2"><a href="deg.html#cb17-2" tabindex="-1"></a><span class="co"># 1. 查找指定通路的图</span></span>
+<span id="cb17-3"><a href="deg.html#cb17-3" tabindex="-1"></a><span class="co">#  如果自己知道通路的名字，可以通过查找来定位到通路的位置，然后单独画图</span></span>
+<span id="cb17-4"><a href="deg.html#cb17-4" tabindex="-1"></a>pathway <span class="ot">=</span> <span class="st">&quot;^ABC&quot;</span></span>
+<span id="cb17-5"><a href="deg.html#cb17-5" tabindex="-1"></a>n <span class="ot">=</span> <span class="fu">grep</span>(pathway, gsea[,<span class="st">&quot;ID&quot;</span>])</span>
+<span id="cb17-6"><a href="deg.html#cb17-6" tabindex="-1"></a><span class="fu">grep</span>(pathway, gsea[,<span class="st">&quot;ID&quot;</span>], <span class="at">value =</span> T) <span class="co"># 查看找到的通路名称，必须时唯一值，否则请使用更加详细的查找条件再查找一次。</span></span>
+<span id="cb17-7"><a href="deg.html#cb17-7" tabindex="-1"></a><span class="fu">DEGp_GSEA</span>(gsea, <span class="at">num =</span> n)</span>
+<span id="cb17-8"><a href="deg.html#cb17-8" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="deg.html#cb17-9" tabindex="-1"></a><span class="co"># 2. 从当前的gmt文件中获取指定的Pathway Gene set(gmt对象名一定腰围gmt才行)</span></span>
+<span id="cb17-10"><a href="deg.html#cb17-10" tabindex="-1"></a>gmtdf.find <span class="ot">&lt;-</span> <span class="fu">find_pathway</span>(<span class="st">&quot;^Ferr&quot;</span>)</span>
+<span id="cb17-11"><a href="deg.html#cb17-11" tabindex="-1"></a>gsea.single <span class="ot">&lt;-</span> <span class="fu">DEG_runGSEA</span>(<span class="at">genelist =</span> genelist, <span class="at">gmt_set=</span>gmtdf.find, </span>
+<span id="cb17-12"><a href="deg.html#cb17-12" tabindex="-1"></a>                           <span class="at">pic.save=</span>T, <span class="at">outdir =</span> <span class="st">&quot;./gsea.ytb3/&quot;</span>, </span>
+<span id="cb17-13"><a href="deg.html#cb17-13" tabindex="-1"></a>                           <span class="at">filename =</span> <span class="st">&quot;fer_taget&quot;</span>)</span>
+<span id="cb17-14"><a href="deg.html#cb17-14" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="deg.html#cb17-15" tabindex="-1"></a><span class="co"># 3. 如果自己的分析中想将自己的数据转化为GSEA要求的genelist数据，</span></span>
+<span id="cb17-16"><a href="deg.html#cb17-16" tabindex="-1"></a><span class="co">#    例如自己的分析项目中有一个名为re的对象，该对象中有</span></span>
+<span id="cb17-17"><a href="deg.html#cb17-17" tabindex="-1"></a><span class="co">#    基因名列XX 和 基因变化倍数列 YY</span></span>
+<span id="cb17-18"><a href="deg.html#cb17-18" tabindex="-1"></a>genelist <span class="ot">&lt;-</span> re<span class="sc">$</span>YY</span>
+<span id="cb17-19"><a href="deg.html#cb17-19" tabindex="-1"></a><span class="fu">names</span>(genelist) <span class="ot">&lt;-</span> re<span class="sc">$</span>XX</span>
+<span id="cb17-20"><a href="deg.html#cb17-20" tabindex="-1"></a>genelist <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(<span class="fu">sort</span>(genelist, <span class="at">decreasing =</span> T))</span>
+<span id="cb17-21"><a href="deg.html#cb17-21" tabindex="-1"></a></span>
+<span id="cb17-22"><a href="deg.html#cb17-22" tabindex="-1"></a><span class="co"># 4. GSEA图形界面中若使用结束按钮关闭程序，会将最后一次画图的数据保留在</span></span>
+<span id="cb17-23"><a href="deg.html#cb17-23" tabindex="-1"></a><span class="co">#    R会话中，具体如下：</span></span>
+<span id="cb17-24"><a href="deg.html#cb17-24" tabindex="-1"></a><span class="co"># 最后画的一幅图</span></span>
+<span id="cb17-25"><a href="deg.html#cb17-25" tabindex="-1"></a>pic_gsea</span>
+<span id="cb17-26"><a href="deg.html#cb17-26" tabindex="-1"></a><span class="co"># 保存图片</span></span>
+<span id="cb17-27"><a href="deg.html#cb17-27" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">&#39;aaa.pdf&#39;</span>, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">5</span>)</span>
+<span id="cb17-28"><a href="deg.html#cb17-28" tabindex="-1"></a>pic_gsea</span>
+<span id="cb17-29"><a href="deg.html#cb17-29" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb17-30"><a href="deg.html#cb17-30" tabindex="-1"></a><span class="co"># 最后一次选择的通路集详细</span></span>
+<span id="cb17-31"><a href="deg.html#cb17-31" tabindex="-1"></a>sy_gmt_taget</span>
+<span id="cb17-32"><a href="deg.html#cb17-32" tabindex="-1"></a><span class="co"># 最后一次选择的通路名称</span></span>
+<span id="cb17-33"><a href="deg.html#cb17-33" tabindex="-1"></a>sy_pathway_name</span>
+<span id="cb17-34"><a href="deg.html#cb17-34" tabindex="-1"></a><span class="co"># 最后一次选择的大类通路集详细的前六行</span></span>
+<span id="cb17-35"><a href="deg.html#cb17-35" tabindex="-1"></a>sy_gmt <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span>
+<span id="cb17-36"><a href="deg.html#cb17-36" tabindex="-1"></a></span>
+<span id="cb17-37"><a href="deg.html#cb17-37" tabindex="-1"></a><span class="co"># 5. 转换成宽型文件</span></span>
+<span id="cb17-38"><a href="deg.html#cb17-38" tabindex="-1"></a>gmt.w2 <span class="ot">&lt;-</span> <span class="fu">gmt_longTowide2</span>(gmt) </span></code></pre></div>
+</div>
+<div id="gsea官方软件" class="section level4 hasAnchor" number="3.4.2.4">
+<h4><span class="header-section-number">3.4.2.4</span> GSEA官方软件<a href="deg.html#gsea官方软件" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>自行搜素方法，网络上有大量图文教程 …</p>
+</div>
+</div>
+<div id="visual" class="section level3 hasAnchor" number="3.4.3">
+<h3><span class="header-section-number">3.4.3</span> 转录组其它可视化<a href="deg.html#visual" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>On the way …</p>
 
 </div>
 </div>
@@ -563,8 +807,8 @@ label_gene: 展示基因列表<br/>
           </div>
         </div>
       </div>
-<a href="install.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="enrich.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="rnaseq_new_pipeline.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="rnaseq-rsubread.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -609,7 +853,7 @@ gitbook.start({
 "options": null
 },
 "toc": {
-"collapse": "none"
+"collapse": "section"
 },
 "split_by": "section"
 });

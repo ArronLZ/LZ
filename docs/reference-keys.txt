@@ -1,6 +1,7 @@
 install
 安装r及rsudio环境
 安装lz包
+rnaseq_new_pipeline
 deg
 deg-mian
 加载包
@@ -25,9 +26,7 @@ enrich-gsea-r.gsea.gui
 一些进阶操作及技巧不会没有关系不做过多解释自行体会无r语言基础者慎入
 gsea官方软件
 visual
-rnaseq_new_pipeline
 rnaseq-rsubread
-multi-omics
 cuttag
 scRNA
 spatial
